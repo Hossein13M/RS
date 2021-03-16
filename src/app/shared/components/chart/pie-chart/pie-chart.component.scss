@@ -1,0 +1,21 @@
+.fuse-card {
+    height: 100%;
+    width: 100%;
+
+    .chart-name {
+        font-width: bold;
+        padding: 20px 0;
+    }
+
+    mat-divider {
+        width: 100%;
+    }
+}
+
+.full {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

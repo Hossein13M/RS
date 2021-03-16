@@ -1,0 +1,28 @@
+.component-detail-row {
+    margin: 12px 0;
+    direction: rtl;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.component-detail-container {
+    width: 100%;
+    padding: 10px;
+}
+
+.component-detail-item {
+    width: 40%;
+
+    .title {
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .value {
+        font-size: 16px;
+        color: #106cc8;
+        font-weight: 700;
+    }
+}

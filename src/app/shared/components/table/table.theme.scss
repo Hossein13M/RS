@@ -1,0 +1,9 @@
+@import '~@angular/material/theming';
+
+@mixin custom-table-theme($theme) {
+    $assent: map-get($theme, assent);
+
+    .table-selected {
+        background-color: $assent !important;
+    }
+}

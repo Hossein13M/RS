@@ -1,0 +1,40 @@
+.search-container {
+    min-width: 312px;
+
+    .search-form-field {
+        min-width: 312px;
+        width: 100%;
+        position: relative;
+
+        .suffix {
+            position: absolute;
+            left: 15px;
+            top: 0;
+        }
+    }
+
+}
+
+:host ::ng-deep .has-error {
+    .mat-form-field-outline {
+        animation: red-border-animation 3s ease;
+    }
+
+    @keyframes red-border-animation {
+        0% {
+            border: 1px solid #ff2200;
+            border-radius: 7px;
+        }
+        80% {
+            border: 1px solid #ff2200;
+            border-radius: 7px;
+        }
+        100% {
+            border: 1px solid #ffffff;
+            border-radius: 7px;
+        }
+    }
+}
+
+ngx-mat-select-search {
+}

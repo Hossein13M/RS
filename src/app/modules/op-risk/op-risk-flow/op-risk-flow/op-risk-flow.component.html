@@ -1,0 +1,29 @@
+<div class="page-layout">
+    <app-header pageTitle="جریان‌ها">
+        <button mat-raised-button color="primary" (click)="createNewFlow()">
+            <mat-icon>add</mat-icon>
+            افزودن
+        </button>
+    </app-header>
+
+    <div class="page-content">
+        <div class="fuse-card data-show">
+            <app-table
+                [data]="data"
+                [columns]="columns"
+                [paginationSettings]="{ mode: 'backend' }"
+                [paginationObj]="pagination"
+                (paginationChange)="paginationControl($event)"
+            >
+            </app-table>
+        </div>
+    </div>
+
+    <ng-template let-row="row" let-index="index" let-col="col" #toggle>
+        <button [disabled]="row.isActiveState && row.isActiveState !== stateType.PRESENT" mat-button (click)="toggleStatus(row)">
+            <mat-icon [color]="row.isActive ? 'accent' : 'warn'" [matTooltip]="row.isActive ? 'فعال' : 'غیرفعال'">
+                {{ row.isActive ? 'toggle_on' : 'toggle_off' }}
+            </mat-icon>
+        </button>
+    </ng-template>
+</div>

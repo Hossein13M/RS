@@ -1,0 +1,148 @@
+<div class="form-mat-tab-group-container">
+    <mat-tab-group>
+        <mat-tab label="اطلاعات قرارداد">
+            <app-contract-base-info-form (newData)="onSubFormSubmit($event)"
+                                         [data]="baseObj?.contractBaseInfo">
+            </app-contract-base-info-form>
+            <form [formGroup]="form">
+                <div class="contract-form-container">
+                    <div class="contract-form-header">
+                        اطلاعات عمومی
+                    </div>
+                    <div class="contract-form-body" dir="rtl">
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>فروشنده</mat-label>
+                                <mat-select formControlName="sellerName">
+                                    <mat-option style="text-align: right"
+                                                *ngFor="let s of formsModelService.marketmakingTypes" [value]="s?.id">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>خریدار</mat-label>
+                                <mat-select formControlName="buyerName">
+                                    <mat-option style="text-align: right"
+                                                *ngFor="let s of formsModelService.marketmakingTypes" [value]="s?.id">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>شماره حساب جهت واریز بهای فروش</mat-label>
+                                <input type="number" matInput formControlName="sellingPaymentsBankAccounts">
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نام بانک جهت واریز بهای فروش</mat-label>
+                                <mat-select formControlName="bankSellingPaymentAccounts">
+                                    <mat-option style="text-align: right" *ngFor="let s of banks" [value]="s?.id">
+                                        {{s?.name}}
+                                        <span style="font-size: 12px;color: #9ea1a9">{{s.bankName}}</span>
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>شعبه جهت واریز بهای فروش</mat-label>
+                                <mat-select formControlName="sellingBranchPayments">
+                                    <mat-option style="text-align: right" *ngFor="let s of bankBranches"
+                                                [value]="s?.branchCode">
+                                        {{s?.branchName}}
+                                        <span style="font-size: 12px;color: #9ea1a9">{{s.bankName}}</span>
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر محاسبه وجه التزام جریمه دیرکرد معامله</mat-label>
+                                <mat-select formControlName="dealCashDelinquencyConsiderationFreq">
+                                    <mat-option style="text-align: right"
+                                                *ngFor="let s of formsModelService.freqTypes" [value]="s?.id">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ سالانه وجه التزام جریمه دیرکرد معامله</mat-label>
+                                <input type="number" formControlName="dealCashDelinquencyConsiderationRate" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>دوره تنفس در صورت دیرکرد معامله (روز)</mat-label>
+                                <input type="number" formControlName="dealCashDelinquencyGracePeriod" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر محاسبه وجه التزام جریمه دیرکرد کارمزد نگهداری</mat-label>
+                                <mat-select formControlName="overCashDelinquencyConsiderationFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s?.id">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ سالانه وجه التزام جریمه دیرکرد کارمزد نگهداری</mat-label>
+                                <input type="number" formControlName="overCashDelinquencyConsiderationRate" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>دوره تنفس در صورت دیرکرد کارمزد نگهداری (روز)</mat-label>
+                                <input type="number" formControlName="overCashDelinquencyGracePeriod" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر واریز کارمزد نگهداری</mat-label>
+                                <mat-select formControlName="securityHoldingFeesFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s?.id">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-tab>
+        <mat-tab label="اطلاعات اوراق موضوع قرارداد">
+            <app-securities-info (newData)="onSubFormSubmit($event)"
+                                 [data]="baseObj?.securitiesInfo"></app-securities-info>
+        </mat-tab>
+        <mat-tab label=" وثایق">
+            <app-collateral-info (newData)="onSubFormSubmit($event)"
+                                 [data]="baseObj?.collateralInfo"></app-collateral-info>
+        </mat-tab>
+        <mat-tab label=" صورتحساب">
+            <app-invoice-info (newData)="onSubFormSubmit($event)" [data]="baseObj?.invoiceInfo"></app-invoice-info>
+        </mat-tab>
+    </mat-tab-group>
+    <button (click)="createFormApi()" [color]="'primary'" mat-raised-button
+            class="save-form-button">
+        <mat-icon>save</mat-icon>
+        ذخیره
+        فرم
+    </button>
+</div>

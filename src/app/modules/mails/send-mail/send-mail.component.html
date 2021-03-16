@@ -1,0 +1,62 @@
+<!--                <app-operator-lists (operatorsID)="getIDs($event)"></app-operator-lists>-->
+<div class="wrapper dialog-container">
+    <div [title]="'یادآوری'" appDialogHeader>
+        <mat-icon (click)="this.dialog.close()" class="icon-header">close</mat-icon>
+    </div>
+    <form dir="rtl" autocomplete="off" [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+            <mat-label
+                >از
+                <span style="color: red">*</span>
+            </mat-label>
+            <input [disabled]="true" matInput placeholder="از" [formControl]="me" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label
+                >عنوان
+                <span style="color: red">*</span>
+            </mat-label>
+            <input matInput placeholder="عنوان پیام" formControlName="title" />
+        </mat-form-field>
+
+        <!--        <mat-form-field *ngIf="data && data?.toUsers?.length>0">-->
+        <!--            <mat-label>به</mat-label>-->
+        <!--            <input disabled="true" matInput placeholder="به" formControlName="title">-->
+        <!--        </mat-form-field>-->
+        <mat-form-field appearance="outline">
+            <mat-label>
+                به
+                <span style="color: red">*</span></mat-label
+            >
+            <mat-select formControlName="toUsers" placeholder="به" [multiple]="true">
+                <ngx-mat-select-search
+                    style="text-align: right"
+                    [noEntriesFoundLabel]="'یافت نشد'"
+                    [placeholderLabel]="'جستجو'"
+                    [formControl]="operatorMultiFilterCtrl"
+                ></ngx-mat-select-search>
+                <mat-option style="text-align: right" *ngFor="let op of filteredOperatorsMulti | async" [value]="op?.id">
+                    <span class="email-info">({{ op?.email }})</span>
+                    {{ op?.fullName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label
+                >متن پیام
+                <span style="color: red">*</span>
+            </mat-label>
+            <textarea matInput formControlName="body" rows="10"></textarea>
+        </mat-form-field>
+        <div class="button-footer">
+            <button [mat-dialog-close]="false" mat-raised-button color="warn">
+                <mat-icon>close</mat-icon>
+                انصراف
+            </button>
+            <button [disabled]="form.invalid" style="margin-right: 10px" mat-raised-button color="accent">
+                <mat-icon>send</mat-icon>
+                ارسال
+            </button>
+        </div>
+    </form>
+</div>

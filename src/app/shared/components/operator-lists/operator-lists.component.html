@@ -1,0 +1,7 @@
+<mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>کاربران</mat-label>
+    <mat-select (openedChange)="comboChange($event)" [formControl]="operators" multiple>
+        <mat-option *ngFor="let operator of operatorsList" [value]="operator.id">
+            {{operator.firstName + ' ' + operator.lastName}}</mat-option>
+    </mat-select>
+</mat-form-field>

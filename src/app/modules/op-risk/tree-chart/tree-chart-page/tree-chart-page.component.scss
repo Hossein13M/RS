@@ -1,0 +1,20 @@
+.risk-chart {
+    margin-top: 1.2rem;
+
+    * {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.fuse-card {
+    height: auto !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start !important;
+    align-items: flex-start;
+}
+
+.page-content {
+    overflow: auto !important;
+}

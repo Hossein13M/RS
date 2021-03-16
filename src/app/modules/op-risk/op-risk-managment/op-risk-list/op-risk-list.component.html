@@ -1,0 +1,57 @@
+<div class="page-layout" dir="rtl" style="overflow: auto">
+
+    <app-header pageTitle="ریسک و زیان عملیاتی">
+        <div>
+            <a [routerLink]="['add']" mat-raised-button color="primary">
+                <mat-icon>add</mat-icon>
+                ایجاد ریسک
+            </a>
+
+            <a [routerLink]="['loss']" mat-raised-button color="primary" style="margin-right: 10px;">
+                <mat-icon>add</mat-icon>
+                ایجاد زیان
+            </a>
+        </div>
+    </app-header>
+
+    <div class="page-content">
+
+        <div class="fuse-card"
+             style="margin-bottom: 20px">
+
+            <div mat-dialog-title
+                 class="header"
+                 fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl"
+                 style="margin-right: 30px; margin-top: 30px;">
+                <h1>
+                    ریسک و زیان های در جریان
+                </h1>
+            </div>
+
+            <div class="fuse-card data-show" dir="rtl">
+                <app-table [data]="data"
+                           [columns]="columns">
+                </app-table>
+            </div>
+
+        </div>
+
+        <div class="fuse-card">
+            <div mat-dialog-title class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl"
+                 style="margin-right: 30px; margin-top: 30px;">
+                <h1>
+                    تاریخچه ریسک و زیان ها
+                </h1>
+            </div>
+
+            <div class="fuse-card data-show" dir="rtl">
+                <app-table [data]="dataHistory"
+                           [columns]="columnsHistory"
+                           (searchCall)="search($event)">
+                </app-table>
+            </div>
+        </div>
+    </div>
+
+
+</div>

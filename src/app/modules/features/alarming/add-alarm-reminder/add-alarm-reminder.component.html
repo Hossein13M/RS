@@ -1,0 +1,37 @@
+<div class="dialog-container">
+    <div [title]="'یادآوری'" appDialogHeader>
+        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+    </div>
+    <form [formGroup]="form" autocomplete="off" class="form-container">
+        <div class="form-row" dir="rtl">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    تاریخ یادآوری
+                    <span style="color: red">*</span>
+                </mat-label>
+                <input (click)="start1.open()" matInput formControlName="date"
+                       [matDatepicker]="start1"
+                >
+                <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                <mat-datepicker #start1></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+    <div class="form-btn-container">
+        <button [color]="'accent'"
+                [disabled]="!form.valid"
+                (click)="createReminder()"
+                mat-raised-button>
+            ثبت
+            <mat-icon>done</mat-icon>
+        </button>
+        <button style="margin-left: 10px" [color]="'warn'" [mat-dialog-close]="true"
+                mat-raised-button>
+            انصراف
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

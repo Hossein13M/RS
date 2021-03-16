@@ -1,0 +1,148 @@
+<div class="dialog-container">
+    <div title="{{title}}"
+         appDialogHeader>
+        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+    </div>
+    <form [formGroup]="form" class="setting-form-container" dir="rtl">
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    نام
+                    <span style="color: red">*</span>
+                </mat-label>
+                <input formControlName="name" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    تلفن
+                </mat-label>
+                <input formControlName="phone" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    آدرس
+                </mat-label>
+                <textarea formControlName="address" matInput>
+                </textarea>
+            </mat-form-field>
+        </div>
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    نام نماینده
+                </mat-label>
+                <input formControlName="agentName" matInput>
+
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    تلفن نماینده
+                </mat-label>
+                <input formControlName="agentPhone" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    کد ملی
+                    <span style="color: red">*</span>
+                </mat-label>
+                <input formControlName="nationalId" matInput>
+            </mat-form-field>
+        </div>
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    شماره ثبت
+                    <span style="color: red">*</span>
+                </mat-label>
+                <input formControlName="regNumber" matInput>
+            </mat-form-field>
+            <mat-form-field class="full-wid" appearance="outline">
+                <mat-label>
+                    تاریخ تاسیس
+                </mat-label>
+                <input (click)="start123.open()" matInput
+                       formControlName="regDate"
+                       [matDatepicker]="start123">
+                <mat-datepicker-toggle matSuffix [for]="start123"></mat-datepicker-toggle>
+                <mat-datepicker #start123></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    ناظر دارد
+                    <span style="color: red">*</span>
+                </mat-label>
+                <mat-select formControlName="hasSupervisor">
+                    <mat-option style="text-align: right" [value]="true">
+                        بله
+                    </mat-option>
+                    <mat-option style="text-align: right" [value]="false">
+                        خیر
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+
+        </div>
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    نوع نهاد
+                </mat-label>
+                <mat-select formControlName="organizationTypeId">
+                    <mat-option style="text-align: right" *ngFor="let c of orgTypes"
+                                [value]="c?.id">
+                        {{c?.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <button (click)="addOrgType()" mat-button mat-raised-button
+                    style="background-color: deepskyblue;color: white">
+                <mat-icon>add</mat-icon>
+                افزودن نهاد
+            </button>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    ناظران
+                </mat-label>
+                <mat-select formControlName="organizationSupervisorIds" multiple>
+                    <mat-option style="text-align: right" *ngFor="let c of orgSupervisors"
+                                [value]="c?.id">
+                        {{c?.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <button (click)="addSupervisor()" mat-button mat-raised-button
+                    style="background-color: deepskyblue;color: white">
+                <mat-icon>add</mat-icon>
+                افزودن ناظر
+            </button>
+        </div>
+
+
+        <div class="setting-btn-container">
+            <button (click)="close()" style="margin-left: 10px" color="warn" mat-raised-button>
+                <mat-icon>close</mat-icon>
+                انصراف
+            </button>
+            <button *ngIf="!data" (click)="onCreateBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button *ngIf="data" (click)="onEditBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,30 @@
+<div class="fuse-card container">
+
+    <ng-container *ngIf="state === stateType.PRESENT">
+
+        <div class="chartItem"
+             *ngFor="let chart of treeCharts">
+
+            <div class="fuse-card"
+                 [routerLink]="['/' + opRiskPrefix + '/tree-chart/' + chart.titleEN]"
+                 routerLinkActive="active">
+
+                <mat-icon>
+                    {{chart.icon}}
+                </mat-icon>
+
+            </div>
+
+            <span>
+                {{chart.titleFA}}
+            </span>
+
+        </div>
+
+    </ng-container>
+
+
+    <div *ngIf="state === stateType.LOADING" class="loader" fxLayout="row wrap" fxLayoutAlign="center center">
+        <mat-spinner [diameter]="50"></mat-spinner>
+    </div>
+</div>

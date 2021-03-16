@@ -1,0 +1,16 @@
+:host {
+    .folded:not(.unfolded) & {
+        .nav-link {
+            > .nav-link-title,
+            > .nav-link-badge {
+                opacity: 0;
+                transition: opacity 200ms ease;
+            }
+        }
+    }
+
+    .nav-link.right {
+        height: 40px;
+        padding: 0 24px 0 12px;
+    }
+}

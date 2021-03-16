@@ -1,0 +1,43 @@
+//@import 'src/app/modules/op-risk/tree-chart/op-risk-chart-select/op-risk-chart-select.component.scss';
+//@import 'src/app/modules/op-risk/tree-chart/op-risk-tree-chart/op-risk-tree-chart.component.scss';
+
+@mixin op-risk-theme($theme) {
+    $accent: map-get($theme, accent);
+    $accent-color: map-get($accent, default);
+    $accent-color-2: map-get($accent, 100);
+    $accent-color-3: map-get($accent, 900);
+
+    app-op-risk-chart-select {
+        .active {
+            mat-icon {
+                color: $accent-color;
+            }
+        }
+
+        .chartItem {
+            .fuse-card {
+                &:hover {
+                    mat-icon {
+                        color: $accent-color;
+                    }
+                }
+            }
+        }
+    }
+
+    app-op-risk-tree-chart {
+        .select {
+            border: 1px solid $accent-color-3;
+        }
+
+        mat-tree-node {
+            &:hover {
+                border: 1px solid $accent-color-2;
+            }
+        }
+
+        .active {
+            border: 1px solid $accent-color;
+        }
+    }
+}

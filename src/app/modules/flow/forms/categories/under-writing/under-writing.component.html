@@ -1,0 +1,313 @@
+<div class="form-mat-tab-group-container">
+    <mat-tab-group>
+        <mat-tab label="اطلاعات قرارداد">
+            <app-contract-base-info-form (newData)="onSubFormSubmit($event)"
+                                         [data]="baseObj?.contractBaseInfo">
+            </app-contract-base-info-form>
+            <form [formGroup]="form">
+                <div class="contract-form-container">
+                    <div class="contract-form-header">
+                        اطلاعات عمومی
+                    </div>
+                    <div class="contract-form-body" dir="rtl">
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نام اوراق</mat-label>
+                                <input matInput formControlName="securityName">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>نماد اوراق</mat-label>
+                                  <input matInput formControlName="symbol">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>مرجع مجوز انتشار</mat-label>
+                                <mat-select formControlName="issuePermission">
+                                    <mat-option style="text-align: right"
+                                                *ngFor="let s of formsModelService.issuePermissionType" [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نوع اوراق</mat-label>
+                                <mat-select formControlName="securityType">
+                                    <mat-option style="text-align: right"
+                                                *ngFor="let s of formsModelService.securityType"
+                                                [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>حجم اوراق</mat-label>
+                                <input type="number" matInput formControlName="securityVolume">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تعداد اوراق</mat-label>
+                                <input type="number" matInput formControlName="securityCounts">
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>قیمت اسمی اوراق</mat-label>
+                                <input type="number" matInput formControlName="securityParValue">
+                            </mat-form-field>
+                            <mat-form-field class="full-wid" appearance="outline">
+                                <mat-label>تاریخ شروع عرضه عمومی</mat-label>
+                                <input (click)="start123.open()" matInput formControlName="ipoDateStart"
+                                       [matDatepicker]="start123">
+                                <mat-datepicker-toggle matSuffix [for]="start123"></mat-datepicker-toggle>
+                                <mat-datepicker #start123></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field class="full-wid" appearance="outline">
+                                <mat-label>تاریخ اتمام عرضه عمومی</mat-label>
+                                <input (click)="start154.open()" matInput formControlName="ipoDateEnd"
+                                       [matDatepicker]="start154">
+                                <mat-datepicker-toggle matSuffix [for]="start154"></mat-datepicker-toggle>
+                                <mat-datepicker #start154></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>تاریخ سررسید</mat-label>
+                                <input (click)="start3.open()" matInput formControlName="maturityDate"
+                                       [matDatepicker]="start3">
+                                <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
+                                <mat-datepicker #start3></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>طول عمر اوراق (ماه)</mat-label>
+                                <input type="number" formControlName="securityLifecycleFreq" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ اسمی</mat-label>
+                                <input type="number" formControlName="nominalRate" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر پرداخت سود</mat-label>
+                                <mat-select formControlName="profitPaymentFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تعداد اعضای سندیکا</mat-label>
+                                <input type="number" formControlName="syndicateMembersCount" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ اختیار فروش سلف</mat-label>
+                                <input type="number" formControlName="salafPutOptionRate" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ اختیار خرید سلف</mat-label>
+                                <input type="number" formControlName="salafCallOptionRate" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ بازارگردانی سلف</mat-label>
+                                <input type="number" formControlName="salafMarketMakingRate" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>درصد فروش به کسر</mat-label>
+                                <input type="number" formControlName="percentageSalesDeductions" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>محل معامله</mat-label>
+                                <mat-select formControlName="tradingMarket">
+                                    <mat-option style="text-align: right" [value]="s?.id"
+                                                *ngFor="let s of formsModelService.tradingMarketTypes">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>بانک عامل</mat-label>
+                                <mat-select formControlName="executiveBank">
+                                    <mat-option style="text-align: right" *ngFor="let s of banks">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>کارگزار معامله گر</mat-label>
+                                <mat-select formControlName="brockerDealer">
+                                    <mat-option [value]="s?.code" style="text-align: right" *ngFor="let s of brokers">
+                                        {{s?.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>درصد وثایق در اختیار جهت خسارت های احتمالی</mat-label>
+                                <input type="number" formControlName="defaultsPossibleDamagesPercent" matInput>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>مبلغ وثایق در اختیار جهت خسارت های احتمالی</mat-label>
+                                <input type="number" formControlName="defaultsPossibleDamagesAmount" matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="contract-form-container">
+                    <div class="contract-form-header">
+                        اطلاعات تعهد پذیره نویسی
+                    </div>
+                    <div class="contract-form-body" dir="rtl">
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>درصد تعهدات پذیره نویسی تمدن در سندیکا</mat-label>
+                                <input matInput type="number" formControlName="tamadonSyndicateCommittedPercent">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>درصد اوراق به فروش نرسیده در عرضه عمومی</mat-label>
+                                <input matInput type="number" formControlName="unpurchasedSecuritiesInIpoPercent">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>درصد خرید اوراق به فروش نرسیده در روز عرضه</mat-label>
+                                <input matInput type="number" formControlName="percentagePurchasedUnpurchasedBondsIpo">
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>تعداد خرید اوراق به فروش نرسیده در روز عرضه</mat-label>
+                                <input matInput type="number" formControlName="NumberPurchasedUnpurchasedBondsIpo">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>قیمت خرید هر ورقه به فروش نرسیده در روز عرضه</mat-label>
+                                <input matInput type="number" formControlName="unitPricePurchasedUnpurchasedBondsIpo">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر جریمه متهعد پذیره نویس در صورت عدم ایفای تعهدات</mat-label>
+                                <input matInput type="number" formControlName="underWritingConsiderationFreq">
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ جریمه متهعد پذیره نویس در صورت عدم ایفای تعهدات</mat-label>
+                                <input matInput type="number" formControlName="underWritingConsiderationRate">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>مبلغ کارمزد تعهد پذیره نویسی تمدن</mat-label>
+                                <input matInput type="number" formControlName="underWritingFee">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ کارمزد تعهد پذیره نویسی تمدن</mat-label>
+                                <input matInput type="number" formControlName="marketMakingFeesReceivingInfo">
+                            </mat-form-field>
+                        </div>
+
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>حداکثر درصد تعداد خرید اوراق عرضه شده در دوره عرضه اولیه</mat-label>
+                                <input matInput type="number" formControlName="maximumPurchasedBondsIssuedDuringIpo">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>حداقل قیمت خرید (ریال)</mat-label>
+                                <input matInput type="number" formControlName="minimumPurchasePrice">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>حداکثر قیمت خرید (ریال)</mat-label>
+                                <input matInput type="number" formControlName="maximumPurchasePrice">
+                            </mat-form-field>
+                        </div>
+                        <!-- <mat-form-field appearance="outline" fxFlex="30">
+                            <mat-label> درصد وثایق در اختیار جهت خسارت های احتمالی</mat-label>
+                            <input matInput type="number" formControlName="defaultsPossibleDamagesPercent">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="30">
+                            <mat-label> مبلغ وثایق در اختیار جهت خسارت های احتمالی</mat-label>
+                            <input matInput type="number" formControlName="defaultsPossibleDamagesAmount">
+                        </mat-form-field> -->
+
+                    </div>
+                </div>
+
+                <div class="contract-form-container">
+                    <div class="contract-form-header">
+                        وجه التزام ها و جرائم
+                    </div>
+                    <div class="contract-form-body" dir="rtl">
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر جریمه متعهد پذیره نویس در صورت عدم ایفای تعهدات</mat-label>
+                                <mat-select formControlName="pettyCashDelinquencyConsiderationFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ جریمه متعهد پذیره نویس در صورت عدم ایفای تعهدات</mat-label>
+                                <input type="number" formControlName="pettyCashDelinquencyConsiderationRate" matInput>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </mat-tab>
+        <mat-tab label="اعضای سندیکا">
+            <app-syndicate-members-names (newData)="onSubFormSubmit($event)"
+                                         [data]="baseObj?.syndicateMembersNames"></app-syndicate-members-names>
+        </mat-tab>
+        <mat-tab label=" وثایق">
+            <app-collateral-info (newData)="onSubFormSubmit($event)"
+                                 [data]="baseObj?.collateralInfo"></app-collateral-info>
+        </mat-tab>
+        <mat-tab label=" صورتحساب">
+            <app-invoice-info (newData)="onSubFormSubmit($event)" [data]="baseObj?.invoiceInfo"></app-invoice-info>
+        </mat-tab>
+        <mat-tab label=" ضامنین">
+            <app-guarantor-info (newData)="onSubFormSubmit($event)"
+                                [data]="baseObj?.guarantorInfo"></app-guarantor-info>
+        </mat-tab>
+    </mat-tab-group>
+    <button (click)="createFormApi()" [color]="'primary'" mat-raised-button
+            class="save-form-button">
+        <mat-icon>save</mat-icon>
+        ذخیره
+        فرم
+    </button>
+</div>

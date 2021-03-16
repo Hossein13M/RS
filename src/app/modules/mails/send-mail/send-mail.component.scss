@@ -1,0 +1,38 @@
+.wrapper {
+    width: 100%;
+    //padding: 15px;
+
+    form {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    mat-form-field {
+        width: 100%;
+        text-align: right;
+    }
+
+    ::ng-deep ngx-mat-select-search {
+        text-align: right !important;
+    }
+
+    ::ng-deep .mat-select-trigger {
+        direction: rtl;
+    }
+}
+
+.email-info {
+    color: #7d818c;
+    font-size: 13px;
+}
+
+.button-footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

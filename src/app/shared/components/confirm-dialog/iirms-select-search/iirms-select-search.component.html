@@ -1,0 +1,16 @@
+<div *ngIf="data"
+     [ngStyle]="{'overflow-y': (data&& data.length>8)? 'scroll':'hidden' , 'height' : (!data || data.length ===0) ? '30px': '250px' }"
+     class="select-container">
+    <div class="no-data" *ngIf="!data || data.length===0">
+        نتیجه ای یافت نشد!
+    </div>
+    <div *ngFor="let item of data"
+         matRipple
+         matRippleCentered="centered"
+         (click)="onItemClicked(item)"
+         [ngStyle]="{'font-size' : smallSize ? '12px' : '16px'}"
+         class="select-item">
+        {{item[showPropertyName]}}
+        <span class="secound" *ngIf="has2ndPropertyName">{{item[valueOf2ndPropertyName]}}</span>
+    </div>
+</div>

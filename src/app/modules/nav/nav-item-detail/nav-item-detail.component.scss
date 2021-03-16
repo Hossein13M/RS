@@ -1,0 +1,181 @@
+.result-container {
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+
+    .result-box-container {
+        height: calc(100% - 60px);
+        padding: 10px;
+
+        .result-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            height: 100%;
+            overflow: scroll;
+
+            .result-item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+
+                .title {
+                    font-weight: bold;
+                    padding: 5px 0;
+                }
+
+                .value {
+                    font-weight: lighter;
+                    padding: 5px 0;
+                }
+            }
+        }
+    }
+}
+
+.full-card-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.table-container {
+    height: calc(100% - 55px);
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+:host ::ng-deep .table-btn-container {
+    font-size: 10px !important;
+    min-height: 0;
+    height: 60px;
+    position: absolute;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    .mat-icon {
+        font-size: 16px;
+        padding-top: 3px;
+    }
+}
+
+.header-d {
+    width: 100%;
+    height: 40px;
+    background-color: #3e90e5;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+}
+
+.header-item-d {
+    width: 8.33%;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+}
+
+.header-item-d {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #000;
+
+    &:last-child {
+        border: none;
+    }
+}
+
+.body {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px;
+}
+
+.body-item {
+    width: 8.33%;
+    text-align: center;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.header1 {
+    color: white;
+    width: 100%;
+    height: 60px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+}
+
+.body-item strong {
+    margin-bottom: 40px;
+}
+
+.item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+
+::-webkit-input-placeholder {
+    /* Chrome/Opera/Safari */
+    font-size: 10px;
+}
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    font-size: 10px;
+}
+
+:-ms-input-placeholder {
+    /* IE 10+ */
+    font-size: 10px;
+}
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    font-size: 10px;
+}

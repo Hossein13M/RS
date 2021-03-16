@@ -1,0 +1,127 @@
+@import 'src/@fuse/scss/fuse';
+
+:host {
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 400px;
+    }
+}
+
+.mat-dialog-container {
+    padding: 0;
+
+    .mat-toolbar {
+        flex: 1 0 auto;
+        min-height: initial;
+    }
+
+    .toolbar-bottom {
+        height: auto;
+    }
+}
+
+.toolbar-bottom.py-16 {
+    justify-content: center;
+}
+
+.save-button {
+    width: 100%;
+    height: 50px;
+}
+
+::ng-deep {
+    .mat-header-cell {
+        justify-content: center;
+    }
+    .mat-column-fund {
+        flex-grow: 2;
+    }
+    .mat-dialog-container {
+        padding: 0 !important;
+    }
+
+    .dialog-content-wrapper {
+        width: 60vw;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+
+        .form {
+            width: 100%;
+
+            .mat-form-field {
+                width: 100%;
+            }
+        }
+    }
+
+    .mat-toolbar-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .compliance-form-dialog {
+        .mat-toolbar {
+            height: 150px;
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}
+
+.edit-button {
+    background: linear-gradient(90deg, rgba(255, 83, 0, 1) 0%, rgba(255, 174, 36, 1) 100%);
+}
+
+.mat-table {
+    margin: 0px 40px 0px 40px;
+    border-radius: 20px;
+    overflow: scroll;
+    height: 40vh;
+
+    .mat-column-lastName {
+        flex: 0 1 120px;
+        // padding-right: 18px;
+    }
+
+    .mat-column-firstName {
+        flex: 0 1 100px;
+    }
+
+    .mat-column-buttons {
+        flex: 0 1 100px;
+    }
+
+    .mat-row:nth-child(even) {
+        // background-color: #d1ebff;
+        // background: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 10%, rgba(0, 212, 255, 0.2) 100%);
+    }
+
+    .mat-row:nth-child(odd) {
+        // background-color: black;
+        // background: linear-gradient(90deg, rgba(0, 212, 255, 0.28755252100840334) 15%, rgba(255, 255, 255, 0.7133228291316527) 100%);
+    }
+
+    .mat-row {
+        position: relative;
+        cursor: pointer;
+        padding: 8px;
+
+        .mat-cell {
+            min-width: 0;
+            justify-content: center;
+
+            &.mat-column-detail-button {
+                flex: 0 1 auto;
+                padding: 0 24px 0 0;
+
+                @include media-breakpoint('gt-md') {
+                    display: none;
+                }
+            }
+        }
+    }
+}

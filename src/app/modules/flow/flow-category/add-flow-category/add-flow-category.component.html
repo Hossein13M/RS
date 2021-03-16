@@ -1,0 +1,44 @@
+<div class="dialog-content-wrapper" dir="rtl">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ dialogTitle }}</span>
+            <button mat-icon-button (click)="matDialogRef.close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
+            <div class="contact-name mt-8">{{ category.name }}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="categoryForm" class="form">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline">
+                    <mat-label>اسم دسته بندی</mat-label>
+                    <mat-icon matSuffix class="secondary-text">extension</mat-icon>
+                    <input name="name" formControlName="name" matInput required />
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>کلیدواژه دسته بندی</mat-label>
+                    <mat-icon matSuffix class="secondary-text">extension</mat-icon>
+                    <input name="keyword" formControlName="keyword" matInput required />
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button *ngIf="action !== 'edit'" mat-raised-button class="save-button" (click)="newCategory()" [disabled]="categoryForm.invalid || loading">
+            ثبت دسته بندی
+        </button>
+
+        <button *ngIf="action === 'edit'" mat-raised-button class="save-button" (click)="editCategory()" [disabled]="categoryForm.invalid || loading">
+            ثبت تغییرات
+        </button>
+    </div>
+</div>

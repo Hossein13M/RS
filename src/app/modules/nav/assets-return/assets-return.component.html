@@ -1,0 +1,60 @@
+<div class="page-layout" dir="rtl">
+    <app-header pageTitle="بازده ریسک و دارایی">
+        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center">
+            <form [formGroup]="searchFormGroup" dir="rtl">
+                <mat-form-field appearance="outline">
+                    <mat-label>تاریخ</mat-label>
+                    <input matInput
+                           class="full-wid"
+                           (click)="date.open()"
+                           formControlName="endDate"
+                           [matDatepicker]="date"
+                           [max]="today">
+                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <mat-datepicker #date></mat-datepicker>
+                    <mat-error>
+                        وارد کردن این فیلد الزامی است.
+                    </mat-error>
+                </mat-form-field>
+            </form>
+        </div>
+    </app-header>
+
+    <p *ngIf="!show" style="text-align: center;">در حال دریافت اطلاعات</p>
+    <div fxLayout="column" dir="rtl">
+        <ng-container *ngIf="show">
+
+            <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="20px" fxFlex="100"
+                 style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px">
+
+                <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none">
+                    <app-bar-chart-js [data]="barChart"
+                                      height="100"
+                                      dataKey="R_XT"
+                                      labelKey="name"
+                                      chartName="توزیع بازدهی دارایی های شرکت">
+                    </app-bar-chart-js>
+                </div>
+
+                <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none">
+                    <div class="fuse-card">
+                        <label>
+                            توزیع بازدهی دارایی های شرکت
+                        </label>
+                        <mat-divider></mat-divider>
+                        <canvas baseChart height="100"
+                                [chartType]="chartType"
+                                [datasets]="chartDatasets"
+                                [labels]="chartLabels"
+                                [colors]="chartColors"
+                                [options]="chartOptions"
+                                [legend]="true">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+
+
+        </ng-container>
+    </div>
+</div>

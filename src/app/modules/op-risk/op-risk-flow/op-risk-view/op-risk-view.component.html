@@ -1,0 +1,51 @@
+<div fxLayout="column" fxLayoutAlign="center center" style="overflow: hidden">
+    <div title="{{ title }}" appDialogHeader>
+        <button mat-icon-button class="ml-4">
+            <mat-icon (click)="this.dialogRef.close(false)">close</mat-icon>
+        </button>
+    </div>
+    <form class="mb-20 pb-20 mx-auto w-90-p" dir="rtl" fxLayout="row" fxLayoutAlign="space-around center">
+        <div fxFlex="100" *ngIf="selectedOperatorList1.length !== 0">
+            <h3 class="mb-20">ثبت‌کننده‌های انتخاب‌شده</h3>
+            <mat-chip-list>
+                <mat-chip *ngFor="let operator of selectedOperatorList1" [matTooltip]="operator.firstName" color="accent" selected="true">
+                    {{
+                        operator.firstName + operator.lastName
+                            ? operator.firstName + ' ' + operator.lastName
+                            : operator.firstName.length > 6
+                            ? (operator.firstName | slice: 0:6) + '..'
+                            : operator.firstName
+                    }}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+        <div fxFlex="100" *ngIf="selectedOperatorList2.length !== 0">
+            <h3 class="mb-20">تاییدکننده‌های انتخاب‌شده</h3>
+            <mat-chip-list>
+                <mat-chip *ngFor="let operator of selectedOperatorList2" [matTooltip]="operator.firstName" color="accent" selected="true">
+                    {{
+                        operator.firstName + operator.lastName
+                            ? operator.firstName + ' ' + operator.lastName
+                            : operator.firstName.length > 6
+                            ? (operator.firstName | slice: 0:6) + '..'
+                            : operator.firstName
+                    }}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+        <div fxFlex="100" *ngIf="selectedOperatorList3.length !== 0">
+            <h3 class="mb-20">تصویب‌کننده‌های انتخاب‌شده</h3>
+            <mat-chip-list>
+                <mat-chip *ngFor="let operator of selectedOperatorList3" [matTooltip]="operator.firstName" color="accent" selected="true">
+                    {{
+                        operator.firstName + operator.lastName
+                            ? operator.firstName + ' ' + operator.lastName
+                            : operator.firstName.length > 6
+                            ? (operator.firstName | slice: 0:6) + '..'
+                            : operator.firstName
+                    }}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+    </form>
+</div>

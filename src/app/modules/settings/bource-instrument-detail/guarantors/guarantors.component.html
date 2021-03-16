@@ -1,0 +1,92 @@
+<div class="dialog-content-wrapper" dir="rtl">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">ثبت ضامن</span>
+            <button mat-icon-button (click)="matDialogRef.close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
+        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" class="fuse-card" id="collateralls">
+            <!-- firstName Column -->
+            <ng-container matColumnDef="guarantorId">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>ضامن</mat-header-cell>
+                <mat-cell *matCellDef="let guarantor" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ guarantor?.guarantorName }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="percent">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>ارزش</mat-header-cell>
+                <mat-cell *matCellDef="let collaterall" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ collaterall.percent }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
+
+                <mat-cell *matCellDef="let collaterall; let i = index" fxHide fxShow.gt-sm>
+                    <button mat-icon-button color="primary" (click)="editGuarantor(collaterall, i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <button mat-icon-button color="warn" (click)="deleteCollat(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
+        </mat-table>
+
+        <form [formGroup]="guarantorForm" class="form" fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div fxFlex="49">
+                <mat-form-field style="min-width: 200px; padding: 15px" appearance="outline">
+                    <mat-select formControlName="guarantorId" placeholder="اوراق" [multiple]="false">
+                        <ngx-mat-select-search
+                            style="text-align: right"
+                            [noEntriesFoundLabel]="'یافت نشد'"
+                            [placeholderLabel]="'جستجو'"
+                            [formControl]="searchkey"
+                        ></ngx-mat-select-search>
+                        <mat-option style="text-align: right" *ngFor="let bond of guarantors" [value]="{ guarantor: bond.guarantor, id: bond.id }">
+                            {{ bond?.guarantor }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="49">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>ارزش</mat-label>
+                    <input type="number" formControlName="percent" matInput required />
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
+                <button mat-button *ngIf="slectedGuarantorIndex == null" [disabled]="guarantorForm.invalid" (click)="addCollat()">
+                    <mat-icon class="mat-18">add_circle</mat-icon>
+                    افزودن
+                </button>
+
+                <button mat-button *ngIf="slectedGuarantorIndex != null" [disabled]="guarantorForm.invalid" (click)="edit()" color="primary">
+                    <mat-icon class="mat-18">create</mat-icon>
+                    اصلاح
+                </button>
+
+                <button mat-button *ngIf="slectedGuarantorIndex != null" (click)="clear()" color="warn">
+                    <mat-icon class="mat-18">clear</mat-icon>
+                    انصراف
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

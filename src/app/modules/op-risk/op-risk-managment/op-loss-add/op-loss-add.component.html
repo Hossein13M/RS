@@ -1,0 +1,80 @@
+<div class="page-layout">
+    <app-header [pageTitle]="title">
+        <div>
+            <button (click)="createOpLose()" color="primary" style="margin-left: 10px" [disabled]="form.invalid" mat-raised-button>
+                <mat-icon>arrow_forward</mat-icon>
+                مرحله‌ی بعد
+            </button>
+
+            <a [routerLink]="['/op-risk/management']" color="accent" mat-raised-button>
+                <mat-icon>arrow_back</mat-icon>
+            </a>
+        </div>
+    </app-header>
+
+    <div fxLayout="column wrap" class="page-content" dir="rtl" style="overflow: auto" [@slideInOut]>
+        <div class="form fuse-card" [formGroup]="form">
+            <div fxLayout="row" fxLayoutAlign="space-evenly center " style="margin-top: 20px">
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>ساختار سازمانی</mat-label>
+                        <mat-select multiple required formControlName="organizationStructures">
+                            <mat-select-trigger>
+                                <span *ngIf="form.controls['organizationStructures'].value?.length > 0">
+                                    (+{{ form.controls['organizationStructures'].value.length }} {{ 'ساختار سازمانی' }})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let ors of organizationStructures" [value]="ors.id">
+                                {{ ors.titleFA }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>فرآیند</mat-label>
+                        <mat-select multiple required formControlName="process" style="max-width: 100%">
+                            <mat-select-trigger>
+                                <span *ngIf="form.controls['process'].value?.length > 0">
+                                    (+{{ form.controls['process'].value.length }} {{ 'فرایند' }})
+                                </span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let ps of process" [value]="ps.id">{{ ps.titleFA }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>رویداد نهایی</mat-label>
+                        <mat-select required formControlName="lastLossEventId">
+                            <mat-option *ngFor="let lle of lastLossEvents" [value]="lle.id">{{ lle.title }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-evenly center " style="margin-top: 20px">
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>نام پرونده</mat-label>
+                        <input type="text" matInput required formControlName="profileName" />
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" matInput fxFlex="30" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>طرف مقابل زیان</mat-label>
+                        <input type="text" matInput required formControlName="counterParty" />
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>جریان</mat-label>
+                        <mat-select required formControlName="flow">
+                            <mat-option *ngFor="let f of flow" [value]="f.id">{{ f.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+.show-case-container {
+    .select-card {
+        margin-left: 10px;
+    }
+
+    .fuse-card {
+        padding: 10px;
+
+        .code {
+            direction: ltr;
+            background-color: #eae8e4;
+            font-family: monospace !important;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    }
+}
+
+.page-layout .page-content {
+    padding: 10px;
+    height: calc(100vh - 185px - 0px);
+}

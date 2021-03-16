@@ -1,0 +1,41 @@
+@import '../../../layout/styles/variables';
+
+.section {
+    margin-left: 10px;
+    min-width: 200px;
+}
+
+.againBtn {
+    margin-right: 10px;
+}
+
+.history-btn {
+    padding: 3px 8px 0 8px !important;
+    min-width: unset;
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+mat-table {
+    width: 100%;
+    padding: 0 20px;
+
+    .mat-column-position {
+        max-width: 35px;
+    }
+
+    .mat-column-operations {
+        max-width: 100px;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+.fuse-card {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.page-content {
+    height: calc(100vh - 201px - #{$footer-height});
+}

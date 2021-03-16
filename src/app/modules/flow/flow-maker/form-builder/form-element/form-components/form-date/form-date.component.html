@@ -1,0 +1,55 @@
+<mat-expansion-panel>
+    <mat-expansion-panel-header>
+        <h5>
+            <mat-icon>query_builder</mat-icon>
+            فیلد تاریخ
+            #{{data.id}}
+        </h5>
+        <button mat-icon-button color="warn" style="margin: auto auto auto 0" (click)="deleteThis()">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </mat-expansion-panel-header>
+    <mat-panel-description>
+        <form [formGroup]="valueForm">
+
+            <mat-form-field appearance="standard">
+                <mat-label>نام این فیلد</mat-label>
+                <input matInput formControlName="name" required>
+                <mat-error>
+                    پرکردن نام الزامیست.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="standard">
+                <mat-label>متن راهنما</mat-label>
+                <input matInput formControlName="helpText" type="text">
+            </mat-form-field>
+
+            <mat-form-field appearance="standard">
+                <mat-label>کلاس</mat-label>
+                <input matInput formControlName="class" type="text">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>مقدار پیشفرض</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="defaultValue">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-checkbox formControlName="required" dir="rtl">
+                آیا این فیلد اجباریست؟
+            </mat-checkbox>
+
+            <mat-form-field appearance="standard" *ngIf="valueForm.get('required').value">
+                <mat-label>پیام خطا</mat-label>
+                <input matInput formControlName="requiredErrorMsg" required>
+                <mat-error>
+                    پرکردن این فیلد الزامیست.
+                </mat-error>
+            </mat-form-field>
+
+
+        </form>
+    </mat-panel-description>
+</mat-expansion-panel>

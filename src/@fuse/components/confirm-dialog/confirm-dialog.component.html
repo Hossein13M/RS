@@ -1,0 +1,10 @@
+<div class="dialog-container">
+    <div [title]="'حذف'" appDialogHeader>
+        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+    </div>
+    <div>{{data?.title}}</div>
+    <div mat-dialog-actions class="pt-24">
+        <button mat-raised-button class="mat-accent mr-16" (click)="dialogRef.close(true)"> تایید</button>
+        <button mat-button class="mat-warn mr-16" (click)="dialogRef.close(false)">انصراف</button>
+    </div>
+</div>

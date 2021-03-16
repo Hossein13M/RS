@@ -1,0 +1,258 @@
+<div class="page-layout" dir="rtl" style="overflow: auto">
+
+    <app-header pageTitle="ریسک و زیان عملیاتی">
+        <div>
+            <a (click)="update()" mat-raised-button color="primary">
+                به روز رسانی
+            </a>
+
+            <a [routerLink]="['/op-risk/management']" mat-raised-button color="accent" style="margin-right: 10px;">
+                <mat-icon>arrow_back</mat-icon>
+            </a>
+        </div>
+    </app-header>
+
+    <div class="page-content">
+
+        <div class="form" [formGroup]="form" (submit)="update()">
+
+            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>نام پرونده</mat-label>
+                        <input type="text" matInput required formControlName="profileName">
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="column" matInput fxFlex="45" fxLayoutAlign="space-evenly none">
+                    <mat-form-field appearance="outline">
+                        <mat-label>طرف مقابل زیان</mat-label>
+                        <input type="text" matInput required formControlName="counterParty">
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <mat-accordion formArrayName="details">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center"
+                    *ngFor="let detail of oplossDetailData; let i = index;" [formGroupName]="i">
+                    <div fxLayout="column" fxFlex="93" fxLayoutAlign="space-evenly none">
+                        <mat-expansion-panel [expanded]="i == 0">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>{{detail.description}}</mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+
+                                        <mat-label>
+                                            تاریخ وقوع رویداد زیان
+                                        </mat-label>
+
+                                        <input matInput required [matDatepicker]="lossEventDate"
+                                            formControlName="lossEventDate">
+
+                                        <mat-datepicker-toggle matSuffix [for]="lossEventDate">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #lossEventDate></mat-datepicker>
+
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="column" matInput fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+
+                                        <mat-label>
+                                            تاریخ اختتام پرونده
+                                        </mat-label>
+
+                                        <input matInput required [matDatepicker]="profileFinishingDate"
+                                            formControlName="profileFinishingDate">
+
+                                        <mat-datepicker-toggle matSuffix [for]="profileFinishingDate">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #profileFinishingDate></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                                <div fxLayout="column" matInput fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+
+                                        <mat-label>
+                                            پوشش
+                                        </mat-label>
+
+                                        <mat-select formControlName="recoveries" multiple>
+                                            <mat-option *ngFor="let recovery of recoveriesArray"
+                                                [value]="recovery.treeNode.id">{{recovery.treeNode.titleFA}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+
+                                        <mat-label>
+                                            مبلغ پوشش
+                                        </mat-label>
+
+                                        <input type="number" matInput formControlName="recoveriesAmount">
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+
+                                        <mat-label>زیان های مستقیم</mat-label>
+
+                                        <mat-select formControlName="directLosses" multiple>
+                                            <mat-option *ngFor="let directLosses of directLossesArray"
+                                                [value]="directLosses.treeNode.id">{{directLosses.treeNode.titleFA}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+
+                                        <mat-label>مبلغ زیان های مستقیم</mat-label>
+
+                                        <input type="number" matInput formControlName="directLossesAmount">
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+
+                                        <mat-label>
+                                            زیان های غیر مستقیم
+                                        </mat-label>
+
+                                        <mat-select formControlName="inDirectLosses" multiple>
+                                            <mat-option *ngFor="let inDirectLosses of inDirectLossesArray"
+                                                [value]="inDirectLosses.treeNode.id">
+                                                {{inDirectLosses.treeNode.titleFA}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>
+                                            مبلغ زیان های غیر مستقیم
+                                        </mat-label>
+
+                                        <input type="number" matInput formControlName="inDirectLossesAmount">
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                                <div fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>
+                                            شرح رویداد زیان
+                                        </mat-label>
+
+                                        <input type="text" matInput required formControlName="description">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="column" matInput fxFlex="45" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>
+                                            محرکه عملیاتی
+                                        </mat-label>
+
+                                        <mat-select required formControlName="drivers" multiple>
+                                            <mat-option *ngFor="let driver of driverArray" [value]="driver.treeNode.id">
+                                                {{driver.treeNode.titleFA}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+
+                                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+
+                                        <mat-label>
+                                            تاریخ کشف رویداد زیان
+                                        </mat-label>
+
+                                        <input matInput required [matDatepicker]="lossEventDiscoveryDate"
+                                            formControlName="lossEventDiscoveryDate">
+
+                                        <mat-datepicker-toggle matSuffix [for]="lossEventDiscoveryDate">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #lossEventDiscoveryDate></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="column" matInput fxFlex="30" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+
+                                        <mat-label>
+                                            تاریخ شروع بررسی
+                                        </mat-label>
+
+                                        <input matInput required [matDatepicker]="checkStartingDate"
+                                            formControlName="checkStartingDate">
+
+                                        <mat-datepicker-toggle matSuffix [for]="checkStartingDate">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #checkStartingDate></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
+                                    <mat-form-field appearance="outline" style="width: 100%;">
+                                        <mat-label>
+                                            تاریخ پایان بررسی
+                                        </mat-label>
+
+                                        <input matInput required [matDatepicker]="checkFinishingDate"
+                                            formControlName="checkFinishingDate">
+
+                                        <mat-datepicker-toggle matSuffix [for]="checkFinishingDate">
+                                        </mat-datepicker-toggle>
+                                        <mat-datepicker #checkFinishingDate></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                        </mat-expansion-panel>
+                    </div>
+                </div>
+
+            </mat-accordion>
+
+
+        </div>
+
+    </div>
+
+</div>

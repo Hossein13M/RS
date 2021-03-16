@@ -1,0 +1,14 @@
+<div class="item">
+    <div class="right-align">
+        <div class="logo">
+            <img width="30px" height="30px" style="border-radius: 50%" src="./assets/images/user.svg">
+        </div>
+        <div class="header text-truncate">{{mail?.title}}</div>
+
+        <div class="label" *ngIf="mail.status === 'Read'">
+            خوانده شده
+        </div>
+        <div class="label" *ngIf="mail.status !== 'Read'">خوانده نشده</div>
+    </div>
+    <div class="date">{{mail?.submitDate | convertDate}}</div>
+</div>

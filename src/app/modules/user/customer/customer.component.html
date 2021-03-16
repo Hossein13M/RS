@@ -1,0 +1,75 @@
+<div class="page-layout">
+
+    <!-- HEADER -->
+    <app-header pageTitle="مشتری‌ها">
+        <button mat-raised-button color="primary" class="submit-button" (click)="newCustomer()">ثبت مشتری</button>
+    </app-header>
+
+    <div wrap dir="rtl" style="flex: 1">
+        <div id="table-container" class="fuse-card">
+            <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }">
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                            <input matInput class="form-field" [formControl]="searchInput.controls['customerName']" placeholder="نام مشتری"/>
+                        </mat-form-field>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let customer" fxHide fxShow.gt-sm>
+                        <p class="email text-truncate">
+                            {{ customer.name }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="nationalId">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
+                        <mat-form-field appearance="fill">
+                            <input matInput class="form-field" [formControl]="searchInput.controls['nationalId']" placeholder="کد شناسایی"/>
+                        </mat-form-field>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let customer" fxHide fxShow.gt-sm>
+                        <p class="email text-truncate">
+                            {{ customer.nationalId }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="type">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
+                        <mat-form-field style="width: 100%" appearance="fill">
+                            <mat-label>نوع مشتری</mat-label>
+                            <mat-select [formControl]="searchInput.controls['type']">
+                                <mat-option value=""> حقیقی و حقوقی</mat-option>
+                                <mat-option value="legal"> حقوقی</mat-option>
+                                <mat-option value="real"> حقیقی</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let customer" fxHide fxShow.gt-sm>
+                        <p class="email text-truncate" *ngIf="customer.type == 'real'; else legal">حقیقی</p>
+                        <ng-template #legal>
+                            <p class="email text-truncate">حقوقی</p>
+                        </ng-template>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="remove">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm> عملیات</mat-header-cell>
+
+                    <mat-cell *matCellDef="let customer" fxHide fxShow.gt-sm>
+                        <button mat-icon-button color="accent" (click)="editCustomer(customer)">
+                            <mat-icon class="mat-18">edit</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="warn" (click)="deleteCustomer(customer.id)">
+                            <mat-icon class="mat-18">delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

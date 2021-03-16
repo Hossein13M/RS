@@ -1,0 +1,53 @@
+<div class="page-layout">
+
+    <!--  Header  -->
+    <app-header pageTitle="پیشخوان مدیریت سبد">
+        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center">
+
+            <!--    Select Date    -->
+            <form [formGroup]="tds.searchForm" dir="rtl">
+                <mat-form-field appearance="outline">
+
+                    <mat-label>تاریخ</mat-label>
+
+                    <input matInput
+                           class="full-wid"
+                           (click)="date.open()"
+                           formControlName="date"
+                           [matDatepicker]="date"
+                           [max]="today">
+                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <mat-datepicker #date></mat-datepicker>
+
+                    <mat-error>
+                        وارد کردن این فیلد الزامی است.
+                    </mat-error>
+
+                </mat-form-field>
+            </form>
+
+        </div>
+    </app-header>
+
+
+    <div class="page-content" fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <app-trade-dashboard-table fxFlex="100"
+                                   [date]="tds.searchForm.value.date">
+        </app-trade-dashboard-table>
+
+        <app-trade-dashboard-trend-chart fxFlex="60"
+                                         height="500px"
+                                         [date]="tds.searchForm.value.date">
+        </app-trade-dashboard-trend-chart>
+
+        <app-trade-dashboard-pie-chart fxFlex="40"
+                                       height="500px"
+                                       [date]="tds.searchForm.value.date">
+        </app-trade-dashboard-pie-chart>
+
+        <app-daily-investment-report fxFlex="60"
+                                     [date]="tds.searchForm.value.date">
+        </app-daily-investment-report>
+
+    </div>
+</div>

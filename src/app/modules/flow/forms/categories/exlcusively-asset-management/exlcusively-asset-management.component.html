@@ -1,0 +1,220 @@
+<div class="form-mat-tab-group-container">
+    <mat-tab-group>
+        <mat-tab label="اطلاعات قرارداد">
+            <app-contract-base-info-form (newData)="onSubFormSubmit($event)"
+                                         [data]="baseObj?.contractBaseInfo"></app-contract-base-info-form>
+            <form [formGroup]="form">
+                <div class="contract-form-container">
+                    <div class="contract-form-header">
+                        اطلاعات عمومی
+                    </div>
+                    <div class="contract-form-body" dir="rtl">
+                        <div class="contract-form-row">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مقدار دارایی (شامل اوراق بهادار) سرمایه گذار در اختیار سبدگردان طبق قرارداد
+                                </mat-label>
+                                <input type="number" matInput
+                                       formControlName="investorAssetsVolumeDeliveringToAssetManager">
+                            </mat-form-field>
+
+                            <mat-form-field class="full-wid" appearance="outline">
+                                <mat-label>زمان تحویل دارایی (شامل اوراق بهادار) سرمایه گذار در اختیار سبدگردان
+                                </mat-label>
+                                <input (click)="start123.open()" matInput
+                                       formControlName="investorAssetsDeliveringDateToAssetManager"
+                                       [matDatepicker]="start123">
+                                <mat-datepicker-toggle matSuffix [for]="start123"></mat-datepicker-toggle>
+                                <mat-datepicker #start123></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مقدار دارایی (شامل اوراق بهادار) واقعی سرمایه گذار در اختیار سبدگردان
+                                </mat-label>
+                                <input type="number" matInput
+                                       formControlName="investorRealAssetsVolumeDeliveringToAssetManager">
+                            </mat-form-field>
+
+                        </div>
+                        <div class="contract-form-row">
+
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مقدار وجه نقد سرمایه گذار در اختیار سبدگردان طبق قرارداد</mat-label>
+                                <input type="number" matInput formControlName="investorCashDeliveringToAssetManager">
+                            </mat-form-field>
+
+                            <mat-form-field class="full-wid" appearance="outline">
+                                <mat-label>زمان تحویل وجه نقد سرمایه گذار در اختیار سبدگردان</mat-label>
+                                <input (click)="start154.open()" matInput
+                                       formControlName="investorCashDeliveringDateToAssetManager"
+                                       [matDatepicker]="start154">
+                                <mat-datepicker-toggle matSuffix [for]="start154"></mat-datepicker-toggle>
+                                <mat-datepicker #start154></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مقدار وجه نقد واقعی سرمایه گذار در اختیار سبدگردان</mat-label>
+                                <input type="number" matInput
+                                       formControlName="investorRealCashDeliveringToAssetManager">
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مهلت تسلیم نمودن دارایی یا وجه نقد به صورت کامل (روز کاری)</mat-label>
+                                <input type="number" formControlName="completelyAssetDeliveringPeriod" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مقدار دارایی (شامل اوراق بهادار) سرمایه گذار در اختیار سبدگردان در تاریخ
+                                    تحویل
+                                    کامل
+                                </mat-label>
+                                <input type="number" matInput
+                                       formControlName="investorAssetAmountInDeliveringDateToAssetManager">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>تاریخ مهلت تسلیم نمودن دارایی یا وجه نقد به صورت کامل</mat-label>
+                                <input (click)="start3.open()" matInput formControlName="completelyAssetDeliveringDate"
+                                       [matDatepicker]="start3">
+                                <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
+                                <mat-datepicker #start3></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="contract-form-row">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مقدار وجه نقد سرمایه گذار در اختیار سبدگردان در تاریخ تحویل کامل</mat-label>
+                                <input type="number" formControlName="investorCashInDeliveringDateToAssetManager"
+                                       matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر محاسبه کارمزد ثابت از ارزش سهام موجود</mat-label>
+                                <mat-select formControlName="stockFixedFeesRateFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ محاسبه کارمزد ثابت از ارزش سهام موجود</mat-label>
+                                <input type="number" formControlName="stockFixedFeesRateCal" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر محاسبه کارمزد ثابت از ارزش اوراق بهادار</mat-label>
+                                <mat-select formControlName="securityFixedFeesRateFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ محاسبه کارمزد ثابت از ارزش اوراق بهادار</mat-label>
+                                <input type="number" formControlName="securityFixedFeesRateCal" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر تسویه کارمزدها</mat-label>
+                                <mat-select formControlName="settlementFeesFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>شماره حساب جهت واریز دارایی سبد</mat-label>
+                                <input formControlName="portfolioAssetsPayingBankAccount" matInput>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>نام بانک واریز تنخواه</mat-label>
+                                <mat-select formControlName="portfolioAssetsPayingBankName">
+                                    <mat-option style="text-align: right" *ngFor="let s of banks" [value]="s?.id">
+                                        {{s?.name}}
+                                        <span style="font-size: 12px;color: #9ea1a9">{{s.bankName}}</span>
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>نام شعبه واریز تنخواه</mat-label>
+                                <mat-select formControlName="portfolioAssetsPayingBranchName">
+                                    <mat-option style="text-align: right" *ngFor="let s of bankBranches"
+                                                [value]="s?.code">
+                                        {{s?.name}}
+                                        <span style="font-size: 12px;color: #9ea1a9">{{s.bankName}}</span>
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+        </mat-tab>
+
+        <mat-tab label=" وثایق">
+            <app-collateral-info (newData)="onSubFormSubmit($event)"
+                                 [data]="baseObj?.collateralInfo"></app-collateral-info>
+        </mat-tab>
+        <mat-tab label=" صورتحساب">
+            <app-invoice-info (newData)="onSubFormSubmit($event)"
+                              [data]="baseObj?.invoiceInfo"></app-invoice-info>
+        </mat-tab>
+        <mat-tab label="اطلاعات کارمزد متغییر">
+            <app-variable-fees-info (newData)="onSubFormSubmit($event)"
+                                    [data]="baseObj?.variableFeesInfo"></app-variable-fees-info>
+        </mat-tab>
+        <mat-tab label=" اطلاعات دارایی قرارداد نزد سرمایه گذار و تغییرات آن">
+            <app-investor-inventories-in-beginngs-of-contract (newData)="onSubFormSubmit($event)"
+                                                              [data]="baseObj?.feeAndPetty"></app-investor-inventories-in-beginngs-of-contract>
+        </mat-tab>
+
+
+    </mat-tab-group>
+    <button (click)="createFormApi()" [color]="'primary'" mat-raised-button
+            class="save-form-button">
+        <mat-icon>save</mat-icon>
+        ذخیره
+        فرم
+    </button>
+</div>

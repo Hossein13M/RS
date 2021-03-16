@@ -1,0 +1,27 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        .subtitle {
+            font-size: 13px;
+            font-weight: 100;
+            margin-top: 10px;
+            margin-right: 4px;
+        }
+
+        .subtitle-normal {
+            font-size: 13px;
+            font-weight: normal;
+            margin-top: 10px;
+            margin-right: 4px;
+        }
+    }
+}

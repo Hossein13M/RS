@@ -1,0 +1,15 @@
+<mat-list>
+    <mat-list-item *ngFor="let inbox of list" (click)="showEmail(inbox.msgId)">
+        <mat-icon mat-list-icon>email</mat-icon>
+        <div mat-line *ngIf="!inbox.status === 'Read'">
+            <b>
+                {{inbox.title}}
+            </b>
+        </div>
+        <div mat-line *ngIf="inbox.status === 'Read'">
+            {{inbox.title}}
+        </div>
+        <div mat-line>{{inbox.submitDate | convertDate}}
+        </div>
+    </mat-list-item>
+</mat-list>
