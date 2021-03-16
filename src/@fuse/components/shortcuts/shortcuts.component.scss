@@ -1,0 +1,83 @@
+@import 'src/@fuse/scss/fuse';
+
+:host {
+
+    @include media-breakpoint('lt-md') {
+
+        #fuse-shortcuts {
+
+            &.show-mobile-panel {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                z-index: 99;
+                padding: 0 8px;
+
+                .shortcuts {
+                    display: flex !important;
+                    flex: 1;
+                    height: 100%;
+
+                    > div {
+                        flex: 1 1 auto !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes anim-open {
+    0% {
+        opacity: 0;
+        transform: scale(0.5, 0.5);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1, 1);
+    }
+}
+
+.unread-alarm {
+    width: 100%;
+
+    &-title {
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    &-body {
+        overflow-x: hidden;
+        width: 100%;
+        overflow-y: scroll;
+        //height: 200px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    &-item {
+        font-size: 13px;
+        height: 30px;
+        width: 80%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+
+        &:hover {
+            cursor: pointer;
+            width: 80%;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.15);
+        }
+    }
+
+}

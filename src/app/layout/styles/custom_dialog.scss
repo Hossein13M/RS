@@ -1,0 +1,69 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin custom-dialog-theme($theme) {
+    $assent: map-get($theme, assent);
+    .dialog-container {
+        border: 2.5px solid $assent;
+    }
+}
+
+.dialog-w40 {
+    mat-dialog-container {
+        padding: 0 !important;
+    }
+
+    width: 40vw !important;
+}
+
+.dialog-w50 {
+    mat-dialog-container {
+        padding: 0 !important;
+    }
+
+    width: 50vw !important;
+}
+
+.dialog-p-0 {
+    mat-dialog-container {
+        padding: 0 !important;
+    }
+}
+
+.dialog-w60 {
+    mat-dialog-container {
+        padding: 0 !important;
+    }
+
+    width: 60vw !important;
+}
+
+.dialog-w70 {
+    mat-dialog-container {
+        padding: 0 !important;
+    }
+
+    width: 70vw !important;
+}
+
+.dialog-w80 {
+    mat-dialog-container {
+        padding: 0 !important;
+    }
+
+    width: 80vw !important;
+}
+
+.dialog-w90 {
+    width: 90vw !important;
+}
+
+.dialog-container {
+    position: relative;
+    border-radius: 4px;
+}
+
+.icon-header {
+    cursor: pointer;
+    color: white;
+    margin-left: 10px
+}

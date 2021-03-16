@@ -1,0 +1,165 @@
+@import 'src/@fuse/scss/fuse';
+
+.search-wrapper {
+    width: 100%;
+    max-width: 480px;
+    overflow: hidden;
+    @include mat-elevation(1);
+
+    .search {
+        width: 100%;
+        height: 48px;
+        line-height: 48px;
+        padding: 0 18px;
+
+        input {
+            width: 100%;
+            height: 48px;
+            min-height: 48px;
+            max-height: 48px;
+            padding: 0 16px;
+            border: none;
+            outline: none;
+            display: flex;
+        }
+    }
+}
+
+.container {
+    margin: 40px;
+
+    .complianceForm {
+        justify-content: space-between;
+        display: flex;
+        align-items: baseline;
+        padding: 26px 10px 10px;
+        height: 100px;
+
+        mat-form-field {
+            margin-right: 10px;
+        }
+
+        .actions {
+            padding: 0 10px 15px 0;
+        }
+    }
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.content {
+    overflow: hidden;
+
+    .sidebar {
+        &:not(.locked-open) {
+        }
+    }
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    direction: rtl;
+
+    .header {
+        .search-wrapper {
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            @include mat-elevation(1);
+
+            .search {
+                width: 100%;
+                height: 48px;
+                line-height: 48px;
+                padding: 0 18px;
+                display: flex;
+                align-items: center;
+                flex-direction: row-reverse;
+
+                input {
+                    width: 100%;
+                    height: 48px;
+                    min-height: 48px;
+                    max-height: 48px;
+                    padding: 0 16px;
+                    border: none;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    ::ng-deep {
+        .mat-header-cell {
+            justify-content: center;
+        }
+    }
+
+    .mat-table {
+        margin: 0px 40px 0px 40px;
+        overflow: scroll;
+        height: 55vh;
+
+        .mat-column-lastName {
+            flex: 0 1 120px;
+            // padding-right: 18px;
+        }
+
+        .mat-column-firstName {
+            flex: 0 1 100px;
+        }
+
+        .mat-column-buttons {
+            flex: 0 1 100px;
+        }
+
+        .mat-row {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+
+            .mat-cell {
+                min-width: 0;
+                justify-content: center;
+
+                &.mat-column-detail-button {
+                    flex: 0 1 auto;
+                    padding: 0 24px 0 0;
+                }
+            }
+        }
+    }
+}
+
+#add-contact-button {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 0;
+    z-index: 99;
+
+    @include media-breakpoint('xs') {
+        position: sticky;
+        top: calc(100vh - 120px);
+        bottom: auto;
+    }
+}
+
+.mat-column-addFund {
+    max-width: 90px;
+}
+
+.mat-column-edit {
+    max-width: 90px;
+}
+
+.mat-column-code {
+    max-width: 90px;
+}

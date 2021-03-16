@@ -1,0 +1,92 @@
+<div class="search-container" dir="rtl" *ngIf="show">
+    <mat-form-field class="search-form-field"
+                    [ngClass]="{'has-error':required&&!selected&&touchedValue}"
+                    [appearance]="appearance"
+                    [color]="color">
+
+        <mat-label>
+            {{label}}
+        </mat-label>
+
+        <button mat-icon-button
+                matSuffix
+                *ngIf="this.searchResultControl.value && !this.isDisabled && showClearButton"
+                class="remove-btn"
+                (click)="clearInput($event)">
+            <mat-icon>clear</mat-icon>
+        </button>
+
+
+        <mat-select [formControl]="searchResultControl"
+                    [compareWith]="compareCategoryObjects"
+                    [multiple]="multi===true">
+
+            <mat-option>
+
+                <ngx-mat-select-search [formControl]="searchControl"
+                                       [searching]="this.data.state === stateType.LOADING"
+                                       [clearSearchInput]="true"
+                                       [noEntriesFoundLabel]="noEntriesFoundLabel"
+                                       [placeholderLabel]="placeholder">
+                </ngx-mat-select-search>
+
+            </mat-option>
+
+
+            <!--     Selected      -->
+            <ng-container *ngIf="selected">
+
+                <!--      Label Template         -->
+                <ng-template let-selectOption="selectOption" #optionLabel>
+                    <ng-container *ngIf="checkIfArray(uiPropertyName)">
+                        <ng-container *ngFor="let property of uiPropertyName; let i = index">
+                            {{selectOption[property]}}
+                            {{(i !== uiPropertyName.length - 1) ? ' - ' : ''}}
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="!checkIfArray(uiPropertyName)">
+                        {{selectOption[uiPropertyName]}}
+                    </ng-container>
+                </ng-template>
+
+
+                <!--      If Array          -->
+                <ng-container *ngIf="checkIfArray(selected)">
+                    <mat-option *ngFor="let selectOption of selected" [value]="selectOption">
+                        <ng-container *ngTemplateOutlet="optionLabel; context:{selectOption:selectOption}">
+                        </ng-container>
+                    </mat-option>
+                </ng-container>
+
+                <!--      If Not Array       -->
+                <ng-container *ngIf="!checkIfArray(selected)">
+                    <mat-option [value]="selected">
+                        <ng-container *ngTemplateOutlet="optionLabel; context:{selectOption:selected}">
+                        </ng-container>
+                    </mat-option>
+                </ng-container>
+            </ng-container>
+
+
+            <ng-container *ngFor="let item of data.list">
+                <mat-option *ngIf="!selected || checkItemIfNotSelected(item)"
+                            [value]="item">
+                    <ng-container *ngIf="checkIfArray(uiPropertyName)">
+                        <ng-container *ngFor="let property of uiPropertyName; let i = index">
+                            {{item[property]}}
+                            {{(i !== uiPropertyName.length - 1) ? ' - ' : ''}}
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="!checkIfArray(uiPropertyName)">
+                        {{item[uiPropertyName]}}
+                    </ng-container>
+                </mat-option>
+            </ng-container>
+        </mat-select>
+        <div class="suffix">
+            <ng-content select="[suffix]" matSuffix></ng-content>
+        </div>
+        <ng-content select="[error]"></ng-content>
+
+    </mat-form-field>
+</div>

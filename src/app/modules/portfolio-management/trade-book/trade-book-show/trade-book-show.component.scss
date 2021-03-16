@@ -1,0 +1,25 @@
+.page-layout {
+    height: calc(100vh - 64px);
+
+    .fuse-card {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: calc(100% - 84px);
+
+        mat-table {
+            display: table;
+            width: auto;
+            min-width: 100%;
+            padding: 0 20px;
+
+            .mat-column-position {
+                max-width: 35px;
+                padding-left: 0;
+            }
+
+            .mat-column-comments {
+                min-width: 500px;
+            }
+        }
+    }
+}

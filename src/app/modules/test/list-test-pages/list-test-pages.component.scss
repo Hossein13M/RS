@@ -1,0 +1,57 @@
+:host {
+    ::ng-deep .mat-icon {
+        height: 80px;
+        width: 80px;
+        font-size: 80px;
+        color: gray;
+        opacity: 1;
+        transition: opacity ease 300ms;
+    }
+}
+
+.fuse-card {
+    width: 400px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    position: relative;
+    transition: all 300ms ease;
+    top: 0;
+    text-align: center;
+    margin: 10px;
+
+    &:hover {
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        top: -5px;
+
+        :host {
+            ::ng-deep .mat-icon {
+                opacity: 0.3;
+            }
+        }
+    }
+
+    h2 {
+        font-size: 30px;
+    }
+
+    .body {
+        height: 300px;
+    }
+
+    .footer {
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+    }
+}
+
+.disabled {
+    opacity: 0.6;
+    cursor: default;
+}

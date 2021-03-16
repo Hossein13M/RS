@@ -1,0 +1,24 @@
+.welcome-page-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    direction: rtl;
+    z-index: 2;
+
+    h1 {
+        background: #2d323e;
+        color: white;
+        padding: 17px;
+    }
+
+    span {
+        color: white;
+        padding: 17px;
+        background: #2d323e;
+        font-weight: 300;
+        font-size: 14px;
+    }
+}

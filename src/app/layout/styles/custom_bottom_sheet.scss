@@ -1,0 +1,31 @@
+@import '../../../../node_modules/@angular/material/theming';
+
+@mixin custom-bottom-sheet-theme($theme) {
+    $assent: map-get($theme, assent);
+    .bottomsheet-container {
+        border-right: 2.5px solid $assent;
+        border-left: 2.5px solid $assent;
+        border-top: 2.5px solid $assent;
+    }
+}
+
+
+.NAV-item-detail {
+    width: 90vw !important;
+    height: 50vh !important;
+}
+
+.bottomsheet-container {
+    height: 100% !important;
+    position: relative;
+    border-radius: 4px;
+}
+
+.mat-bottom-sheet-container {
+    padding: 0 !important;
+}
+
+.flow-wizard-history {
+    width: 80vw !important;
+    height: 60vh !important;
+}

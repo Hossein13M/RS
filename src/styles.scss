@@ -1,0 +1,174 @@
+// Import Fuse core library
+@import '@fuse/scss/core';
+
+// Import app.theme.scss
+@import 'app/app.theme';
+
+@import '~ng-snotify/styles/material';
+
+//$fa-font-path: "../node_modules/font-awesome/fonts";
+//@import "~font-awesome/scss/font-awesome.scss";nts";
+//@import "~font-awesome/scss/font-awesome.scss";
+@import '~ng-snotify/styles/material';
+
+@import 'app/layout/styles/custom_theme';
+
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    font-weight: bold;
+    src: url('./assets/fonts/eot/IRANSansWeb_Bold.eot');
+    src: url('./assets/fonts/eot/IRANSansWeb_Bold.eot?#iefix') format('embedded-opentype'),
+        /* IE6-8 */
+    url('./assets/fonts/woff2/IRANSansWeb_Bold.woff2') format('woff2'),
+        /* FF39+,Chrome36+, Opera24+*/
+    url('./assets/fonts/woff/IRANSansWeb_Bold.woff') format('woff'),
+        /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('./assets/fonts/ttf/IRANSansWeb_Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    font-weight: 500;
+    src: url('./assets/fonts/eot/IRANSansWeb_Medium.eot');
+    src: url('./assets/fonts/eot/IRANSansWeb_Medium.eot?#iefix') format('embedded-opentype'),
+        /* IE6-8 */
+    url('./assets/fonts/woff2/IRANSansWeb_Medium.woff2') format('woff2'),
+        /* FF39+,Chrome36+, Opera24+*/
+    url('./assets/fonts/woff/IRANSansWeb_Medium.woff') format('woff'),
+        /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('./assets/fonts/ttf/IRANSansWeb_Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    font-weight: 300;
+    src: url('./assets/fonts/eot/IRANSansWeb_Light.eot');
+    src: url('./assets/fonts/eot/IRANSansWeb_Light.eot?#iefix') format('embedded-opentype'),
+        /* IE6-8 */
+    url('./assets/fonts/woff2/IRANSansWeb_Light.woff2') format('woff2'),
+        /* FF39+,Chrome36+, Opera24+*/
+    url('./assets/fonts/woff/IRANSansWeb_Light.woff') format('woff'),
+        /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('./assets/fonts/ttf/IRANSansWeb_Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    font-weight: 200;
+    src: url('./assets/fonts/eot/IRANSansWeb_UltraLight.eot');
+    src: url('./assets/fonts/eot/IRANSansWeb_UltraLight.eot?#iefix') format('embedded-opentype'),
+        /* IE6-8 */
+    url('./assets/fonts/woff2/IRANSansWeb_UltraLight.woff2') format('woff2'),
+        /* FF39+,Chrome36+, Opera24+*/
+    url('./assets/fonts/woff/IRANSansWeb_UltraLight.woff') format('woff'),
+        /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('./assets/fonts/ttf/IRANSansWeb_UltraLight.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: IRANSans;
+    font-style: normal;
+    font-weight: normal;
+    src: url('./assets/fonts/eot/IRANSansWeb.eot');
+    src: url('./assets/fonts/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'),
+        /* IE6-8 */
+    url('./assets/fonts/woff2/IRANSans-Regular.woff2') format('woff2'),
+        /* FF39+,Chrome36+, Opera24+*/
+    url('./assets/fonts/woff/IRANSans-web.woff') format('woff'),
+        /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('./assets/fonts/ttf/IRANSansWeb.ttf') format('truetype');
+}
+
+.mat-tab-body-wrapper {
+    height: 100% !important;
+}
+
+.custom-share-modalbox {
+    mat-dialog-container {
+        background-color: none;
+        overflow: visible;
+    }
+}
+
+material-drawer material-list-item:hover,
+material-list-item:active,
+material-list-item:visited {
+    background-color: #222;
+}
+
+.dialog-w40 {
+    width: 40vw !important;
+}
+
+.p-0 {
+    padding: 0 !important;
+}
+
+fuse-confirm-dialog {
+    direction: rtl;
+}
+
+.snack-success {
+    background-color: #009007 !important;
+    text-align: right;
+}
+
+.snack-error {
+    background-color: red !important;
+    text-align: right;
+}
+
+.dialog-w40 {
+    width: 40vw !important;
+}
+
+fuse-confirm-dialog {
+    direction: rtl;
+}
+
+.snack-success {
+    background-color: #186a1d !important;
+    text-align: right !important;
+}
+
+.snack-error {
+    background-color: #a11032 !important;
+    text-align: right !important;
+}
+
+mat-error {
+    height: 20px;
+}
+
+.d-none {
+    display: none !important;
+}
+
+// TODO: write utils
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+::-webkit-scrollbar {
+    width: 6px !important;
+    overflow-y: scroll;
+    background: #dfeaea;
+    box-shadow: inset 0 0 1px #707070 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2d323e;
+    border-radius: 8px !important;
+}

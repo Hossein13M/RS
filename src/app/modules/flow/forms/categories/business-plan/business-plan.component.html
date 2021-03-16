@@ -1,0 +1,97 @@
+<div class="form-mat-tab-group-container">
+    <mat-tab-group>
+        <mat-tab label="اطلاعات قرارداد">
+
+            <app-contract-base-info-form (newData)="onSubFormSubmit($event)"
+                                         [data]="baseObj?.contractBaseInfo">
+            </app-contract-base-info-form>
+
+            <form [formGroup]="form">
+                <div class="contract-form-container">
+                    <div class="contract-form-header">
+                        اطلاعات عمومی
+                    </div>
+                    <div class="contract-form-body" dir="rtl">
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>شرکت/ پروژه مورد بررسی</mat-label>
+                                <input matInput formControlName="projectOrCorporateUnderValuation">
+                            </mat-form-field>
+                            <mat-form-field class="full-wid" appearance="outline">
+                                <mat-label>تاریخ دریافت پیش پرداخت</mat-label>
+                                <input (click)="start123.open()" matInput formControlName="prepaymentReceivingDate"
+                                       [matDatepicker]="start123">
+                                <mat-datepicker-toggle matSuffix [for]="start123"></mat-datepicker-toggle>
+                                <mat-datepicker #start123></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="full-wid" appearance="outline">
+                                <mat-label>تاریخ تحویل مستندات مربوطه</mat-label>
+                                <input (click)="start123.open()" matInput
+                                       formControlName="relatedDocumentsDeliveredDate"
+                                       [matDatepicker]="start12">
+                                <mat-datepicker-toggle matSuffix [for]="start12"></mat-datepicker-toggle>
+                                <mat-datepicker #start12></mat-datepicker>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>مبلغ قرارداد</mat-label>
+                                <input type="number" matInput formControlName="contractAmount">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تعداد پرداخت ها</mat-label>
+                                <input type="number" matInput formControlName="paymentCounts">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>تواتر محاسبه وجه التزام جریمه دیرکرد کارمزد</mat-label>
+                                <mat-select formControlName="feeCashDelinquencyConsiderationFreq">
+                                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                                [value]="s.id">
+                                        {{s.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                    وارد کردن این فیلد الزامی است.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="contract-form-row">
+                            <mat-form-field appearance="outline">
+                                <mat-label>نرخ سالانه وجه التزام جریمه دیرکرد کارمزد</mat-label>
+                                <input type="number" matInput formControlName="feeCashDelinquencyConsiderationRate">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>دوره تنفس در صورت دیرکرد کارمزد (روز)</mat-label>
+                                <input type="number" matInput formControlName="feeCashDelinquencyGracePeriod">
+                            </mat-form-field>
+
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </mat-tab>
+
+        <mat-tab label=" صورتحساب">
+            <app-invoice-info (newData)="onSubFormSubmit($event)"
+                              [data]="baseObj?.invoiceInfo"></app-invoice-info>
+        </mat-tab>
+        <mat-tab label="اطلاعات پرداختی های قرارداد">
+            <app-contract-payments-info (newData)="onSubFormSubmit($event)"
+                                        [data]="baseObj?.contractPaymentsInfo"></app-contract-payments-info>
+        </mat-tab>
+    </mat-tab-group>
+    <button (click)="createFormApi()" [color]="'primary'" mat-raised-button
+            class="save-form-button">
+        <mat-icon>save</mat-icon>
+        ذخیره
+        فرم
+    </button>
+</div>

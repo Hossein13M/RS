@@ -1,0 +1,23 @@
+.setting-form-container {
+    width: 100%;
+    padding: 10px;
+
+    .setting-form-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        width: 100%;
+
+        mat-form-field {
+            width: 18%;
+        }
+    }
+}
+
+.setting-btn-container {
+    margin-left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 30px;
+}

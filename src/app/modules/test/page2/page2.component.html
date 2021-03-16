@@ -1,0 +1,72 @@
+<div class="page-layout">
+    <app-header pageTitle="صفحه‌ی ۲ تست">
+        <div subtitle>
+            در این صفحه ویژگی‌های جدید تست می‌شود.
+        </div>
+        <div>
+            <button mat-raised-button color="primary" routerLink="/test/list">
+                بازگشت
+            </button>
+        </div>
+    </app-header>
+
+    <div class="page-content">
+        <div fxLayout="row wrap" fxLayoutAlign="center" class="show-case-container">
+            <div fxFlex="40" class="fuse-card select-card">
+
+                <!--      COMPONENT      -->
+
+                <app-pie-chart [data]="data"
+                               [height]="cf.value.height"
+                               [cardLayout]="cf.value.cardLayout"
+                               [chartName]="cf.value.chartName"
+                               [showLabel]="cf.value.showLabel">
+                </app-pie-chart>
+
+            </div>
+
+            <!--      CONTROLLERS      -->
+            <div fxFlex="40" class="fuse-card">
+                <h2>
+                    متغیرها
+                </h2>
+
+                <div fxLayout="row wrap" fxLayoutAlign="start start" dir="rtl" fxLayoutGap="20px" [formGroup]="cf" style="margin-bottom: 30px">
+                    <mat-form-field appearance="outline" fxFlex="200px">
+                        <mat-label>
+                            نام چارت
+                        </mat-label>
+                        <input formControlName="chartName"
+                               [disabled]="!cf.value.cardLayout"
+                               placeholder="نام چارت"
+                               matInput>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="200px">
+                        <mat-label>
+                            ارتفاع
+                        </mat-label>
+                        <input formControlName="height"
+                               placeholder="ارتفاع"
+                               matInput>
+                    </mat-form-field>
+
+                    <mat-checkbox fxFlex="200px" (change)="cf.controls.cardLayout.setValue(!cf.value.cardLayout)">
+                        کارت
+                    </mat-checkbox>
+
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div fxLayout="row wrap" fxLayoutAlign="start start" dir="rtl" fxLayoutGap="20px" style="margin-top: 30px">
+                    <button mat-raised-button color="primary" (click)="changeDate()">
+                        تغییر داده
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,112 @@
+<div class="dialog-content-wrapper" dir="rtl">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">ثبت حدود برای صندوق ها</span>
+            <button mat-icon-button (click)="matDialogRef.close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
+            <div class="contact-name mt-8">{{ _data.compliance?.title }}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="compliance" class="form" fxLayout="row wrap" style="align-items: center; justify-content: space-around">
+            <div>
+                <mat-form-field appearance="outline">
+                    <input type="text" placeholder="نام صندوق" matInput [formControl]="searchFund" [matAutocomplete]="auto" />
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let fund of funds" [value]="{ name: fund.name, id: fund.id }">
+                            {{ fund.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label> حد بالا</mat-label>
+                    <input type="number" formControlName="up" matInput required />
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>حد پایین</mat-label>
+                    <input type="number" formControlName="down" matInput type="email" required />
+                </mat-form-field>
+            </div>
+
+            <button
+                mat-raised-button
+                *ngIf="!slectedCompliance"
+                [disabled]="compliance.invalid"
+                (click)="addComplianceFund()"
+                class="save-button"
+                style="width: 200px; height: 40px"
+            >
+                افزودن
+            </button>
+            <button
+                mat-raised-button
+                *ngIf="slectedCompliance"
+                [disabled]="compliance.invalid"
+                (click)="edit()"
+                class="save-button"
+                style="width: 200px; height: 40px"
+            >
+                اصلاح
+            </button>
+            <button mat-raised-button *ngIf="slectedCompliance" (click)="clear()" class="save-button" style="width: 200px; height: 40px">
+                انصراف
+            </button>
+        </form>
+
+        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" id="compliances">
+            <!-- lastName Column -->
+            <ng-container matColumnDef="fund">
+                <mat-header-cell *matHeaderCellDef>نام صندوق</mat-header-cell>
+                <mat-cell *matCellDef="let compliance">
+                    <p class="text-truncate">{{ compliance.fundName }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- firstName Column -->
+            <ng-container matColumnDef="up">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>حد پایین</mat-header-cell>
+                <mat-cell *matCellDef="let compliance" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ compliance.up }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="down">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>حد بالا</mat-header-cell>
+                <mat-cell *matCellDef="let compliance" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ compliance.down }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>اصلاح</mat-header-cell>
+                <mat-cell *matCellDef="let compliance" fxHide fxShow.gt-sm>
+                    <button class="edit-button" mat-raised-button color="warn" (click)="editComplianceFund(compliance)">اصلاح</button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="delete">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>حذف</mat-header-cell>
+                <mat-cell *matCellDef="let compliance" fxHide fxShow.gt-sm>
+                    <button class="" mat-raised-button color="warn" (click)="deleteFund(compliance.id)">حذف</button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
+        </mat-table>
+    </div>
+</div>

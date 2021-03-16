@@ -1,0 +1,63 @@
+<div id="login" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+    <div id="login-intro" fxFlex fxHide fxShow.gt-xs>
+        <div class="logo" [@animate]="{ value: '*', params: { scale: '0.2' } }">
+            <img src="assets/images/logo.png" style="padding: 10px" alt="logo" />
+        </div>
+
+        <!--        <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">-->
+        <!--            به هوشمند ریسک خوش آمدید-->
+        <!--        </div>-->
+
+        <div class="description" [@animate]="{ value: '*', params: { delay: '100ms', y: '25px' } }">
+            شرکت مدیریت ریسک هوشمند ایرانیان از اسفند ماه 1397 فعالیت خود را در حوزه مدیریت ریسک آغاز کرد. مدیریت ریسک در حوزه­های مختلفی همچون
+            سرمایه­ گذاری، حسابداری تطبیق، حاکمیت شرکتی مدیریت عملکرد، مدیریت و ارزیابی پروژه، هوشمندی کسب و کار و سایر حوزه­­ های مالی و غیر مالی و
+            برای کلیه اشخاص حقوقی و غیرحقوقی اعم از داخلی و خارجی کاربرد دارد و عامل تولید و فروش سیستم ­های نرم ­افزاری مربوط به این حوزه ­ها است.
+        </div>
+
+        <div class="copy-right">
+            <h5>
+                © 1399 تمامی حقوق متعلق به
+                <a href="https://www.hooshmandrisk.ir" target="__blank__">شرکت مدیریت ریسک هوشمند ایرانیان</a>
+                می باشد.
+            </h5>
+        </div>
+    </div>
+
+    <div id="login-form-wrapper" dir="rtl" fusePerfectScrollbar [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }">
+        <div id="login-form">
+            <div class="logo" fxHide.gt-xs>
+                <img src="assets/images/white-logo.png" />
+            </div>
+
+            <div class="title">ورود به حساب کاربری</div>
+
+            <form name="loginForm" (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
+                <mat-form-field appearance="outline">
+                    <mat-label>نام کاربری</mat-label>
+                    <label>
+                        <input matInput formControlName="userName" />
+                    </label>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                    <mat-error> نام کاربری الزامی می باشد. </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>کلمه عبور</mat-label>
+                    <input matInput type="password" formControlName="password" />
+                    <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                    <mat-error> کلمه عبور الزامی می باشد. </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" class="submit-button" [disabled]="loginForm.invalid || waiting">
+                    <span *ngIf="!waiting">ورود</span>
+                    <img *ngIf="waiting" width="30px" src="assets/images/loading.svg" alt="loading" />
+                </button>
+            </form>
+        </div>
+        <div class="version">
+            <span>
+                {{ version }}
+            </span>
+        </div>
+    </div>
+</div>

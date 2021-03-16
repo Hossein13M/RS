@@ -1,0 +1,12 @@
+.page-layout {
+    height: auto;
+}
+
+.page-content {
+    overflow-y: scroll;
+    height: auto;
+
+    * {
+        padding: 10px;
+    }
+}

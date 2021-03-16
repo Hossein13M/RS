@@ -1,0 +1,67 @@
+<!--MINIMAL VERSION-->
+<div class="card" *ngIf="minimize">
+
+    <div *ngIf="data.type=='DATE'">
+        <h5>
+            <mat-icon>query_builder</mat-icon>
+        </h5>
+        <h4>تاریخ</h4>
+    </div>
+
+
+    <div *ngIf="data.type=='TITLE'">
+        <h5>
+            <mat-icon>format_size</mat-icon>
+        </h5>
+        <h4>عنوان</h4>
+    </div>
+
+    <div *ngIf="data.type=='TEXTFIELD'">
+        <h5>
+            <mat-icon>text_format</mat-icon>
+        </h5>
+        <h4>فیلد متن</h4>
+    </div>
+
+    <div *ngIf="data.type=='NUMBER'">
+        <h5>
+            <mat-icon>plus_one</mat-icon>
+        </h5>
+        <h4>عدد</h4>
+    </div>
+
+
+    <div *ngIf="data.type=='BUTTON'">
+        <h5>
+            <mat-icon>font_download</mat-icon>
+        </h5>
+        <h4>دکمه</h4>
+    </div>
+
+</div>
+
+<!--DETAILED VERSION-->
+<div *ngIf="!minimize">
+
+    <!--Date Component-->
+    <form-date *ngIf="data.type=='DATE'" [data]="data" (delete)="deleteThis()">
+    </form-date>
+
+    <!--Title Component-->
+    <form-title *ngIf="data.type=='TITLE'" [data]="data" (delete)="deleteThis()">
+    </form-title>
+
+    <!--text Component-->
+    <form-text-field *ngIf="data.type=='TEXTFIELD'" [data]="data" (delete)="deleteThis()">
+    </form-text-field>
+
+    <!--Number Component-->
+    <form-number *ngIf="data.type=='NUMBER'" [data]="data" (delete)="deleteThis()">
+    </form-number>
+
+    <!--Button Component-->
+    <form-button *ngIf="data.type=='BUTTON'" [data]="data" (delete)="deleteThis()">
+    </form-button>
+
+
+</div>

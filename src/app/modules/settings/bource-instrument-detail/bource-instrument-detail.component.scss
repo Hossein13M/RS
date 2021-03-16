@@ -1,0 +1,63 @@
+app-search-select {
+    width: 100%;
+}
+
+.page-layout {
+    width: 100%;
+}
+
+.title {
+    padding: 10px 0;
+
+    button {
+        margin: 30px;
+    }
+
+    div {
+        padding: 0 20px;
+    }
+}
+
+.actions {
+    justify-content: center;
+    padding-top: 20px;
+    border-top: 2px dashed #cacaca;
+    padding-bottom: 20px;
+
+    button {
+        min-width: 100px;
+        margin: 10px;
+    }
+}
+
+.container {
+    // height: 100%;
+    margin: 10px;
+    // width: 100%;
+}
+
+.form {
+    div {
+        //height: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start !important;
+        justify-content: center !important;
+
+        mat-form-field {
+            width: 100%;
+        }
+    }
+}
+
+.deleted-bond {
+    text-decoration: line-through;
+    color: #999;
+}
+
+.chips {
+    border-radius: 6px;
+    padding: 3px;
+    font-size: 10px;
+    margin-right: 10px;
+}

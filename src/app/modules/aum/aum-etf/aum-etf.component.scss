@@ -1,0 +1,26 @@
+.fuse-card {
+    overflow: hidden;
+}
+
+.totalAssetsValueContainer {
+    height: 100%;
+
+    .totalAssetsValue {
+        font-size: 30px;
+    }
+
+    .fuse-card {
+        height: 100%;
+        width: calc(100% - 20px);
+    }
+}
+
+.pie-chart-container {
+    height: 400px;
+    margin: 10px 0;
+
+    * {
+        width: calc(33% - 5px);
+        height: calc(100% - 20px);
+    }
+}

@@ -1,0 +1,7 @@
+<div fxLayout="row wrap" style="margin: 10px 0">
+    <app-pie-chart fxFlex="33" height="400px" [data]="aumDeposit.pieChart" [cardLayout]="true" chartName="نمای کلی"> </app-pie-chart>
+</div>
+
+<div class="fuse-card">
+    <app-table [data]="aumDeposit.table" [columns]="columns" [paginationSettings]="{ mode: 'local', pageSize: 25 }"> </app-table>
+</div>

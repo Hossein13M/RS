@@ -1,0 +1,260 @@
+<form #myForm="ngForm" [formGroup]="SecuritiesInfoForm" class="contract-form-container">
+    <div class="contract-form-header">
+        اطلاعات قرارداد موضوع قرارداد
+    </div>
+    <div class="contract-form-body" dir="rtl">
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>تاریخ فروش</mat-label>
+                <input (click)="start1.open()" matInput formControlName="sellDate"
+                       [matDatepicker]="start1">
+                <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                <mat-datepicker #start1></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>تاریخ واقعی انجام فروش</mat-label>
+                <input (click)="start13466.open()" matInput formControlName="realSellDate"
+                       [matDatepicker]="start13466">
+                <mat-datepicker-toggle matSuffix [for]="start13466"></mat-datepicker-toggle>
+                <mat-datepicker #start13466></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>نوع اوراق</mat-label>
+                <mat-select
+                    formControlName="type">
+                    <mat-option style="text-align: right" [value]="s?.id"
+                                *ngFor="let s of formsModelService.securityType">
+                        {{s?.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>نماد اوراق</mat-label>
+                <input matInput formControlName="symbol">
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>نام اوراق</mat-label>
+                <input matInput formControlName="name">
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>تعداد اوراق</mat-label>
+                <input matInput formControlName="counts">
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>قیمت فروش هر ورقه</mat-label>
+                <input matInput formControlName="sellPricePerUnit">
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>تاریخ بازخرید</mat-label>
+                <input (click)="start134.open()" matInput formControlName="repurchaseDate"
+                       [matDatepicker]="start134">
+                <mat-datepicker-toggle matSuffix [for]="start134"></mat-datepicker-toggle>
+                <mat-datepicker #start134></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>تاریخ واقعی انجام بازخرید</mat-label>
+                <input (click)="start13.open()" matInput formControlName="realRepurchaseDate"
+                       [matDatepicker]="start13">
+                <mat-datepicker-toggle matSuffix [for]="start13"></mat-datepicker-toggle>
+                <mat-datepicker #start13></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+
+        </div>
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>قیمت بازخرید هر ورقه</mat-label>
+                <input matInput type="number" formControlName="repurchasePricePerUnit">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>تاریخ سررسید اوراق</mat-label>
+                <input (click)="start1346655.open()" matInput formControlName="maturityDate"
+                       [matDatepicker]="start1346655">
+                <mat-datepicker-toggle matSuffix [for]="start1346655"></mat-datepicker-toggle>
+                <mat-datepicker #start1346655></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>ناشر اوراق</mat-label>
+                <input matInput formControlName="issuer">
+            </mat-form-field>
+
+        </div>
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label> مدت نگهداری اوراق</mat-label>
+                <input matInput formControlName="holdingPeriod">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label> نرخ سوداوراق</mat-label>
+                <input matInput formControlName="interestRate">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label> تواتر واریز سود اوراق</mat-label>
+                <mat-select formControlName="interestPayingFreq">
+                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.freqTypes"
+                                [value]="s.id">
+                        {{s.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="contract-form-row-2">
+            <mat-form-field appearance="outline">
+                <mat-label>محل معامله اوراق</mat-label>
+                <mat-select formControlName="tradingMarketName">
+                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.assetTypes"
+                                [value]="s.id">
+                        {{s.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>مجوز انتشار</mat-label>
+                <mat-select formControlName="issuePermission">
+                    <mat-option style="text-align: right" *ngFor="let s of formsModelService.issuePermissionType"
+                                [value]="s.id">
+                        {{s.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="form-row-btn-container">
+                <button mat-raised-button *ngIf="selectedGuarantorInfoIndex==null"
+                        [disabled]="SecuritiesInfoForm.invalid"
+                        (click)="add()" class="save-button" [color]="'accent'" style="width: 150px;height: 40px">
+                    <mat-icon>
+                        add
+                    </mat-icon>
+                    افزودن
+                </button>
+                <button mat-raised-button *ngIf="selectedGuarantorInfoIndex!=null"
+                        [disabled]="SecuritiesInfoForm.invalid"
+                        (click)="edit()" class="save-button" [color]="'accent'"
+                        style="width: 150px;height: 40px">
+                    <mat-icon>
+                        edit
+                    </mat-icon>
+                    اصلاح
+                </button>
+                <button mat-raised-button *ngIf="selectedGuarantorInfoIndex!=null" (click)="clear()" class="save-button"
+                        style="width: 150px;height: 40px;margin-right: 10px">
+                    <mat-icon>
+                        close
+                    </mat-icon>
+                    انصراف
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="form-tab-table-container">
+        <mat-table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+            <ng-container matColumnDef="sellDate">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>تاریخ فروش</mat-header-cell>
+                <mat-cell *matCellDef="let GuarantorInfo" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{GuarantorInfo?.sellDate| date}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نوع اوراق</mat-header-cell>
+                <mat-cell *matCellDef="let GuarantorInfo" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{GuarantorInfo?.type}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="symbol">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نماد اوراق</mat-header-cell>
+                <mat-cell *matCellDef="let GuarantorInfo" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{GuarantorInfo?.symbol}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="sellPricePerUnit">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>قیمت فروش هر ورقه</mat-header-cell>
+                <mat-cell *matCellDef="let GuarantorInfo" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{GuarantorInfo?.sellPricePerUnit}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="maturityDate">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>تاریخ سررسید اوراق</mat-header-cell>
+                <mat-cell *matCellDef="let GuarantorInfo" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{GuarantorInfo?.maturityDate| date}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="tradingMarketName">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>محل معامله اوراق</mat-header-cell>
+                <mat-cell *matCellDef="let GuarantorInfo" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{GuarantorInfo?.tradingMarketName}}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
+                <mat-cell *matCellDef="let sInfo;let i = index" fxHide fxShow.gt-sm>
+                    <button class="edit-button" mat-raised-button style="background-color: orange;color: white"
+                            (click)="editSecurityInfo(sInfo,i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button style="margin-right: 10px" mat-raised-button color="warn" (click)="delete(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
+                     [@animate]="{value:'*',params:{y:'100%'}}">
+            </mat-row>
+        </mat-table>
+        <ng-container *ngIf="dataSource.data.length===0">
+            <div style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
+                <img width="140px" height="140px" src="./assets/images/no-data.svg">
+                <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
+                    موردی وجود ندارد
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</form>

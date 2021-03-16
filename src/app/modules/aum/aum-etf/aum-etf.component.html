@@ -1,0 +1,28 @@
+<div class="content" fxLayout="column wrap">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="pie-chart-container">
+        <app-pie-chart [data]="aumEtf.institutionPieChart" height="300px" chartName="نهاد‌ها" [cardLayout]="true" categoryLabel="name">
+        </app-pie-chart>
+        <app-pie-chart [data]="aumEtf.industryPieChart" height="300px" chartName="صنعت‌ها" [cardLayout]="true" categoryLabel="name"> </app-pie-chart>
+        <app-pie-chart [data]="aumEtf.toolsPieChart" height="300px" chartName="ابزار‌ها" [cardLayout]="true" categoryLabel="name"> </app-pie-chart>
+    </div>
+
+    <div style="height: 450px; margin-bottom: 20px" fxLayout="row wrap" fxLayoutAlign="space-between center">
+        <div class="totalAssetsValueContainer" fxFlex="30">
+            <div class="fuse-card" fxLayout="column wrap" fxLayoutAlign="center center">
+                <h2>ارزش کل دارایی‌ها</h2>
+                <span class="totalAssetsValue">
+                    {{ aumEtf.totalAssetsValue | price }}
+                </span>
+            </div>
+        </div>
+
+        <div class="fuse-card" fxLayout="column" fxFlex="70">
+            <h2 style="text-align: center">نمودار ارزش کل دارایی‌ها</h2>
+            <app-trend-chart [data]="aumEtf.chart" [convertJalali]="true" height="380px"> </app-trend-chart>
+        </div>
+    </div>
+</div>
+
+<div class="fuse-card" *ngIf="isTableShowing">
+    <app-table [data]="aumEtf.table" [columns]="tableColumn" [paginationSettings]="{ mode: 'local' }"> </app-table>
+</div>

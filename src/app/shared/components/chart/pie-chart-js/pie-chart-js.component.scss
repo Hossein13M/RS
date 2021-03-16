@@ -1,0 +1,24 @@
+.fuse-card {
+    .header {
+        height: 40px;
+        padding: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chart {
+        height: calc(100% - 60px);
+    }
+
+    display: block;
+    height: 100%;
+}
+
+.no-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

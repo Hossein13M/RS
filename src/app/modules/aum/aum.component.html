@@ -1,0 +1,154 @@
+<div class="page-layout">
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> دارایی‌های تحت مدیریت </span>
+    </div>
+
+    <div class="container fuse-card" dir="rtl" wrap style="flex: 1">
+        <form [formGroup]="form" fxLayout="row wrap" fxLayoutGap="20px" style="padding: 30px" (submit)="submitForm()">
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <mat-form-field appearance="outline" style="min-width: 150px">
+                    <mat-label>سبد</mat-label>
+                    <mat-select formControlName="baskets" multiple required (selectionChange)="getAUMFundOnBasketChange()">
+                        <mat-select-trigger>
+                            <span *ngIf="form.controls['baskets'].value?.length > 0">
+                                (+{{ form.controls['baskets'].value.length }} {{ 'سبد' }})
+                            </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let basket of baskets" [value]="basket.id.toString()">{{ basket.title }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field *ngIf="form.get('baskets').value.includes('2')" appearance="outline" style="min-width: 250px">
+                    <mat-label>صندوق های تحت مدیریت</mat-label>
+                    <mat-select formControlName="funds" multiple>
+                        <mat-select-trigger>
+                            <span *ngIf="form.controls['funds'].value?.length > 0"> (+{{ form.controls['funds'].value.length }} {{ 'صندوق' }}) </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let fund of funds" [value]="fund.nationalId.toString()">{{ fund.name }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="min-width: 250px">
+                    <mat-label>دارایی تحت مدیریت</mat-label>
+                    <mat-select formControlName="categories" multiple required>
+                        <mat-select-trigger>
+                            <span *ngIf="form.controls['categories'].value?.length > 0">
+                                (+{{ form.controls['categories'].value.length }} {{ 'دارایی' }})
+                            </span>
+                        </mat-select-trigger>
+                        <ng-container *ngFor="let category of categories">
+                            <!-- remove this سبد سپرده -> id = 3-->
+                            <mat-option *ngIf="category.id !== 3" [value]="category.id.toString()">
+                                {{ category.title }}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="min-width: 185px">
+                    <mat-label>کل دارایی‌ها</mat-label>
+                    <mat-select formControlName="NL" multiple required>
+                        <mat-option value="0"> بورسی </mat-option>
+                        <mat-option value="1"> غیر بورسی </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-wid" appearance="outline">
+                    <mat-label>تاریخ</mat-label>
+                    <input (click)="start1.open()" matInput formControlName="date" [matDatepicker]="start1" required />
+                    <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                    <mat-datepicker #start1></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <button mat-flat-button [disabled]="!form.valid" color="accent" type="submit">
+                    <mat-icon class="mat-18"> visibility </mat-icon>
+                    نمایش دارایی‌های تحت مدیریت
+                </button>
+            </div>
+        </form>
+
+        <mat-tab-group *ngIf="hasSubmitButtonClicked" class="mt-20" mat-stretch-tabs>
+            <mat-tab [disabled]="aumData.etf.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>کل دارایی‌ها</span>
+                    <mat-spinner *ngIf="aumData.etf.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-etf *ngIf="aumData.etf.state === 'PRESENT'" [aumEtf]="aumData.etf.data"></aum-etf>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab [disabled]="aumData.bond.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>سبد اوراق</span>
+                    <mat-spinner *ngIf="aumData.bond.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-bonds *ngIf="aumData.bond.state === 'PRESENT'" [aumBonds]="aumData.bond.data"></aum-bonds>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab [disabled]="aumData.nlBond.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>سبد اوراق غیر بورسی</span>
+                    <mat-spinner *ngIf="aumData.nlBond.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-nl-bonds *ngIf="aumData.nlBond.state === 'PRESENT'" [aumNlBond]="aumData.nlBond.data"></aum-nl-bonds>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab [disabled]="aumData.stocks.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>سبد سهم</span>
+                    <mat-spinner *ngIf="aumData.stocks.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-stocks *ngIf="aumData.stocks.state === 'PRESENT'" [aumStocks]="aumData.stocks.data"></aum-stocks>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab [disabled]="aumData.nlStocks.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>سبد سهم غیر بورسی</span>
+                    <mat-spinner *ngIf="aumData.nlStocks.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-nl-stocks *ngIf="aumData.nlStocks.state === 'PRESENT'" [aumNlStocks]="aumData.nlStocks.data"></aum-nl-stocks>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab [disabled]="aumData.funds.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>سبد صندوق</span>
+                    <mat-spinner *ngIf="aumData.funds.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-funds *ngIf="aumData.funds.state === 'PRESENT'" [aumFunds]="aumData.funds.data"></aum-funds>
+                </ng-template>
+            </mat-tab>
+
+            <mat-tab [disabled]="aumData.nlFunds.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>سبد صندوق غیر بورسی</span>
+                    <mat-spinner *ngIf="aumData.nlFunds.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-nl-funds *ngIf="aumData.nlFunds.state === 'PRESENT'" [aumNlFunds]="aumData.nlFunds.data"></aum-nl-funds>
+                </ng-template>
+            </mat-tab>
+
+            <!-- <mat-tab [disabled]="aumData.etf.state !== 'PRESENT'">
+                <ng-template mat-tab-label>
+                    <span>سبد سپرده</span>
+                    <mat-spinner *ngIf="aumData.deposit.state === 'LOADING'" diameter="25" class="mr-4" color="accent"> </mat-spinner>
+                </ng-template>
+                <ng-template matTabContent>
+                    <aum-deposit *ngIf="aumData.deposit.state === 'PRESENT'" [aumDeposit]="aumData.deposit.data"></aum-deposit>
+                </ng-template>
+            </mat-tab> -->
+        </mat-tab-group>
+    </div>
+</div>

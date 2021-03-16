@@ -1,0 +1,116 @@
+.contract-form-container {
+    min-height: 150px;
+    width: 95%;
+    margin: 40px auto;
+    border-radius: 8px;
+    padding: 10px;
+    position: relative;
+}
+
+.form-mat-tab-group-container {
+    position: relative;
+}
+
+.save-form-button {
+    position: absolute !important;
+    top: 6px !important;
+    left: 21px !important;
+    z-index: 99999999 !important;
+}
+
+.contract-form-header {
+    font-size: 18px;
+    font-weight: 700;
+    position: absolute;
+    top: -12px;
+    right: 34px;
+}
+
+.contract-form-body {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.contract-form-row {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    mat-form-field {
+        flex-basis: 30%;
+        margin-left: 3%;
+    }
+}
+
+.contract-form-row-1 {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    mat-form-field {
+        flex-basis: 65%;
+    }
+
+    .form-row-btn-container {
+        flex-basis: 30%;
+    }
+}
+
+.contract-form-row-4 {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    mat-form-field {
+        flex-basis: 22%;
+    }
+}
+
+.contract-form-row-2 {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    mat-form-field {
+        flex-basis: 30%;
+    }
+
+    .form-row-btn-container {
+        flex-basis: 30%;
+    }
+}
+
+.tow-column {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    mat-form-field {
+        flex-basis: 47%;
+    }
+}
+
+
+mat-option {
+    text-align: right;
+}
+
+
+.form-tab-table-container {
+    width: 92%;
+    margin: 0 auto;
+    min-height: 200px;
+}
+
+.single-row-btn-container {
+    width: 97.5%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+}

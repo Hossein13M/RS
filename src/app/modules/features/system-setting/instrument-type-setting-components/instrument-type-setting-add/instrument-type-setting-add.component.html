@@ -1,0 +1,62 @@
+<div class="dialog-container">
+    <div title="{{title}}"
+         appDialogHeader>
+        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+    </div>
+    <form [formGroup]="form" class="setting-form-container" dir="rtl">
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    نوع
+                </mat-label>
+                <input formControlName="type" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    شناسه نماد
+                </mat-label>
+                <input formControlName="ticker" matInput>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                   وضعیت
+                </mat-label>
+                <input matInput formControlName="status">
+            </mat-form-field>
+        </div>
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    نام
+                </mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    نام نماد
+                </mat-label>
+                <input matInput formControlName="symbol">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                   محل معامله
+                </mat-label>
+                <input formControlName="isInBourse" matInput>
+            </mat-form-field>
+        </div>
+        <div class="setting-btn-container">
+            <button (click)="close()" style="margin-left: 10px" color="warn" mat-raised-button>
+                <mat-icon>close</mat-icon>
+                انصراف
+            </button>
+            <button *ngIf="!data" (click)="onCreateBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button *ngIf="data" (click)="onEditBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

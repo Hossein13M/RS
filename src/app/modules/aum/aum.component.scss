@@ -1,0 +1,18 @@
+.container {
+    max-width: unset;
+    margin: 20px;
+}
+
+.spinner {
+    height: 300px;
+}
+
+.no-data {
+    min-height: 300px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

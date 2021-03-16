@@ -1,0 +1,73 @@
+.page-layout {
+    width: 100%;
+}
+
+.alarm-container {
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.card-container {
+    padding: 0;
+    width: 100%;
+    height: 70vh;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    mat-form-field {
+        width: 80%;
+    }
+}
+
+.grid-container {
+    width: 100%;
+    height: 550px;
+    overflow-y: scroll;
+
+    table {
+        width: 100%;
+        transition: none !important;
+        box-shadow: none !important;
+
+        .mat-column-operation {
+            width: 40%;
+        }
+
+        //.mat-column-status {
+        //    width: 15%;
+        //}
+    }
+}
+
+.grid-action-button-global-style {
+    margin-left: 10px;
+}
+
+.add-button {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+}
+
+::ng-deep .operation-header,
+.mat-header-cell {
+    text-align: center !important;
+}
+
+::ng-deep .operation-body,
+.mat-cell {
+    text-align: center !important;
+
+    * {
+        margin: 0 5px;
+    }
+}

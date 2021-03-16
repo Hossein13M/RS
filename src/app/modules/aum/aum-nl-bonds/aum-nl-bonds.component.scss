@@ -1,0 +1,100 @@
+.mat-column-name {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 35% !important;
+    width: 35% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    margin-right: 5px;
+}
+
+#bondsNLchartdiv {
+    height: 50vh;
+    direction: ltr;
+}
+
+.table {
+    max-height: 45vh;
+    overflow: scroll;
+}
+
+mat-row .example-detail-row {
+    height: 0 !important;
+}
+
+.expandable {
+    background: whitesmoke;
+    cursor: pointer;
+}
+
+.detail {
+    padding: 1rem;
+    border: 1px solid gray;
+    border-radius: 4px;
+    margin-left: 1rem;
+}
+
+mat-row .example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+mat-row .example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row mat-cell {
+    border-bottom-width: 0;
+}
+
+.example-expanded-row {
+    background: transparent;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+:host {
+    ::ng-deep(.example-detail-row) {
+        height: 0;
+    }
+
+    ::ng-deep {
+        mat-row {
+            min-height: 0 !important;
+
+            mat-cell {
+                padding: 0 !important;
+            }
+        }
+    }
+}

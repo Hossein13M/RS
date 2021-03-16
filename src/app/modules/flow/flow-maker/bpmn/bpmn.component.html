@@ -1,0 +1,66 @@
+<div class="container">
+    <!-- <div class="buttons-container">
+
+        <mat-form-field appearance="outline">
+            <mat-label>نام کاربری</mat-label>
+            <input matInput formControlName="userName">
+            <mat-icon matSuffix class="secondary-text">accessibility</mat-icon>
+            <mat-error>
+                نام کاربری الزامی می باشد.
+            </mat-error>
+        </mat-form-field>
+
+        <button mat-icon-button
+                class="secondary-text"
+                (click)="load()" >
+            <mat-icon class="s-20">data_usage</mat-icon>
+            reset
+        </button>
+
+        <button mat-icon-button
+                class="secondary-text"
+                (click)="save()" >
+            <mat-icon class="s-20">save</mat-icon>
+            Save
+        </button>
+
+        <button mat-icon-button
+                class="secondary-text"
+                (click)="openDialog()" >
+            <mat-icon class="s-20">all_out</mat-icon>
+            Open Modal
+        </button>
+
+    </div> -->
+
+    <app-header pageTitle="الگوی قرارداد">
+        <div class="bpmn-footer" dir="rtl">
+            <form name="flowForm" (ngSubmit)="addFlow()" [formGroup]="flowForm" novalidate>
+                <mat-form-field appearance="outline">
+                    <mat-label>نام الگو</mat-label>
+                    <input matInput formControlName="flowName"/>
+                    <mat-error> نام الگو الزامی می باشد.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>دسته بندی قرارداد</mat-label>
+                    <mat-select formControlName="flowCategory" disabled>
+                        <mat-option *ngFor="let flowCat of flowCategories" [value]="flowCat._id">
+                            {{ flowCat.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" style="height: 55px" type="submit" class="submit-button" [disabled]="flowForm.invalid || waiting">
+                    {{ !waiting ? 'ثبت قرارداد' : '' }}
+                    <mat-spinner *ngIf="waiting" diameter="40"></mat-spinner>
+                </button>
+            </form>
+        </div>
+    </app-header>
+
+    <div class="modeler">
+        <div id="canvas" style="width: 100%; height: calc(100vh - 200px)"></div>
+        <div id="properties"></div>
+    </div>
+</div>

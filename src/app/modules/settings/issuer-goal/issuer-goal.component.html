@@ -1,0 +1,69 @@
+<div class="fuse-card">
+    <div dir="rtl">
+        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" id="issuerGoal">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>
+                    <mat-form-field appearance="fill">
+                        <input matInput class="form-field" [formControl]="searchInput" placeholder="هدف انتشار" />
+                    </mat-form-field>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let issuer">
+                    <p class="email text-truncate">{{ issuer.name }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef >اصلاح</mat-header-cell>
+                <mat-cell *matCellDef="let issuer" >
+                    <button class="edit-button" mat-raised-button color="warn" (click)="editIssuer(issuer)">اصلاح</button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="remove">
+                <mat-header-cell *matHeaderCellDef >حذف</mat-header-cell>
+                <mat-cell *matCellDef="let issuer" >
+                    <button class="edit-button" mat-raised-button color="warn" (click)="remove(issuer)">حذف</button>
+                </mat-cell>
+            </ng-container> -->
+
+            <ng-container matColumnDef="operation">
+                <mat-header-cell *matHeaderCellDef>عملیات</mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                    <button mat-icon-button (click)="editIssuer(element)" style="margin-left: 10px" color="accent">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="remove(element)" color="warn">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
+        </mat-table>
+    </div>
+
+    <div class="container" dir="rtl">
+        <div class="issuer">
+            <mat-form-field appearance="outline" style="flex-grow: 1">
+                <input matInput class="form-field" [formControl]="issuerName" placeholder="هدف انتشار" required />
+            </mat-form-field>
+
+            <div fxLayout="column wrap" fxLayoutGap="5px" fxLayoutAlign="center center" class="setting-btn-container">
+                <button *ngIf="slectedIssuer" [disabled]="issuerName.invalid" (click)="edit()" color="accent" mat-raised-button>
+                    <mat-icon>edit</mat-icon>
+                    ویرایش
+                </button>
+                <button *ngIf="slectedIssuer" (click)="clear()" style="margin-left: 10px" color="warn" mat-raised-button>
+                    <mat-icon>close</mat-icon>
+                    انصراف
+                </button>
+
+                <button *ngIf="!slectedIssuer" [disabled]="issuerName.invalid" (click)="addIssuer()" color="accent" mat-raised-button>
+                    <mat-icon>done</mat-icon>
+                    ثبت
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

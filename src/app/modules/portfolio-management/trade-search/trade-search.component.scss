@@ -1,0 +1,91 @@
+@import '../../../layout/styles/variables';
+
+.page-layout {
+    max-height: unset;
+    height: unset;
+
+    .search-btn {
+        padding: 3px 8px 0 8px !important;
+        min-width: unset;
+    }
+
+    .page-content {
+        max-height: unset;
+        height: unset;
+
+        .search {
+            padding: 10px 20px;
+
+            h3 {
+                min-height: 22px;
+            }
+
+            .box {
+                min-width: 200px;
+
+                mat-form-field {
+                    width: 100%;
+                }
+            }
+
+            .actions {
+                margin-top: 40px;
+            }
+        }
+
+        .data-show {
+            overflow-x: auto;
+            overflow-y: auto;
+            height: calc(100vh - #{$footer-height} - #{$header-height} - #{$pagination-height} - 90px);
+            margin-top: 10px;
+            position: relative;
+
+            table {
+                display: table;
+                width: auto;
+                min-width: 100%;
+                max-width: unset;
+                padding: 0 20px;
+                margin-bottom: $pagination-height;
+                box-shadow: none;
+                overflow-y: auto;
+                text-align: right;
+
+                tr,
+                th,
+                td {
+                    text-align: right;
+                }
+
+                &:hover {
+                    tr {
+                        opacity: 0.6;
+                    }
+
+                    .header {
+                        opacity: 1;
+                    }
+                }
+
+                tr {
+                    opacity: 1;
+                    transition: 200ms ease-in-out opacity;
+
+                    &:hover {
+                        opacity: 1;
+                    }
+                }
+
+                .mat-column-position {
+                    width: 50px;
+                    padding-left: 0;
+                }
+            }
+
+            app-table {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

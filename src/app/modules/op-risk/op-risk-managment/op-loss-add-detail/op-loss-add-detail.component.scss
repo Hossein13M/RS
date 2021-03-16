@@ -1,0 +1,50 @@
+.section-box {
+    border-top: 1px solid gray;
+    padding-top: 53px;
+    margin-top: 60px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.section-select {
+    width: 100%;
+    margin: 10px 0;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .section-item {
+        margin: 0 10px;
+        border: 1px solid gray;
+        min-width: 100px;
+        padding: 0 16px;
+        border-radius: 3px;
+        text-align: center;
+        cursor: pointer;
+        opacity: 1;
+        transition: all 200ms ease;
+        //box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0.9) 0px 0px 0px 1px;
+
+        &:hover {
+            opacity: 0.7;
+            box-shadow: rgba(255, 255, 255, 0.2) 0px 0px 0px 1px inset, rgba(156, 153, 153, 0.9) 0px 0px 0px 1px;
+        }
+    }
+
+    .active {
+        box-shadow: rgb(67, 131, 234) 0px 0px 0px 1px inset, rgba(156, 153, 153, 0.9) 0px 0px 0px 1px;
+    }
+
+    .save-main {
+        box-shadow: rgb(131, 234, 67) 0px 0px 0px 1px inset, rgb(130, 220, 130) 0px 0px 0px 1px;
+    }
+}
+
+.custom-stepper {
+    width: 100%;
+    border: #e7e7e7 solid;
+    border-width: 1px;
+    background: transparent !important;
+    border-radius: 3px;
+}

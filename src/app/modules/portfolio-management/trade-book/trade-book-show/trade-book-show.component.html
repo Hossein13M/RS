@@ -1,0 +1,83 @@
+<div class="page-layout">
+
+    <app-header pageTitle="ریز معاملات">
+        <div subtitle>
+            تا تاریخ
+            {{this.dateFa}}
+        </div>
+        <div>
+            <button mat-raised-button color="primary" routerLink="../../../..">
+                دفتر معاملات
+            </button>
+        </div>
+    </app-header>
+
+    <div class="page-content">
+        <!--   Table  -->
+        <div *ngIf="dataToShow && dataToShow.length!=0 "
+             class="fuse-card">
+            <mat-table #table
+                       [@animateStagger]="{value:'50'}"
+                       [dataSource]="dataSource"
+                       class="mat-elevation-z8">
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="position">
+                    <mat-header-cell *matHeaderCellDef> #</mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index">
+                        {{(tbs.pageEvent.pageSize * tbs.pageEvent.currentIndex) + i + 1}}
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Column Generator -->
+                <ng-container *ngFor="let col of columns" [matColumnDef]="col.id">
+                    <mat-header-cell *matHeaderCellDef [style.width]="col.width">{{col.name}}</mat-header-cell>
+                    <mat-cell *matCellDef="let el">
+
+                        <div *ngIf="col.type == 'price'">
+                            {{el[col.id] | price}}
+                        </div>
+
+                        <div *ngIf="col.type == 'number'">
+                            {{el[col.id] | number}}
+                        </div>
+
+                        <div *ngIf="col.type == 'string'">
+                            {{el[col.id]}}
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                         [@animate]="{value:'*',params:{y:'100%'}}">
+                </mat-row>
+            </mat-table>
+        </div>
+
+        <!--    Paginator    -->
+        <app-paginator *ngIf="dataToShow && dataToShow.length!=0 "
+                       [data]="tbs.pageEvent"
+                       (page)="pageHandler($event)"
+                       [pageSizeOptions]="[5, 10,20, 50]">
+        </app-paginator>
+
+        <!--   Getting Data Failed  -->
+        <div *ngIf="failed" fxLayout="row wrap" fxLayoutAlign="center center">
+            دریافت داده ناموفق بود
+
+            <button mat-button
+                    class="againBtn"
+                    (click)="get()">
+                دریافت دوباره
+            </button>
+        </div>
+
+        <!--   Help Quotes  -->
+        <p *ngIf="dataToShow && dataToShow.length==0 && !isWorking && !failed" class="text-center">
+            داده‌ای برای نمایش وجود ندارد
+        </p>
+
+    </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="page-layout" dir="rtl">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> اپراتور‌ها </span>
+            </div>
+        </div>
+        <!-- / APP TITLE -->
+
+        <!-- SEARCH -->
+        <div class="ml-sm-32" fxLayout="row" fxLayoutAlign="center center" fxFlex>
+            <div class="search-wrapper mt-16 mt-sm-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center" style="display: flex">
+                    <mat-icon color="primary">search</mat-icon>
+                    <label>
+                        <input [formControl]="searchInput" placeholder="جستجو اپراتور" />
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- / SEARCH -->
+
+        <button mat-raised-button color="primary" class="submit-button" (click)="newOperator()">ثبت اپراتور</button>
+    </div>
+    <!-- / HEADER -->
+
+    <div id="table-container">
+        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" id="operators" class="fuse-card">
+            <!-- lastName Column -->
+            <ng-container matColumnDef="lastName">
+                <mat-header-cell *matHeaderCellDef>نام خانوادگی</mat-header-cell>
+                <mat-cell *matCellDef="let operator">
+                    <p class="text-truncate">{{ operator.lastName }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- firstName Column -->
+            <ng-container matColumnDef="firstName">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نام</mat-header-cell>
+                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ operator.firstName }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- email Column -->
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>پست الکترونیک</mat-header-cell>
+                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ operator.email }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+            <!-- mobileNumber Column -->
+            <ng-container matColumnDef="mobileNumber">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>تلفن همراه</mat-header-cell>
+                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ operator.mobileNumber }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- userName Column -->
+            <ng-container matColumnDef="userName">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نام کاربری</mat-header-cell>
+                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
+                    <p class="email text-truncate">
+                        {{ operator.userName }}
+                    </p>
+                </mat-cell>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef>وضعیت کاربر</mat-header-cell>
+                <mat-cell *matCellDef="let operator">
+                    <button mat-icon-button class="email text-truncate" *ngIf="operator.mobileNumber">
+                        <mat-icon class="mat-18" color="primary">check_circle_outline</mat-icon>
+                    </button>
+                    <button *ngIf="!operator.mobileNumber" mat-icon-button class="email text-truncate" color="warn" (click)="editOperator(operator)">
+                        <mat-icon class="mat-18" color="primary">highlight_off</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm> عملیات </mat-header-cell>
+
+                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
+                    <button mat-icon-button color="warn" (click)="editOperator(operator)">
+                        <mat-icon class="mat-18">create</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
+        </mat-table>
+    </div>
+</div>

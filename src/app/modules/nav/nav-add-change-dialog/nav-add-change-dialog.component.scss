@@ -1,0 +1,23 @@
+mat-form-field,
+app-search-select,
+mat-checkbox {
+    margin: 10px;
+}
+
+.search-select-box {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    app-search-select {
+        width: 100%;
+    }
+}
+
+.action-container {
+    width: calc(100% - 20px);
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}

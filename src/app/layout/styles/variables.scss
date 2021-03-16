@@ -1,0 +1,22 @@
+// ------------------------- Colors
+$green-1: #218d7d;
+
+// ------------------------- Theme Color Variables
+$brand-color: $green-1;
+$border-radius-1: 4px;
+
+$footer-height: 0;
+$header-height: 100px;
+$pagination-height: 50px;
+
+// Page With Footer And Header
+$page-height-1: calc(100vh - 165px - #{$footer-height});
+
+$box-shadow-1: rgba(255, 255, 255, 0.2) 0 0 0 1px inset, rgba(0, 0, 0, 0.9) 0 0 0 1px;
+$box-shadow-2: rgba(0, 0, 0, 0.1) 0 0 5px 0, rgba(0, 0, 0, 0.1) 0 0 1px 0;
+
+@mixin card-2 {
+    box-shadow: $box-shadow-2;
+    border-radius: 4px;
+    overflow: hidden;
+}

@@ -1,0 +1,49 @@
+::ng-deep .mat-menu-panel {
+    padding: 0 10px !important;
+    width: 250px !important;
+}
+
+::ng-deep .mat-menu-content {
+    width: 100%;
+    height: 100%;
+}
+
+::ng-deep .alarm-dialog {
+    height: 200px;
+
+    .box {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .header {
+            margin-bottom: auto;
+            text-align: center;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .unread-alarm {
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: auto;
+
+            .mat-icon {
+                height: 20px !important;
+                width: 20px !important;
+                font-size: 20px !important;
+            }
+        }
+    }
+}
+
+.alarming {
+    width: 100%;
+    height: 100%;
+}

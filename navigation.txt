@@ -1,0 +1,202 @@
+import { FuseNavigation } from '@fuse/types';
+
+export const navigation: FuseNavigation[] = [
+    {
+        id: 'applications',
+        title: 'Applications',
+        type: 'group',
+        children: [
+            {
+                id: 'dashboards',
+                title: 'داشبرد ها',
+                type: 'collapsable',
+                icon: 'dashboard',
+                children: [
+                    {
+                        id: 'analytics',
+                        title: 'داشبرد مدیریتی',
+                        type: 'item',
+                        url: '/apps/dashboards/analytics'
+                    },
+                    {
+                        id: 'project',
+                        title: 'داشبرد خلاصه وضعیت',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    },
+                    {
+                        id: 'dashboard1',
+                        title: 'داشبرد ریسک بازار',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    },
+                    {
+                        id: 'dashboard2',
+                        title: 'داشبرد پیشرفت قراردادها',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    }
+                ]
+            },
+            {
+                id: 'sample',
+                title: 'ریسک تطبیق',
+                type: 'collapsable',
+                icon: 'home',
+                children: [
+                    {
+                        id: 'analytics',
+                        title: 'افشای گزارش های ادواری',
+                        type: 'item',
+                        url: '/apps/dashboards/analytics'
+                    },
+                    {
+                        id: 'project',
+                        title: 'کفایت سرمایه',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    },
+                    {
+                        id: 'dashboard1',
+                        title: 'تحلیل حدود صندوق ها',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    },
+                    {
+                        id: 'dashboard2',
+                        title: 'کنترل مجوز ها',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    },
+                    {
+                        id: 'dashboard2',
+                        title: 'کنترل معاملات',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    },
+                    {
+                        id: 'dashboard2',
+                        title: 'تقویم رویدادها',
+                        type: 'item',
+                        url: '/apps/dashboards/project'
+                    }
+                ]
+            }
+        ]
+    },
+    // {
+    //     id: 'messagin',
+    //     title: 'پیام ها',
+    //     type: 'group',
+    //     children: [
+    //         {
+    //             id: 'mail',
+    //             title: 'mail',
+    //             type: 'item',
+    //             icon: 'email',
+    //             url: '/messaging/mail'
+    //         },
+    //     ]
+    // },
+    {
+        id: 'RBAC',
+        title: 'ریسک بازار',
+        type: 'group',
+        children: [
+            {
+                id: 'user',
+                title: 'ثبت اپراتور',
+                type: 'item',
+                icon: 'accessibility',
+                url: '/user',
+            },
+            {
+                id: 'operator',
+                title: 'Operator',
+                type: 'item',
+                icon: 'people',
+                url: '/operator',
+            },
+            {
+                id: 'auth-item',
+                title: 'AuthItem',
+                type: 'item',
+                icon: 'done_all',
+                url: '/auth-item',
+            },
+        ]
+    },
+    {
+        id: 'baseData',
+        title: 'قراردادها',
+        type: 'collapsable',
+        children: [
+            {
+                id: 'wfe',
+                title: 'کارتابل تعریف قرارداد',
+                type: 'item',
+                icon: 'developer_board',
+                url: '/flow/flows',
+            },
+            {
+                id: 'bank',
+                title: 'ثبت قرار داد شرکتی',
+                type: 'item',
+                icon: 'email',
+                url: '/bank',
+            },
+            {
+                id: 'guarantor',
+                title: 'گزارش قرارداد ها',
+                type: 'item',
+                icon: 'library_add',
+                url: '/guarantor',
+            },
+
+            {
+                id: 'issuer',
+                title: 'جریانات قراردادها',
+                type: 'item',
+                icon: 'library_books',
+                url: '/issuer',
+            },
+        ]
+    },
+    {
+        id: 'funds',
+        title: 'Funds',
+        type: 'group',
+        children: [
+            {
+                id: 'fund',
+                title: 'Fund',
+                type: 'item',
+                icon: 'layers',
+                url: '/fund',
+            },
+
+            {
+                id: 'fundRole',
+                title: 'FundRole',
+                type: 'item',
+                icon: 'location_city',
+                url: '/fund-role',
+            },
+
+            {
+                id: 'fundRoleType',
+                title: 'FundRoleType',
+                type: 'item',
+                icon: 'email',
+                url: '/fund-role-type',
+            },
+            {
+                id: 'fundRoleOrganization',
+                title: 'FundRoleOrganization',
+                type: 'item',
+                icon: 'location_city',
+                url: '/fund-role-organization',
+            },
+        ]
+    }
+];
