@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: git.iirms.ir:5050/risk-shield-team/front-end-team/frontend:dev
+    image: git.iirms.ir:5050/risk-shield-team/front-end-team/frontend:stage
 #    volumes:
 #      - 'node_modules:/usr/src/app'
 #    ports:
@@ -12,7 +12,7 @@ services:
       - infra_managementapi
     deploy:
       labels:
-        - "traefik.http.routers.stgae-frontend.rule=Host(`dev.iirms.ir`)"
+        - "traefik.http.routers.stgae-frontend.rule=Host(`stage.iirms.ir`)"
         - "traefik.http.services.stage-frontend.loadbalancer.server.port=80"
 #volumes:
 #  node_modules:
