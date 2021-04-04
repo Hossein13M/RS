@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BranchSettingService } from 'app/services/feature-services/system-setting-services/branch-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
@@ -16,10 +14,6 @@ import * as _ from 'lodash';
     animations: [fuseAnimations],
 })
 export class BranchSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['bankName', 'branchCode', 'branchName', 'operation'];
-    searchFormGroup: FormGroup;
-
     data: any;
     column: Array<ColumnModel>;
 
@@ -38,10 +32,6 @@ export class BranchSettingListComponent implements OnInit {
                 id: 'bankName',
                 name: 'نام بانک',
                 type: 'string',
-                search: {
-                    type: 'select',
-                    mode: TableSearchMode.LOCAL,
-                },
             },
             {
                 id: 'code',
@@ -72,7 +62,7 @@ export class BranchSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.edit(row),
+                        operation: ({ row }: any) => this.put(row),
                     },
                     {
                         name: 'حذف',
@@ -93,19 +83,20 @@ export class BranchSettingListComponent implements OnInit {
 
     get(): void {
         this.branchService.getBankBranch().subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
             this.data = res.items;
             this.pagination.total = res.total;
             this.branchService.setPageDetailData(res);
         });
     }
 
-    add(): void {
+    post(): void {
         this.matDialog
             .open(BranchSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
             .subscribe((res) => {
-                if (res) this.get();
+                if (res) {
+                    this.get();
+                }
             });
     }
 
@@ -118,14 +109,14 @@ export class BranchSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.branchService.deleteBankBranch(row.id).subscribe((x) => {
+                    this.branchService.delete(row.id).subscribe((x) => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(row): void {
+    put(row): void {
         this.matDialog
             .open(BranchSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()

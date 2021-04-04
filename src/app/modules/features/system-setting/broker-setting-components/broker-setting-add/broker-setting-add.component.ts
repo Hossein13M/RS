@@ -18,57 +18,51 @@ export class BrokerSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<BrokerSettingAddComponent>,
         private bankService: BankService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private brokerService: BrokerSettingService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
             this.title = 'ایجاد ';
         }
-        this.bankService.getAllBank(this).subscribe((res: any) => {
+        this.bankService.getAllBank().subscribe((res: any) => {
             this.banks = res.items;
         });
         this.creatForm();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             name: [this.data ? this.data.name : '', Validators.required],
             code: [this.data ? this.data.code : '', Validators.required],
         });
     }
 
-    onCreateBranch() {
-        this.brokerService.createBrokerSetting(this.form.value, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
-            this.dialogRef.close(true);
+    onCreateBranch(): void {
+        this.brokerService.post(this.form.value).subscribe((res) => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
+            this.dialogRef.close(res);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = {
             id: this.data['id'],
             name: this.form.get('name').value,
             code: this.form.get('code').value,
         };
-        this.brokerService.updateBrokerSetting(obj, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+        this.brokerService.put(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
+            this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-     handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }
