@@ -121,11 +121,6 @@
                         <ng-template [ngTemplateOutlet]="col.cellTemplate" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
                     </div>
 
-                    <!-- Custom -->
-                    <div *ngIf="col.type == 'custom'">
-                        <ng-container *ngTemplateOutlet=""></ng-container>
-                    </div>
-
                     <!-- Operations -->
                     <div *ngIf="col.type == 'operation'">
                         <div>
