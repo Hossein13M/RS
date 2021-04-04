@@ -1,35 +1,28 @@
-<div class='page-layout'>
-
+<div class="page-layout">
     <!-- HEADER -->
-    <app-header pageTitle='لیست بانک‌ها'>
-        <button mat-raised-button
-                color='primary'
-                (click)='add()'>
+    <app-header pageTitle="لیست بانک‌ها">
+        <button mat-raised-button color="primary" (click)="add()">
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
     </app-header>
 
-    <div class='page-content'>
-        <div class='setting-container-back' dir='rtl'>
-            <div class='setting-panel fuse-card'>
-                <div style='width: 100%;'>
+    <div class="page-content">
+        <div class="setting-container-back" dir="rtl">
+            <div class="setting-panel fuse-card">
+                <div style="width: 100%">
+                    <app-table
+                        [data]="data"
+                        [columns]="column"
+                        [paginationSettings]="{ mode: 'backend' }"
+                        [paginationObj]="pagination"
+                        (paginationChange)="paginationControl($event)"
+                    ></app-table>
 
-                    <app-table [data]='data'
-                               [columns]='column'
-                               [paginationSettings]="{ mode: 'backend' }"
-                               [paginationObj]='pagination'
-                               (paginationChange)='paginationControl($event)'
-                               (searchCall)='search($event)'>
-                    </app-table>
-
-                    <ng-container *ngIf='dataSource.data.length===0'>
-                        <div
-                            style='display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column'>
-                            <img width='140px' height='140px' src='./assets/images/no-data.svg'>
-                            <div style='font-size: 13px;color: #449FDB;margin-top: 7px'>
-                                موردی وجود ندارد
-                            </div>
+                    <ng-container *ngIf="dataSource.data.length === 0">
+                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
                     <!--            <div class="add-btn">-->
