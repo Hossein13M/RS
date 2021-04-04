@@ -9,7 +9,7 @@ import { PaginationChangeType, PaginationSetting, TableSearchMode } from './tabl
 /**
  * Hoshman Risk's General Table Generator Document
  *
- * This table should use to create all tables of this project.
+ * This table should be used to create all tables of this project.
  *
  * @remarks
  *
