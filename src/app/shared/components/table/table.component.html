@@ -1,214 +1,224 @@
 <div *ngIf="dataSource" class="table-container">
     <form [formGroup]="searchForm">
-        <table mat-table #table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
-            <!-- Position Column -->
-            <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef>#</th>
+        <div class="table-container">
+            <table mat-table #table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
+                <!-- Position Column -->
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef>#</th>
 
-                <td mat-cell *matCellDef="let element; let i = index">
-                    <!--                {{(tss.pageEvent.pageSize * tss.pageEvent.currentIndex) + i + 1}}-->
-                </td>
-            </ng-container>
+                    <td mat-cell *matCellDef="let element; let i = index">
+                        <!--                {{(tss.pageEvent.pageSize * tss.pageEvent.currentIndex) + i + 1}}-->
+                    </td>
+                </ng-container>
 
-            <!-- Value Column Generator -->
-            <ng-container *ngFor="let col of columns" [matColumnDef]="col.id" [sticky]="col.sticky">
-                <th
-                    mat-header-cell
-                    [width]="col.width"
-                    [style.width]="col.width"
-                    [style.minWidth]="col.minWidth"
-                    [ngClass]="{ 'text-center': col.headerAlign === 'center' }"
-                    *matHeaderCellDef
-                >
-                    <!-- Normal Col Header -->
-                    <ng-container *ngIf="col && col.type != 'operation'">
-                        {{ col.name }}
-                    </ng-container>
+                <!-- Value Column Generator -->
+                <ng-container *ngFor="let col of columns" [matColumnDef]="col.id" [sticky]="col.sticky">
+                    <th
+                        mat-header-cell
+                        [width]="col.width"
+                        [style.width]="col.width"
+                        [style.minWidth]="col.minWidth"
+                        [ngClass]="{ 'text-center': col.headerAlign === 'center' }"
+                        *matHeaderCellDef
+                    >
+                        <!-- Normal Col Header -->
+                        <ng-container *ngIf="col && col.type != 'operation'">
+                            {{ col.name }}
+                        </ng-container>
 
-                    <!-- Operation Col Header -->
-                    <ng-container *ngIf="col && col.type === 'operation'">
-                        <div dir="rtl">
-                            <button
-                                mat-icon-button
-                                *ngIf="col.showSearchButtons !== false"
-                                [color]="showSearchBar ? 'primary' : ''"
-                                (click)="openSearchBar()"
-                            >
-                                <mat-icon class="mat-18">search</mat-icon>
-                            </button>
-
-                            <button mat-icon-button [matMenuTriggerFor]="saveMenu" *ngIf="col.showExportButtons !== false">
-                                <mat-icon class="mat-18">save</mat-icon>
-                            </button>
-                            <mat-menu #saveMenu="matMenu">
-                                <app-table-save-xls [data]="data" [columns]="columns"></app-table-save-xls>
-                                <app-table-save-csv [data]="data" [columns]="columns"></app-table-save-csv>
-                            </mat-menu>
-
-                            <!--   Header Operations   -->
-                            <ng-container *ngFor="let op of col.headerOperations">
-                                <button mat-icon-button *ngIf="!op?.raised" [color]="op.color" [matTooltip]="op.name" (click)="doOperationHeader(op)">
-                                    <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
-                                </button>
+                        <!-- Operation Col Header -->
+                        <ng-container *ngIf="col && col.type === 'operation'">
+                            <div dir="rtl">
                                 <button
-                                    mat-raised-button
-                                    *ngIf="op?.raised === true"
+                                    mat-icon-button
+                                    *ngIf="col.showSearchButtons !== false"
+                                    [color]="showSearchBar ? 'primary' : ''"
+                                    (click)="openSearchBar()"
+                                >
+                                    <mat-icon class="mat-18">search</mat-icon>
+                                </button>
+
+                                <button mat-icon-button [matMenuTriggerFor]="saveMenu" *ngIf="col.showExportButtons !== false">
+                                    <mat-icon class="mat-18">save</mat-icon>
+                                </button>
+                                <mat-menu #saveMenu="matMenu">
+                                    <app-table-save-xls [data]="data" [columns]="columns"></app-table-save-xls>
+                                    <app-table-save-csv [data]="data" [columns]="columns"></app-table-save-csv>
+                                </mat-menu>
+
+                                <!--   Header Operations   -->
+                                <ng-container *ngFor="let op of col.headerOperations">
+                                    <button
+                                        mat-icon-button
+                                        *ngIf="!op?.raised"
+                                        [color]="op.color"
+                                        [matTooltip]="op.name"
+                                        (click)="doOperationHeader(op)"
+                                    >
+                                        <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
+                                    </button>
+                                    <button
+                                        mat-raised-button
+                                        *ngIf="op?.raised === true"
+                                        [color]="op.color"
+                                        [matTooltip]="op.name"
+                                        (click)="doOperationHeader(op)"
+                                    >
+                                        <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
+                                    </button>
+                                </ng-container>
+                            </div>
+                        </ng-container>
+                    </th>
+
+                    <td
+                        mat-cell
+                        [width]="col.width"
+                        [style.width]="col.width"
+                        [style.minWidth]="col.minWidth"
+                        [ngClass]="{ 'text-center': col.dataAlign === 'center', clickable: doubleClickAble }"
+                        (click)="onClick(el)"
+                        *matCellDef="let el"
+                    >
+                        <!-- Price -->
+                        <div *ngIf="col.type == 'price'">
+                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | price }}
+                        </div>
+
+                        <!-- Number -->
+                        <div *ngIf="col.type == 'number'">
+                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
+                        </div>
+
+                        <!-- Profit -->
+                        <div *ngIf="col.type == 'profit'" class="profit">
+                            <div
+                                fxLayout="row wrap"
+                                fxLayoutAlign="end center"
+                                *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] < 0"
+                                class="negative"
+                            >
+                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
+                                <mat-icon class="mat-18">arrow_drop_down</mat-icon>
+                            </div>
+
+                            <div
+                                fxLayout="row wrap"
+                                fxLayoutAlign="end center"
+                                *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] > 0"
+                                class="positive"
+                            >
+                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
+                                <mat-icon class="mat-18">arrow_drop_up</mat-icon>
+                            </div>
+                        </div>
+
+                        <!-- String -->
+                        <div *ngIf="col.type == 'string'">
+                            {{ col.convert ? col.convert(el[col.id]) : el[col.id] }}
+                        </div>
+
+                        <!-- Date -->
+                        <div *ngIf="col.type == 'date'">
+                            {{ col.convert ? col.convert(el[col.id]) : el[col.id] }}
+                        </div>
+
+                        <!-- Custom -->
+                        <div *ngIf="col.type == 'custom' && isTemplateRef(col.cellTemplate)">
+                            <ng-template
+                                [ngTemplateOutlet]="col.cellTemplate"
+                                [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"
+                            ></ng-template>
+                        </div>
+
+                        <!-- Custom -->
+                        <div *ngIf="col.type == 'custom'">
+                            <ng-container *ngTemplateOutlet=""></ng-container>
+                        </div>
+
+                        <!-- Operations -->
+                        <div *ngIf="col.type == 'operation'">
+                            <div>
+                                <button
+                                    mat-icon-button
+                                    *ngFor="let op of el.tableOperation"
                                     [color]="op.color"
                                     [matTooltip]="op.name"
-                                    (click)="doOperationHeader(op)"
+                                    (click)="doOperation(el, op)"
                                 >
                                     <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
                                 </button>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <!-- Search Column Generator -->
+                <ng-container *ngFor="let col of columns" [matColumnDef]="col.id + '_search'">
+                    <th mat-header-cell [width]="col.width" [style.minWidth]="col.width" *matHeaderCellDef>
+                        <div *ngIf="col.search" dir="rtl">
+                            <!-- text -->
+                            <mat-form-field *ngIf="col.search.type == 'text'" appearance="outline" style="width: 100%">
+                                <input matInput [formControlName]="col.id" />
+                            </mat-form-field>
+
+                            <!-- Select -->
+                            <mat-form-field *ngIf="col.search.type == 'select'" appearance="outline" style="width: 100%">
+                                <mat-select [formControlName]="col.id">
+                                    <mat-option [value]=""> همه</mat-option>
+
+                                    <mat-option *ngFor="let op of col.search.options" [value]="op.value">
+                                        {{ op.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <!-- Date -->
+                            <mat-form-field *ngIf="col.search.type == 'date'" appearance="outline" style="width: 100%">
+                                <mat-label>فیلتر تاریخ</mat-label>
+                                <input matInput [matDatepicker]="picker" [formControlName]="col.id" />
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+
+                            <!-- DateRange -->
+                            <ng-container *ngIf="col.search.type == 'date_range'" [formGroupName]="col.id">
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <mat-label>از تاریخ</mat-label>
+                                    <input matInput [matDatepicker]="endPicker" formControlName="fromDate" />
+                                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #endPicker></mat-datepicker>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" style="width: 100%">
+                                    <mat-label>تا تاریخ</mat-label>
+                                    <input matInput [matDatepicker]="startPicker" formControlName="toDate" />
+                                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                                    <mat-datepicker #startPicker></mat-datepicker>
+                                </mat-form-field>
                             </ng-container>
                         </div>
-                    </ng-container>
-                </th>
+                    </th>
+                </ng-container>
 
-                <td
-                    mat-cell
-                    [width]="col.width"
-                    [style.width]="col.width"
-                    [style.minWidth]="col.minWidth"
-                    [ngClass]="{ 'text-center': col.dataAlign === 'center', clickable: doubleClickAble }"
-                    (click)="onClick(el)"
-                    *matCellDef="let el"
-                >
-                    <!-- Price -->
-                    <div *ngIf="col.type == 'price'">
-                        {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | price }}
-                    </div>
+                <!--    Header Row    -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="header"></tr>
 
-                    <!-- Number -->
-                    <div *ngIf="col.type == 'number'">
-                        {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
-                    </div>
+                <!--    Search Row    -->
+                <ng-container *ngIf="hasSearch">
+                    <tr mat-header-row *matHeaderRowDef="searchColumns; sticky: true" class="header" [ngClass]="{ 'd-none': !showSearchBar }"></tr>
+                </ng-container>
 
-                    <!-- Profit -->
-                    <div *ngIf="col.type == 'profit'" class="profit">
-                        <div
-                            fxLayout="row wrap"
-                            fxLayoutAlign="end center"
-                            *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] < 0"
-                            class="negative"
-                        >
-                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
-                            <mat-icon class="mat-18">arrow_drop_down</mat-icon>
-                        </div>
-
-                        <div
-                            fxLayout="row wrap"
-                            fxLayoutAlign="end center"
-                            *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] > 0"
-                            class="positive"
-                        >
-                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
-                            <mat-icon class="mat-18">arrow_drop_up</mat-icon>
-                        </div>
-                    </div>
-
-                    <!-- String -->
-                    <div *ngIf="col.type == 'string'">
-                        {{ col.convert ? col.convert(el[col.id]) : el[col.id] }}
-                    </div>
-
-                    <!-- Date -->
-                    <div *ngIf="col.type == 'date'">
-                        {{ col.convert ? col.convert(el[col.id]) : el[col.id] }}
-                    </div>
-
-                    <!-- Custom -->
-                    <div *ngIf="col.type == 'custom' && isTemplateRef(col.cellTemplate)">
-                        <ng-template [ngTemplateOutlet]="col.cellTemplate" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
-                    </div>
-
-                    <!-- Custom -->
-                    <div *ngIf="col.type == 'custom'">
-                        <ng-container *ngTemplateOutlet=""></ng-container>
-                    </div>
-
-                    <!-- Operations -->
-                    <div *ngIf="col.type == 'operation'">
-                        <div>
-                            <button
-                                mat-icon-button
-                                *ngFor="let op of el.tableOperation"
-                                [color]="op.color"
-                                [matTooltip]="op.name"
-                                (click)="doOperation(el, op)"
-                            >
-                                <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </td>
-            </ng-container>
-
-            <!-- Search Column Generator -->
-            <ng-container *ngFor="let col of columns" [matColumnDef]="col.id + '_search'">
-                <th mat-header-cell [width]="col.width" [style.minWidth]="col.width" *matHeaderCellDef>
-                    <div *ngIf="col.search" dir="rtl">
-                        <!-- text -->
-                        <mat-form-field *ngIf="col.search.type == 'text'" appearance="outline" style="width: 100%">
-                            <input matInput [formControlName]="col.id" />
-                        </mat-form-field>
-
-                        <!-- Select -->
-                        <mat-form-field *ngIf="col.search.type == 'select'" appearance="outline" style="width: 100%">
-                            <mat-select [formControlName]="col.id">
-                                <mat-option [value]=""> همه</mat-option>
-
-                                <mat-option *ngFor="let op of col.search.options" [value]="op.value">
-                                    {{ op.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <!-- Date -->
-                        <mat-form-field *ngIf="col.search.type == 'date'" appearance="outline" style="width: 100%">
-                            <mat-label>فیلتر تاریخ</mat-label>
-                            <input matInput [matDatepicker]="picker" [formControlName]="col.id" />
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                        </mat-form-field>
-
-                        <!-- DateRange -->
-                        <ng-container *ngIf="col.search.type == 'date_range'" [formGroupName]="col.id">
-                            <mat-form-field appearance="outline" style="width: 100%">
-                                <mat-label>از تاریخ</mat-label>
-                                <input matInput [matDatepicker]="endPicker" formControlName="fromDate" />
-                                <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #endPicker></mat-datepicker>
-                            </mat-form-field>
-
-                            <mat-form-field appearance="outline" style="width: 100%">
-                                <mat-label>تا تاریخ</mat-label>
-                                <input matInput [matDatepicker]="startPicker" formControlName="toDate" />
-                                <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #startPicker></mat-datepicker>
-                            </mat-form-field>
-                        </ng-container>
-                    </div>
-                </th>
-            </ng-container>
-
-            <!--    Header Row    -->
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="header"></tr>
-
-            <!--    Search Row    -->
-            <ng-container *ngIf="hasSearch">
-                <tr mat-header-row *matHeaderRowDef="searchColumns; sticky: true" class="header" [ngClass]="{ 'd-none': !showSearchBar }"></tr>
-            </ng-container>
-
-            <!--    Data Row    -->
-            <tr
-                mat-row
-                *matRowDef="let row; columns: displayedColumns; let i = index"
-                (click)="selectRow(i)"
-                [ngClass]="{ 'table-selected': row.tableSelect }"
-                [@animate]="{ value: '*', params: { y: '100%' } }"
-            ></tr>
-        </table>
-
+                <!--    Data Row    -->
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns; let i = index"
+                    (click)="selectRow(i)"
+                    [ngClass]="{ 'table-selected': row.tableSelect }"
+                    [@animate]="{ value: '*', params: { y: '100%' } }"
+                ></tr>
+            </table>
+        </div>
         <mat-paginator
             dir="rtl"
             class="paginator"
