@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { TableSearchMode } from '../../../shared/components/table/table-consts';
 import { YieldCurveService } from '../yield-curve.service';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'app-yield-curve',
@@ -138,7 +139,7 @@ export class YieldCurveComponent implements OnInit {
         this.showingData = null;
         this.gapData = null;
         this.yieldCurveData = null;
-        this.yieldCurveService.getYieldCurve(this.searchFormGroup.value.date).subscribe(
+        this.yieldCurveService.getYieldCurve(formatDate(this.searchFormGroup.value.date, 'yyyy-MM-dd', 'en_US')).subscribe(
             (response) => {
                 this.yieldCurveData = response.yieldCurve;
                 // TODO: data bug!!
