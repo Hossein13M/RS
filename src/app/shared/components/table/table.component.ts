@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import { PaginationChangeType, PaginationSetting, TableSearchMode } from './table-consts';
+import { PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 
 /**
  * Hoshman Risk's General Table Generator Document

@@ -19,19 +19,21 @@ export interface PaginationChangeType {
 }
 
 // Column types
-export interface ColumnModel {
+export type ColumnModel = SimpleColumnModel | OperationColumnModel;
+
+interface SimpleColumnModel {
     id: string;
     name: string;
     type: 'string' | 'date' | 'price' | 'number' | 'operation';
     minWidth?: string;
     sticky?: boolean;
     search?: {
-        type: string;
+        type: 'select' | 'text' | 'date';
         mode: TableSearchMode;
     };
 }
 
-export interface OperationColumnModel extends ColumnModel {
+interface OperationColumnModel extends SimpleColumnModel {
     type: 'operation';
     operations: Array<{
         name: string;
