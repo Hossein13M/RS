@@ -6,6 +6,8 @@ import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/con
 import { BrokerSettingAddComponent } from '../broker-setting-add/broker-setting-add.component';
 import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { StateType } from '#shared/state-type.enum';
+import { StateManager } from '#shared/pipes/stateManager.pipe';
 
 @Component({
     selector: 'app-broker-setting-list',
@@ -16,17 +18,16 @@ import * as _ from 'lodash';
 export class BrokerSettingListComponent implements OnInit {
     constructor(private matDialog: MatDialog, public brokerService: BrokerSettingService) {}
 
-    data: any;
+    data: any = [];
     column: Array<ColumnModel>;
-
-    pagination = { skip: 0, limit: 5, total: 100 };
+    state = StateType.LOADING;
 
     ngOnInit(): void {
+        this.initColumns();
         this.get();
-        this.initializeColumns();
     }
 
-    initializeColumns(): void {
+    initColumns(): void {
         this.column = [
             {
                 id: 'name',
@@ -49,7 +50,7 @@ export class BrokerSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.put(row),
+                        operation: ({ row }: any) => this.update(row),
                     },
                     {
                         name: 'حذف',
@@ -62,22 +63,16 @@ export class BrokerSettingListComponent implements OnInit {
         ];
     }
 
-    paginationControl(pageEvent: PaginationChangeType): void {
-        this.brokerService.specificationModel.limit = pageEvent.limit;
-        this.brokerService.specificationModel.skip = pageEvent.skip;
-        this.get();
-    }
-
     get(): void {
-        this.brokerService.getBrokerSettings().subscribe((res: any) => {
-            console.log(res);
-            this.data = res;
-            this.pagination.total = res.lenght;
-            this.brokerService.setPageDetailData(res);
-        });
+        this.brokerService
+            .getBrokerSettings()
+            .pipe(StateManager({ state: this.state }))
+            .subscribe((res: any) => {
+                this.data = res;
+            });
     }
 
-    post(): void {
+    add(): void {
         this.matDialog
             .open(BrokerSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
@@ -90,7 +85,10 @@ export class BrokerSettingListComponent implements OnInit {
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
@@ -101,7 +99,7 @@ export class BrokerSettingListComponent implements OnInit {
             });
     }
 
-    put(row): void {
+    update(row): void {
         this.matDialog
             .open(BrokerSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
