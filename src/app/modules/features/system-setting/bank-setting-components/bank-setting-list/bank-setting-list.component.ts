@@ -5,7 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { BankService } from 'app/services/feature-services/bank.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { BankSettingAddComponent } from '../bank-setting-add/bank-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table-consts';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'app-bank-setting-list',

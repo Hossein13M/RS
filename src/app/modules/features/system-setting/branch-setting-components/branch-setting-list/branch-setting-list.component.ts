@@ -6,7 +6,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { BranchSettingService } from 'app/services/feature-services/system-setting-services/branch-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { BranchSettingAddComponent } from '../branch-setting-add/branch-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table-consts';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
 
 @Component({
