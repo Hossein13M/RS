@@ -32,7 +32,7 @@ export class BranchSettingAddComponent implements OnInit {
         } else {
             this.title = 'ایجاد ';
         }
-        this.bankService.getAllBank(this).subscribe((res: any) => {
+        this.bankService.get(this).subscribe((res: any) => {
             this.banks = res.items;
         });
         this.creatForm();

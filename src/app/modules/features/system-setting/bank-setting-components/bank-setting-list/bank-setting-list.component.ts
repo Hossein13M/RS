@@ -14,10 +14,7 @@ import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/comp
     animations: [fuseAnimations],
 })
 export class BankSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['name', 'operation'];
-
-    data: any;
+    data: any = [];
     column: Array<ColumnModel>;
 
     pagination = { skip: 0, limit: 5, total: 100 };
@@ -25,8 +22,11 @@ export class BankSettingListComponent implements OnInit {
     constructor(private matDialog: MatDialog, public bankService: BankService) {}
 
     ngOnInit(): void {
+        this.initColumns();
         this.get();
+    }
 
+    initColumns(): void {
         this.column = [
             {
                 name: 'نام بانک',
@@ -48,7 +48,7 @@ export class BankSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.edit(row),
+                        operation: ({ row }: any) => this.update(row),
                     },
                     {
                         name: 'حذف',
@@ -61,21 +61,21 @@ export class BankSettingListComponent implements OnInit {
         ];
     }
 
-    get(): void {
-        this.bankService.getAllBank().subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
-            this.data = res.items;
-            this.bankService.setPageDetailData(res);
-        });
-    }
-
     paginationControl(pageEvent: PaginationChangeType): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    add(): void {
+    get(): void {
+        this.bankService.get().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
+            this.bankService.setPageDetailData(res);
+        });
+    }
+
+    create(): void {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -98,14 +98,14 @@ export class BankSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.bankService.deleteBank(row.id).subscribe((x) => {
+                    this.bankService.delete(row.id).subscribe((x) => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(row): void {
+    update(row): void {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
