@@ -5,8 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BankService } from 'app/services/feature-services/bank.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { BankSettingAddComponent } from '../bank-setting-add/bank-setting-add.component';
+import { PaginationChangeType, TableSearchMode } from '../../../../../shared/components/table/table-consts';
 
 @Component({
     selector: 'app-bank-setting-list',
@@ -17,33 +17,66 @@ import { BankSettingAddComponent } from '../bank-setting-add/bank-setting-add.co
 export class BankSettingListComponent implements OnInit {
     public dataSource = new MatTableDataSource<any>();
     public displayedColumns = ['name', 'operation'];
-    nameSearchCtrl = new FormControl();
 
-    pageHandler(e: PagingEvent) {
-        this.bankService.specificationModel.limit = e.pageSize;
-        this.bankService.specificationModel.skip = e.currentIndex * e.pageSize;
-        this.get();
-    }
+    data: any;
+    column: Array<any>;
+
+    pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, public bankService: BankService) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.get();
-        this.nameSearchCtrl.valueChanges.subscribe((res) => {
-            this.bankService.specificationModel.searchKeyword['searchKeyword'] = res;
-            this.bankService.specificationModel.skip = 0;
-            this.get();
-        });
+
+        this.column = [
+            {
+                name: 'نام بانک',
+                id: 'name',
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER,
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.edit(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
     }
 
-    get() {
+    get(): void {
         this.bankService.getAllBank(this).subscribe((res: any) => {
             this.dataSource = new MatTableDataSource<any>(res.items);
+            this.data = res.items;
             this.bankService.setPageDetailData(res);
         });
     }
 
-    add() {
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    add(): void {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -57,7 +90,7 @@ export class BankSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
@@ -66,30 +99,32 @@ export class BankSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.bankService.deleteBank(element.id, this).subscribe((x) => {
-                        this.get();
+                    this.bankService.deleteBank(row.id, this).subscribe((x) => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(element) {
+    edit(row): void {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: element,
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.get();
+                    row.name = res.name;
                 }
             });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 
-    isWorking: any;
+    search(keyword: any): void {
+        console.log(keyword);
+    }
 }
