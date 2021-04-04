@@ -1,9 +1,7 @@
 <div class="page-layout">
     <!-- HEADER -->
     <app-header pageTitle="نگاشت کد دفتر">
-        <button mat-raised-button
-                (click)="add()"
-                color="primary">
+        <button mat-raised-button (click)="create()" color="primary">
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
@@ -12,119 +10,20 @@
     <div class="page-content">
         <div class="setting-container-back" dir="rtl">
             <div [formGroup]="searchFormGroup" class="setting-panel fuse-card">
-                <div style="width: 100%;">
-                    <mat-table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                        <ng-container matColumnDef="symbol">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field  appearance="fill" style="width: 80%;">
-                                    <mat-label>
-                                        نماد
-                                    </mat-label>
-                                    <input matInput formControlName="searchKeyword">
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    {{element?.symbol}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field  appearance="fill" style="width: 80%">
-                                    <mat-label> وضعیت
-
-                                    </mat-label>
-                                    <mat-select formControlName="searchKeyword">
-                                        <mat-option style="text-align: right"
-                                                    [value]="'active'">
-                                            فعال
-                                        </mat-option>
-                                        <mat-option style="text-align: right"
-                                                    [value]="'deleted'">
-                                            غیرفعال
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error>
-                                        وارد کردن این فیلد الزامی است.
-                                    </mat-error>
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    <span *ngIf="element?.status === 'active'">
-                                        فعال
-                                    </span>
-                                    <span *ngIf="element?.status === 'deleted'">
-                                        حذف شده
-                                    </span>
-                                </p>
-
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="glCode">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field  appearance="fill" style="width: 80%;">
-                                    <mat-label>
-                                        کد دفتر کل
-                                    </mat-label>
-                                    <input matInput formControlName="searchKeyword">
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    {{element?.glCode}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-
-                        <!--  Operations  -->
-                        <ng-container matColumnDef="operation">
-
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                عملیات
-                            </mat-header-cell>
-
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <button mat-icon-button
-                                        (click)="edit(element)"
-                                        style="margin-left: 10px"
-                                        color="accent">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                                <button mat-icon-button
-                                        (click)="delete(element)"
-                                        color="warn">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </mat-cell>
-
-                        </ng-container>
-
-
-                        <mat-header-row style="top: -12px!important;"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
-                                 [@animate]="{value:'*',params:{y:'100%'}}">
-                        </mat-row>
-                    </mat-table>
-                    <app-paginator [data]="glSettingService.pageEvent" (page)="pageHandler($event)"
-                                   [pageSizeOptions]="[5, 10, 13]"></app-paginator>
-                    <ng-container *ngIf="dataSource.data.length===0">
-                        <div
-                            style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                            <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                            <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                                موردی وجود ندارد
-                            </div>
+                <div style="width: 100%">
+                    <app-table
+                        [data]="data"
+                        [columns]="column"
+                        [paginationSettings]="{ mode: 'backend' }"
+                        [paginationObj]="pagination"
+                        (paginationChange)="paginationControl($event)"
+                    ></app-table>
+                    <ng-container *ngIf="data?.length === 0">
+                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
-                    <!--            <div class="add-btn">-->
-                    <!--                <button (click)="add()" mat-raised-button color="primary">-->
-                    <!--                    <mat-icon>add</mat-icon>-->
-                    <!--                    ایجاد-->
-                    <!--                </button>-->
-                    <!--            </div>-->
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 <div class="page-layout">
     <!-- HEADER -->
     <app-header pageTitle="لیست بانک‌ها">
-        <button mat-raised-button color="primary" (click)="add()">
+        <button mat-raised-button color="primary" (click)="create()">
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
@@ -18,19 +18,12 @@
                         [paginationObj]="pagination"
                         (paginationChange)="paginationControl($event)"
                     ></app-table>
-
-                    <ng-container *ngIf="dataSource.data.length === 0">
+                    <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
                             <img width="140px" height="140px" src="./assets/images/no-data.svg" />
                             <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
-                    <!--            <div class="add-btn">-->
-                    <!--                <button (click)="add()" mat-raised-button color="primary">-->
-                    <!--                    <mat-icon>add</mat-icon>-->
-                    <!--                    ایجاد-->
-                    <!--                </button>-->
-                    <!--            </div>-->
                 </div>
             </div>
         </div>

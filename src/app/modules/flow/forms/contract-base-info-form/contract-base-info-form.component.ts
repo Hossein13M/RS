@@ -69,7 +69,7 @@ export class ContractBaseInfoFormComponent implements OnInit , OnChanges {
     }
 
     getAllBanks(): void {
-        this.bankService.getAllBank(this).subscribe((res: any) => {
+        this.bankService.get(this).subscribe((res: any) => {
             this.banks = res.items;
         });
     }

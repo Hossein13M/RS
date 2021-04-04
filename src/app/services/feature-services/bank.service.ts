@@ -13,21 +13,21 @@ export class BankService extends Specification {
         super();
     }
 
-    getAllBank(fc?: FormContainer) {
+    get(fc?: FormContainer) {
         const api = BankService.getBankApi + this.generateSpecificationString();
         return this.apiClientService.get(api, fc);
     }
 
-    createBank(model, fc?: FormContainer) {
+    create(model, fc?: FormContainer) {
         return this.apiClientService.post(BankService.getBankApi, model, fc);
     }
 
-    deleteBank(id, fc?: FormContainer) {
+    delete(id, fc?: FormContainer) {
         const api = BankService.getBankApi + '/' + id;
         return this.apiClientService.delete(api, fc);
     }
 
-    updateBank(model, fc?: FormContainer) {
+    update(model, fc?: FormContainer) {
         return this.apiClientService.put(BankService.getBankApi, fc, model);
     }
 }
