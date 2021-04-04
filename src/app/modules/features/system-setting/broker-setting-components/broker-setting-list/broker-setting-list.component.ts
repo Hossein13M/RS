@@ -72,7 +72,7 @@ export class BrokerSettingListComponent implements OnInit {
         this.brokerService.getBrokerSettings().subscribe((res: any) => {
             console.log(res);
             this.data = res;
-            this.pagination.total = res.total;
+            this.pagination.total = res.lenght;
             this.brokerService.setPageDetailData(res);
         });
     }
