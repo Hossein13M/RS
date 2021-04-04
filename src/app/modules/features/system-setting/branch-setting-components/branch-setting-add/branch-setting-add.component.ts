@@ -62,7 +62,7 @@ export class BranchSettingAddComponent implements OnInit {
         };
         this.branchSettingService.updateBankBranch(obj, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 
