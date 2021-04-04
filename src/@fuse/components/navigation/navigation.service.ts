@@ -139,7 +139,6 @@ export class FuseNavigationService {
 
         const access = {};
         this.userInfoService.userInfo?.role?.split('|').forEach((el) => (access[el] = true));
-        console.log('role', this.userInfoService.userInfo?.role);
         const checkAccess = (nav: any): Array<any> => {
             const out = [];
             if (nav?.forEach) {
@@ -190,7 +189,6 @@ export class FuseNavigationService {
             // Add to the registry
             this._registry[key] = newNavigation;
             this._currentNavigationKey = key;
-            console.log(newNavigation);
             // Notify the subject
             this._onNavigationRegistered.next([key, newNavigation]);
         };
@@ -199,7 +197,6 @@ export class FuseNavigationService {
             run();
         } else {
             this.userInfoService.userInfo$.pipe(take(1)).subscribe(() => {
-                console.log('run');
                 run();
             });
         }
