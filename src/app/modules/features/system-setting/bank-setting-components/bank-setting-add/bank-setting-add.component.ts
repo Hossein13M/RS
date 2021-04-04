@@ -51,7 +51,7 @@ export class BankSettingAddComponent implements OnInit {
         };
         this.bankService.updateBank(obj, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 
@@ -59,7 +59,7 @@ export class BankSettingAddComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 
