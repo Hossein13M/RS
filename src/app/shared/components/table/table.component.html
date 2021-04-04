@@ -1,4 +1,4 @@
-<div *ngIf="dataSource" class="table-container">
+<div *ngIf="dataSource">
     <form [formGroup]="searchForm">
         <div class="table-container">
             <table mat-table #table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
