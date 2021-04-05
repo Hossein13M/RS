@@ -29,7 +29,7 @@ export class InstrumentSettingAddComponent implements OnInit {
     ) {}
 
     getBoard() {
-        this.bourseBoardService.getBourseBorad(this).subscribe((res: any) => {
+        this.bourseBoardService.get(this).subscribe((res: any) => {
             this.boards = res;
         });
     }
