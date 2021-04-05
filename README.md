@@ -41,6 +41,37 @@ We shall always start the function that is responsible for the API call with a p
 -   Start _Boolean_ variables names with 'is' or 'has/have' except 'loading' which is pretty obvious that it keeps a boolean variable.
 -   Start methods that listen to changes or functions that should be invoked on a certain point with 'on' (example: onSubmit() for a function when the user clicks on a button or onCalculationFinish() for a function that should be invoked after some calculation ends)
 
+## Git-Flow
+
+### We have three main branches:
+
+**Master** : This branch is the main branch and we will only push clean code that has been passed the tests.
+
+**Release**: With the help of Git-Tag, we will release our software on this branch, this branch is the one that we represent to support guys to test.
+
+**Dev** : The branch that we are working on, adding features and debugging the issues.
+
+_Other Important features:_
+
+**HotFix**: For bugs that appears in production, we will create a hotfix group branch from _master_ branch and then merge it into _master_
+
+**BugFix**: Failed tests and trello cards reported by support team should be fixed in this group branch and then this will be merged into _master_
+
+**feat**: Features will be added to _dev_ branch and they are group branch as well.
+
+## State Management for Services:
+
+We have an enum responsible for demonstrating current state of application. The enum is like bellow:
+
+export enum stateType {
+'LOADING',
+'FAILED',
+'SUCCESS',
+...
+}
+
+The strings in the enum could be diffrent than above.
+
 ## How to add/remove module
 
 **For Older Modules**
