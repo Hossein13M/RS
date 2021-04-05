@@ -1,4 +1,4 @@
-import { ColumnMode } from '@swimlane/ngx-datatable';
+import { TemplateRef } from '@angular/core';
 
 export enum TableSearchMode {
     'NONE',
@@ -19,12 +19,12 @@ export interface PaginationChangeType {
 }
 
 // Column types
-export type ColumnModel = SimpleColumnModel | OperationColumnModel;
+export type ColumnModel = SimpleColumnModel | OperationColumnModel | CustomColModel;
 
 interface SimpleColumnModel {
     id: string;
     name: string;
-    type: 'string' | 'date' | 'price' | 'number' | 'operation';
+    type: 'string' | 'date' | 'price' | 'number' | 'custom' | 'operation';
     minWidth?: string;
     sticky?: boolean;
     search?: {
@@ -40,6 +40,11 @@ interface OperationColumnModel extends SimpleColumnModel {
         icon: string;
         color: 'primary' | 'warn' | 'accent';
         // tslint:disable-next-line:variable-name
-        operation({row}): void;
+        operation({ row }): void;
     }>;
+}
+
+interface CustomColModel extends SimpleColumnModel {
+    type: 'custom';
+    cellTemplate: TemplateRef<any>
 }
