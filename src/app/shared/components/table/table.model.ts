@@ -30,7 +30,12 @@ interface SimpleColumnModel {
     search?: {
         type: 'select' | 'text' | 'date';
         mode: TableSearchMode;
+        options?: Array<{
+            value: string | number | boolean;
+            name: string | number;
+        }>
     };
+    convert?(value: unknown): any;
 }
 
 interface OperationColumnModel extends SimpleColumnModel {
