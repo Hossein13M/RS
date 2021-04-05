@@ -11,7 +11,6 @@ import { CreateComplianceDto } from '../models/create-compliance-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -58,9 +57,7 @@ export class ComplianceService extends BaseService {
      * This method doesn't expect any request body.
      */
     complianceControllerGetCompliance(params: { id: number }): Observable<ComplianceDto> {
-        return this.complianceControllerGetCompliance$Response(params).pipe(
-            map((r: StrictHttpResponse<ComplianceDto>) => r.body as ComplianceDto)
-        );
+        return this.complianceControllerGetCompliance$Response(params).pipe(map((r: StrictHttpResponse<ComplianceDto>) => r.body as ComplianceDto));
     }
 
     /**

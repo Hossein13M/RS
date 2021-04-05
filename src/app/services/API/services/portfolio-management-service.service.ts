@@ -13,7 +13,6 @@ import { UpdateIpsHistoryResponseDto } from '../models/update-ips-history-respon
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -34,11 +33,7 @@ export class PortfolioManagementServiceService extends BaseService {
      * This method doesn't expect any request body.
      */
     portfolioManagementControllerGetOrganizations$Response(params?: {}): Observable<StrictHttpResponse<Array<GetOrganizationsDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerGetOrganizationsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerGetOrganizationsPath, 'get');
         if (params) {
         }
         return this.http
@@ -85,11 +80,7 @@ export class PortfolioManagementServiceService extends BaseService {
          */
         date?: Date;
     }): Observable<StrictHttpResponse<Array<GetTradingBookResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerGetTradingBookPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerGetTradingBookPath, 'get');
         if (params) {
             rb.query('date', params.date, {});
         }
@@ -234,11 +225,7 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerSearchTradeDataPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerSearchTradeDataPath, 'get');
         if (params) {
             rb.query('organization', params.organization, {});
             rb.query('tradeType', params.tradeType, {});
@@ -304,9 +291,7 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<void> {
-        return this.portfolioManagementControllerSearchTradeData$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.portfolioManagementControllerSearchTradeData$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 
     /**
@@ -328,11 +313,7 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<StrictHttpResponse<Array<GetDailyInvestmentReportResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerDailyInvestmentReportPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerDailyInvestmentReportPath, 'get');
         if (params) {
             rb.query('date', params.date, {});
             rb.query('limit', params.limit, {});
@@ -391,11 +372,7 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<StrictHttpResponse<UpdateIpsHistoryResponseDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerUpdateIpsHistoryPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerUpdateIpsHistoryPath, 'get');
         if (params) {
             rb.query('date', params.date, {});
             rb.query('limit', params.limit, {});

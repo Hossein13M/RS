@@ -11,7 +11,6 @@ import { IssuerResponseDto } from '../models/issuer-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -58,9 +57,7 @@ export class IssueLicenseService extends BaseService {
      * This method doesn't expect any request body.
      */
     issueLicenseControllerGetIssueLicense(params: { issueLicenseId: number }): Observable<IssuerDto> {
-        return this.issueLicenseControllerGetIssueLicense$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issueLicenseControllerGetIssueLicense$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
 
     /**
@@ -203,9 +200,7 @@ export class IssueLicenseService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     issueLicenseControllerUpdateIssueLicense(params: { body: IssuerDto }): Observable<IssuerDto> {
-        return this.issueLicenseControllerUpdateIssueLicense$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issueLicenseControllerUpdateIssueLicense$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
 
     /**
@@ -246,8 +241,6 @@ export class IssueLicenseService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     issueLicenseControllerCreateIssueLicense(params: { body: CreateIssuerDto }): Observable<IssuerDto> {
-        return this.issueLicenseControllerCreateIssueLicense$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issueLicenseControllerCreateIssueLicense$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
 }

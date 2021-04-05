@@ -12,7 +12,6 @@ import { UpdateFlowInstanceDto } from '../models/update-flow-instance-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -234,9 +233,7 @@ export class FlowInstanceService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    flowInstanceControllerGetContractsProgressReport$Response(params?: {}): Observable<
-        StrictHttpResponse<GetContractsProgressReportResponseDto>
-    > {
+    flowInstanceControllerGetContractsProgressReport$Response(params?: {}): Observable<StrictHttpResponse<GetContractsProgressReportResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, FlowInstanceService.FlowInstanceControllerGetContractsProgressReportPath, 'get');
         if (params) {
         }

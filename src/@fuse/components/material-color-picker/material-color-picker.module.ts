@@ -12,18 +12,7 @@ import { FuseMaterialColorPickerComponent } from '@fuse/components/material-colo
 
 @NgModule({
     declarations: [FuseMaterialColorPickerComponent],
-    imports: [
-        CommonModule,
-
-        FlexLayoutModule,
-
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatTooltipModule,
-
-        FusePipesModule,
-    ],
+    imports: [CommonModule, FlexLayoutModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule, FusePipesModule],
     exports: [FuseMaterialColorPickerComponent],
 })
 export class FuseMaterialColorPickerModule {}

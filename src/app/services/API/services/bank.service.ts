@@ -11,7 +11,6 @@ import { CreateBankDto } from '../models/create-bank-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -146,9 +145,7 @@ export class BankService extends BaseService {
      * This method doesn't expect any request body.
      */
     bankControllerGetBanks(params?: { limit?: number; skip?: number; searchKeyword?: any }): Observable<BankResponseDto> {
-        return this.bankControllerGetBanks$Response(params).pipe(
-            map((r: StrictHttpResponse<BankResponseDto>) => r.body as BankResponseDto)
-        );
+        return this.bankControllerGetBanks$Response(params).pipe(map((r: StrictHttpResponse<BankResponseDto>) => r.body as BankResponseDto));
     }
 
     /**

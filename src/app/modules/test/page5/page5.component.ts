@@ -47,8 +47,7 @@ export class Page5Component implements OnInit {
         this.cf
             .get('handValue')
             .setValue(
-                Math.trunc(Math.random() * (Math.abs(this.cf.value.maxRange) + Math.abs(this.cf.value.minRange))) -
-                    Math.abs(this.cf.value.minRange)
+                Math.trunc(Math.random() * (Math.abs(this.cf.value.maxRange) + Math.abs(this.cf.value.minRange))) - Math.abs(this.cf.value.minRange)
             );
     }
 }

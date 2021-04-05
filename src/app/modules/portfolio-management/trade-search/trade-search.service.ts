@@ -11,9 +11,12 @@ export class TradeSearchService {
 
     searchTrade(paginationInfo: any, searchParams: any) {
         let params = this.prepareParams(searchParams);
-        return this.http.get<any>(`/api/v1/portfolio-management-service/search-trade-data?skip=${paginationInfo.skip}&limit=${paginationInfo.limit}`, {
-            params: params,
-        });
+        return this.http.get<any>(
+            `/api/v1/portfolio-management-service/search-trade-data?skip=${paginationInfo.skip}&limit=${paginationInfo.limit}`,
+            {
+                params: params,
+            }
+        );
     }
 
     private prepareParams(searchParams: any): HttpParams {

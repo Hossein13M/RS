@@ -13,7 +13,6 @@ import { UpdateEventDto } from '../models/update-event-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -65,11 +64,7 @@ export class EventService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventControllerGetEvents(params?: {
-        id?: number;
-        eventLevelId?: number;
-        eventTitleId?: number;
-    }): Observable<Array<GetEventsResponseDto>> {
+    eventControllerGetEvents(params?: { id?: number; eventLevelId?: number; eventTitleId?: number }): Observable<Array<GetEventsResponseDto>> {
         return this.eventControllerGetEvents$Response(params).pipe(
             map((r: StrictHttpResponse<Array<GetEventsResponseDto>>) => r.body as Array<GetEventsResponseDto>)
         );
@@ -129,10 +124,7 @@ export class EventService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventControllerUpdateEvent$Response(params: {
-        id: number;
-        body: UpdateEventDto;
-    }): Observable<StrictHttpResponse<CreateEventResponseDto>> {
+    eventControllerUpdateEvent$Response(params: { id: number; body: UpdateEventDto }): Observable<StrictHttpResponse<CreateEventResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, EventService.EventControllerUpdateEventPath, 'put');
         if (params) {
             rb.path('id', params.id, {});

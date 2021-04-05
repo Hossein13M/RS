@@ -9,7 +9,6 @@ import { CreateAuthItemAssignmentDto } from '../models/create-auth-item-assignme
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -32,11 +31,7 @@ export class AuthItemAssignmentService extends BaseService {
     authItemAssignmentControllerCreateAuthItemAssignment$Response(params: {
         body: CreateAuthItemAssignmentDto;
     }): Observable<StrictHttpResponse<CreateAuthItemAssignmentDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            AuthItemAssignmentService.AuthItemAssignmentControllerCreateAuthItemAssignmentPath,
-            'post'
-        );
+        const rb = new RequestBuilder(this.rootUrl, AuthItemAssignmentService.AuthItemAssignmentControllerCreateAuthItemAssignmentPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
         }
@@ -61,9 +56,7 @@ export class AuthItemAssignmentService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    authItemAssignmentControllerCreateAuthItemAssignment(params: {
-        body: CreateAuthItemAssignmentDto;
-    }): Observable<CreateAuthItemAssignmentDto> {
+    authItemAssignmentControllerCreateAuthItemAssignment(params: { body: CreateAuthItemAssignmentDto }): Observable<CreateAuthItemAssignmentDto> {
         return this.authItemAssignmentControllerCreateAuthItemAssignment$Response(params).pipe(
             map((r: StrictHttpResponse<CreateAuthItemAssignmentDto>) => r.body as CreateAuthItemAssignmentDto)
         );
@@ -84,11 +77,7 @@ export class AuthItemAssignmentService extends BaseService {
         itemName: string;
         userId: string;
     }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            AuthItemAssignmentService.AuthItemAssignmentControllerDeleteAuthItemAssignmentPath,
-            'delete'
-        );
+        const rb = new RequestBuilder(this.rootUrl, AuthItemAssignmentService.AuthItemAssignmentControllerDeleteAuthItemAssignmentPath, 'delete');
         if (params) {
             rb.path('itemName', params.itemName, {});
             rb.path('userId', params.userId, {});
@@ -115,9 +104,7 @@ export class AuthItemAssignmentService extends BaseService {
      * This method doesn't expect any request body.
      */
     authItemAssignmentControllerDeleteAuthItemAssignment(params: { itemName: string; userId: string }): Observable<void> {
-        return this.authItemAssignmentControllerDeleteAuthItemAssignment$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.authItemAssignmentControllerDeleteAuthItemAssignment$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 
     /**
@@ -158,9 +145,7 @@ export class AuthItemAssignmentService extends BaseService {
      * This method doesn't expect any request body.
      */
     authItemAssignmentControllerGetUsersByAuthName(params: { itemName: string }): Observable<void> {
-        return this.authItemAssignmentControllerGetUsersByAuthName$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.authItemAssignmentControllerGetUsersByAuthName$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 
     /**
@@ -175,11 +160,7 @@ export class AuthItemAssignmentService extends BaseService {
      * This method doesn't expect any request body.
      */
     authItemAssignmentControllerGetAssignedAccessesToUser$Response(params: { userId: number }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            AuthItemAssignmentService.AuthItemAssignmentControllerGetAssignedAccessesToUserPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, AuthItemAssignmentService.AuthItemAssignmentControllerGetAssignedAccessesToUserPath, 'get');
         if (params) {
             rb.path('userId', params.userId, {});
         }
@@ -205,9 +186,7 @@ export class AuthItemAssignmentService extends BaseService {
      * This method doesn't expect any request body.
      */
     authItemAssignmentControllerGetAssignedAccessesToUser(params: { userId: number }): Observable<void> {
-        return this.authItemAssignmentControllerGetAssignedAccessesToUser$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.authItemAssignmentControllerGetAssignedAccessesToUser$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 
     /**
@@ -222,11 +201,7 @@ export class AuthItemAssignmentService extends BaseService {
      * This method doesn't expect any request body.
      */
     authItemAssignmentControllerGetInheritedPermissions$Response(params: { itemName: string }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            AuthItemAssignmentService.AuthItemAssignmentControllerGetInheritedPermissionsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, AuthItemAssignmentService.AuthItemAssignmentControllerGetInheritedPermissionsPath, 'get');
         if (params) {
             rb.path('itemName', params.itemName, {});
         }
@@ -252,8 +227,6 @@ export class AuthItemAssignmentService extends BaseService {
      * This method doesn't expect any request body.
      */
     authItemAssignmentControllerGetInheritedPermissions(params: { itemName: string }): Observable<void> {
-        return this.authItemAssignmentControllerGetInheritedPermissions$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.authItemAssignmentControllerGetInheritedPermissions$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 }

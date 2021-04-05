@@ -12,7 +12,6 @@ import { UpdateDepositDto } from '../models/update-deposit-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

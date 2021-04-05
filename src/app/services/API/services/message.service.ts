@@ -13,7 +13,6 @@ import { MessageResponseWithDetailsDto } from '../models/message-response-with-d
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -33,10 +32,7 @@ export class MessageService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    fromUserControllerGetOutboxMessages$Response(params?: {
-        limit?: number;
-        skip?: number;
-    }): Observable<StrictHttpResponse<MessageListResponseDto>> {
+    fromUserControllerGetOutboxMessages$Response(params?: { limit?: number; skip?: number }): Observable<StrictHttpResponse<MessageListResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, MessageService.FromUserControllerGetOutboxMessagesPath, 'get');
         if (params) {
             rb.query('limit', params.limit, {});

@@ -63,7 +63,7 @@ export class InstrumentTypeSettingListComponent implements OnInit {
             });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 
