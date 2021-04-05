@@ -4,7 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { BourseBoardService } from 'app/services/feature-services/system-setting-services/bourse-board.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { BourseBoardSettingAddComponent } from '../bourse-board-setting-add/bourse-board-setting-add.component';
-import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
+import { ColumnModel } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
 
 @Component({
@@ -13,15 +13,14 @@ import * as _ from 'lodash';
     styleUrls: ['./bourse-board-setting-list.component.scss'],
     animations: [fuseAnimations],
 })
-
 export class BourseBoardSettingListComponent implements OnInit {
     data: any = [];
     column: Array<ColumnModel>;
-    pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, private bourseBoardService: BourseBoardService) {}
 
     ngOnInit(): void {
+        this.initColumn();
         this.get();
     }
 
@@ -61,17 +60,9 @@ export class BourseBoardSettingListComponent implements OnInit {
         ];
     }
 
-    paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
-        this.get();
-    }
-
     get(): void {
         this.bourseBoardService.get().subscribe((res: any) => {
-            this.data = res.items;
-            this.pagination.total = res.total;
-            this.bourseBoardService.setPageDetailData(res);
+            this.data = res;
         });
     }
 

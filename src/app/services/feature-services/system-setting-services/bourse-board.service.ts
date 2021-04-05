@@ -9,11 +9,6 @@ import { PageEvent } from '#shared/models/Specification';
 export class BourseBoardService {
     private static bourseBoardApi = '/api/v1/bourse-board';
 
-    public pageEvent: PageEvent = {
-        currentIndex: 0,
-        pageSize: 10,
-    };
-
     constructor(private apiClientService: ApiClientService) {}
 
     get(fc?: FormContainer) {
@@ -31,11 +26,5 @@ export class BourseBoardService {
     delete(id, fc?: FormContainer) {
         const api = BourseBoardService.bourseBoardApi + '/' + id;
         return this.apiClientService.delete(api, fc);
-    }
-
-    public setPageDetailData(res): void {
-        this.pageEvent.length = res.limit;
-        this.pageEvent.currentIndex = res.skip / res.limit;
-        this.pageEvent.length = res.total;
     }
 }
