@@ -11,7 +11,6 @@ import { IssuerResponseDto } from '../models/issuer-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -158,9 +157,7 @@ export class IssuerService extends BaseService {
          */
         searchKeyword?: any;
     }): Observable<IssuerResponseDto> {
-        return this.issuerControllerGetIssuers$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerResponseDto>) => r.body as IssuerResponseDto)
-        );
+        return this.issuerControllerGetIssuers$Response(params).pipe(map((r: StrictHttpResponse<IssuerResponseDto>) => r.body as IssuerResponseDto));
     }
 
     /**

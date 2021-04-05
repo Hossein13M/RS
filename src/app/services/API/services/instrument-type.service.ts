@@ -12,7 +12,6 @@ import { UpdateInstrumentTypeDto } from '../models/update-instrument-type-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -85,9 +84,7 @@ export class InstrumentTypeService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    instrumentTypeControllerUpdateInstrumentType$Response(params: {
-        body: UpdateInstrumentTypeDto;
-    }): Observable<StrictHttpResponse<SentSuccessDto>> {
+    instrumentTypeControllerUpdateInstrumentType$Response(params: { body: UpdateInstrumentTypeDto }): Observable<StrictHttpResponse<SentSuccessDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentTypeService.InstrumentTypeControllerUpdateInstrumentTypePath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');

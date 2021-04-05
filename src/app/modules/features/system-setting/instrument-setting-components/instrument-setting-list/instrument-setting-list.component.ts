@@ -16,18 +16,7 @@ import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrum
 })
 export class InstrumentSettingListComponent implements OnInit {
     public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = [
-        'name',
-        'nameEn',
-        'symbol',
-        'symbolEn',
-        'boardName',
-        'marketName',
-        'isActive',
-        'isInBourse',
-        'type',
-        'operation',
-    ];
+    public displayedColumns = ['name', 'nameEn', 'symbol', 'symbolEn', 'boardName', 'marketName', 'isActive', 'isInBourse', 'type', 'operation'];
     searchFormGroup: FormGroup;
 
     constructor(private matDialog: MatDialog, private fb: FormBuilder, public newInstrumentService: NewInstrumentService) {}
@@ -113,7 +102,7 @@ export class InstrumentSettingListComponent implements OnInit {
             });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

@@ -13,7 +13,6 @@ import { UpdateOperatorDto } from '../models/update-operator-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -207,9 +206,7 @@ export class OperatorService extends BaseService {
      * This method doesn't expect any request body.
      */
     operatorControllerGetOperator(params: { id: number }): Observable<OperatorInfoDto> {
-        return this.operatorControllerGetOperator$Response(params).pipe(
-            map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto)
-        );
+        return this.operatorControllerGetOperator$Response(params).pipe(map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto));
     }
 
     // hossein: from here we are going to use the new approach for getting data

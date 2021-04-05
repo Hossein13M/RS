@@ -10,7 +10,6 @@ import { CreateEventInformPartyResponseDto } from '../models/create-event-inform
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -60,10 +59,7 @@ export class EventInformPartyService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventInformPartyControllerFindEventInformParty(params?: {
-        eventId?: number;
-        id?: number;
-    }): Observable<Array<CreateEventInformPartyResponseDto>> {
+    eventInformPartyControllerFindEventInformParty(params?: { eventId?: number; id?: number }): Observable<Array<CreateEventInformPartyResponseDto>> {
         return this.eventInformPartyControllerFindEventInformParty$Response(params).pipe(
             map((r: StrictHttpResponse<Array<CreateEventInformPartyResponseDto>>) => r.body as Array<CreateEventInformPartyResponseDto>)
         );

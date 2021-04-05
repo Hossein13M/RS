@@ -11,7 +11,6 @@ import { UserInfoWithTokenDto } from '../models/user-info-with-token-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -58,9 +57,7 @@ export class AuthService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     authControllerLogin(params: { body: LoginDto }): Observable<UserInfoWithTokenDto> {
-        return this.authControllerLogin$Response(params).pipe(
-            map((r: StrictHttpResponse<UserInfoWithTokenDto>) => r.body as UserInfoWithTokenDto)
-        );
+        return this.authControllerLogin$Response(params).pipe(map((r: StrictHttpResponse<UserInfoWithTokenDto>) => r.body as UserInfoWithTokenDto));
     }
 
     /**

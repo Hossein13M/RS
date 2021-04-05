@@ -10,7 +10,6 @@ import { GetFlowCategoryDto } from '../models/get-flow-category-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -77,9 +76,7 @@ export class FlowCategoryService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowCategoryControllerCreateFlowCategory$Response(params: {
-        body: CreateFlowCategoryDto;
-    }): Observable<StrictHttpResponse<GetFlowCategoryDto>> {
+    flowCategoryControllerCreateFlowCategory$Response(params: { body: CreateFlowCategoryDto }): Observable<StrictHttpResponse<GetFlowCategoryDto>> {
         const rb = new RequestBuilder(this.rootUrl, FlowCategoryService.FlowCategoryControllerCreateFlowCategoryPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

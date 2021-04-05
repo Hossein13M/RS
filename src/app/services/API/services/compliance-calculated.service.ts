@@ -11,7 +11,6 @@ import { RsponceComplianceCalculatedDto } from '../models/rsponce-compliance-cal
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -31,9 +30,7 @@ export class ComplianceCalculatedService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    complianceCalculatedControllerGetFundListComplianceCalculated$Response(params?: {}): Observable<
-        StrictHttpResponse<Array<FundListDto>>
-    > {
+    complianceCalculatedControllerGetFundListComplianceCalculated$Response(params?: {}): Observable<StrictHttpResponse<Array<FundListDto>>> {
         const rb = new RequestBuilder(
             this.rootUrl,
             ComplianceCalculatedService.ComplianceCalculatedControllerGetFundListComplianceCalculatedPath,
@@ -149,11 +146,7 @@ export class ComplianceCalculatedService extends BaseService {
          */
         date?: string;
     }): Observable<StrictHttpResponse<Array<RsponceComplianceCalculatedDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            ComplianceCalculatedService.ComplianceCalculatedControllerGetComplianceCalculatedPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, ComplianceCalculatedService.ComplianceCalculatedControllerGetComplianceCalculatedPath, 'get');
         if (params) {
             rb.query('fundNationalCode', params.fundNationalCode, {});
             rb.query('date', params.date, {});

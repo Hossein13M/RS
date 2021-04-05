@@ -80,7 +80,7 @@ export class BourseMarketSettingListComponent implements OnInit {
             });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 }

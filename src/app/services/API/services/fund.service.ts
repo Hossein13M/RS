@@ -13,7 +13,6 @@ import { UpdateFundDto } from '../models/update-fund-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -163,9 +162,7 @@ export class FundService extends BaseService {
         fundType?: number;
         searchKeyword?: any;
     }): Observable<FundListResponseDto> {
-        return this.fundControllerGetFunds$Response(params).pipe(
-            map((r: StrictHttpResponse<FundListResponseDto>) => r.body as FundListResponseDto)
-        );
+        return this.fundControllerGetFunds$Response(params).pipe(map((r: StrictHttpResponse<FundListResponseDto>) => r.body as FundListResponseDto));
     }
 
     /**
@@ -206,9 +203,7 @@ export class FundService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundControllerUpdateFund(params: { body: UpdateFundDto }): Observable<ResponseFundDto> {
-        return this.fundControllerUpdateFund$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto)
-        );
+        return this.fundControllerUpdateFund$Response(params).pipe(map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto));
     }
 
     /**
@@ -249,8 +244,6 @@ export class FundService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundControllerCreateFund(params: { body: CreateFundDto }): Observable<ResponseFundDto> {
-        return this.fundControllerCreateFund$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto)
-        );
+        return this.fundControllerCreateFund$Response(params).pipe(map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto));
     }
 }

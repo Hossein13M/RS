@@ -13,7 +13,6 @@ import { StandardGlWithParentDto } from '../models/standard-gl-with-parent-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -208,9 +207,7 @@ export class StandardGlService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    standardGlControllerUpdateStandardGl$Response(params: {
-        body: StandardGlWithIdDto;
-    }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
+    standardGlControllerUpdateStandardGl$Response(params: { body: StandardGlWithIdDto }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, StandardGlService.StandardGlControllerUpdateStandardGlPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -253,9 +250,7 @@ export class StandardGlService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    standardGlControllerCreateStandardGl$Response(params: {
-        body: CreateStandardGlDto;
-    }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
+    standardGlControllerCreateStandardGl$Response(params: { body: CreateStandardGlDto }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, StandardGlService.StandardGlControllerCreateStandardGlPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

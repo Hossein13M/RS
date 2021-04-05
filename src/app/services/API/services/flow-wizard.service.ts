@@ -12,7 +12,6 @@ import { PauseFlowWizardDto } from '../models/pause-flow-wizard-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -79,9 +78,7 @@ export class FlowWizardService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowWizardControllerConfirmFlowWizard$Response(params: {
-        body: FlowWizardCommonDto;
-    }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
+    flowWizardControllerConfirmFlowWizard$Response(params: { body: FlowWizardCommonDto }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, FlowWizardService.FlowWizardControllerConfirmFlowWizardPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -124,9 +121,7 @@ export class FlowWizardService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowWizardControllerRejectFlowWizard$Response(params: {
-        body: PauseFlowWizardDto;
-    }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
+    flowWizardControllerRejectFlowWizard$Response(params: { body: PauseFlowWizardDto }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, FlowWizardService.FlowWizardControllerRejectFlowWizardPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -169,9 +164,7 @@ export class FlowWizardService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowWizardControllerPauseFlowWizard$Response(params: {
-        body: PauseFlowWizardDto;
-    }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
+    flowWizardControllerPauseFlowWizard$Response(params: { body: PauseFlowWizardDto }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, FlowWizardService.FlowWizardControllerPauseFlowWizardPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -214,9 +207,7 @@ export class FlowWizardService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowWizardControllerReopenFlowWizard$Response(params: {
-        body: FlowWizardCommonDto;
-    }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
+    flowWizardControllerReopenFlowWizard$Response(params: { body: FlowWizardCommonDto }): Observable<StrictHttpResponse<GetFlowWizardResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, FlowWizardService.FlowWizardControllerReopenFlowWizardPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

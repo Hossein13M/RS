@@ -10,7 +10,6 @@ import { OrganiztionSupervisorDto } from '../models/organiztion-supervisor-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -33,11 +32,7 @@ export class OrganiztionSupervisorService extends BaseService {
     organiztionSupervisorControllerGetOrganiztionSupervisor$Response(params: {
         id: number;
     }): Observable<StrictHttpResponse<OrganiztionSupervisorDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            OrganiztionSupervisorService.OrganiztionSupervisorControllerGetOrganiztionSupervisorPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, OrganiztionSupervisorService.OrganiztionSupervisorControllerGetOrganiztionSupervisorPath, 'get');
         if (params) {
             rb.path('id', params.id, {});
         }
@@ -129,11 +124,7 @@ export class OrganiztionSupervisorService extends BaseService {
     organiztionSupervisorControllerGetOrganiztionSupervisors$Response(params?: {
         searchKeyword?: any;
     }): Observable<StrictHttpResponse<Array<OrganiztionSupervisorDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            OrganiztionSupervisorService.OrganiztionSupervisorControllerGetOrganiztionSupervisorsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, OrganiztionSupervisorService.OrganiztionSupervisorControllerGetOrganiztionSupervisorsPath, 'get');
         if (params) {
             rb.query('searchKeyword', params.searchKeyword, {});
         }
@@ -158,9 +149,7 @@ export class OrganiztionSupervisorService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    organiztionSupervisorControllerGetOrganiztionSupervisors(params?: {
-        searchKeyword?: any;
-    }): Observable<Array<OrganiztionSupervisorDto>> {
+    organiztionSupervisorControllerGetOrganiztionSupervisors(params?: { searchKeyword?: any }): Observable<Array<OrganiztionSupervisorDto>> {
         return this.organiztionSupervisorControllerGetOrganiztionSupervisors$Response(params).pipe(
             map((r: StrictHttpResponse<Array<OrganiztionSupervisorDto>>) => r.body as Array<OrganiztionSupervisorDto>)
         );
@@ -209,9 +198,7 @@ export class OrganiztionSupervisorService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    organiztionSupervisorControllerUpdateOrganiztionSupervisor(params: {
-        body: OrganiztionSupervisorDto;
-    }): Observable<OrganiztionSupervisorDto> {
+    organiztionSupervisorControllerUpdateOrganiztionSupervisor(params: { body: OrganiztionSupervisorDto }): Observable<OrganiztionSupervisorDto> {
         return this.organiztionSupervisorControllerUpdateOrganiztionSupervisor$Response(params).pipe(
             map((r: StrictHttpResponse<OrganiztionSupervisorDto>) => r.body as OrganiztionSupervisorDto)
         );

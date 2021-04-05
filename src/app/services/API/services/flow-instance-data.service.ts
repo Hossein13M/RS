@@ -10,7 +10,6 @@ import { CreateFlowInstanceDataResponseDto } from '../models/create-flow-instanc
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -60,10 +59,7 @@ export class FlowInstanceDataService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    flowInstanceDataControllerGetFlowInstanceData(params: {
-        flowInstanceId: string;
-        formId: string;
-    }): Observable<CreateFlowInstanceDataResponseDto> {
+    flowInstanceDataControllerGetFlowInstanceData(params: { flowInstanceId: string; formId: string }): Observable<CreateFlowInstanceDataResponseDto> {
         return this.flowInstanceDataControllerGetFlowInstanceData$Response(params).pipe(
             map((r: StrictHttpResponse<CreateFlowInstanceDataResponseDto>) => r.body as CreateFlowInstanceDataResponseDto)
         );
@@ -108,9 +104,7 @@ export class FlowInstanceDataService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowInstanceDataControllerUpdateFlowInstanceData(params: {
-        body: CreateFlowInstanceDataDto;
-    }): Observable<CreateFlowInstanceDataResponseDto> {
+    flowInstanceDataControllerUpdateFlowInstanceData(params: { body: CreateFlowInstanceDataDto }): Observable<CreateFlowInstanceDataResponseDto> {
         return this.flowInstanceDataControllerUpdateFlowInstanceData$Response(params).pipe(
             map((r: StrictHttpResponse<CreateFlowInstanceDataResponseDto>) => r.body as CreateFlowInstanceDataResponseDto)
         );
@@ -155,9 +149,7 @@ export class FlowInstanceDataService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowInstanceDataControllerCreateFlowInstanceData(params: {
-        body: CreateFlowInstanceDataDto;
-    }): Observable<CreateFlowInstanceDataResponseDto> {
+    flowInstanceDataControllerCreateFlowInstanceData(params: { body: CreateFlowInstanceDataDto }): Observable<CreateFlowInstanceDataResponseDto> {
         return this.flowInstanceDataControllerCreateFlowInstanceData$Response(params).pipe(
             map((r: StrictHttpResponse<CreateFlowInstanceDataResponseDto>) => r.body as CreateFlowInstanceDataResponseDto)
         );
