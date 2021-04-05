@@ -19,9 +19,7 @@
                     <app-table
                         [data]="data"
                         [columns]="column"
-                        [paginationSettings]="{ mode: 'backend' }"
-                        [paginationObj]="pagination"
-                        (paginationChange)="paginationControl($event)"
+                        [paginationSettings]="{ mode: 'local' }"
                     ></app-table>
                     <ng-template let-row="row" #status>
                         <p>{{row.status === 'active'? 'فعال' : 'غیر فعال'}}</p>
