@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BourseBoardService } from 'app/services/feature-services/system-setting-services/bourse-board.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { BourseBoardSettingAddComponent } from '../bourse-board-setting-add/bourse-board-setting-add.component';
+import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-bourse-board-setting-list',
@@ -12,24 +13,69 @@ import { BourseBoardSettingAddComponent } from '../bourse-board-setting-add/bour
     styleUrls: ['./bourse-board-setting-list.component.scss'],
     animations: [fuseAnimations],
 })
+
 export class BourseBoardSettingListComponent implements OnInit {
-    constructor(private matDialog: MatDialog, private bourseBoard: BourseBoardService) {}
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['name', 'code', 'operation'];
+    data: any = [];
+    column: Array<ColumnModel>;
+    pagination = { skip: 0, limit: 5, total: 100 };
 
-    isWorking: any;
+    constructor(private matDialog: MatDialog, private bourseBoardService: BourseBoardService) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.get();
     }
 
-    get() {
-        this.bourseBoard.getBourseBorad(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res);
+    initColumn(): void {
+        this.column = [
+            {
+                id: 'name',
+                name: 'نام',
+                type: 'string',
+            },
+            {
+                id: 'code',
+                name: 'کد',
+                type: 'string',
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.edit(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(): void {
+        this.bourseBoardService.get().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
+            this.bourseBoardService.setPageDetailData(res);
         });
     }
 
-    add() {
+    add(): void {
         this.matDialog
             .open(BourseBoardSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -43,7 +89,7 @@ export class BourseBoardSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
@@ -52,28 +98,24 @@ export class BourseBoardSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.bourseBoard.deleteBourseBorad(element.id, this).subscribe((x) => {
-                        this.get();
+                    this.bourseBoardService.delete(row.id).subscribe(() => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(element) {
+    edit(row): void {
         this.matDialog
             .open(BourseBoardSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: element,
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.get();
+                    _.assign(row, res);
                 }
             });
-    }
-
-     handleError(): boolean {
-        return false;
     }
 }
