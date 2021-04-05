@@ -18,7 +18,7 @@
         "lint": "ng lint",
         "e2e": "ng e2e",
         "bundle-report": "webpack-bundle-analyzer dist/stats.json",
-        "format:check": "prettier --list-different 'src/**/*.ts'",
+        "format:check": "pretty-quick --staged --pattern \"**/*.*(ts)\"",
         "format:write": "prettier --write 'src/**/*.ts'"
     },
     "lint-staged": {
@@ -129,6 +129,7 @@
         "lint-staged": "10.5.4",
         "persian-date": "0.3.1-b",
         "prettier": "2.2.1",
+        "pretty-quick": "3.1.0",
         "protractor": "~7.0.0",
         "ts-node": "7.0.1",
         "tslint": "~6.1.0",
