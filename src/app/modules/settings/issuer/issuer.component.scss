@@ -29,11 +29,6 @@
 
 .content {
     overflow: hidden;
-
-    .sidebar {
-        &:not(.locked-open) {
-        }
-    }
 }
 
 :host {
