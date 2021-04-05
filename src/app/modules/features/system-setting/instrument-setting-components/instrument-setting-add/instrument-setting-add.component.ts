@@ -67,18 +67,18 @@ export class InstrumentSettingAddComponent implements OnInit {
     }
 
     onCreateBranch() {
-        this.newInstrumentService.createInstrument(this.form.value, this).subscribe((res) => {
+        this.newInstrumentService.create(this.form.value, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
     onEditBranch() {
-        let obj = this.form.value;
+        const obj = this.form.value;
         obj['id'] = this.data.id;
-        this.newInstrumentService.updateInstrument(obj, this).subscribe((res) => {
+        this.newInstrumentService.update(obj, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 

@@ -21,7 +21,7 @@
                         [paginationSettings]="{ mode: 'local'}">
                     </app-table>
 
-                    <ng-container *ngIf='data?.length === 0 && state === "present"'>
+                    <ng-container *ngIf='data?.length === 0'>
                         <div
                             style='display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column'>
                             <img width='140px' height='140px' src='./assets/images/no-data.svg' />
