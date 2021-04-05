@@ -45,17 +45,17 @@ We shall always start the function that is responsible for the API call with a p
 
 ### We have three main branches:
 
-**Master** : This branch is the main branch and we will only push clean code that has been passed the tests.
+**master** : This branch is the main branch and we will only push clean code that has been passed the tests.
 
-**Release**: With the help of Git-Tag, we will release our software on this branch, this branch is the one that we represent to support guys to test.
+**stage**: With the help of Git-Tag, we will release our software on this branch, this branch is the one that we represent to support guys to test.
 
-**Dev** : The branch that we are working on, adding features and debugging the issues.
+**dev** : The branch that we are working on, adding features and debugging the issues.
 
 _Other Important features:_
 
-**HotFix**: For bugs that appears in production, we will create a hotfix group branch from _master_ branch and then merge it into _master_
+**hot-fix**: For bugs that appears in production, we will create a hotfix group branch from _master_ branch and then merge it into _master_
 
-**BugFix**: Failed tests and trello cards reported by support team should be fixed in this group branch and then this will be merged into _master_
+**bug-fix**: Failed tests and trello cards reported by support team should be fixed in this group branch and then this will be merged into _stage_
 
 **feat**: Features will be added to _dev_ branch and they are group branch as well.
 
