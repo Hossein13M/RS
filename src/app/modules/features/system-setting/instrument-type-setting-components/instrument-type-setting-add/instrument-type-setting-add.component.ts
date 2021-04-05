@@ -35,7 +35,7 @@ export class InstrumentTypeSettingAddComponent implements OnInit {
     }
 
     getMarket() {
-        this.bourseMarketService.getBourseMarket(this).subscribe((res: any) => {
+        this.bourseMarketService.get(this).subscribe((res: any) => {
             this.markets = res;
         });
     }
