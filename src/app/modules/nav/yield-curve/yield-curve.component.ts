@@ -155,7 +155,7 @@ export class YieldCurveComponent implements OnInit {
 
                 if (response.yieldCurveDetails.length > 0) {
                     this.yieldCurveDetailsData = response.yieldCurveDetails;
-                    this.showingData = this.yieldCurveDetailsData.slice(0, 10);
+                    this.showingData = this.yieldCurveDetailsData;
                     this.show = true;
                 }
             },
