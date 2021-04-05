@@ -59,6 +59,8 @@ _Other Important features:_
 
 **feat**: Features will be added to _dev_ branch and they are group branch as well.
 
+**refactor**: For refactoring project and then merging it into _dev_.
+
 ## State Management for Services:
 
 We have an enum responsible for demonstrating current state of application. The enum is like bellow:
