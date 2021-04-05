@@ -39,7 +39,7 @@ export class BourseMarketSettingAddComponent implements OnInit {
     }
 
     onCreateBranch() {
-        this.bourseMarketService.createBourseMarket(this.form.value, this).subscribe((res) => {
+        this.bourseMarketService.create(this.form.value, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -51,9 +51,9 @@ export class BourseMarketSettingAddComponent implements OnInit {
             name: this.form.get('name').value,
             code: this.form.get('code').value,
         };
-        this.bourseMarketService.updateBourseMarket(obj, this).subscribe((res) => {
+        this.bourseMarketService.update(obj, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 
