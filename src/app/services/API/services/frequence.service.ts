@@ -10,7 +10,6 @@ import { FrequenceDto } from '../models/frequence-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -57,9 +56,7 @@ export class FrequenceService extends BaseService {
      * This method doesn't expect any request body.
      */
     frequenceControllerGetFrequence(params: { id: number }): Observable<FrequenceDto> {
-        return this.frequenceControllerGetFrequence$Response(params).pipe(
-            map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto)
-        );
+        return this.frequenceControllerGetFrequence$Response(params).pipe(map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto));
     }
 
     /**
@@ -184,9 +181,7 @@ export class FrequenceService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     frequenceControllerUpdateFrequence(params: { body: FrequenceDto }): Observable<FrequenceDto> {
-        return this.frequenceControllerUpdateFrequence$Response(params).pipe(
-            map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto)
-        );
+        return this.frequenceControllerUpdateFrequence$Response(params).pipe(map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto));
     }
 
     /**
@@ -227,8 +222,6 @@ export class FrequenceService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     frequenceControllerCreateFrequence(params: { body: CreateFrequenceDto }): Observable<FrequenceDto> {
-        return this.frequenceControllerCreateFrequence$Response(params).pipe(
-            map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto)
-        );
+        return this.frequenceControllerCreateFrequence$Response(params).pipe(map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto));
     }
 }

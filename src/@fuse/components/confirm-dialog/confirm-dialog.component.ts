@@ -14,8 +14,5 @@ export class FuseConfirmDialogComponent {
      *
      * @param {MatDialogRef<FuseConfirmDialogComponent>} dialogRef
      */
-    constructor(
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        public dialogRef: MatDialogRef<FuseConfirmDialogComponent>
-    ) {}
+    constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<FuseConfirmDialogComponent>) {}
 }

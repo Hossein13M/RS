@@ -7,7 +7,6 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { Subject } from 'rxjs';
 import { delay, filter, take, takeUntil } from 'rxjs/operators';
 
-
 @Component({
     selector: 'navbar-vertical-style-2',
     templateUrl: './style-2.component.html',

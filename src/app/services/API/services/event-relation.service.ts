@@ -11,7 +11,6 @@ import { UpdateEventRelationDto } from '../models/update-event-relation-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -61,10 +60,7 @@ export class EventRelationService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventRelationControllerGetEventRelations(params?: {
-        id?: number;
-        eventId?: number;
-    }): Observable<Array<CreateEventRelationResponseDto>> {
+    eventRelationControllerGetEventRelations(params?: { id?: number; eventId?: number }): Observable<Array<CreateEventRelationResponseDto>> {
         return this.eventRelationControllerGetEventRelations$Response(params).pipe(
             map((r: StrictHttpResponse<Array<CreateEventRelationResponseDto>>) => r.body as Array<CreateEventRelationResponseDto>)
         );
@@ -157,10 +153,7 @@ export class EventRelationService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventRelationControllerUpdateEventRelation(params: {
-        id: number;
-        body: UpdateEventRelationDto;
-    }): Observable<CreateEventRelationResponseDto> {
+    eventRelationControllerUpdateEventRelation(params: { id: number; body: UpdateEventRelationDto }): Observable<CreateEventRelationResponseDto> {
         return this.eventRelationControllerUpdateEventRelation$Response(params).pipe(
             map((r: StrictHttpResponse<CreateEventRelationResponseDto>) => r.body as CreateEventRelationResponseDto)
         );

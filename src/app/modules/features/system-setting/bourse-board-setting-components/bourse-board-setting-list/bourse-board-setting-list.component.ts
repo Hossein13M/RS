@@ -73,7 +73,7 @@ export class BourseBoardSettingListComponent implements OnInit {
             });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 }

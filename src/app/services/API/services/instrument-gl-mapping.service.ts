@@ -11,7 +11,6 @@ import { InstGlMappingResponseDto } from '../models/inst-gl-mapping-response-dto
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -34,11 +33,7 @@ export class InstrumentGlMappingService extends BaseService {
     instrumentGlMappingControllerGetInstrumentGlMapping$Response(params: {
         instrumentGLMappingId: number;
     }): Observable<StrictHttpResponse<InstGlMappingDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            InstrumentGlMappingService.InstrumentGlMappingControllerGetInstrumentGlMappingPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, InstrumentGlMappingService.InstrumentGlMappingControllerGetInstrumentGlMappingPath, 'get');
         if (params) {
             rb.path('instrumentGLMappingId', params.instrumentGLMappingId, {});
         }
@@ -80,14 +75,8 @@ export class InstrumentGlMappingService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    instrumentGlMappingControllerDeleteInstrumentGlMapping$Response(params: {
-        instrumentGLMappingId: number;
-    }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            InstrumentGlMappingService.InstrumentGlMappingControllerDeleteInstrumentGlMappingPath,
-            'delete'
-        );
+    instrumentGlMappingControllerDeleteInstrumentGlMapping$Response(params: { instrumentGLMappingId: number }): Observable<StrictHttpResponse<void>> {
+        const rb = new RequestBuilder(this.rootUrl, InstrumentGlMappingService.InstrumentGlMappingControllerDeleteInstrumentGlMappingPath, 'delete');
         if (params) {
             rb.path('instrumentGLMappingId', params.instrumentGLMappingId, {});
         }
@@ -138,11 +127,7 @@ export class InstrumentGlMappingService extends BaseService {
          */
         searchKeyword?: any;
     }): Observable<StrictHttpResponse<InstGlMappingResponseDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            InstrumentGlMappingService.InstrumentGlMappingControllerGetInstrumentsGlMappingPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, InstrumentGlMappingService.InstrumentGlMappingControllerGetInstrumentsGlMappingPath, 'get');
         if (params) {
             rb.query('limit', params.limit, {});
             rb.query('skip', params.skip, {});
@@ -197,11 +182,7 @@ export class InstrumentGlMappingService extends BaseService {
     instrumentGlMappingControllerUpdateInstrumentGlMapping$Response(params: {
         body: InstGlMappingDto;
     }): Observable<StrictHttpResponse<InstGlMappingDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            InstrumentGlMappingService.InstrumentGlMappingControllerUpdateInstrumentGlMappingPath,
-            'put'
-        );
+        const rb = new RequestBuilder(this.rootUrl, InstrumentGlMappingService.InstrumentGlMappingControllerUpdateInstrumentGlMappingPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
         }
@@ -246,11 +227,7 @@ export class InstrumentGlMappingService extends BaseService {
     instrumentGlMappingControllerCreateInstrumentGlMapping$Response(params: {
         body: CreateInstGlMappingDto;
     }): Observable<StrictHttpResponse<InstGlMappingDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            InstrumentGlMappingService.InstrumentGlMappingControllerCreateInstrumentGlMappingPath,
-            'post'
-        );
+        const rb = new RequestBuilder(this.rootUrl, InstrumentGlMappingService.InstrumentGlMappingControllerCreateInstrumentGlMappingPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
         }

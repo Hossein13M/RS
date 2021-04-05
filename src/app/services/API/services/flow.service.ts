@@ -12,7 +12,6 @@ import { UpdateFlowDto } from '../models/update-flow-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -153,9 +152,7 @@ export class FlowService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     flowControllerUpdateFlow(params: { id: string; body: UpdateFlowDto }): Observable<GetFlowResponseDto> {
-        return this.flowControllerUpdateFlow$Response(params).pipe(
-            map((r: StrictHttpResponse<GetFlowResponseDto>) => r.body as GetFlowResponseDto)
-        );
+        return this.flowControllerUpdateFlow$Response(params).pipe(map((r: StrictHttpResponse<GetFlowResponseDto>) => r.body as GetFlowResponseDto));
     }
 
     /**

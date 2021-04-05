@@ -11,7 +11,6 @@ import { UpdateBrokerDto } from '../models/update-broker-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -115,10 +114,7 @@ export class BrokerService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    brokerControllerGetBrokers$Response(params?: {
-        name?: string;
-        code?: string;
-    }): Observable<StrictHttpResponse<Array<GetBrokerResponseDto>>> {
+    brokerControllerGetBrokers$Response(params?: { name?: string; code?: string }): Observable<StrictHttpResponse<Array<GetBrokerResponseDto>>> {
         const rb = new RequestBuilder(this.rootUrl, BrokerService.BrokerControllerGetBrokersPath, 'get');
         if (params) {
             rb.query('name', params.name, {});

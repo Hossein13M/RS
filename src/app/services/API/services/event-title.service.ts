@@ -10,7 +10,6 @@ import { GetEventTitleDto } from '../models/get-event-title-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

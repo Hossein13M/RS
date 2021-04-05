@@ -10,7 +10,6 @@ import { FundTypeDto } from '../models/fund-type-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -182,9 +181,7 @@ export class FundTypeService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundTypeControllerUpdateFundType(params: { body: FundTypeDto }): Observable<FundTypeDto> {
-        return this.fundTypeControllerUpdateFundType$Response(params).pipe(
-            map((r: StrictHttpResponse<FundTypeDto>) => r.body as FundTypeDto)
-        );
+        return this.fundTypeControllerUpdateFundType$Response(params).pipe(map((r: StrictHttpResponse<FundTypeDto>) => r.body as FundTypeDto));
     }
 
     /**
@@ -225,8 +222,6 @@ export class FundTypeService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundTypeControllerCreateFundType(params: { body: CreateFundTypeDto }): Observable<FundTypeDto> {
-        return this.fundTypeControllerCreateFundType$Response(params).pipe(
-            map((r: StrictHttpResponse<FundTypeDto>) => r.body as FundTypeDto)
-        );
+        return this.fundTypeControllerCreateFundType$Response(params).pipe(map((r: StrictHttpResponse<FundTypeDto>) => r.body as FundTypeDto));
     }
 }

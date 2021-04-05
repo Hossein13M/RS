@@ -33,8 +33,6 @@ export class YieldCurveService extends Specification {
     }
 
     getYieldCurve(date: string, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(YieldCurveService.yieldCurveApi + `?date=${date}`, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.acs.get(YieldCurveService.yieldCurveApi + `?date=${date}`, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 }

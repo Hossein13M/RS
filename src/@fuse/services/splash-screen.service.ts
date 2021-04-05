@@ -19,11 +19,7 @@ export class FuseSplashScreenService {
      * @param _document
      * @param {Router} _router
      */
-    constructor(
-        private _animationBuilder: AnimationBuilder,
-        @Inject(DOCUMENT) private _document: any,
-        private _router: Router
-    ) {
+    constructor(private _animationBuilder: AnimationBuilder, @Inject(DOCUMENT) private _document: any, private _router: Router) {
         // Initialize
         this._init();
     }

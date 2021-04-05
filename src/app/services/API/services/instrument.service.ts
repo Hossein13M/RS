@@ -13,7 +13,6 @@ import { InstrumentWithParentDto } from '../models/instrument-with-parent-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -232,9 +231,7 @@ export class InstrumentService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    instrumentControllerUpdateInstrument$Response(params: {
-        body: InstrumentWithIdDto;
-    }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
+    instrumentControllerUpdateInstrument$Response(params: { body: InstrumentWithIdDto }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentService.InstrumentControllerUpdateInstrumentPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -277,9 +274,7 @@ export class InstrumentService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    instrumentControllerCreateInstrument$Response(params: {
-        body: CreateInstrumentDto;
-    }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
+    instrumentControllerCreateInstrument$Response(params: { body: CreateInstrumentDto }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentService.InstrumentControllerCreateInstrumentPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

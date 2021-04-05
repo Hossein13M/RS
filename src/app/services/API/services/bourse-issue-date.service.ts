@@ -11,7 +11,6 @@ import { CreateBourseIssueDateDto } from '../models/create-bourse-issue-date-dto
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -31,9 +30,7 @@ export class BourseIssueDateService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    bourseIssueDateControllerGetBourseIssueDate$Response(params: {
-        bourseIssueDateId: number;
-    }): Observable<StrictHttpResponse<BourseIssueDateDto>> {
+    bourseIssueDateControllerGetBourseIssueDate$Response(params: { bourseIssueDateId: number }): Observable<StrictHttpResponse<BourseIssueDateDto>> {
         const rb = new RequestBuilder(this.rootUrl, BourseIssueDateService.BourseIssueDateControllerGetBourseIssueDatePath, 'get');
         if (params) {
             rb.path('bourseIssueDateId', params.bourseIssueDateId, {});
@@ -103,9 +100,7 @@ export class BourseIssueDateService extends BaseService {
      * This method doesn't expect any request body.
      */
     bourseIssueDateControllerDeleteBourseIssueDate(params: { bourseIssueDateId: number }): Observable<void> {
-        return this.bourseIssueDateControllerDeleteBourseIssueDate$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.bourseIssueDateControllerDeleteBourseIssueDate$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 
     /**
@@ -151,11 +146,7 @@ export class BourseIssueDateService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    bourseIssueDateControllerGetBourseIssueDates(params?: {
-        limit?: number;
-        skip?: number;
-        bourseId?: any;
-    }): Observable<BourseIssueDateResponseDto> {
+    bourseIssueDateControllerGetBourseIssueDates(params?: { limit?: number; skip?: number; bourseId?: any }): Observable<BourseIssueDateResponseDto> {
         return this.bourseIssueDateControllerGetBourseIssueDates$Response(params).pipe(
             map((r: StrictHttpResponse<BourseIssueDateResponseDto>) => r.body as BourseIssueDateResponseDto)
         );

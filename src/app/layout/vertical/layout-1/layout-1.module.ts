@@ -11,16 +11,7 @@ import { VerticalLayout1Component } from 'app/layout/vertical/layout-1/layout-1.
 
 @NgModule({
     declarations: [VerticalLayout1Component],
-    imports: [
-        RouterModule,
-        FuseSharedModule,
-        FuseSidebarModule,
-        ContentModule,
-        FooterModule,
-        NavbarModule,
-        QuickPanelModule,
-        ToolbarModule,
-    ],
+    imports: [RouterModule, FuseSharedModule, FuseSidebarModule, ContentModule, FooterModule, NavbarModule, QuickPanelModule, ToolbarModule],
     exports: [VerticalLayout1Component],
 })
 export class VerticalLayout1Module {}

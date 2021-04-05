@@ -113,7 +113,7 @@ export class ExlcusivelyAssetManagementComponent extends BaseFormModel implement
         });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 }

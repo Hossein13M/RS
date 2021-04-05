@@ -34,12 +34,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
      * @param {Platform} _platform
      * @param {Router} _router
      */
-    constructor(
-        public elementRef: ElementRef,
-        private _fuseConfigService: FuseConfigService,
-        private _platform: Platform,
-        private _router: Router
-    ) {
+    constructor(public elementRef: ElementRef, private _fuseConfigService: FuseConfigService, private _platform: Platform, private _router: Router) {
         // Set the defaults
         this.isInitialized = false;
         this.isMobile = false;
@@ -310,10 +305,7 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
         if (!absolute && this.ps) {
             return new FusePerfectScrollbarPosition(this.ps.reach.x || 0, this.ps.reach.y || 0);
         } else {
-            return new FusePerfectScrollbarPosition(
-                this.elementRef.nativeElement.scrollLeft,
-                this.elementRef.nativeElement.scrollTop
-            );
+            return new FusePerfectScrollbarPosition(this.elementRef.nativeElement.scrollLeft, this.elementRef.nativeElement.scrollTop);
         }
     }
 

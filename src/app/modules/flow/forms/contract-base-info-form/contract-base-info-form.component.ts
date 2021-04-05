@@ -9,7 +9,7 @@ import { BankService } from 'app/services/feature-services/bank.service';
     templateUrl: './contract-base-info-form.component.html',
     styleUrls: ['./contract-base-info-form.component.scss'],
 })
-export class ContractBaseInfoFormComponent implements OnInit , OnChanges {
+export class ContractBaseInfoFormComponent implements OnInit, OnChanges {
     form: FormGroup;
 
     bankBranches = [];

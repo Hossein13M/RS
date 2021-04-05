@@ -11,7 +11,6 @@ import { UpdateComplianceFundDto } from '../models/update-compliance-fund-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -101,9 +100,7 @@ export class ComplianceFundService extends BaseService {
      * This method doesn't expect any request body.
      */
     complianceFundControllerDeleteComplianceFund(params: { id: number }): Observable<void> {
-        return this.complianceFundControllerDeleteComplianceFund$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.complianceFundControllerDeleteComplianceFund$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 
     /**

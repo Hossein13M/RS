@@ -19,8 +19,7 @@ export class TradeDashboardTrendChartService extends Specification {
     }
 
     getTradeChart(fc?: FormContainer): Observable<any> {
-        let url =
-            TradeDashboardTrendChartService.TradeAPI + '/tamadon-market-trend-chart?date=' + this.convertDate(this.searchForm.value.date);
+        let url = TradeDashboardTrendChartService.TradeAPI + '/tamadon-market-trend-chart?date=' + this.convertDate(this.searchForm.value.date);
         return this.acs.get(url, fc);
     }
 }

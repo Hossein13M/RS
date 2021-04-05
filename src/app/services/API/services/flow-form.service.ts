@@ -10,7 +10,6 @@ import { UpdateFlowFormDto } from '../models/update-flow-form-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -30,10 +29,7 @@ export class FlowFormService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    flowFormControllerGetFlowForm$Response(params: {
-        formId: string;
-        flowId: string;
-    }): Observable<StrictHttpResponse<Array<GetFlowFormDto>>> {
+    flowFormControllerGetFlowForm$Response(params: { formId: string; flowId: string }): Observable<StrictHttpResponse<Array<GetFlowFormDto>>> {
         const rb = new RequestBuilder(this.rootUrl, FlowFormService.FlowFormControllerGetFlowFormPath, 'get');
         if (params) {
             rb.query('formId', params.formId, {});
@@ -104,8 +100,6 @@ export class FlowFormService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     flowFormControllerUpdateFlowForm(params: { body: UpdateFlowFormDto }): Observable<GetFlowFormDto> {
-        return this.flowFormControllerUpdateFlowForm$Response(params).pipe(
-            map((r: StrictHttpResponse<GetFlowFormDto>) => r.body as GetFlowFormDto)
-        );
+        return this.flowFormControllerUpdateFlowForm$Response(params).pipe(map((r: StrictHttpResponse<GetFlowFormDto>) => r.body as GetFlowFormDto));
     }
 }

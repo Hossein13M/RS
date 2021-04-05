@@ -56,7 +56,7 @@ export class OrganizationTypeSettingAddComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

@@ -1,13 +1,4 @@
-import {
-    AfterContentInit,
-    Component,
-    ContentChildren,
-    ElementRef,
-    HostBinding,
-    QueryList,
-    Renderer2,
-    ViewEncapsulation,
-} from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, ElementRef, HostBinding, QueryList, Renderer2, ViewEncapsulation } from '@angular/core';
 import { FuseWidgetToggleDirective } from './widget-toggle.directive';
 
 @Component({
