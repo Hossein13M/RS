@@ -1,11 +1,7 @@
 <div class="page-layout">
-
-
     <!-- HEADER -->
     <app-header pageTitle="اطلاعات سپرده">
-        <button mat-raised-button
-                (click)="add()"
-                color="primary">
+        <button mat-raised-button (click)="create()" color="primary">
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
@@ -13,202 +9,22 @@
 
     <div class="page-content">
         <div class="setting-container-back" dir="rtl">
-            <div [formGroup]="searchFormGroup" class="setting-panel fuse-card">
-                <mat-table style="overflow-x: scroll" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                    <ng-container matColumnDef="accountType">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    نوع حساب
-                                </mat-label>
-                                <input matInput formControlName="accountType">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.accountType}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="bankName">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    نام بانک
-                                </mat-label>
-                                <input matInput formControlName="bankName">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.bankName}}
-                            </p>
-
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="branchCode">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    کد شعبه
-                                </mat-label>
-                                <input matInput formControlName="branchCode">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.branchCode}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="branchName">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    نام شعبه
-                                </mat-label>
-                                <input matInput formControlName="branchName">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.branchName}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="depositNumber">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    شماره سپرده
-                                </mat-label>
-                                <input matInput formControlName="depositNumber">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.depositNumber}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="openingDate">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>تاریخ افتتاح</mat-label>
-                                <input (click)="start123.open()" matInput formControlName="openingDate"
-                                       [matDatepicker]="start123">
-                                <mat-datepicker-toggle matSuffix [for]="start123"></mat-datepicker-toggle>
-                                <mat-datepicker #start123></mat-datepicker>
-                                <mat-error>
-                                    وارد کردن این فیلد الزامی است.
-                                </mat-error>
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.openingDate | convertDate}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="interestRate">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    نرخ سود
-                                </mat-label>
-                                <input matInput formControlName="interestRate">
-                            </mat-form-field>
-
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.interestRate}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <!--            <ng-container matColumnDef="status">-->
-                    <!--                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>وضعیت سپرده</mat-header-cell>-->
-                    <!--                <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>-->
-                    <!--                    <p class="email text-truncate">-->
-                    <!--                        {{element?.status}}-->
-                    <!--                    </p>-->
-                    <!--                </mat-cell>-->
-                    <!--            </ng-container>-->
-                    <ng-container matColumnDef="glCode">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field  appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    کد سطح GL
-                                </mat-label>
-                                <input matInput formControlName="glCode">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.glCode}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-
-                    <!--  Operations  -->
-                    <ng-container matColumnDef="operation">
-
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            عملیات
-                        </mat-header-cell>
-
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-
-                            <button mat-icon-button
-                                    (click)="edit(element)"
-                                    style="margin-left: 10px"
-                                    color="accent">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-
-                            <button mat-icon-button
-                                    (click)="delete(element)"
-                                    style="margin-left: 10px"
-                                    color="warn">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                            <button mat-icon-button
-                                    (click)="detail(element)"
-                                    color="primary">
-                                <mat-icon>visibility</mat-icon>
-                            </button>
-                        </mat-cell>
-
-                    </ng-container>
-
-                    <mat-header-row style="top: -12px!important;"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
-                             [@animate]="{value:'*',params:{y:'100%'}}">
-                    </mat-row>
-                </mat-table>
-
-                <app-paginator *ngIf="depositSettingService.pageEvent.length > 5"
-                               [data]="depositSettingService.pageEvent"
-                               (page)="pageHandler($event)"
-                               [pageSizeOptions]="[5, 10, 13]">
-                </app-paginator>
-
-                <ng-container *ngIf="dataSource.data.length===0">
-                    <div
-                        style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                        <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                        <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                            موردی وجود ندارد
+            <div class="setting-panel fuse-card">
+                <div style="width: 100%">
+                    <app-table
+                        [data]="data"
+                        [columns]="column"
+                        [paginationSettings]="{ mode: 'backend' }"
+                        [paginationObj]="pagination"
+                        (paginationChange)="paginationControl($event)"
+                    ></app-table>
+                    <ng-container *ngIf="data?.length === 0">
+                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
-                    </div>
-                </ng-container>
-                <!--        <div class="add-btn">-->
-                <!--            <button (click)="add()" mat-raised-button color="primary">-->
-                <!--                <mat-icon>add</mat-icon>-->
-                <!--                ایجاد-->
-                <!--            </button>-->
-                <!--        </div>-->
+                    </ng-container>
+                </div>
             </div>
         </div>
     </div>

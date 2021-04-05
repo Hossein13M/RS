@@ -89,7 +89,7 @@ export class DepositSettingAddComponent implements OnInit {
     }
 
     onCreateBranch() {
-        this.depositService.createDepositSetting(this.form.value, this).subscribe(() => {
+        this.depositService.create(this.form.value, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -98,7 +98,7 @@ export class DepositSettingAddComponent implements OnInit {
     onEditBranch() {
         let obj = this.form.value;
         obj['id'] = this.data.id;
-        this.depositService.updateDepositSetting(obj, this).subscribe(() => {
+        this.depositService.update(obj, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
