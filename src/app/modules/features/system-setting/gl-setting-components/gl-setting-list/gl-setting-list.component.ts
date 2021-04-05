@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { GlSettingService } from 'app/services/feature-services/system-setting-services/gl-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
@@ -20,7 +18,7 @@ export class GlSettingListComponent implements OnInit {
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public glSettingService: GlSettingService) {}
+    constructor(private matDialog: MatDialog, public glSettingService: GlSettingService) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -111,7 +109,7 @@ export class GlSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.glSettingService.delete(row.id).subscribe((x) => {
+                    this.glSettingService.delete(row.id).subscribe(() => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
