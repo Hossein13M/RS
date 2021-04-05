@@ -1,10 +1,10 @@
 import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TradeBookHistoryService } from './trade-book-history.service';
-import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PaginationChangeType } from '../../../../shared/components/table/table-consts';
+import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
+import { TradeBookHistoryService } from './trade-book-history.service';
 
 @Component({
     selector: 'app-trade-book-history',

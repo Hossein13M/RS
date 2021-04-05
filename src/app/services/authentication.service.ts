@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/services/API/services/auth.service';
+import jwtDecode from 'jwt-decode';
 import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { UserInfoService } from './App/userInfo/user-info.service';
-import jwtDecode from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {

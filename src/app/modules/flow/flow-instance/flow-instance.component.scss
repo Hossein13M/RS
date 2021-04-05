@@ -43,11 +43,6 @@
 
 .content {
     overflow: hidden;
-
-    .sidebar {
-        &:not(.locked-open) {
-        }
-    }
 }
 
 .mat-column-delete {
@@ -60,7 +55,6 @@
     flex: 1 1 auto;
     width: 100%;
     direction: rtl;
-
 
     .header {
         .search-wrapper {

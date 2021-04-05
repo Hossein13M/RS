@@ -44,11 +44,6 @@
 
 .content {
     overflow: hidden;
-
-    .sidebar {
-        &:not(.locked-open) {
-        }
-    }
 }
 
 .mat-column-delete {
