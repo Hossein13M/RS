@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { GlSettingService } from 'app/services/feature-services/system-setting-services/gl-setting.service';
@@ -13,14 +13,16 @@ import * as _ from 'lodash';
     styleUrls: ['./gl-setting-list.component.scss'],
     animations: [fuseAnimations],
 })
-export class GlSettingListComponent implements OnInit {
+export class GlSettingListComponent implements AfterViewInit {
     data: any = [];
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
+    @ViewChild('status', { static: false }) statusRef: TemplateRef<any>;
+
     constructor(private matDialog: MatDialog, public glSettingService: GlSettingService) {}
 
-    ngOnInit(): void {
+    ngAfterViewInit(): void {
         this.initColumns();
         this.get();
     }
@@ -39,11 +41,8 @@ export class GlSettingListComponent implements OnInit {
             {
                 id: 'status',
                 name: 'وضعیت',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                type: 'custom',
+                cellTemplate: this.statusRef,
             },
             {
                 id: 'glCode',
