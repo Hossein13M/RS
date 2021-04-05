@@ -11,7 +11,6 @@ import { StatusResponseDto } from '../models/status-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -99,9 +98,7 @@ export class SmsService extends BaseService {
      * This method doesn't expect any request body.
      */
     smsControllerGetStatusSms(params: { messageId: string }): Observable<StatusResponseDto> {
-        return this.smsControllerGetStatusSms$Response(params).pipe(
-            map((r: StrictHttpResponse<StatusResponseDto>) => r.body as StatusResponseDto)
-        );
+        return this.smsControllerGetStatusSms$Response(params).pipe(map((r: StrictHttpResponse<StatusResponseDto>) => r.body as StatusResponseDto));
     }
 
     /**

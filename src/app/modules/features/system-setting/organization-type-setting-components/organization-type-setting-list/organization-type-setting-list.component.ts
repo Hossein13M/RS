@@ -94,7 +94,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
             });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

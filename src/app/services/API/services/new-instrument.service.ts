@@ -13,7 +13,6 @@ import { UpdateNewInstrumentDto } from '../models/update-new-instrument-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -113,9 +112,7 @@ export class NewInstrumentService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    newInstrumentControllerUpdateNewInstrument$Response(params: {
-        body: UpdateNewInstrumentDto;
-    }): Observable<StrictHttpResponse<SentSuccessDto>> {
+    newInstrumentControllerUpdateNewInstrument$Response(params: { body: UpdateNewInstrumentDto }): Observable<StrictHttpResponse<SentSuccessDto>> {
         const rb = new RequestBuilder(this.rootUrl, NewInstrumentService.NewInstrumentControllerUpdateNewInstrumentPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -158,9 +155,7 @@ export class NewInstrumentService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    newInstrumentControllerCreateNewInstrument$Response(params: {
-        body: CreateNewInstrumentDto;
-    }): Observable<StrictHttpResponse<NewInstrumentDto>> {
+    newInstrumentControllerCreateNewInstrument$Response(params: { body: CreateNewInstrumentDto }): Observable<StrictHttpResponse<NewInstrumentDto>> {
         const rb = new RequestBuilder(this.rootUrl, NewInstrumentService.NewInstrumentControllerCreateNewInstrumentPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

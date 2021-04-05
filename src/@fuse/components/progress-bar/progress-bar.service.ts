@@ -89,14 +89,7 @@ export class FuseProgressBarService {
         });
 
         this._router.events
-            .pipe(
-                filter(
-                    (event) =>
-                        event instanceof NavigationEnd ||
-                        event instanceof NavigationError ||
-                        event instanceof NavigationCancel
-                )
-            )
+            .pipe(filter((event) => event instanceof NavigationEnd || event instanceof NavigationError || event instanceof NavigationCancel))
             .subscribe(() => {
                 this.hide();
             });

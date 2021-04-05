@@ -9,7 +9,6 @@ import { CreateAuthItemChildDto } from '../models/create-auth-item-child-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

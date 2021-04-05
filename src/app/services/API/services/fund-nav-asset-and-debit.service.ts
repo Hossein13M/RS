@@ -10,7 +10,6 @@ import { GetFundAssetsAndDebitsResponseDto } from '../models/get-fund-assets-and
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -33,11 +32,7 @@ export class FundNavAssetAndDebitService extends BaseService {
     fundNavAssetAndDebitControllerCreateFundNavAssetAndDebit$Response(params: {
         body: CreateFundNavAssetsAndDebitsDto;
     }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            FundNavAssetAndDebitService.FundNavAssetAndDebitControllerCreateFundNavAssetAndDebitPath,
-            'post'
-        );
+        const rb = new RequestBuilder(this.rootUrl, FundNavAssetAndDebitService.FundNavAssetAndDebitControllerCreateFundNavAssetAndDebitPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
         }
@@ -82,11 +77,7 @@ export class FundNavAssetAndDebitService extends BaseService {
     fundNavAssetAndDebitControllerGetFundNavAssetsAndDebits$Response(params: {
         fundNationalId: string;
     }): Observable<StrictHttpResponse<Array<GetFundAssetsAndDebitsResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            FundNavAssetAndDebitService.FundNavAssetAndDebitControllerGetFundNavAssetsAndDebitsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, FundNavAssetAndDebitService.FundNavAssetAndDebitControllerGetFundNavAssetsAndDebitsPath, 'get');
         if (params) {
             rb.path('fundNationalId', params.fundNationalId, {});
         }

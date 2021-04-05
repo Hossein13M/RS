@@ -10,7 +10,6 @@ import { GetEventFieldValueDto } from '../models/get-event-field-value-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

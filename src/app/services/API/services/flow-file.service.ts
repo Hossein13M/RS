@@ -13,7 +13,6 @@ import { UploadFileResponseDto } from '../models/upload-file-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -123,9 +122,7 @@ export class FlowFileService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    flowFileControllerCreateFileHistory$Response(params: {
-        body: CreateFileHistoryDto;
-    }): Observable<StrictHttpResponse<GetFileHistoryResponseDto>> {
+    flowFileControllerCreateFileHistory$Response(params: { body: CreateFileHistoryDto }): Observable<StrictHttpResponse<GetFileHistoryResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, FlowFileService.FlowFileControllerCreateFileHistoryPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -215,9 +212,7 @@ export class FlowFileService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    flowFileControllerGetFlowFileHistory$Response(params: {
-        entityId: string;
-    }): Observable<StrictHttpResponse<Array<GetFileHistoryResponseDto>>> {
+    flowFileControllerGetFlowFileHistory$Response(params: { entityId: string }): Observable<StrictHttpResponse<Array<GetFileHistoryResponseDto>>> {
         const rb = new RequestBuilder(this.rootUrl, FlowFileService.FlowFileControllerGetFlowFileHistoryPath, 'get');
         if (params) {
             rb.path('entityId', params.entityId, {});

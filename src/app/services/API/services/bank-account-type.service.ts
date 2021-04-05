@@ -10,7 +10,6 @@ import { CreateBankAccountTypeDto } from '../models/create-bank-account-type-dto
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -30,9 +29,7 @@ export class BankAccountTypeService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    bankAccountTypeControllerGetBankAccountType$Response(params: {
-        bankAccountTypeId: number;
-    }): Observable<StrictHttpResponse<BankAccountTypeDto>> {
+    bankAccountTypeControllerGetBankAccountType$Response(params: { bankAccountTypeId: number }): Observable<StrictHttpResponse<BankAccountTypeDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankAccountTypeService.BankAccountTypeControllerGetBankAccountTypePath, 'get');
         if (params) {
             rb.path('bankAccountTypeId', params.bankAccountTypeId, {});
@@ -102,9 +99,7 @@ export class BankAccountTypeService extends BaseService {
      * This method doesn't expect any request body.
      */
     bankAccountTypeControllerDeleteBankAccountType(params: { bankAccountTypeId: number }): Observable<void> {
-        return this.bankAccountTypeControllerDeleteBankAccountType$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.bankAccountTypeControllerDeleteBankAccountType$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 
     /**

@@ -16,7 +16,7 @@ import { TreeOrderType } from '../gl-tree/gl-tree.component';
     styleUrls: ['./gl-changes.component.scss'],
     animations: [fuseAnimations],
 })
-export class GlChangesComponent implements OnInit  {
+export class GlChangesComponent implements OnInit {
     model?: any;
     isWorking: any;
     handleError: (err: import('@angular/common/http').HttpErrorResponse) => boolean;

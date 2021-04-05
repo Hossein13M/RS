@@ -11,7 +11,6 @@ import { UpdateEventReminderDto } from '../models/update-event-reminder-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -61,10 +60,7 @@ export class EventReminderService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventReminderControllerFindEventReminder(params?: {
-        eventId?: number;
-        id?: number;
-    }): Observable<Array<CreateEventReminderResponseDto>> {
+    eventReminderControllerFindEventReminder(params?: { eventId?: number; id?: number }): Observable<Array<CreateEventReminderResponseDto>> {
         return this.eventReminderControllerFindEventReminder$Response(params).pipe(
             map((r: StrictHttpResponse<Array<CreateEventReminderResponseDto>>) => r.body as Array<CreateEventReminderResponseDto>)
         );
@@ -157,10 +153,7 @@ export class EventReminderService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventReminderControllerUpdateEventReminder(params: {
-        id: number;
-        body: UpdateEventReminderDto;
-    }): Observable<CreateEventReminderResponseDto> {
+    eventReminderControllerUpdateEventReminder(params: { id: number; body: UpdateEventReminderDto }): Observable<CreateEventReminderResponseDto> {
         return this.eventReminderControllerUpdateEventReminder$Response(params).pipe(
             map((r: StrictHttpResponse<CreateEventReminderResponseDto>) => r.body as CreateEventReminderResponseDto)
         );

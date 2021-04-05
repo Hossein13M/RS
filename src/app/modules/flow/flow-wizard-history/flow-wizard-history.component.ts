@@ -51,7 +51,7 @@ export class FlowWizardHistoryComponent implements OnInit {
         this.getAllFlowInstanceNote();
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

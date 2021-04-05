@@ -8,8 +8,7 @@ import { Component, OnInit } from '@angular/core';
 
             <mat-dialog-content>
                 <mat-form-field appearance="legacy" style="width: 100%" dir="rtl">
-                    <textarea style="text-align: right;width: 100%" placeholder="متن یادداشت" matInput type="text" [(ngModel)]="comment">
-                    </textarea>
+                    <textarea style="text-align: right;width: 100%" placeholder="متن یادداشت" matInput type="text" [(ngModel)]="comment"> </textarea>
                 </mat-form-field>
             </mat-dialog-content>
 

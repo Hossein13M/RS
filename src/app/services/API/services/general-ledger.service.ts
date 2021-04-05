@@ -17,7 +17,6 @@ import { TreeSearchGlDto } from '../models/tree-search-gl-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -613,11 +612,7 @@ export class GeneralLedgerService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    generalLedgerControllerGetTreeSearchGeneralLedger(params?: {
-        date?: string;
-        name?: string;
-        code?: string;
-    }): Observable<TreeSearchGlDto> {
+    generalLedgerControllerGetTreeSearchGeneralLedger(params?: { date?: string; name?: string; code?: string }): Observable<TreeSearchGlDto> {
         return this.generalLedgerControllerGetTreeSearchGeneralLedger$Response(params).pipe(
             map((r: StrictHttpResponse<TreeSearchGlDto>) => r.body as TreeSearchGlDto)
         );

@@ -10,7 +10,6 @@ import { CanResponseDto } from '../models/can-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

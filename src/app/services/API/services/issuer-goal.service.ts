@@ -11,7 +11,6 @@ import { IssuerResponseDto } from '../models/issuer-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -201,9 +200,7 @@ export class IssuerGoalService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     issuerGoalControllerUpdateIssuerGoal(params: { body: IssuerDto }): Observable<IssuerDto> {
-        return this.issuerGoalControllerUpdateIssuerGoal$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issuerGoalControllerUpdateIssuerGoal$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
 
     /**
@@ -244,8 +241,6 @@ export class IssuerGoalService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     issuerGoalControllerCreateIssuerGoal(params: { body: CreateIssuerDto }): Observable<IssuerDto> {
-        return this.issuerGoalControllerCreateIssuerGoal$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issuerGoalControllerCreateIssuerGoal$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
 }

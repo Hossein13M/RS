@@ -10,7 +10,6 @@ import { GetFlowNoteDto } from '../models/get-flow-note-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -57,9 +56,7 @@ export class FlowNoteService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     flowNoteControllerCreateFlowNote(params: { body: CreateFlowNoteDto }): Observable<GetFlowNoteDto> {
-        return this.flowNoteControllerCreateFlowNote$Response(params).pipe(
-            map((r: StrictHttpResponse<GetFlowNoteDto>) => r.body as GetFlowNoteDto)
-        );
+        return this.flowNoteControllerCreateFlowNote$Response(params).pipe(map((r: StrictHttpResponse<GetFlowNoteDto>) => r.body as GetFlowNoteDto));
     }
 
     /**

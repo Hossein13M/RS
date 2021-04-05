@@ -13,15 +13,7 @@ import { OpRiskViewComponent } from './op-risk-view/op-risk-view.component';
 
 @NgModule({
     declarations: [OpRiskFlowComponent, FlowAddComponent, OpRiskViewComponent],
-    imports: [
-        CommonModule,
-        LayoutModule,
-        ShareModule,
-        MatProgressSpinnerModule,
-        MatTooltipModule,
-        OpRiskFlowRoutingModule,
-        NgxMatSelectSearchModule,
-    ],
+    imports: [CommonModule, LayoutModule, ShareModule, MatProgressSpinnerModule, MatTooltipModule, OpRiskFlowRoutingModule, NgxMatSelectSearchModule],
     providers: [OpRiskFlowService],
     entryComponents: [FlowAddComponent, OpRiskViewComponent],
 })

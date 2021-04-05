@@ -11,7 +11,6 @@ import { UpdateEventFieldDto } from '../models/update-event-field-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -63,11 +62,7 @@ export class EventFieldService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventFieldControllerGetEventFields(params?: {
-        defaultFields?: boolean;
-        name?: string;
-        id?: number;
-    }): Observable<Array<GetEventFieldDto>> {
+    eventFieldControllerGetEventFields(params?: { defaultFields?: boolean; name?: string; id?: number }): Observable<Array<GetEventFieldDto>> {
         return this.eventFieldControllerGetEventFields$Response(params).pipe(
             map((r: StrictHttpResponse<Array<GetEventFieldDto>>) => r.body as Array<GetEventFieldDto>)
         );

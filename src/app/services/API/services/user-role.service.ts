@@ -9,7 +9,6 @@ import { UserRoleInfo } from '../models/user-role-info';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

@@ -432,9 +432,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy {
         this._renderer.appendChild(this._elementRef.nativeElement.parentElement, this._backdrop);
 
         // Create the enter animation and attach it to the player
-        this._player = this._animationBuilder
-            .build([animate('300ms ease', style({ opacity: 1 }))])
-            .create(this._backdrop);
+        this._player = this._animationBuilder.build([animate('300ms ease', style({ opacity: 1 }))]).create(this._backdrop);
 
         // Play the animation
         this._player.play();
@@ -459,9 +457,7 @@ export class FuseSidebarComponent implements OnInit, OnDestroy {
         }
 
         // Create the leave animation and attach it to the player
-        this._player = this._animationBuilder
-            .build([animate('300ms ease', style({ opacity: 0 }))])
-            .create(this._backdrop);
+        this._player = this._animationBuilder.build([animate('300ms ease', style({ opacity: 0 }))]).create(this._backdrop);
 
         // Play the animation
         this._player.play();

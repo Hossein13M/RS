@@ -33,11 +33,7 @@ export class FuseNavVerticalCollapsableComponent implements OnInit, OnDestroy {
      * @param {FuseNavigationService} _fuseNavigationService
      * @param {Router} _router
      */
-    constructor(
-        private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseNavigationService: FuseNavigationService,
-        private _router: Router
-    ) {
+    constructor(private _changeDetectorRef: ChangeDetectorRef, private _fuseNavigationService: FuseNavigationService, private _router: Router) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }

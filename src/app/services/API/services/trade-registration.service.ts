@@ -11,7 +11,6 @@ import { UpdateTradeDto } from '../models/update-trade-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

@@ -34,11 +34,7 @@ export class CollaterallsComponent implements OnInit {
     public slectedCollaterallIndex: number;
     public collaterallForm: FormGroup;
 
-    constructor(
-        public matDialogRef: MatDialogRef<CollaterallsComponent>,
-        @Inject(MAT_DIALOG_DATA) private _data: any,
-        private fb: FormBuilder
-    ) {
+    constructor(public matDialogRef: MatDialogRef<CollaterallsComponent>, @Inject(MAT_DIALOG_DATA) private _data: any, private fb: FormBuilder) {
         this.ELEMENT_DATA = this._data.Collateralls;
         if (!this.ELEMENT_DATA) this.ELEMENT_DATA = [];
         this.dataSource = new MatTableDataSource<CollateralsDto>(this.ELEMENT_DATA);

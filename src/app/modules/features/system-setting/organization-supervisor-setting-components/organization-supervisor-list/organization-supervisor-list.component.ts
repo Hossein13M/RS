@@ -25,11 +25,7 @@ export class OrganizationSupervisorListComponent implements OnInit {
         });
     }
 
-    constructor(
-        private matDialog: MatDialog,
-        private fb: FormBuilder,
-        public organizationSupervisorService: OrganizationSupervisorService
-    ) {}
+    constructor(private matDialog: MatDialog, private fb: FormBuilder, public organizationSupervisorService: OrganizationSupervisorService) {}
 
     pageHandler(e: PagingEvent) {
         this.organizationSupervisorService.specificationModel.limit = e.pageSize;
@@ -98,7 +94,7 @@ export class OrganizationSupervisorListComponent implements OnInit {
             });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 
