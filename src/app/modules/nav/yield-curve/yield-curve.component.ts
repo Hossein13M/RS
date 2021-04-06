@@ -1,9 +1,9 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { TableSearchMode } from '#shared/components/table/table.model';
 import { YieldCurveService } from '../yield-curve.service';
-import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'app-yield-curve',
@@ -26,7 +26,7 @@ export class YieldCurveComponent implements OnInit {
             name: 'نام',
             id: 'name',
             type: 'string',
-            minWidth: '130px',
+            minWidth: '360px',
             search: { type: 'select', mode: TableSearchMode.LOCAL },
         },
         {
@@ -67,8 +67,14 @@ export class YieldCurveComponent implements OnInit {
         },
         {
             name: 'سر رسید',
-            id: 'name',
+            id: 'maturityDate',
             type: 'string',
+            convert: (value) =>
+                new Date(value).toLocaleDateString('fa-Ir', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
             minWidth: '250px',
             search: { type: 'text', mode: TableSearchMode.LOCAL },
         },
