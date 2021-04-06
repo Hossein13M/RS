@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import jwtDecode from 'jwt-decode';
+import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { AuthenticationService } from '../../authentication.service';
-import jwtDecode from 'jwt-decode';
 
 @Injectable({
     providedIn: 'root',

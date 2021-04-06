@@ -5,15 +5,15 @@ import { FormArray, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Observable, of } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
+import { AlertService } from 'app/services/alert.service';
+import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
+import { FormContainer } from 'app/shared/models/FromContainer';
+import { Observable, of } from 'rxjs';
 import { OpRiskMappingDialogComponent } from '../op-risk-mapping-dialog/op-risk-mapping-dialog.component';
 import { OpRiskTreeChartService } from '../op-risk-tree-chart.service';
 import { TreeMappingService } from '../tree-mapping.service';
 import { stateType, TreeChartFlatNode, TreeChartMapping, TreeChartNode } from './op-risk-tree-chart.types.js';
-import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { AlertService } from 'app/services/alert.service';
 
 @Component({
     selector: 'app-op-risk-tree-chart',

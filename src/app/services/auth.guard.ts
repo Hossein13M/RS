@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
 import { UserInfoService } from './App/userInfo/user-info.service';
-import { BehaviorSubject, EMPTY, Observable, of, Subject } from 'rxjs';
-import { distinct, filter, switchMap, take, tap } from 'rxjs/operators';
-import jwtDecode from 'jwt-decode';
 import { AuthenticationService } from './authentication.service';
 
 @Injectable()

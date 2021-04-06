@@ -2,7 +2,8 @@ import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
+import { PaginationChangeType } from '../../../../shared/components/table/table-consts';
+import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
 import { TradeBookHistoryService } from './trade-book-history.service';
 
 @Component({
@@ -20,6 +21,11 @@ export class TradeBookHistoryComponent implements OnInit {
     failed = false;
     today = new Date();
 
+    pagination = { skip: 0, limit: 5, total: 100 };
+    searchParams: any = {};
+
+    state: any;
+
     constructor(
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<TradeBookHistoryComponent>,
@@ -33,13 +39,11 @@ export class TradeBookHistoryComponent implements OnInit {
             date: [this.dialogData.date],
         });
         this.searchFormGroup.valueChanges.subscribe((newFormValue) => {
-            const searchFilter = newFormValue;
-
-            if (searchFilter.date) {
-                searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
+            if (newFormValue.date) {
+                newFormValue.date = formatDate(new Date(newFormValue.date), 'yyyy-MM-dd', 'en_US');
             }
-            this.tbhs.specificationModel.searchKeyword = searchFilter;
-            this.tbhs.specificationModel.skip = 0;
+            this.searchParams = newFormValue;
+            this.pagination.skip = 0;
             this.get();
         });
 
@@ -52,27 +56,31 @@ export class TradeBookHistoryComponent implements OnInit {
                 id: 'date',
                 type: 'date',
                 convert: (value: any) => {
-                    return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
+                    return new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    });
                 },
             },
         ];
 
-        const searchFilter = this.searchFormGroup.value;
-        if (searchFilter.date) {
-            searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
+        this.searchParams = this.searchFormGroup.value;
+        if (this.searchParams.date) {
+            this.searchParams.date = formatDate(new Date(this.searchParams.date), 'yyyy-MM-dd', 'en_US');
         }
-        this.tbhs.specificationModel.searchKeyword = searchFilter;
+
         this.get();
     }
 
     get(): void {
-        this.tbhs.show(this).subscribe(
-            (data) => {
+        this.tbhs
+            .show({ ...this.searchParams, ...this.pagination })
+            .pipe(StateManager({ state: this.state }))
+            .subscribe((data: any) => {
                 this.data = data.items;
-                this.tbhs.setPageDetailData(data);
-            },
-            () => (this.failed = true)
-        );
+                this.pagination.total = data.total;
+            });
     }
 
     search(searchFilter: any): void {
@@ -88,14 +96,14 @@ export class TradeBookHistoryComponent implements OnInit {
             this.searchFormGroup.controls[key].setValue(searchFilter[key]);
         });
 
-        this.tbhs.specificationModel.searchKeyword = searchFilter;
-        this.tbhs.specificationModel.skip = 0;
+        this.searchParams = searchFilter;
+        this.pagination.skip = 0;
         this.get();
     }
 
-    pageHandler(e: PagingEvent): void {
-        this.tbhs.specificationModel.limit = e.pageSize;
-        this.tbhs.specificationModel.skip = e.currentIndex * e.pageSize;
+    pageHandler(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
