@@ -9,106 +9,15 @@
     <div class="page-content">
         <div class="setting-container-back" dir="rtl">
             <div class="setting-panel fuse-card">
-                <div [formGroup]="searchFormGroup" style="width: 100%">
-                    <mat-table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }">
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>نام</mat-label>
-                                    <input matInput formControlName="name" />
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">{{ element?.name }}</p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="phone">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>تلفن</mat-label>
-                                    <input matInput formControlName="phone" />
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">{{ element?.phone }}</p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="regNumber">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>شماره ثبت</mat-label>
-                                    <input matInput formControlName="regNumber" />
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">{{ element?.regNumber }}</p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="agentName">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>نام نماینده</mat-label>
-                                    <input matInput formControlName="agentName" />
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">{{ element?.agentName }}</p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="agentPhone">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>تلفن نماینده</mat-label>
-                                    <input matInput formControlName="agentPhone" />
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">{{ element?.agentPhone }}</p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="nationalId">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>کد ملی</mat-label>
-                                    <input matInput formControlName="nationalId" />
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">{{ element?.nationalId }}</p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="address">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>آدرس</mat-label>
-                                    <input matInput formControlName="address" />
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">{{ element?.address }}</p>
-                            </mat-cell>
-                        </ng-container>
-
-                        <!--  Operation  -->
-                        <ng-container matColumnDef="operation">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm> عملیات </mat-header-cell>
-
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <button mat-icon-button (click)="edit(element)" style="margin-left: 10px" color="accent">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                                <button mat-icon-button (click)="delete(element)" color="warn">
-                                    <mat-icon>delete</mat-icon>
-                                </button>
-                            </mat-cell>
-                        </ng-container>
-
-                        <mat-header-row style="top: -12px !important" *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }">
-                        </mat-row>
-                    </mat-table>
-                    <app-paginator [data]="fundRoleService.pageEvent" (page)="pageHandler($event)" [pageSizeOptions]="[5, 10, 13]"></app-paginator>
-                    <ng-container *ngIf="dataSource.data.length === 0">
+                <div style="width: 100%">
+                    <app-table
+                        [data]="data"
+                        [columns]="column"
+                        [paginationSettings]="{ mode: 'backend' }"
+                        [paginationObj]="pagination"
+                        (paginationChange)="paginationControl($event)"
+                    ></app-table>
+                    <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
                             <img width="140px" height="140px" src="./assets/images/no-data.svg" />
                             <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
