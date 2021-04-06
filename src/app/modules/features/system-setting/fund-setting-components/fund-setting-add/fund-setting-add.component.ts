@@ -47,7 +47,7 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
     }
 
     getFundRoles() {
-        this.fundRoleService.getFundRole(this).subscribe((res: any) => {
+        this.fundRoleService.get(this).subscribe((res: any) => {
             this.fundRoles = res.items;
             this.filteredFundRoleMulti.next(this.fundRoles.slice());
             this.fundRoleMultiFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => this.filterFundRoleMulti());
