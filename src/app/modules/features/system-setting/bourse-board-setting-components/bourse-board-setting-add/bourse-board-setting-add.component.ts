@@ -53,7 +53,7 @@ export class BourseBoardSettingAddComponent implements OnInit {
         };
         this.bourseBoardService.update(obj).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 
