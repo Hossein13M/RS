@@ -53,13 +53,15 @@ We shall always start the function that is responsible for the API call with a p
 
 _Other Important features:_
 
-**hot-fix**: For bugs that appears in production, we will create a hotfix group branch from _master_ branch and then merge it into _master_
+**hotfix/< scope >**: For bugs that appears in production, we will create a hotfix group branch from _master_ branch and then merge it into _master_
 
-**bug-fix**: Failed tests and trello cards reported by support team should be fixed in this group branch and then this will be merged into _stage_
+**bugfix/< scope >**: Failed tests and trello cards reported by support team should be fixed in this group branch and then this will be merged into _stage_
 
-**feat**: Features will be added to _dev_ branch and they are group branch as well.
+**feature/< scope >**: Features will be added to _dev_ branch and they are group branch as well.
 
-**refactor**: For refactoring project and then merging it into _dev_.
+**refactor/< scope >**: For refactoring project and then merging it into _dev_.
+
+**release**: We are not using this feature of GitFlow
 
 ## State Management for Services:
 
