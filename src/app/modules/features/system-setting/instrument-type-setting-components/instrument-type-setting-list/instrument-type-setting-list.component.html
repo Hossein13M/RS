@@ -8,109 +8,20 @@
     <div class="page-content">
         <div class="setting-container-back" dir="rtl">
             <div class="setting-panel fuse-card">
-                <div [formGroup]="searchFormGroup" style="width: 100%;">
-                    <mat-table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>نام</mat-label>
-                                    <input matInput formControlName="searchKeyword">
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    {{element?.name}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="ticker">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>شناسه نماد</mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    {{element?.ticker}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="type">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نوع</mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    {{element?.type}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="status">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>وضعیت</mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    <span *ngIf="element?.status === 'active'">
-                                        فعال
-                                    </span>
-                                    <span *ngIf="element?.status === 'deleted'">
-                                        غیرفعال
-                                    </span>
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="symbol">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                <mat-form-field appearance="fill" style="width: 80%">
-                                    <mat-label>نام نماد</mat-label>
-                                    <input matInput formControlName="searchKeyword">
-                                </mat-form-field>
-                            </mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    {{element?.symbol}}
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="isInBourse">
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>محل معامله</mat-header-cell>
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <p class="email text-truncate">
-                                    <span *ngIf="element?.isInBourse === true">
-                                        بورس
-                                    </span>
-                                    <span *ngIf="element?.isInBourse === false">
-                                        خارج از بورس
-                                    </span>
-                                </p>
-                            </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="operation">
-
-                            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                                عملیات
-                            </mat-header-cell>
-
-                            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                                <button mat-icon-button
-                                        (click)="edit(element)"
-                                        style="margin-left: 10px"
-                                        color="accent">
-                                    <mat-icon>edit</mat-icon>
-                                </button>
-                            </mat-cell>
-                        </ng-container>
-                        <mat-header-row style="top: -12px!important;"
-                                        *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
-                                 [@animate]="{value:'*',params:{y:'100%'}}">
-                        </mat-row>
-                    </mat-table>
-                    <app-paginator [data]="instrumentTypeService.pageEvent" (page)="pageHandler($event)"
-                                   [pageSizeOptions]="[5, 10, 13]"></app-paginator>
-                    <ng-container *ngIf="dataSource.data.length===0">
-                        <div
-                            style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                            <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                            <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                                موردی وجود ندارد
-                            </div>
+                <div style="width: 100%">
+                    <app-table
+                        [data]="data"
+                        [columns]="column"
+                        [paginationSettings]="{ mode: 'backend' }"
+                        [paginationObj]="pagination"
+                        (paginationChange)="paginationControl($event)"
+                    ></app-table>
+                    <ng-container *ngIf="data?.length === 0">
+                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
-
                 </div>
             </div>
         </div>
