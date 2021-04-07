@@ -93,7 +93,11 @@ export class AumComponent implements OnInit {
         newFormValue = this.removeEmptyOrNullValuesFromForm(newFormValue);
         let inputDate = new Date(newFormValue?.date);
         !!inputDate.getDate() ? (newFormValue.date = formatDate(inputDate, 'yyyy-MM-dd', 'en_US')) : delete newFormValue.date;
-        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: newFormValue, queryParamsHandling: '' });
+        this.router.navigate([], {
+            relativeTo: this.activatedRoute,
+            queryParams: newFormValue,
+            queryParamsHandling: '',
+        });
     }
 
     private removeEmptyOrNullValuesFromForm(formValue): void {
@@ -128,12 +132,12 @@ export class AumComponent implements OnInit {
             this.form.get('categories').value.forEach((element) => {
                 this.form.get('NL').value.forEach((isBourse) => {
                     if (isBourse == 0) {
-                        if (element == 1) this.getAumStock(false);
-                        else if (element == 2) this.getAumBond(false);
+                        if (element == 2) this.getAumStock(false);
+                        else if (element == 1) this.getAumBond(false);
                         else if (element == 4) this.getAumFund(false);
                     } else if (isBourse == 1) {
-                        if (element == 1) this.getAumBond();
-                        else if (element == 2) this.getAumStock();
+                        if (element == 2) this.getAumBond();
+                        else if (element == 1) this.getAumStock();
                         else if (element == 4) this.getAumFund();
                     }
                 });
