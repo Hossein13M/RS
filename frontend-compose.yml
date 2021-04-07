@@ -1,7 +1,7 @@
 version: '3'
 services:
   frontend:
-    image: git.iirms.ir:5050/risk-shield-team/front-end-team/frontend:dev-0.11.7
+    image: git.iirms.ir:5050/risk-shield-team/front-end-team/frontend:0.12.2
 #    volumes:
 #      - 'node_modules:/usr/src/app'
 #    ports:
