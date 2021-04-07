@@ -34,7 +34,6 @@ export class Page4Component implements OnInit {
     ngOnInit(): void {}
 
     searchFn = (searchKey: string, data: SearchSelectDataType): void => {
-        console.log('From Search Component : ', searchKey, data);
         data.state = searchSelectStateType.LOADING;
 
         // ------ Show Loading

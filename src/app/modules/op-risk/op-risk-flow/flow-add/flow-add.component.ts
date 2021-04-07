@@ -1,6 +1,5 @@
-import { number, string } from '@amcharts/amcharts4/core';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
 import { OperatorService } from 'app/services/API/services';
@@ -8,168 +7,147 @@ import { searchSelectStateType } from 'app/shared/components/search-select/searc
 import { distinctUntilChanged } from 'rxjs/operators';
 import { OpRiskFlowService } from '../op-risk-flow.service';
 
+interface SelectedOperators {
+    flowUsers: Array<{ firstName: string; id: number; lastName: string; userId: number }>;
+    id: number;
+    step: number;
+}
+
+interface Operator {
+    createdAt: string | null;
+    email: string | null;
+    firstName: string | null;
+    fullName: string | null;
+    id: number | null;
+    lastName: string | null;
+    mobileNumber: string | null;
+    partyId: string | null;
+    personnelCode: number | null;
+    userId: string | null;
+    userName: string | null;
+}
+
 @Component({
     selector: 'app-bank-setting-add',
     templateUrl: './flow-add.component.html',
     styleUrls: ['./flow-add.component.scss'],
 })
 export class FlowAddComponent implements OnInit {
-    banks = [];
     title: string = '';
-    operators = [];
-    selectedOperatorList1 = [];
-    selectedOperatorList2 = [];
-    selectedOperatorList3 = [];
+    operators: Array<Operator>;
     form: FormGroup = this.fb.group({ stepOne: ['', []], stepTwo: ['', []], stepTree: ['', []], name: ['', [Validators.required]] });
-    selectedOperatorFc1: FormControl = new FormControl('');
-    selectedOperatorFc2: FormControl = new FormControl('');
-    selectedOperatorFc3: FormControl = new FormControl('');
-    filterCtrl: FormControl;
+    selectedOperators: Array<SelectedOperators> = [
+        { flowUsers: [], id: null, step: 1 },
+        { flowUsers: [], id: null, step: 2 },
+        { flowUsers: [], id: null, step: 3 },
+    ];
 
     constructor(
-        public dialogRef: MatDialogRef<FlowAddComponent>,
         @Inject(MAT_DIALOG_DATA) public data,
+        public dialogRef: MatDialogRef<FlowAddComponent>,
         private fb: FormBuilder,
         private operatorService: OperatorService,
-        private opfs: OpRiskFlowService,
-        private AlertService: AlertService
+        private opRiskFlowService: OpRiskFlowService,
+        private alertService: AlertService
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.checkForEditMode();
         this.getOperators();
-        this.creatForm();
+        this.createForm();
     }
 
     private checkForEditMode(): void {
-        this.data ? (this.title = 'ویرایش') : (this.title = 'افزودن');
+        this.data ? (this.title = `ویرایش جریان ${this.data.name}`) : (this.title = 'افزودن جریان');
     }
 
-    submitForm() {
-        this.data ? this.onEditFlow() : this.onCreateFlow();
-    }
-
-    private creatForm() {
+    private createForm(): void {
         this.form.controls.stepOne.valueChanges.pipe(distinctUntilChanged()).subscribe((newValue) => {
-            if (!this.selectedOperatorList1) this.selectedOperatorList1 = [];
-            if (newValue) this.selectedOperatorList1.push(newValue);
+            if (newValue) this.selectedOperators[0].flowUsers.push(newValue);
         });
         this.form.controls.stepTwo.valueChanges.pipe(distinctUntilChanged()).subscribe((newValue) => {
-            if (!this.selectedOperatorList2) this.selectedOperatorList2 = [];
-            if (newValue) this.selectedOperatorList2.push(newValue);
+            if (newValue) this.selectedOperators[1].flowUsers.push(newValue);
         });
         this.form.controls.stepTree.valueChanges.pipe(distinctUntilChanged()).subscribe((newValue) => {
-            if (!this.selectedOperatorList3) this.selectedOperatorList3 = [];
-            if (newValue) this.selectedOperatorList3.push(newValue);
+            if (newValue) this.selectedOperators[2].flowUsers.push(newValue);
         });
 
         if (this.data) {
-            for (const key of this.data?.flowSteps) {
-                if (key.flowUsers.length > 0) {
-                    key.flowUsers.forEach((el) => (el.id = el.userId));
-                }
+            for (const key of this.data.flowSteps) {
+                if (key.flowUsers.length > 0) key.flowUsers.forEach((el) => (el.id = el.userId));
             }
             this.form.get('name').setValue(this.data.name, { onlySelf: true });
-            this.selectedOperatorList1 = this.data.flowSteps[0].flowUsers;
-            this.selectedOperatorList2 = this.data.flowSteps[1].flowUsers;
-            this.selectedOperatorList3 = this.data.flowSteps[2].flowUsers;
+            this.selectedOperators = this.data.flowSteps;
         }
     }
 
-    private onCreateFlow() {
-        const data = { name: string, steps: [] };
-        data.name = this.form.value.name;
+    private onCreateFlow(): void {
+        const data = { name: this.form.value.name, steps: [] };
         const step1 = [];
         const step2 = [];
         const step3 = [];
-        this.selectedOperatorList1.map((el) => step1.push(el.id));
-        this.selectedOperatorList2.map((el) => step2.push(el.id));
-        this.selectedOperatorList3.map((el) => step3.push(el.id));
+
+        this.selectedOperators[0].flowUsers.map((el) => step1.push(el.id));
+        this.selectedOperators[1].flowUsers.map((el) => step2.push(el.id));
+        this.selectedOperators[2].flowUsers.map((el) => step3.push(el.id));
         data.steps.push({ users: step1 });
         data.steps.push({ users: step2 });
         data.steps.push({ users: step3 });
-        this.opfs.createOpFlow(data).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+        console.log(data);
+        this.opRiskFlowService.createOpFlow(data).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    private onEditFlow() {
-        const data = { name: string, steps: [], id: number, isActive: Boolean };
-        data.name = this.form.value.name;
+    private onEditFlow(): void {
+        let data = { name: this.form.value.name, steps: [], id: this.data.id, isActive: this.data.isActive };
         const step1 = [];
         const step2 = [];
         const step3 = [];
-        this.selectedOperatorList1.map((el) => step1.push(el.id));
-        this.selectedOperatorList2.map((el) => step2.push(el.id));
-        this.selectedOperatorList3.map((el) => step3.push(el.id));
+        this.selectedOperators[0].flowUsers.map((el) => step1.push(el.id));
+        this.selectedOperators[1].flowUsers.map((el) => step2.push(el.id));
+        this.selectedOperators[2].flowUsers.map((el) => step3.push(el.id));
         data.steps.push({ users: step1 });
         data.steps.push({ users: step2 });
         data.steps.push({ users: step3 });
-        data.id = this.data.id;
-        data.isActive = this.data.isActive;
-        this.opfs.updateOpFlow(data).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.opRiskFlowService.updateOpFlow(data).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
     }
 
-    private getOperators() {
+    private getOperators(): void {
         this.operatorService.getOperators(100).subscribe((response) => {
             response.items.map((item) => (item.fullName = `${item.firstName} ${item.lastName}`));
             this.operators = response.items;
         });
     }
 
-    private selectOperator(ticker: any, type: number): void {
-        if (type == 1) this.selectedOperatorList1.push(ticker);
-        if (type == 2) this.selectedOperatorList2.push(ticker);
-        if (type == 3) this.selectedOperatorList3.push(ticker);
-
-        let array = [];
-        for (const key of this.selectedOperatorList1) {
-            array.push(key.id);
-        }
-        this.selectedOperatorFc1.setValue(array, { onlySelf: true });
-
-        array = [];
-        for (const key of this.selectedOperatorList2) {
-            array.push(key.id);
-        }
-        this.selectedOperatorFc2.setValue(array, { onlySelf: true });
-
-        array = [];
-        for (const key of this.selectedOperatorList3) {
-            array.push(key.id);
-        }
-        this.selectedOperatorFc3.setValue(array, { onlySelf: true });
+    public removeOperator(ticker: any, type: number): void {
+        if (type == 1) this.selectedOperators[0].flowUsers = this.selectedOperators[0].flowUsers.filter((el) => el.id !== ticker.id);
+        if (type == 2) this.selectedOperators[1].flowUsers = this.selectedOperators[1].flowUsers.filter((el) => el.id !== ticker.id);
+        if (type == 3) this.selectedOperators[2].flowUsers = this.selectedOperators[2].flowUsers.filter((el) => el.id !== ticker.id);
+        FlowAddComponent.setSelectedOperatorsValue([
+            this.selectedOperators[0].flowUsers,
+            this.selectedOperators[1].flowUsers,
+            this.selectedOperators[2].flowUsers,
+        ]);
     }
 
-    private removeOperator(ticker: any, type: number): void {
-        if (type == 1) this.selectedOperatorList1 = this.selectedOperatorList1.filter((el) => el.id !== ticker.id);
-        if (type == 2) this.selectedOperatorList2 = this.selectedOperatorList2.filter((el) => el.id !== ticker.id);
-        if (type == 3) this.selectedOperatorList3 = this.selectedOperatorList3.filter((el) => el.id !== ticker.id);
-
-        let array = [];
-        for (const key of this.selectedOperatorList1) {
-            array.push(key.id);
-        }
-        this.selectedOperatorFc1.setValue(array, { onlySelf: true });
-
-        array = [];
-        for (const key of this.selectedOperatorList2) {
-            array.push(key.id);
-        }
-        this.selectedOperatorFc2.setValue(array, { onlySelf: true });
-
-        array = [];
-        for (const key of this.selectedOperatorList3) {
-            array.push(key.id);
-        }
-        this.selectedOperatorFc3.setValue(array, { onlySelf: true });
+    public submitForm(): void {
+        this.data ? this.onEditFlow() : this.onCreateFlow();
     }
 
-    searchFn = (searchKey, data): void => {
+    private static setSelectedOperatorsValue(selectedOperatorArray: Array<any>): void {
+        selectedOperatorArray.forEach((selectedOperator) => {
+            let tempArray = [];
+            for (const key of selectedOperator) tempArray.push(key.id);
+            selectedOperator.setValue(tempArray, { onlySelf: true });
+        });
+    }
+
+    public searchFunction = (searchKey, data): void => {
         data.state = searchSelectStateType.LOADING;
         setTimeout(() => {
             data.list = this.operators.filter((el) => el.fullName.includes(searchKey));

@@ -1,6 +1,6 @@
 <div class="page-layout">
     <app-header pageTitle="جریان‌ها">
-        <button mat-raised-button color="primary" (click)="createNewFlow()">
+        <button mat-raised-button color="primary" (click)="createFlow()">
             <mat-icon>add</mat-icon>
             افزودن
         </button>
@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <ng-template let-row="row" let-index="index" let-col="col" #toggle>
+    <ng-template let-row="row" #toggle>
         <button [disabled]="row.isActiveState && row.isActiveState !== stateType.PRESENT" mat-button (click)="toggleStatus(row)">
             <mat-icon [color]="row.isActive ? 'accent' : 'warn'" [matTooltip]="row.isActive ? 'فعال' : 'غیرفعال'">
                 {{ row.isActive ? 'toggle_on' : 'toggle_off' }}

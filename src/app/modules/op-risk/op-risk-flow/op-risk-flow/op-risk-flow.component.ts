@@ -65,13 +65,13 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
                 response.items.forEach((value, index) => (response.items[index].positionNumber = index + 1));
                 this.data = response.items;
             },
-            (error) => alert(error)
+            () => this.alertService.onError('مشکلی در دریافت اطلاعات پیش ‌آمده است.')
         );
     }
 
     toggleStatus(row: any): void {
         row.isActiveState = StateType.LOADING;
-        this.opRiskFlowService.toggleOpFlowStatus(row.id).subscribe(
+        this.opRiskFlowService.toggleOPRiskFlowStatus(row.id).subscribe(
             () => (row.isActive = !row.isActive),
             (error) => {
                 this.alertService.onError(error);
@@ -85,7 +85,7 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
         );
     }
 
-    createNewFlow(): void {
+    createFlow(): void {
         this.matDialog
             .open(FlowAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()

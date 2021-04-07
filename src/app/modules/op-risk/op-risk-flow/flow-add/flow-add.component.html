@@ -1,122 +1,121 @@
-<div fxLayout="column" fxLayoutAlign="center center" style="overflow: hidden">
-    <div title="{{ title }}" appDialogHeader>
-        <button mat-icon-button class="ml-4">
-            <mat-icon (click)="this.dialogRef.close(false)">close</mat-icon>
+<app-header [pageTitle]="title" dir="rtl">
+    <button mat-mini-fab type="button" color="primary" (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+    </button>
+</app-header>
+
+<form class="setting-form-container my-20" dir="rtl" [formGroup]="form" (submit)="submitForm()">
+    <div class="setting-form-row">
+        <mat-form-field class="full-wid" appearance="outline" fxFlex="25">
+            <mat-label>عنوان جریان</mat-label>
+            <input matInput formControlName="name" />
+        </mat-form-field>
+    </div>
+    <div class="setting-form-row">
+        <app-search-select
+            label="افزودن ثبت‌کننده"
+            placeholder="جستجو کنید"
+            appearance="outline"
+            [searchFn]="searchFunction"
+            outputValueForm="all"
+            uiPropertyName="fullName"
+            formControlName="stepOne"
+        >
+        </app-search-select>
+        <app-search-select
+            label="افزودن تایید‌کننده"
+            placeholder="جستجو کنید"
+            appearance="outline"
+            [searchFn]="searchFunction"
+            outputValueForm="all"
+            uiPropertyName="fullName"
+            formControlName="stepTwo"
+        >
+        </app-search-select>
+        <app-search-select
+            label="افزودن تصویب‌کننده‌"
+            placeholder="جستجو کنید"
+            appearance="outline"
+            [searchFn]="searchFunction"
+            outputValueForm="all"
+            uiPropertyName="fullName"
+            formControlName="stepTree"
+        >
+        </app-search-select>
+    </div>
+    <div class="mb-20 pb-20 mx-auto w-90-p" dir="rtl" fxLayout="row" fxLayoutAlign="space-around center" *ngIf="selectedOperators">
+        <div fxFlex="100" *ngIf="selectedOperators[0].flowUsers && selectedOperators[0].flowUsers.length > 0">
+            <h3 class="mb-20">ثبت‌کننده‌های انتخاب‌شده</h3>
+            <mat-chip-list>
+                <mat-chip
+                    *ngFor="let selectedOperator of selectedOperators[0].flowUsers"
+                    color="accent"
+                    selected="true"
+                    (removed)="removeOperator(selectedOperator, 1)"
+                    removable
+                >
+                    {{
+                        selectedOperator.firstName + selectedOperator.lastName
+                            ? selectedOperator.firstName + ' ' + selectedOperator.lastName
+                            : selectedOperator.firstName.length > 6
+                            ? (selectedOperator.firstName | slice: 0:6) + '..'
+                            : selectedOperator.firstName
+                    }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+        <div fxFlex="100" *ngIf="selectedOperators[1].flowUsers && selectedOperators[1].flowUsers.length > 0">
+            <h3 class="mb-20">تاییدکننده‌های انتخاب‌شده</h3>
+            <mat-chip-list>
+                <mat-chip
+                    *ngFor="let selectedOperator of selectedOperators[1].flowUsers"
+                    color="accent"
+                    selected="true"
+                    (removed)="removeOperator(selectedOperator, 2)"
+                    removable
+                >
+                    {{
+                        selectedOperator.firstName + selectedOperator.lastName
+                            ? selectedOperator.firstName + ' ' + selectedOperator.lastName
+                            : selectedOperator.firstName.length > 6
+                            ? (selectedOperator.firstName | slice: 0:6) + '..'
+                            : selectedOperator.firstName
+                    }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+        <div fxFlex="100" *ngIf="selectedOperators[2].flowUsers && selectedOperators[2].flowUsers?.length > 0">
+            <h3 class="mb-20">تصویب‌کننده‌های انتخاب‌شده</h3>
+            <mat-chip-list>
+                <mat-chip
+                    *ngFor="let selectedOperator of selectedOperators[2].flowUsers"
+                    color="accent"
+                    selected="true"
+                    (removed)="removeOperator(selectedOperator, 3)"
+                    removable
+                >
+                    {{
+                        selectedOperator.firstName + selectedOperator.lastName
+                            ? selectedOperator.firstName + ' ' + selectedOperator.lastName
+                            : selectedOperator.firstName.length > 6
+                            ? (selectedOperator.firstName | slice: 0:6) + '..'
+                            : selectedOperator.firstName
+                    }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="end center">
+        <button type="button" (click)="this.dialogRef.close(false)" color="warn" mat-flat-button>
+            <mat-icon>close</mat-icon>
+            بازگشت
+        </button>
+        <button class="mx-20" type="submit" color="accent" mat-flat-button>
+            <mat-icon> {{ data ? 'edit' : 'done' }}</mat-icon>
+            {{ data ? 'ویرایش جریان' : 'افزودن جریان' }}
         </button>
     </div>
-    <form class="setting-form-container" dir="rtl" [formGroup]="form" (submit)="submitForm()">
-        <div class="setting-form-row">
-            <mat-form-field class="full-wid" appearance="outline" fxFlex="25">
-                <mat-label>عنوان جریان</mat-label>
-                <input matInput formControlName="name" />
-            </mat-form-field>
-        </div>
-        <div class="setting-form-row">
-            <app-search-select
-                label="افزودن ثبت‌کننده"
-                placeholder="جستجو کنید"
-                appearance="outline"
-                [searchFn]="searchFn"
-                outputValueForm="all"
-                uiPropertyName="fullName"
-                formControlName="stepOne"
-            >
-            </app-search-select>
-            <app-search-select
-                label="افزودن تایید‌کننده"
-                placeholder="جستجو کنید"
-                appearance="outline"
-                [searchFn]="searchFn"
-                outputValueForm="all"
-                uiPropertyName="fullName"
-                formControlName="stepTwo"
-            >
-            </app-search-select>
-            <app-search-select
-                label="افزودن تصویب‌کننده‌"
-                placeholder="جستجو کنید"
-                appearance="outline"
-                [searchFn]="searchFn"
-                outputValueForm="all"
-                uiPropertyName="fullName"
-                formControlName="stepTree"
-            >
-            </app-search-select>
-        </div>
-        <div class="mb-20 pb-20 mx-auto w-90-p" dir="rtl" fxLayout="row" fxLayoutAlign="space-around center">
-            <div fxFlex="100" *ngIf="selectedOperatorList1 && selectedOperatorList1?.length > 0">
-                <h3 class="mb-20">ثبت‌کننده‌های انتخاب‌شده</h3>
-                <mat-chip-list>
-                    <mat-chip
-                        *ngFor="let operator of selectedOperatorList1"
-                        color="accent"
-                        selected="true"
-                        (removed)="removeOperator(operator, 1)"
-                        removable
-                    >
-                        {{
-                            operator?.firstName + operator?.lastName
-                                ? operator?.firstName + ' ' + operator?.lastName
-                                : operator?.firstName?.length > 6
-                                ? (operator?.firstName | slice: 0:6) + '..'
-                                : operator?.firstName
-                        }}
-                        <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                </mat-chip-list>
-            </div>
-            <div fxFlex="100" *ngIf="selectedOperatorList2 && selectedOperatorList2?.length > 0">
-                <h3 class="mb-20">تاییدکننده‌های انتخاب‌شده</h3>
-                <mat-chip-list>
-                    <mat-chip
-                        *ngFor="let operator of selectedOperatorList2"
-                        color="accent"
-                        selected="true"
-                        (removed)="removeOperator(operator, 2)"
-                        removable
-                    >
-                        {{
-                            operator?.firstName + operator?.lastName
-                                ? operator?.firstName + ' ' + operator?.lastName
-                                : operator?.firstName?.length > 6
-                                ? (operator?.firstName | slice: 0:6) + '..'
-                                : operator?.firstName
-                        }}
-                        <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                </mat-chip-list>
-            </div>
-            <div fxFlex="100" *ngIf="selectedOperatorList3 && selectedOperatorList3?.length > 0">
-                <h3 class="mb-20">تصویب‌کننده‌های انتخاب‌شده</h3>
-                <mat-chip-list>
-                    <mat-chip
-                        *ngFor="let operator of selectedOperatorList3"
-                        color="accent"
-                        selected="true"
-                        (removed)="removeOperator(operator, 3)"
-                        removable
-                    >
-                        {{
-                            operator?.firstName + operator?.lastName
-                                ? operator?.firstName + ' ' + operator?.lastName
-                                : operator?.firstName?.length > 6
-                                ? (operator?.firstName | slice: 0:6) + '..'
-                                : operator?.firstName
-                        }}
-                        <mat-icon matChipRemove>cancel</mat-icon>
-                    </mat-chip>
-                </mat-chip-list>
-            </div>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="end center">
-            <button style="margin-left: 10px" type="button" (click)="this.dialogRef.close(false)" color="warn" mat-flat-button>
-                <mat-icon>close</mat-icon>
-                انصراف
-            </button>
-            <button type="submit" color="accent" mat-flat-button>
-                <mat-icon>done</mat-icon>
-                {{ data ? 'ویرایش' : 'افزودن' }}
-            </button>
-        </div>
-    </form>
-</div>
+</form>
