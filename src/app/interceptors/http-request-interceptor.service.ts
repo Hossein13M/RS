@@ -4,12 +4,13 @@ import { Router } from '@angular/router';
 import { environment } from 'environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AlertService } from '../services/alert.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class HttpRequestInterceptor implements HttpInterceptor {
-    constructor(private router: Router) {}
+    constructor(private router: Router, private alertService: AlertService) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const contentType = request.headers.get('Content-Type');
@@ -55,7 +56,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     checkErrors(e): Observable<never> {
         switch (e.status) {
             case 500:
-                this.router.navigate(['/login']);
+                this.alertService.onError('اجرای درخواست موفق نبود.');
                 break;
             default:
                 break;
