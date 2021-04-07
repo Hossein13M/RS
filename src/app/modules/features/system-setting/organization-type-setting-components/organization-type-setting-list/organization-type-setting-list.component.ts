@@ -7,6 +7,7 @@ import { OrganizationTypeService } from 'app/services/feature-services/system-se
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { OrganizationTypeSettingAddComponent } from '../organization-type-setting-add/organization-type-setting-add.component';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'app-organization-type-setting-list',
@@ -15,42 +16,62 @@ import { OrganizationTypeSettingAddComponent } from '../organization-type-settin
     animations: [fuseAnimations],
 })
 export class OrganizationTypeSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['name', 'operation'];
-    searchFormGroup: FormGroup;
+    data: any = [];
+    column: Array<ColumnModel>;
 
-    createSearchFormGroup() {
-        this.searchFormGroup = this.fb.group({
-            searchKeyword: '',
-        });
-    }
+    constructor(private matDialog: MatDialog, public organizationTypeService: OrganizationTypeService) {}
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public organizationTypeService: OrganizationTypeService) {}
-
-    pageHandler(e: PagingEvent) {
-        this.organizationTypeService.specificationModel.limit = e.pageSize;
-        this.organizationTypeService.specificationModel.skip = e.currentIndex * e.pageSize;
+    ngOnInit(): void {
+        this.initColumns();
         this.get();
     }
 
-    ngOnInit() {
-        this.createSearchFormGroup();
+    initColumns(): void {
+        this.column = [
+            {
+                id: 'name',
+                name: 'نام',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.edit(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    paginationControl(pageEvent: PaginationChangeType): void {
         this.get();
-        this.searchFormGroup.valueChanges.subscribe((res) => {
-            this.organizationTypeService.specificationModel.searchKeyword = res;
-            this.organizationTypeService.specificationModel.skip = 0;
-            this.get();
+    }
+
+    get(): void {
+        this.organizationTypeService.getOrganizationType().subscribe((res: any) => {
+            this.data = res;
         });
     }
 
-    get() {
-        this.organizationTypeService.getOrganizationType(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res);
-            this.organizationTypeService.setPageDetailData(res);
-        });
-    }
-
-    add() {
+    add(): void {
         this.matDialog
             .open(OrganizationTypeSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -64,7 +85,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
@@ -73,18 +94,18 @@ export class OrganizationTypeSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.organizationTypeService.deleteOrganizationType(element.id, this).subscribe((x) => {
+                    this.organizationTypeService.deleteOrganizationType(row.id).subscribe((x) => {
                         this.get();
                     });
                 }
             });
     }
 
-    edit(element) {
+    edit(row): void {
         this.matDialog
             .open(OrganizationTypeSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: element,
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {
@@ -93,10 +114,4 @@ export class OrganizationTypeSettingListComponent implements OnInit {
                 }
             });
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

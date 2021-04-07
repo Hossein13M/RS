@@ -29,13 +29,13 @@ export class InstrumentTypeSettingAddComponent implements OnInit {
     ) {}
 
     getBoard() {
-        this.bourseBoardService.getBourseBorad(this).subscribe((res: any) => {
+        this.bourseBoardService.get(this).subscribe((res: any) => {
             this.boards = res;
         });
     }
 
     getMarket() {
-        this.bourseMarketService.getBourseMarket(this).subscribe((res: any) => {
+        this.bourseMarketService.get(this).subscribe((res: any) => {
             this.markets = res;
         });
     }
@@ -70,13 +70,13 @@ export class InstrumentTypeSettingAddComponent implements OnInit {
     }
 
     onEditBranch() {
-        let obj = this.form.value;
+        const obj = this.form.value;
         obj['ticker'] = this.data.ticker;
         obj['type'] = this.form.get('type').value;
         obj['isInBourse'] = this.data.isInBourse;
         this.instrumentTypeService.updateInstrumentType(obj, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 

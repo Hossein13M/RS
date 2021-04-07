@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BankService } from 'app/services/feature-services/bank.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { BankSettingAddComponent } from '../bank-setting-add/bank-setting-add.component';
-import { PaginationChangeType, TableSearchMode } from '../../../../../shared/components/table/table-consts';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'app-bank-setting-list',
@@ -15,19 +13,19 @@ import { PaginationChangeType, TableSearchMode } from '../../../../../shared/com
     animations: [fuseAnimations],
 })
 export class BankSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['name', 'operation'];
-
-    data: any;
-    column: Array<any>;
+    data: any = [];
+    column: Array<ColumnModel>;
 
     pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, public bankService: BankService) {}
 
     ngOnInit(): void {
+        this.initColumns();
         this.get();
+    }
 
+    initColumns(): void {
         this.column = [
             {
                 name: 'نام بانک',
@@ -49,7 +47,7 @@ export class BankSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.edit(row),
+                        operation: ({ row }: any) => this.update(row),
                     },
                     {
                         name: 'حذف',
@@ -62,21 +60,21 @@ export class BankSettingListComponent implements OnInit {
         ];
     }
 
-    get(): void {
-        this.bankService.getAllBank(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
-            this.data = res.items;
-            this.bankService.setPageDetailData(res);
-        });
-    }
-
     paginationControl(pageEvent: PaginationChangeType): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    add(): void {
+    get(): void {
+        this.bankService.get().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
+            this.bankService.setPageDetailData(res);
+        });
+    }
+
+    create(): void {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -99,14 +97,14 @@ export class BankSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.bankService.deleteBank(row.id, this).subscribe((x) => {
+                    this.bankService.delete(row.id).subscribe((x) => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(row): void {
+    update(row): void {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -118,13 +116,5 @@ export class BankSettingListComponent implements OnInit {
                     row.name = res.name;
                 }
             });
-    }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    search(keyword: any): void {
-        console.log(keyword);
     }
 }

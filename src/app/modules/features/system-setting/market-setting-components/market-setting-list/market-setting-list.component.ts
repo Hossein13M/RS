@@ -5,7 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { MarketSettingService } from 'app/services/feature-services/system-setting-services/market-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
-import { TableSearchMode } from '../../../../../shared/components/table/table-consts';
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { MarketSettingAddComponent } from '../market-setting-add/market-setting-add.component';
 
 @Component({
