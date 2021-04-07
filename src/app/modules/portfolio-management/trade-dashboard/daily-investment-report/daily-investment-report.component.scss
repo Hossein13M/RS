@@ -13,12 +13,11 @@
     }
 
     .table-container {
-        height: calc(100% - 100px);
-        overflow-y: scroll;
+        height: calc(100% - 70px);
+        overflow-y: auto;
 
         .table {
             height: auto;
-            margin-bottom: 30px;
         }
     }
 
