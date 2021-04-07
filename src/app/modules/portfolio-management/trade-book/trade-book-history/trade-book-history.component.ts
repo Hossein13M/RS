@@ -13,7 +13,7 @@ import { TradeBookHistoryService } from './trade-book-history.service';
     providers: [TradeBookHistoryService],
 })
 export class TradeBookHistoryComponent implements OnInit {
-    data: Array<any>;
+    tradeBook = { data: [], state: '' };
     columns: Array<any>;
     searchFormGroup: FormGroup;
 
@@ -76,9 +76,9 @@ export class TradeBookHistoryComponent implements OnInit {
     get(): void {
         this.tbhs
             .show({ ...this.searchParams, ...this.pagination })
-            .pipe(StateManager({ state: this.state }))
+            .pipe(StateManager(this.tradeBook))
             .subscribe((data: any) => {
-                this.data = data.items;
+                this.tradeBook.data = data.items;
                 this.pagination.total = data.total;
             });
     }

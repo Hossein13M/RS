@@ -10,7 +10,7 @@ import { OpRiskManagementService } from '../op-risk-management.service';
     styleUrls: ['./submitted-risks.component.scss'],
 })
 export class SubmittedRisksComponent implements OnInit {
-    state: StateType;
+    componentState = { state: '' };
     data: any;
     columns: Array<any>;
     pagination = { skip: 0, limit: 5, total: 100 };
@@ -68,7 +68,7 @@ export class SubmittedRisksComponent implements OnInit {
     get(pe: any): any {
         this.opRiskManagementService
             .getSubmittedRiskAndLoss({ limit: pe.limit, skip: pe.skip })
-            .pipe(StateManager({ state: this.state }))
+            .pipe(StateManager(this.componentState))
             .subscribe((data: any) => {
                 this.data = data.items;
                 this.pagination = { limit: data.limit, skip: data.skip, total: data.total };
