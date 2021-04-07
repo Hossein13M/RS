@@ -26,7 +26,7 @@
     <div mat-dialog-content>
         <!--  Table  -->
         <div class='fuse-card'>
-            <app-table [data]='data'
+            <app-table [data]='tradeBook.data'
                        [columns]='columns'
                        [paginationSettings]="{ mode: 'backend' }"
                        [paginationObj]='pagination'
@@ -36,7 +36,7 @@
         </div>
 
         <!--   Getting Data Failed  -->
-        <div *ngIf='state === "FAIL"' fxLayout='row wrap' fxLayoutAlign='center center'>
+        <div *ngIf='tradeBook.state === "FAIL"' fxLayout='row wrap' fxLayoutAlign='center center'>
             دریافت داده ناموفق بود
 
             <button mat-button
@@ -47,7 +47,7 @@
         </div>
 
         <!--   Help Quotes  -->
-        <p *ngIf='data?.length==0 && state === "PRESENT"' class='text-center'>
+        <p *ngIf='tradeBook.data?.length==0 && tradeBook.state === "PRESENT"' class='text-center'>
             داده‌ای برای نمایش وجود ندارد
         </p>
     </div>
