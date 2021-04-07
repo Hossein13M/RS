@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
-import { TableSearchMode } from '../../../shared/components/table/table-consts';
+import { TableSearchMode } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'aum-etf',

@@ -9,25 +9,25 @@ import { ApiClientService } from '../../Base/api-client.service';
 export class FundRoleService extends Specification {
     private static fundRoleApi = '/api/v1/fund-role';
 
-    getFundRole(fc?: FormContainer) {
+    get(fc?: FormContainer) {
         return this.apiClientService.get(FundRoleService.fundRoleApi, fc);
     }
 
-    getFundRoleWithPaging(fc?: FormContainer) {
+    getWithPaging(fc?: FormContainer) {
         const api = FundRoleService.fundRoleApi + this.generateSpecificationString();
         return this.apiClientService.get(api, fc);
     }
 
-    deleteFundRole(id, fc?: FormContainer) {
+    delete(id, fc?: FormContainer) {
         const api = FundRoleService.fundRoleApi + '/' + id;
         return this.apiClientService.delete(api, fc);
     }
 
-    updateFundRole(model, fc?: FormContainer) {
+    update(model, fc?: FormContainer) {
         return this.apiClientService.put(FundRoleService.fundRoleApi, fc, model);
     }
 
-    createFundRole(model, fc?: FormContainer) {
+    create(model, fc?: FormContainer) {
         return this.apiClientService.post(FundRoleService.fundRoleApi, model, fc);
     }
 

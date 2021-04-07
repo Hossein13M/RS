@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormContainer } from '../../../shared/models/FromContainer';
 import { ApiClientService } from '../../Base/api-client.service';
+import { PageEvent } from '#shared/models/Specification';
 
 @Injectable({
     providedIn: 'root',
@@ -10,19 +11,19 @@ export class BourseBoardService {
 
     constructor(private apiClientService: ApiClientService) {}
 
-    getBourseBorad(fc?: FormContainer) {
+    get(fc?: FormContainer) {
         return this.apiClientService.get(BourseBoardService.bourseBoardApi, fc);
     }
 
-    createBourseBorad(model, fc?: FormContainer) {
+    create(model, fc?: FormContainer) {
         return this.apiClientService.post(BourseBoardService.bourseBoardApi, model, fc);
     }
 
-    updateBourseBorad(model, fc?: FormContainer) {
+    update(model, fc?: FormContainer) {
         return this.apiClientService.put(BourseBoardService.bourseBoardApi, fc, model);
     }
 
-    deleteBourseBorad(id, fc?: FormContainer) {
+    delete(id, fc?: FormContainer) {
         const api = BourseBoardService.bourseBoardApi + '/' + id;
         return this.apiClientService.delete(api, fc);
     }

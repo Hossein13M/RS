@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { GlSettingService } from 'app/services/feature-services/system-setting-services/gl-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.component';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-gl-setting-list',
@@ -14,41 +13,85 @@ import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.componen
     styleUrls: ['./gl-setting-list.component.scss'],
     animations: [fuseAnimations],
 })
-export class GlSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['symbol', 'status', 'glCode', 'operation'];
-    searchFormGroup: FormGroup;
+export class GlSettingListComponent implements AfterViewInit {
+    data: any = [];
+    column: Array<ColumnModel>;
+    pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public glSettingService: GlSettingService) {}
+    @ViewChild('status', { static: false }) statusRef: TemplateRef<any>;
 
-    createSearchFormGroup() {
-        this.searchFormGroup = this.fb.group({ searchKeyword: '' });
-    }
+    constructor(private matDialog: MatDialog, public glSettingService: GlSettingService) {}
 
-    pageHandler(e: PagingEvent) {
-        this.glSettingService.specificationModel.limit = e.pageSize;
-        this.glSettingService.specificationModel.skip = e.currentIndex * e.pageSize;
+    ngAfterViewInit(): void {
+        this.initColumns();
         this.get();
     }
 
-    ngOnInit() {
-        this.createSearchFormGroup();
-        this.get();
-        this.searchFormGroup.valueChanges.subscribe((res) => {
-            this.glSettingService.specificationModel.searchKeyword = res;
-            this.glSettingService.specificationModel.skip = 0;
-            this.get();
-        });
+    initColumns(): void {
+        this.column = [
+            {
+                id: 'symbol',
+                name: 'نماد',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'status',
+                name: 'وضعیت',
+                type: 'custom',
+                cellTemplate: this.statusRef,
+            },
+            {
+                id: 'glCode',
+                name: 'کد دفتر کل',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.update(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
     }
 
-    get() {
-        this.glSettingService.getGlSetting(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(): void {
+        this.glSettingService.get().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
             this.glSettingService.setPageDetailData(res);
         });
     }
 
-    add() {
+    create(): void {
         this.matDialog
             .open(GlSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
@@ -59,31 +102,27 @@ export class GlSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.glSettingService.deleteGlSetting(element.id, this).subscribe(() => this.get());
+                    this.glSettingService.delete(row.id).subscribe(() => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
+                    });
                 }
             });
     }
 
-    edit(element) {
+    update(row): void {
         this.matDialog
-            .open(GlSettingAddComponent, { panelClass: 'dialog-w60', data: element })
+            .open(GlSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.get();
+                    _.assign(row, res);
                 }
             });
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

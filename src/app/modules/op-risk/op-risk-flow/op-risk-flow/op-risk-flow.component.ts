@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angul
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
 import { StateType } from 'app/shared/state-type.enum';
-import { TableSearchMode } from '../../../../shared/components/table/table-consts';
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { FlowAddComponent } from '../flow-add/flow-add.component';
 import { OpRiskFlowService } from '../op-risk-flow.service';
 import { OpRiskViewComponent } from '../op-risk-view/op-risk-view.component';

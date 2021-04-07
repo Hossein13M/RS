@@ -2,7 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
-import { TableSearchMode } from '../../../shared/components/table/table-consts';
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { YieldCurveService } from '../yield-curve.service';
 
 @Component({
