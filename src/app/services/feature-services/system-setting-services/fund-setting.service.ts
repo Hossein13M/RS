@@ -13,26 +13,26 @@ export class FundSettingService extends Specification {
         super();
     }
 
-    getAllFund(fc?: FormContainer) {
+    getAll(fc?: FormContainer) {
         const api = FundSettingService.getFundApi + this.generateSpecificationString() + '&details=true';
         return this.apiClientService.get(api, fc);
     }
 
-    getAllFundNoPaging(fc?: FormContainer) {
+    getAllNoPaging(fc?: FormContainer) {
         const api = FundSettingService.getFundApi + '?limit=1000&skip=0' + '&details=false';
         return this.apiClientService.get(api, fc);
     }
 
-    createFund(model, fc?: FormContainer) {
+    create(model, fc?: FormContainer) {
         return this.apiClientService.post(FundSettingService.getFundApi, model, fc);
     }
 
-    deleteFund(id, fc?: FormContainer) {
+    delete(id, fc?: FormContainer) {
         const api = FundSettingService.getFundApi + '/' + id;
         return this.apiClientService.delete(api, fc);
     }
 
-    updateFund(model, fc?: FormContainer) {
+    update(model, fc?: FormContainer) {
         return this.apiClientService.put(FundSettingService.getFundApi, fc, model);
     }
 }
