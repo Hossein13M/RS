@@ -110,18 +110,18 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
     }
 
     onCreateBranch() {
-        this.fundSettingService.createFund(this.form.value, this).subscribe(() => {
+        this.fundSettingService.create(this.form.value, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
     onEditBranch() {
-        let obj = this.form.value;
+        const obj = this.form.value;
         obj['id'] = this.data.id;
-        this.fundSettingService.updateFund(obj, this).subscribe(() => {
+        this.fundSettingService.update(obj, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 

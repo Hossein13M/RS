@@ -1,201 +1,30 @@
 <div class="page-layout">
-
     <!-- HEADER -->
     <app-header pageTitle="لیست مشخصات صندوق">
-
-        <button mat-raised-button
-                (click)="add()"
-                color="primary">
+        <button mat-raised-button (click)="add()" color="primary">
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
-
     </app-header>
 
     <div class="page-content">
         <div class="setting-container-back" dir="rtl">
-            <div [formGroup]="searchFormGroup" class="setting-panel fuse-card">
-                <mat-table style="overflow-x: scroll" [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-                    <ng-container matColumnDef="name">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    نام
-                                </mat-label>
-                                <input matInput formControlName="searchKeyword">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.name}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="code">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>کد</mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.code}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="fundTypeId">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <!--                    <mat-form-field appearance="fill">-->
-                            <!--                        <mat-label>-->
-                            <!--                            نوع-->
-                            <!--                        </mat-label>-->
-                            <!--                        <input matInput formControlName="fundType">-->
-                            <!--                    </mat-form-field>-->
-                            <mat-form-field appearance="fill" style="width: 80%;">
-                                <mat-label>نوع
-                                </mat-label>
-                                <mat-select formControlName="fundType">
-                                    <mat-option *ngFor="let o of fundTypes" style="text-align: right"
-                                                [value]="o?.id">
-                                        {{o?.name}}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>
-                                    وارد کردن این فیلد الزامی است.
-                                </mat-error>
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.fundType?.name}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="etf">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field appearance="fill" style="width: 85%">
-                                <mat-label>قابلیت معامله
-                                </mat-label>
-                                <mat-select formControlName="etf">
-                                    <mat-option style="text-align: right"
-                                                [value]="true">
-                                        دارد
-                                    </mat-option>
-                                    <mat-option style="text-align: right"
-                                                [value]="false">
-                                        ندارد
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error>
-                                    وارد کردن این فیلد الزامی است.
-                                </mat-error>
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                <span *ngIf="element?.etf===true">
-                                    دارد
-                                </span>
-                                <span *ngIf="element?.etf===false">
-                                    ندارد
-                                </span>
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="fundBenefitGuarantor">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>ضامن سود</mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.benefitGuarantor?.name}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="fundLiquidityGuarantor">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>ضامن نقدشوندگی</mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.liquidityGuarantor?.name}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="fundMarketer">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>بازارگردان</mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                <!--                        {{element?.marketers[0]?.name}}-->
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="fundTruster">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>متولی</mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.truster?.name}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="fundRegisterManagements">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>مدیر ثبت</mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                <!--                        {{element?.registerManagements[0]?.name}}-->
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="fundInvestmentManagement">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            مدیر سرمایه گذاری
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                <!--                        {{element?.investmentManagement[0]?.name}}-->
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="nationalId">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                            <mat-form-field appearance="fill" style="width: 80%;">
-                                <mat-label>
-                                    شناسه ملی
-                                </mat-label>
-                                <input matInput formControlName="searchKeyword">
-                            </mat-form-field>
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <p class="email text-truncate">
-                                {{element?.nationalId}}
-                            </p>
-                        </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="operation">
-                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
-                        <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>
-                            <button (click)="edit(element)" style="margin-left: 10px" mat-button color="accent">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button (click)="delete(element)" style="margin-left: 10px" mat-button color="warn">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                            <!--                    <button (click)="detail(element)" mat-button-->
-                            <!--                            style="background-color: orange;color: white">-->
-                            <!--                        <mat-icon>visibility</mat-icon>-->
-                            <!--                    </button>-->
-                        </mat-cell>
-                    </ng-container>
-                    <mat-header-row style="top: -12px!important;"
-                                    *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
-                             [@animate]="{value:'*',params:{y:'100%'}}">
-                    </mat-row>
-                </mat-table>
-                <app-paginator [data]="fundSettingService.pageEvent" (page)="pageHandler($event)"
-                               [pageSizeOptions]="[5, 10, 13]"></app-paginator>
-                <ng-container *ngIf="dataSource.data.length===0">
-                    <div
-                        style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                        <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                        <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                            موردی وجود ندارد
+            <div class="setting-panel fuse-card">
+                <div style="width: 100%">
+                    <app-table
+                        [data]="data"
+                        [columns]="column"
+                        [paginationSettings]="{ mode: 'backend' }"
+                        [paginationObj]="pagination"
+                        (paginationChange)="paginationControl($event)"
+                    ></app-table>
+                    <ng-container *ngIf="data?.length === 0">
+                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
-                    </div>
-                </ng-container>
-
+                    </ng-container>
+                </div>
             </div>
         </div>
     </div>
