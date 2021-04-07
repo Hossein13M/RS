@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { OrganizationSupervisorService } from 'app/services/feature-services/system-setting-services/organization-supervisor.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { OrganizationSupervisorAddComponent } from '../organization-supervisor-add/organization-supervisor-add.component';
+import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-organization-supervisor-list',
@@ -15,46 +14,58 @@ import { OrganizationSupervisorAddComponent } from '../organization-supervisor-a
     animations: [fuseAnimations],
 })
 export class OrganizationSupervisorListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['name', 'operation'];
-    searchFormGroup: FormGroup;
+    data: any = [];
+    column: Array<ColumnModel>;
 
-    createSearchFormGroup() {
-        this.searchFormGroup = this.fb.group({
-            searchKeyword: '',
-        });
-    }
+    constructor(private matDialog: MatDialog, public organizationSupervisorService: OrganizationSupervisorService) {}
 
-    constructor(
-        private matDialog: MatDialog,
-        private fb: FormBuilder,
-        public organizationSupervisorService: OrganizationSupervisorService
-    ) {}
-
-    pageHandler(e: PagingEvent) {
-        this.organizationSupervisorService.specificationModel.limit = e.pageSize;
-        this.organizationSupervisorService.specificationModel.skip = e.currentIndex * e.pageSize;
+    ngOnInit(): void {
+        this.initColumn();
         this.get();
     }
 
-    ngOnInit() {
-        this.createSearchFormGroup();
-        this.get();
-        this.searchFormGroup.valueChanges.subscribe((res) => {
-            this.organizationSupervisorService.specificationModel.searchKeyword = res;
-            this.organizationSupervisorService.specificationModel.skip = 0;
-            this.get();
+    initColumn(): void {
+        this.column = [
+            {
+                id: 'name',
+                name: 'نام',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.LOCAL,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.edit(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    get(): void {
+        this.organizationSupervisorService.get().subscribe((res: any) => {
+            this.data = res;
         });
     }
 
-    get() {
-        this.organizationSupervisorService.getOrganization(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res);
-            this.organizationSupervisorService.setPageDetailData(res);
-        });
-    }
-
-    add() {
+    add(): void {
         this.matDialog
             .open(OrganizationSupervisorAddComponent, {
                 panelClass: 'dialog-w60',
@@ -68,7 +79,7 @@ export class OrganizationSupervisorListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
@@ -77,30 +88,24 @@ export class OrganizationSupervisorListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.organizationSupervisorService.deleteOrganization(element.id, this).subscribe((x) => {
-                        this.get();
+                    this.organizationSupervisorService.delete(row.id).subscribe(() => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(element) {
+    edit(row): void {
         this.matDialog
             .open(OrganizationSupervisorAddComponent, {
                 panelClass: 'dialog-w60',
-                data: element,
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.get();
+                    _.assign(row, res);
                 }
             });
     }
-
-     handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

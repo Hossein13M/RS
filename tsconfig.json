@@ -21,7 +21,9 @@
         "paths": {
             "@fuse": [
                 "@fuse/"
-            ]
+            ],
+            // custom paths
+            "#shared/*": ["app/shared/*"]
         }
     },
     "angularCompilerOptions": {

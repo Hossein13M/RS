@@ -11,7 +11,6 @@ import { UpdateBourseMarketDto } from '../models/update-bourse-market-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })

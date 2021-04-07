@@ -1,7 +1,8 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
-import { TableSearchMode } from '../../../shared/components/table/table-consts';
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { YieldCurveService } from '../yield-curve.service';
 
 @Component({
@@ -25,7 +26,7 @@ export class YieldCurveComponent implements OnInit {
             name: 'نام',
             id: 'name',
             type: 'string',
-            minWidth: '130px',
+            minWidth: '360px',
             search: { type: 'select', mode: TableSearchMode.LOCAL },
         },
         {
@@ -66,8 +67,14 @@ export class YieldCurveComponent implements OnInit {
         },
         {
             name: 'سر رسید',
-            id: 'name',
+            id: 'maturityDate',
             type: 'string',
+            convert: (value) =>
+                new Date(value).toLocaleDateString('fa-Ir', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
             minWidth: '250px',
             search: { type: 'text', mode: TableSearchMode.LOCAL },
         },
@@ -138,7 +145,7 @@ export class YieldCurveComponent implements OnInit {
         this.showingData = null;
         this.gapData = null;
         this.yieldCurveData = null;
-        this.yieldCurveService.getYieldCurve(this.searchFormGroup.value.date).subscribe(
+        this.yieldCurveService.getYieldCurve(formatDate(this.searchFormGroup.value.date, 'yyyy-MM-dd', 'en_US')).subscribe(
             (response) => {
                 this.yieldCurveData = response.yieldCurve;
                 // TODO: data bug!!
@@ -154,7 +161,7 @@ export class YieldCurveComponent implements OnInit {
 
                 if (response.yieldCurveDetails.length > 0) {
                     this.yieldCurveDetailsData = response.yieldCurveDetails;
-                    this.showingData = this.yieldCurveDetailsData.slice(0, 10);
+                    this.showingData = this.yieldCurveDetailsData;
                     this.show = true;
                 }
             },

@@ -12,7 +12,6 @@ import { UpdateCustomerDto } from '../models/update-customer-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -204,9 +203,7 @@ export class CustomerService extends BaseService {
      * This method doesn't expect any request body.
      */
     customerControllerGetCustomer(params: { id: number }): Observable<CustomerInfoDto> {
-        return this.customerControllerGetCustomer$Response(params).pipe(
-            map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto)
-        );
+        return this.customerControllerGetCustomer$Response(params).pipe(map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto));
     }
 
     /**

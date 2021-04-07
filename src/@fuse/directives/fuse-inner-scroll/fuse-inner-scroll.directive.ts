@@ -20,11 +20,7 @@ export class FuseInnerScrollDirective implements OnInit, OnDestroy {
      * @param {FuseMatchMediaService} _fuseMediaMatchService
      * @param {Renderer2} _renderer
      */
-    constructor(
-        private _elementRef: ElementRef,
-        private _fuseMediaMatchService: FuseMatchMediaService,
-        private _renderer: Renderer2
-    ) {
+    constructor(private _elementRef: ElementRef, private _fuseMediaMatchService: FuseMatchMediaService, private _renderer: Renderer2) {
         // Set the private defaults
         this._unsubscribeAll = new Subject();
     }

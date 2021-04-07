@@ -12,7 +12,6 @@ import { UpdateBankBranchDto } from '../models/update-bank-branch-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -59,9 +58,7 @@ export class BankBranchService extends BaseService {
      * This method doesn't expect any request body.
      */
     bankBranchControllerGetBankBranch(params: { bankBranchId: number }): Observable<BankBranchDto> {
-        return this.bankBranchControllerGetBankBranch$Response(params).pipe(
-            map((r: StrictHttpResponse<BankBranchDto>) => r.body as BankBranchDto)
-        );
+        return this.bankBranchControllerGetBankBranch$Response(params).pipe(map((r: StrictHttpResponse<BankBranchDto>) => r.body as BankBranchDto));
     }
 
     /**
@@ -180,9 +177,7 @@ export class BankBranchService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bankBranchControllerUpdateBankBranch$Response(params: {
-        body: UpdateBankBranchDto;
-    }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
+    bankBranchControllerUpdateBankBranch$Response(params: { body: UpdateBankBranchDto }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankBranchService.BankBranchControllerUpdateBankBranchPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -225,9 +220,7 @@ export class BankBranchService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bankBranchControllerCreateBankBranch$Response(params: {
-        body: CreateBankBranchDto;
-    }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
+    bankBranchControllerCreateBankBranch$Response(params: { body: CreateBankBranchDto }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankBranchService.BankBranchControllerCreateBankBranchPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

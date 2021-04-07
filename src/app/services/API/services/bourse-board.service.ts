@@ -11,7 +11,6 @@ import { UpdateBourseBoardDto } from '../models/update-bourse-board-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -115,10 +114,7 @@ export class BourseBoardService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    bourseBoardControllerGetBourseBoards$Response(params?: {
-        name?: string;
-        code?: number;
-    }): Observable<StrictHttpResponse<Array<BourseBoardDto>>> {
+    bourseBoardControllerGetBourseBoards$Response(params?: { name?: string; code?: number }): Observable<StrictHttpResponse<Array<BourseBoardDto>>> {
         const rb = new RequestBuilder(this.rootUrl, BourseBoardService.BourseBoardControllerGetBourseBoardsPath, 'get');
         if (params) {
             rb.query('name', params.name, {});
@@ -162,9 +158,7 @@ export class BourseBoardService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bourseBoardControllerUpdateBourseBoard$Response(params: {
-        body: UpdateBourseBoardDto;
-    }): Observable<StrictHttpResponse<UpdateBourseBoardDto>> {
+    bourseBoardControllerUpdateBourseBoard$Response(params: { body: UpdateBourseBoardDto }): Observable<StrictHttpResponse<UpdateBourseBoardDto>> {
         const rb = new RequestBuilder(this.rootUrl, BourseBoardService.BourseBoardControllerUpdateBourseBoardPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -207,9 +201,7 @@ export class BourseBoardService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bourseBoardControllerCreateBourseBoard$Response(params: {
-        body: CreateBourseBoardDto;
-    }): Observable<StrictHttpResponse<UpdateBourseBoardDto>> {
+    bourseBoardControllerCreateBourseBoard$Response(params: { body: CreateBourseBoardDto }): Observable<StrictHttpResponse<UpdateBourseBoardDto>> {
         const rb = new RequestBuilder(this.rootUrl, BourseBoardService.BourseBoardControllerCreateBourseBoardPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

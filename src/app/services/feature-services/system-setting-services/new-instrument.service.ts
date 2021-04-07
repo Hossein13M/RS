@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormContainer } from '../../../shared/models/FromContainer';
 import { Specification } from '../../../shared/models/Specification';
 import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -9,20 +10,20 @@ import { ApiClientService } from '../../Base/api-client.service';
 export class NewInstrumentService extends Specification {
     private static newInstrumentApi = '/api/v1/new-instrument';
 
-    createInstrument(model, fc?: FormContainer) {
+    create(model, fc?: FormContainer): Observable<any> {
         return this.apiClientService.post(NewInstrumentService.newInstrumentApi, model, fc);
     }
 
-    deleteInstrument(id, isInBourse, fc?: FormContainer) {
+    delete(id, isInBourse, fc?: FormContainer): Observable<any> {
         const api = NewInstrumentService.newInstrumentApi + '/' + id + '?isInBourse=' + isInBourse;
         return this.apiClientService.delete(api, fc);
     }
 
-    updateInstrument(model, fc?: FormContainer) {
+    update(model, fc?: FormContainer): Observable<any> {
         return this.apiClientService.put(NewInstrumentService.newInstrumentApi, fc, model);
     }
 
-    getInstruments(fc: FormContainer) {
+    get(fc?: FormContainer): Observable<any> {
         const api = NewInstrumentService.newInstrumentApi + this.generateSpecificationString();
         return this.apiClientService.get(api, fc);
     }

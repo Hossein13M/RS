@@ -17,12 +17,12 @@ export class BourseBoardSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<BourseBoardSettingAddComponent>,
         private bourseBoardService: BourseBoardService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
@@ -31,39 +31,33 @@ export class BourseBoardSettingAddComponent implements OnInit {
         this.creatForm();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             name: [this.data ? this.data.name : '', Validators.required],
             code: [this.data ? this.data.code : '', Validators.required],
         });
     }
 
-    onCreateBranch() {
-        this.bourseBoardService.createBourseBorad(this.form.value, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.bourseBoardService.create(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = {
             id: this.data['id'],
             name: this.form.get('name').value,
             code: this.form.get('code').value,
         };
-        this.bourseBoardService.updateBourseBorad(obj, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+        this.bourseBoardService.update(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
+            this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-     handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

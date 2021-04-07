@@ -1,14 +1,12 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { DepositSettingService } from 'app/services/feature-services/system-setting-services/deposit-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { DepositSettingAddComponent } from '../deposit-setting-add/deposit-setting-add.component';
-import { DepositSettingDetailComponent } from '../deposit-setting-detail/deposit-setting-detail.component';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-deposit-setting-list',
@@ -17,64 +15,130 @@ import { DepositSettingDetailComponent } from '../deposit-setting-detail/deposit
     animations: [fuseAnimations],
 })
 export class DepositSettingListComponent implements OnInit {
+    data: any = [];
+    column: Array<ColumnModel>;
+    pagination = { skip: 0, limit: 5, total: 100 };
+
     constructor(private matDialog: MatDialog, private fb: FormBuilder, public depositSettingService: DepositSettingService) {}
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = [
-        'accountType',
-        'bankName',
-        'branchCode',
-        'branchName',
-        'depositNumber',
-        'openingDate',
-        'interestRate',
-        'glCode',
-        'operation',
-    ];
-    searchFormGroup: FormGroup;
 
-    isWorking: any;
-
-    createSearchFormGroup() {
-        this.searchFormGroup = this.fb.group({
-            bankName: '',
-            branchName: '',
-            branchCode: '',
-            accountType: '',
-            depositNumber: '',
-            iban: '',
-            glCode: '',
-            interestRate: '',
-            openingDate: '',
-        });
-    }
-
-    pageHandler(e: PagingEvent) {
-        this.depositSettingService.specificationModel.limit = e.pageSize;
-        this.depositSettingService.specificationModel.skip = e.currentIndex * e.pageSize;
+    ngOnInit(): void {
+        this.initColumns();
         this.get();
     }
 
-    ngOnInit() {
-        this.createSearchFormGroup();
-        this.get();
-        this.searchFormGroup.valueChanges.subscribe((res) => {
-            if (res['openingDate'] && res['openingDate'] != '') {
-                res['openingDate'] = formatDate(res['openingDate'], 'yyyy-MM-dd', 'en_US');
-            }
-            this.depositSettingService.specificationModel.searchKeyword = res;
-            this.depositSettingService.specificationModel.skip = 0;
-            this.get();
-        });
+    initColumns(): void {
+        this.column = [
+            {
+                id: 'accountType',
+                name: 'نوع حساب',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'bankName',
+                name: 'نام بانک',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'branchCode',
+                name: 'کد شعبه',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'branchName',
+                name: 'نام شعبه',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'depositNumber',
+                name: 'شماره سپرده',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'openingDate',
+                name: 'تاریخ افتتاح',
+                type: 'date',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'date',
+                },
+            },
+            {
+                id: 'interestRate',
+                name: 'نرخ سود',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'glCode',
+                name: 'کد سطح GL',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.update(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
     }
 
-    get() {
-        this.depositSettingService.getDepositSettings(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(): void {
+        this.depositSettingService.get().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
             this.depositSettingService.setPageDetailData(res);
         });
     }
 
-    add() {
+    create(): void {
         this.matDialog
             .open(DepositSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -88,40 +152,27 @@ export class DepositSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.depositSettingService.deleteDepositSetting(element.id, this).subscribe(() => this.get());
+                    this.depositSettingService.delete(row.id).subscribe(() => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
+                    });
                 }
             });
     }
 
-    detail(element) {
+    update(row): void {
         this.matDialog
-            .open(DepositSettingDetailComponent, { panelClass: 'dialog-w60', data: element })
+            .open(DepositSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.get();
+                    _.assign(row, res);
                 }
             });
-    }
-
-    edit(element) {
-        this.matDialog
-            .open(DepositSettingAddComponent, { panelClass: 'dialog-w60', data: element })
-            .afterClosed()
-            .subscribe((res) => {
-                if (res) {
-                    this.get();
-                }
-            });
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }

@@ -10,7 +10,6 @@ import { UpdateAuthItemDto } from '../models/update-auth-item-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -73,10 +72,7 @@ export class AuthItemService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    authItemControllerGetAuthItems$Response(params?: {
-        name?: string;
-        type?: '1' | '2';
-    }): Observable<StrictHttpResponse<Array<CreateAuthItemDto>>> {
+    authItemControllerGetAuthItems$Response(params?: { name?: string; type?: '1' | '2' }): Observable<StrictHttpResponse<Array<CreateAuthItemDto>>> {
         const rb = new RequestBuilder(this.rootUrl, AuthItemService.AuthItemControllerGetAuthItemsPath, 'get');
         if (params) {
             rb.query('name', params.name, {});
@@ -120,10 +116,7 @@ export class AuthItemService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    authItemControllerUpdateAuthItem$Response(params: {
-        name: string;
-        body: UpdateAuthItemDto;
-    }): Observable<StrictHttpResponse<CreateAuthItemDto>> {
+    authItemControllerUpdateAuthItem$Response(params: { name: string; body: UpdateAuthItemDto }): Observable<StrictHttpResponse<CreateAuthItemDto>> {
         const rb = new RequestBuilder(this.rootUrl, AuthItemService.AuthItemControllerUpdateAuthItemPath, 'put');
         if (params) {
             rb.path('name', params.name, {});

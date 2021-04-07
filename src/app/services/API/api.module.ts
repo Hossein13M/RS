@@ -75,7 +75,6 @@ import { TradeRegistrationService } from './services/trade-registration.service'
 import { UserRoleService } from './services/user-role.service';
 import { UserService } from './services/user.service';
 
-
 /**
  * Module that provides all services and configuration.
  */

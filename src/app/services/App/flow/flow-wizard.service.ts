@@ -3,14 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MinioEnv } from 'app/services/API/api-configuration';
 import { FindFlowInstanceResponseDto, GetFlowHistoryDto, GetFlowNoteDto, GetFlowWizardResponseDto } from 'app/services/API/models';
-import {
-    FlowFileService,
-
-
-
-    FlowHistoryService, FlowInstanceDataService,
-    FlowNoteService, FlowWizardService
-} from 'app/services/API/services';
+import { FlowFileService, FlowHistoryService, FlowInstanceDataService, FlowNoteService, FlowWizardService } from 'app/services/API/services';
 import * as Minio from 'assets/js/minio-browser/minio-browser.js';
 import { SnotifyService } from 'ng-snotify';
 import { BehaviorSubject, Observable } from 'rxjs';

@@ -22,9 +22,7 @@ export class TableSaveCSVComponent implements OnInit {
         const header = this.columns.map((r) => r.name);
         const csv = this.data.map((row) =>
             this.columns
-                .map((col) =>
-                    col.id !== 'operation' ? JSON.stringify(col.convert ? col.convert(row[col.id]) : row[col.id], replacer) : null
-                )
+                .map((col) => (col.id !== 'operation' ? JSON.stringify(col.convert ? col.convert(row[col.id]) : row[col.id], replacer) : null))
                 .join(',')
         );
         csv.unshift(header.join(','));

@@ -14,7 +14,6 @@ import { GetSellNonBourseInstrumentsResponseDto } from '../models/get-sell-non-b
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -146,11 +145,7 @@ export class FundNavUserTransactionService extends BaseService {
         searchKey?: string;
         ticker?: string;
     }): Observable<StrictHttpResponse<Array<GetFundTickersResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            FundNavUserTransactionService.FundNavUserTransactionControllerGetFundTickersPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, FundNavUserTransactionService.FundNavUserTransactionControllerGetFundTickersPath, 'get');
         if (params) {
             rb.query('fundNationalCode', params.fundNationalCode, {});
             rb.query('date', params.date, {});
@@ -224,11 +219,7 @@ export class FundNavUserTransactionService extends BaseService {
         searchKey?: string;
         accountNumber?: string;
     }): Observable<StrictHttpResponse<Array<GetFundBankAccountsResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            FundNavUserTransactionService.FundNavUserTransactionControllerGetFundBankAccountsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, FundNavUserTransactionService.FundNavUserTransactionControllerGetFundBankAccountsPath, 'get');
         if (params) {
             rb.query('fundNationalCode', params.fundNationalCode, {});
             rb.query('date', params.date, {});
@@ -278,8 +269,7 @@ export class FundNavUserTransactionService extends BaseService {
     /**
      * Path part for operation fundNavUserTransactionControllerGetNonBourseInstruments
      */
-    static readonly FundNavUserTransactionControllerGetNonBourseInstrumentsPath =
-        '/api/v1/fund-nav-user-transaction/non-bourse-instruments';
+    static readonly FundNavUserTransactionControllerGetNonBourseInstrumentsPath = '/api/v1/fund-nav-user-transaction/non-bourse-instruments';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -301,11 +291,7 @@ export class FundNavUserTransactionService extends BaseService {
         transactionType: '3' | '4';
         searchKey?: string;
     }): Observable<StrictHttpResponse<Array<GetSellNonBourseInstrumentsResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            FundNavUserTransactionService.FundNavUserTransactionControllerGetNonBourseInstrumentsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, FundNavUserTransactionService.FundNavUserTransactionControllerGetNonBourseInstrumentsPath, 'get');
         if (params) {
             rb.query('fundNationalCode', params.fundNationalCode, {});
             rb.query('date', params.date, {});
@@ -348,10 +334,7 @@ export class FundNavUserTransactionService extends BaseService {
         searchKey?: string;
     }): Observable<Array<GetSellNonBourseInstrumentsResponseDto>> {
         return this.fundNavUserTransactionControllerGetNonBourseInstruments$Response(params).pipe(
-            map(
-                (r: StrictHttpResponse<Array<GetSellNonBourseInstrumentsResponseDto>>) =>
-                    r.body as Array<GetSellNonBourseInstrumentsResponseDto>
-            )
+            map((r: StrictHttpResponse<Array<GetSellNonBourseInstrumentsResponseDto>>) => r.body as Array<GetSellNonBourseInstrumentsResponseDto>)
         );
     }
 

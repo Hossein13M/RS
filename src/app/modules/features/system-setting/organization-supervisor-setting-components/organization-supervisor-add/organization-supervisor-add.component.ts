@@ -38,7 +38,7 @@ export class OrganizationSupervisorAddComponent implements OnInit {
     }
 
     onCreateBranch() {
-        this.organizationSupervisorService.createOrganization(this.form.value, this).subscribe((res) => {
+        this.organizationSupervisorService.create(this.form.value, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -49,7 +49,7 @@ export class OrganizationSupervisorAddComponent implements OnInit {
             id: this.data['id'],
             name: this.form.get('name').value,
         };
-        this.organizationSupervisorService.updateOrganization(obj, this).subscribe((res) => {
+        this.organizationSupervisorService.update(obj, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
@@ -59,7 +59,7 @@ export class OrganizationSupervisorAddComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

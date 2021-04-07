@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { NewInstrumentService } from 'app/services/feature-services/system-setting-services/new-instrument.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrument-setting-add.component';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-instrument-setting-list',
@@ -15,61 +14,161 @@ import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrum
     animations: [fuseAnimations],
 })
 export class InstrumentSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = [
-        'name',
-        'nameEn',
-        'symbol',
-        'symbolEn',
-        'boardName',
-        'marketName',
-        'isActive',
-        'isInBourse',
-        'type',
-        'operation',
-    ];
-    searchFormGroup: FormGroup;
+    data: any = [];
+    column: Array<ColumnModel>;
+    pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public newInstrumentService: NewInstrumentService) {}
+    constructor(private matDialog: MatDialog, public newInstrumentService: NewInstrumentService) {}
 
-    createSearchFormGroup() {
-        this.searchFormGroup = this.fb.group({
-            name: '',
-            nameEn: '',
-            symbol: '',
-            symbolEn: '',
-            boardName: '',
-            marketName: '',
-            isActive: '',
-            isInBourse: '',
-            type: '',
-        });
-    }
-
-    pageHandler(e: PagingEvent) {
-        this.newInstrumentService.specificationModel.limit = e.pageSize;
-        this.newInstrumentService.specificationModel.skip = e.currentIndex * e.pageSize;
+    ngOnInit(): void {
+        this.initColumn();
         this.get();
     }
 
-    ngOnInit() {
-        this.createSearchFormGroup();
-        this.get();
-        this.searchFormGroup.valueChanges.subscribe((res) => {
-            this.newInstrumentService.specificationModel.searchKeyword = res;
-            this.newInstrumentService.specificationModel.skip = 0;
-            this.get();
-        });
+    private initColumn(): void {
+        this.column = [
+            {
+                name: 'نام',
+                id: 'name',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'شماره ثبت',
+                id: 'nameEn',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'نماد',
+                id: 'symbol',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'نماد انگلیسی',
+                id: 'symbolEn',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'وضعیت',
+                id: 'isActive',
+                type: 'string',
+                convert: (value) => (value === 'true' ? 'فعال' : 'غیر فعال'),
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'select',
+                    options: [
+                        {
+                            name: 'فعال',
+                            value: 'true',
+                        },
+                        {
+                            name: 'غیرفعال',
+                            value: 'false',
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'کد نوع',
+                id: 'type',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'محل معامله',
+                id: 'isInBourse',
+                type: 'string',
+                convert: (value) => (value === 'true' ? 'بورس' : 'خارج از بورس'),
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'select',
+                    options: [
+                        {
+                            name: 'بورس',
+                            value: 'true',
+                        },
+                        {
+                            name: 'خارج از بورس',
+                            value: 'false',
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'تابلو',
+                id: 'boardName',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'بازار',
+                id: 'marketName',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.edit(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
     }
 
-    get() {
-        this.newInstrumentService.getInstruments(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(): void {
+        this.newInstrumentService.get().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
             this.newInstrumentService.setPageDetailData(res);
         });
     }
 
-    add() {
+    add(): void {
         this.matDialog
             .open(InstrumentSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -83,7 +182,7 @@ export class InstrumentSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
@@ -92,30 +191,24 @@ export class InstrumentSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.newInstrumentService.deleteInstrument(element.ticker, element.isInBourse, this).subscribe((x) => {
-                        this.get();
+                    this.newInstrumentService.delete(row.id, row.isInBourse).subscribe(() => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(element) {
+    edit(row): void {
         this.matDialog
             .open(InstrumentSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: element,
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.get();
+                    _.assign(row, res);
                 }
             });
     }
-
-     handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

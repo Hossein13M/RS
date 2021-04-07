@@ -16,18 +16,18 @@ export class GlSettingAddComponent implements OnInit {
 
     constructor(
         public dialogRef: MatDialogRef<GlSettingAddComponent>,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private glSettingService: GlSettingService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.data ? (this.title = 'ویرایش ') : (this.title = 'ایجاد ');
         this.createForm();
     }
 
-    createForm() {
+    createForm(): void {
         this.form = this.fb.group({
             ticker: [this.data ? this.data.ticker : '', Validators.required],
             symbol: [this.data ? this.data.symbol : '', Validators.required],
@@ -36,14 +36,14 @@ export class GlSettingAddComponent implements OnInit {
         });
     }
 
-    onCreateBranch() {
-        this.glSettingService.createGlSetting(this.form.value, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.glSettingService.create(this.form.value, this).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = {
             id: this.data['id'],
             ticker: this.form.get('ticker').value,
@@ -51,19 +51,17 @@ export class GlSettingAddComponent implements OnInit {
             status: this.form.get('status').value,
             symbol: this.form.get('symbol').value,
         };
-        this.glSettingService.updateGlSetting(obj, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+        this.glSettingService.update(obj, this).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
+            this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
 
     handleError(): boolean {
         return false;
     }
-
-    isWorking: any;
 }

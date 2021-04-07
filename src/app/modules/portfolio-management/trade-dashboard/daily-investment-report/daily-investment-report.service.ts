@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
-import { ApiClientService } from 'app/services/Base/api-client.service';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { Specification } from 'app/shared/models/Specification';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { formatDate } from '@angular/common';
 
 @Injectable()
-export class DailyInvestmentReportService extends Specification {
+export class DailyInvestmentReportService {
     private static DailyInvestmentReportAPI = '/api/v1/portfolio-management-service/daily-investment-report';
 
-    constructor(private acs: ApiClientService) {
-        super();
-    }
+    constructor(private http: HttpClient) {}
 
-    show(fc?: FormContainer): Observable<any> {
-        return this.acs.get(DailyInvestmentReportService.DailyInvestmentReportAPI + this.generateSpecificationString(), fc);
+    show(inputDate: Date, pagination: any): Observable<any> {
+        const date = formatDate(new Date(inputDate), 'yyyy-MM-dd', 'en_US');
+        return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, {
+            params: {
+                ...pagination,
+                date,
+            },
+        });
     }
 }

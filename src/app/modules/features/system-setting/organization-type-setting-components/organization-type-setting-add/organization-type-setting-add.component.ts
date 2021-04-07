@@ -44,11 +44,11 @@ export class OrganizationTypeSettingAddComponent implements OnInit {
     }
 
     onEditBranch() {
-        let obj = this.form.value;
+        const obj = this.form.value;
         obj['id'] = this.data.id;
         this.organizationTypeService.updateOrganizationType(obj, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 
@@ -56,7 +56,7 @@ export class OrganizationTypeSettingAddComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

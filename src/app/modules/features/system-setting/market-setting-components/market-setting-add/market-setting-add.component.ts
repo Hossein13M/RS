@@ -40,7 +40,7 @@ export class MarketSettingAddComponent implements OnInit {
     }
 
     getFunds() {
-        this.fundSettingService.getAllFundNoPaging(this).subscribe((res: any) => {
+        this.fundSettingService.getAllNoPaging(this).subscribe((res: any) => {
             this.funds = res.items;
         });
     }
@@ -98,7 +98,7 @@ export class MarketSettingAddComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

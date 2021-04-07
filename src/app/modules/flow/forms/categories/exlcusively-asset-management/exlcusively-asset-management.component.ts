@@ -108,12 +108,12 @@ export class ExlcusivelyAssetManagementComponent extends BaseFormModel implement
     }
 
     getAllBanks() {
-        this.bankService.getAllBank(this).subscribe((res: any) => {
+        this.bankService.get(this).subscribe((res: any) => {
             this.banks = res.items;
         });
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 }

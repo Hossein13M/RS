@@ -11,7 +11,6 @@ import { GetEventTitleFieldDto } from '../models/get-event-title-field-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -76,9 +75,7 @@ export class EventTitleFieldService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventTitleFieldControllerGetEventTitleFields$Response(params: {
-        eventTitleId: number;
-    }): Observable<StrictHttpResponse<FindEventTitleFieldDto>> {
+    eventTitleFieldControllerGetEventTitleFields$Response(params: { eventTitleId: number }): Observable<StrictHttpResponse<FindEventTitleFieldDto>> {
         const rb = new RequestBuilder(this.rootUrl, EventTitleFieldService.EventTitleFieldControllerGetEventTitleFieldsPath, 'get');
         if (params) {
             rb.path('eventTitleId', params.eventTitleId, {});
@@ -148,8 +145,6 @@ export class EventTitleFieldService extends BaseService {
      * This method doesn't expect any request body.
      */
     eventTitleFieldControllerDeleteEventTitleField(params: { id: number }): Observable<void> {
-        return this.eventTitleFieldControllerDeleteEventTitleField$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.eventTitleFieldControllerDeleteEventTitleField$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
 }

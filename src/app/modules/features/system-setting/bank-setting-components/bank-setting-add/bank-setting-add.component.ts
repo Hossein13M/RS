@@ -38,7 +38,7 @@ export class BankSettingAddComponent implements OnInit {
     }
 
     onCreateBranch() {
-        this.bankService.createBank(this.form.value, this).subscribe((res) => {
+        this.bankService.create(this.form.value, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -49,9 +49,9 @@ export class BankSettingAddComponent implements OnInit {
             id: this.data['id'],
             name: this.form.get('name').value,
         };
-        this.bankService.updateBank(obj, this).subscribe((res) => {
+        this.bankService.update(obj, this).subscribe((res) => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 
@@ -59,7 +59,7 @@ export class BankSettingAddComponent implements OnInit {
         this.dialogRef.close(false);
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 

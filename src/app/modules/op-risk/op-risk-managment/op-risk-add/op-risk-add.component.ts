@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { debounceTime } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
+import { Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
+import { StateType } from '../../../../shared/state-type.enum';
 import { OpRiskFlowService } from '../../op-risk-flow/op-risk-flow.service';
 import { OpRiskManagementService } from '../op-risk-management.service';
 import { OpRiskModel } from '../op-risk-model';
-import { StateType } from '../../../../shared/state-type.enum';
-import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
-import { Observable } from 'rxjs';
 
 @Component({
     selector: 'app-op-risk-add',

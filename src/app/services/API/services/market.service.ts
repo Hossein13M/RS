@@ -12,7 +12,6 @@ import { UpdateMarketDto } from '../models/update-market-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -172,9 +171,7 @@ export class MarketService extends BaseService {
         limit?: number;
         skip?: number;
     }): Observable<MarketResponseDto> {
-        return this.marketControllerGetMarkets$Response(params).pipe(
-            map((r: StrictHttpResponse<MarketResponseDto>) => r.body as MarketResponseDto)
-        );
+        return this.marketControllerGetMarkets$Response(params).pipe(map((r: StrictHttpResponse<MarketResponseDto>) => r.body as MarketResponseDto));
     }
 
     /**
@@ -215,9 +212,7 @@ export class MarketService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     marketControllerUpdateMarket(params: { body: UpdateMarketDto }): Observable<GetMarketDto> {
-        return this.marketControllerUpdateMarket$Response(params).pipe(
-            map((r: StrictHttpResponse<GetMarketDto>) => r.body as GetMarketDto)
-        );
+        return this.marketControllerUpdateMarket$Response(params).pipe(map((r: StrictHttpResponse<GetMarketDto>) => r.body as GetMarketDto));
     }
 
     /**
@@ -258,8 +253,6 @@ export class MarketService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     marketControllerCreateMarket(params: { body: CreateMarketDto }): Observable<GetMarketDto> {
-        return this.marketControllerCreateMarket$Response(params).pipe(
-            map((r: StrictHttpResponse<GetMarketDto>) => r.body as GetMarketDto)
-        );
+        return this.marketControllerCreateMarket$Response(params).pipe(map((r: StrictHttpResponse<GetMarketDto>) => r.body as GetMarketDto));
     }
 }

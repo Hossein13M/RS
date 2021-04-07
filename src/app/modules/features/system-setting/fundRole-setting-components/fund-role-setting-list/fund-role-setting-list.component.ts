@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FundRoleService } from 'app/services/feature-services/system-setting-services/fund-role.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { BourseBoardSettingAddComponent } from '../../bourse-board-setting-components/bourse-board-setting-add/bourse-board-setting-add.component';
 import { FundRoleSettingAddComponent } from '../fund-role-setting-add/fund-role-setting-add.component';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-fund-role-setting-list',
@@ -16,52 +15,135 @@ import { FundRoleSettingAddComponent } from '../fund-role-setting-add/fund-role-
     animations: [fuseAnimations],
 })
 export class FundRoleSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['name', 'phone', 'regNumber', 'agentName', 'agentPhone', 'nationalId', 'address', 'operation'];
-    searchFormGroup: FormGroup;
+    data: any = [];
+    column: Array<ColumnModel>;
+    pagination = { skip: 0, limit: 5, total: 100 };
 
-    createSearchFormGroup() {
-        this.searchFormGroup = this.fb.group({
-            name: '',
-            phone: '',
-            address: '',
-            agentName: '',
-            agentPhone: '',
-            nationalId: '',
-            regNumber: '',
-            regDate: '',
-            hasSupervisor: '',
-            organizationTypeName: '',
-            organizationSupervisorName: '',
-        });
-    }
+    constructor(private matDialog: MatDialog, public fundRoleService: FundRoleService) {}
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public fundRoleService: FundRoleService) {}
-
-    pageHandler(e: PagingEvent) {
-        this.fundRoleService.specificationModel.limit = e.pageSize;
-        this.fundRoleService.specificationModel.skip = e.currentIndex * e.pageSize;
+    ngOnInit(): void {
+        this.initColumn();
         this.get();
     }
 
-    ngOnInit() {
-        this.createSearchFormGroup();
-        this.get();
-        this.searchFormGroup.valueChanges.subscribe((res) => {
-            this.fundRoleService.specificationModel.searchKeyword = res;
-            this.fundRoleService.specificationModel.skip = 0;
-            this.get();
-        });
+    initColumn(): void {
+        this.column = [
+            {
+                name: 'نام',
+                id: 'name',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'تلفن',
+                id: 'phone',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'شماره ثبت',
+                id: 'regNumber',
+                type: 'string',
+                minWidth: '70px',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'نام نماینده',
+                id: 'agentName',
+                type: 'string',
+                minWidth: '70px',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'تلفن نماینده',
+                id: 'agentPhone',
+                type: 'string',
+                minWidth: '70px',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'کد ملی',
+                id: 'nationalId',
+                type: 'string',
+                minWidth: '70px',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'کد ملی',
+                id: 'nationalId',
+                type: 'string',
+                minWidth: '70px',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'آدرس',
+                id: 'address',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.edit(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
     }
 
-    get() {
-        this.fundRoleService.getFundRoleWithPaging(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(): void {
+        this.fundRoleService.getWithPaging().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
             this.fundRoleService.setPageDetailData(res);
         });
     }
 
-    add() {
+    add(): void {
         this.matDialog
             .open(FundRoleSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
@@ -70,28 +152,28 @@ export class FundRoleSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
-        console.log(element);
+    delete(row): void {
+        console.log(row);
         this.matDialog
             .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
             .afterClosed()
-            .subscribe((result) => {
-                if (result) this.fundRoleService.deleteFundRole(element.id, this).subscribe(() => this.get());
+            .subscribe((res) => {
+                if (res) {
+                    this.fundRoleService.delete(row.id).subscribe(() => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
+                    });
+                }
             });
     }
 
-    edit(element) {
+    edit(row): void {
         this.matDialog
-            .open(BourseBoardSettingAddComponent, { panelClass: 'dialog-w60', data: element })
+            .open(BourseBoardSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
-                if (res) this.get();
+                if (res) {
+                    _.assign(row, res);
+                }
             });
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

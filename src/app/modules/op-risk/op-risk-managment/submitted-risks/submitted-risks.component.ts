@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { OpRiskManagementService } from '../op-risk-management.service';
-import { StateType } from '../../../../shared/state-type.enum';
-import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
 import { Router } from '@angular/router';
+import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
+import { StateType } from '../../../../shared/state-type.enum';
+import { OpRiskManagementService } from '../op-risk-management.service';
 
 @Component({
     selector: 'app-submitted-risks',
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./submitted-risks.component.scss'],
 })
 export class SubmittedRisksComponent implements OnInit {
-    state: StateType;
+    componentState = { state: '' };
     data: any;
     columns: Array<any>;
     pagination = { skip: 0, limit: 5, total: 100 };
@@ -68,7 +68,7 @@ export class SubmittedRisksComponent implements OnInit {
     get(pe: any): any {
         this.opRiskManagementService
             .getSubmittedRiskAndLoss({ limit: pe.limit, skip: pe.skip })
-            .pipe(StateManager({ state: this.state }))
+            .pipe(StateManager(this.componentState))
             .subscribe((data: any) => {
                 this.data = data.items;
                 this.pagination = { limit: data.limit, skip: data.skip, total: data.total };

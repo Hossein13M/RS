@@ -6,6 +6,8 @@ import { BourseMarketService } from 'app/services/feature-services/system-settin
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { BourseMarketSettingAddComponent } from '../bourse-market-setting-add/bourse-market-setting-add.component';
+import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-bourse-market-setting-list',
@@ -14,29 +16,59 @@ import { BourseMarketSettingAddComponent } from '../bourse-market-setting-add/bo
     animations: [fuseAnimations],
 })
 export class BourseMarketSettingListComponent implements OnInit {
-    constructor(private matDialog: MatDialog, public bourseMarket: BourseMarketService) {}
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['name', 'code', 'operation'];
+    data: any = [];
+    column: Array<ColumnModel>;
 
-    isWorking: any;
+    constructor(private matDialog: MatDialog, public bourseMarketService: BourseMarketService) {}
 
-    pageHandler(e: PagingEvent) {
-        this.bourseMarket.specificationModel.limit = e.pageSize;
-        this.bourseMarket.specificationModel.skip = e.currentIndex * e.pageSize;
+    ngOnInit(): void {
+        this.initColumn();
         this.get();
     }
 
-    ngOnInit() {
-        this.get();
+    initColumn(): void {
+        this.column = [
+            {
+                id: 'name',
+                name: 'نام',
+                type: 'string',
+            },
+            {
+                id: 'code',
+                name: 'کد',
+                type: 'string',
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.edit(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
     }
 
-    get() {
-        this.bourseMarket.getBourseMarket(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res);
+    get(): void {
+        this.bourseMarketService.get().subscribe((res: any) => {
+            this.data = res;
         });
     }
 
-    add() {
+    create(): void {
         this.matDialog
             .open(BourseMarketSettingAddComponent, {
                 panelClass: 'dialog-w60',
@@ -50,7 +82,7 @@ export class BourseMarketSettingListComponent implements OnInit {
             });
     }
 
-    delete(element) {
+    delete(row): void {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
@@ -59,28 +91,24 @@ export class BourseMarketSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.bourseMarket.deleteBourseMarket(element.id, this).subscribe((x) => {
-                        this.get();
+                    this.bourseMarketService.delete(row.id).subscribe(() => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
             });
     }
 
-    edit(element) {
+    edit(row): void {
         this.matDialog
             .open(BourseMarketSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: element,
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.get();
+                    _.assign(row, res);
                 }
             });
-    }
-
-     handleError(): boolean {
-        return false;
     }
 }

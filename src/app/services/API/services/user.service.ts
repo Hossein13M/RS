@@ -14,7 +14,6 @@ import { UserInfoDto } from '../models/user-info-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -60,9 +59,7 @@ export class UserService extends BaseService {
      * This method doesn't expect any request body.
      */
     userControllerGetUserDetails(params?: {}): Observable<UserDetailsDto> {
-        return this.userControllerGetUserDetails$Response(params).pipe(
-            map((r: StrictHttpResponse<UserDetailsDto>) => r.body as UserDetailsDto)
-        );
+        return this.userControllerGetUserDetails$Response(params).pipe(map((r: StrictHttpResponse<UserDetailsDto>) => r.body as UserDetailsDto));
     }
 
     /**
@@ -267,8 +264,6 @@ export class UserService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     userControllerChangePasswordUser(params: { body: ChangePasswordUserDto }): Observable<UserInfoDto> {
-        return this.userControllerChangePasswordUser$Response(params).pipe(
-            map((r: StrictHttpResponse<UserInfoDto>) => r.body as UserInfoDto)
-        );
+        return this.userControllerChangePasswordUser$Response(params).pipe(map((r: StrictHttpResponse<UserInfoDto>) => r.body as UserInfoDto));
     }
 }

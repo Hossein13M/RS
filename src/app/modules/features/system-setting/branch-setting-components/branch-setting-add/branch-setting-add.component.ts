@@ -32,7 +32,7 @@ export class BranchSettingAddComponent implements OnInit {
         } else {
             this.title = 'ایجاد ';
         }
-        this.bankService.getAllBank(this).subscribe((res: any) => {
+        this.bankService.get(this).subscribe((res: any) => {
             this.banks = res.items;
         });
         this.creatForm();
@@ -47,7 +47,7 @@ export class BranchSettingAddComponent implements OnInit {
     }
 
     onCreateBranch() {
-        this.branchSettingService.createBankBranch(this.form.value, this).subscribe(() => {
+        this.branchSettingService.post(this.form.value, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -60,9 +60,9 @@ export class BranchSettingAddComponent implements OnInit {
             code: this.form.get('code').value,
             bankId: this.form.get('bankId').value,
         };
-        this.branchSettingService.updateBankBranch(obj, this).subscribe(() => {
+        this.branchSettingService.put(obj, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
-            this.dialogRef.close(true);
+            this.dialogRef.close(obj);
         });
     }
 

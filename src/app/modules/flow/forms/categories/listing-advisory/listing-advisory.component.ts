@@ -85,7 +85,7 @@ export class ListingAdvisoryComponent extends BaseFormModel implements OnInit {
         );
     }
 
-     handleError(): boolean {
+    handleError(): boolean {
         return false;
     }
 }

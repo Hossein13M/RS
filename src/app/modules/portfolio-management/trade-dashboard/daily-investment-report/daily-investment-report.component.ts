@@ -1,14 +1,9 @@
 import { formatDate } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { DailyInvestmentReportService } from './daily-investment-report.service';
-
-export enum stateType {
-    'LOADING',
-    'PRESENT',
-    'FAILED',
-}
+import { StateManager } from '#shared/pipes/stateManager.pipe';
+import { PaginationChangeType } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'app-daily-investment-report',
@@ -16,81 +11,66 @@ export enum stateType {
     styleUrls: ['./daily-investment-report.component.scss'],
     providers: [DailyInvestmentReportService],
 })
-export class DailyInvestmentReportComponent implements OnInit {
+export class DailyInvestmentReportComponent implements OnChanges {
     @Input() date: Date;
     @Input() ownDatePicker = false;
-    data: Array<any>;
     columns: Array<any>;
     searchFormGroup: FormGroup;
     isWorking: any = false;
     failed = false;
     today = new Date();
-    stateType = stateType;
-    state = stateType.LOADING;
+    dailyInvestment = { state: 'LOADING', data: [] };
+    pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private fb: FormBuilder, public dirs: DailyInvestmentReportService) {}
+    constructor(private fb: FormBuilder, public dirs: DailyInvestmentReportService) {
+        this.initTableColumns();
+    }
 
-    ngOnInit(): void {
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!this.searchFormGroup) {
+            this.createForm();
+            const searchFilter = this.searchFormGroup.value;
+            if (searchFilter.date) searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
+        }
+
+        if (changes.hasOwnProperty('date')) {
+            this.searchFormGroup.get('date').setValue(this.date);
+        }
+        this.get(this.searchFormGroup.value.date);
+    }
+
+    get(date): void {
+        this.dirs
+            .show(date, this.pagination)
+            .pipe(StateManager(this.dailyInvestment))
+            .subscribe((data: any) => {
+                console.log(this.dailyInvestment.state);
+                this.dailyInvestment.data = data.items;
+                this.pagination.total = data.total;
+            });
+    }
+
+    private createForm(): void {
         this.searchFormGroup = this.fb.group({ date: [new Date()] });
 
-        this.searchFormGroup.valueChanges.subscribe((newFormValue) => {
-            const searchFilter = newFormValue;
-            if (searchFilter.date) searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-            this.dirs.specificationModel.searchKeyword = searchFilter;
-            this.dirs.specificationModel.skip = 0;
-            this.get();
+        this.searchFormGroup.valueChanges.subscribe(({ date }) => {
+            this.get(date);
         });
+    }
 
+    private initTableColumns(): void {
         this.columns = [
-            { name: 'سبد/میز', id: 'organizationType', type: 'string' },
             { name: 'نماد', id: 'bourseAccount', type: 'string' },
-            { name: 'حجم', id: 'volume', type: 'number' },
+            { name: 'حجم تمدن', id: 'tamadonVolume', type: 'number' },
+            { name: 'حجم بازارگردانی', id: 'marketVolume', type: 'number' },
             { name: 'حجم کل', id: 'totalVolume', type: 'number' },
-            { name: 'ارزش', id: 'value', type: 'price' },
             { name: 'ارزش کل', id: 'totalValue', type: 'price' },
         ];
-
-        const searchFilter = this.searchFormGroup.value;
-        if (searchFilter.date) searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-        this.dirs.specificationModel.searchKeyword = searchFilter;
-        this.get();
-
-        this.searchFormGroup.get('date').setValue(this.date);
     }
 
-    get(): void {
-        this.state = stateType.LOADING;
-        this.data = null;
-        this.dirs.show(this).subscribe(
-            (data) => {
-                this.state = stateType.PRESENT;
-                this.data = data.items;
-                this.dirs.setPageDetailData(data);
-            },
-            () => {
-                this.state = stateType.FAILED;
-                this.failed = true;
-            }
-        );
-    }
-
-    search(searchFilter: any): void {
-        if (!searchFilter) return;
-        if (searchFilter.date) searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
-        this.dirs.specificationModel.searchKeyword = searchFilter;
-        this.dirs.specificationModel.skip = 0;
-        this.get();
-    }
-
-    pageHandler(e: PagingEvent): void {
-        this.dirs.specificationModel.limit = e.pageSize;
-        this.dirs.specificationModel.skip = e.currentIndex * e.pageSize;
-        this.get();
-    }
-
-    handleError(): boolean {
-        this.failed = true;
-        return false;
+    pageHandler(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get(this.searchFormGroup.value.date);
     }
 }

@@ -12,7 +12,6 @@ import { SentSuccessDto } from '../models/sent-success-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -59,9 +58,7 @@ export class SentAlarmService extends BaseService {
      * This method doesn't expect any request body.
      */
     sentAlarmControllerSentAlarm(params: { alarmId: number }): Observable<SentSuccessDto> {
-        return this.sentAlarmControllerSentAlarm$Response(params).pipe(
-            map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto)
-        );
+        return this.sentAlarmControllerSentAlarm$Response(params).pipe(map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto));
     }
 
     /**
@@ -123,9 +120,7 @@ export class SentAlarmService extends BaseService {
         status?: 'Unread' | 'Read' | 'Deleted';
         moduleId?: number;
     }): Observable<InboxAlarmDto> {
-        return this.sentAlarmControllerGetInboxAlarms$Response(params).pipe(
-            map((r: StrictHttpResponse<InboxAlarmDto>) => r.body as InboxAlarmDto)
-        );
+        return this.sentAlarmControllerGetInboxAlarms$Response(params).pipe(map((r: StrictHttpResponse<InboxAlarmDto>) => r.body as InboxAlarmDto));
     }
 
     /**

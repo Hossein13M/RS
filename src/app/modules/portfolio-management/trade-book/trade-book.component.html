@@ -1,35 +1,35 @@
-<div class="page-layout">
+<div class='page-layout'>
 
     <!-- HEADER -->
-    <app-header pageTitle="دفتر معاملات">
+    <app-header pageTitle='دفتر معاملات'>
 
-        <div subtitleNormal *ngIf="selectedOrg && selectedOrg.totalAssets">
+        <div subtitleNormal *ngIf='selectedOrg && selectedOrg.totalAssets'>
 
             ارزش بازار کل :
             {{selectedOrg.totalAssets |price}}
         </div>
 
-        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center">
+        <div dir='rtl' fxLayout='row wrap' fxLayoutAlign='center center'>
 
             <!--      Open History Dialog      -->
             <button mat-raised-button
-                    (click)="showHistory()"
-                    color="primary"
-                    class="history-btn"
-                    matTooltip="تاریخچه بروزرسانی IPSها">
-                <mat-icon class="mat-18">history</mat-icon>
+                    (click)='showHistory()'
+                    color='primary'
+                    class='history-btn'
+                    matTooltip='تاریخچه بروزرسانی IPSها'>
+                <mat-icon class='mat-18'>history</mat-icon>
             </button>
 
             <!--    Select Section    -->
-            <mat-form-field appearance="outline" class="section">
+            <mat-form-field appearance='outline' class='section'>
 
                 <mat-label>شرکت</mat-label>
 
-                <mat-select [disabled]="!organizations || organizations.length == 0"
-                            [(ngModel)]="tbs.selectedOrgName"
-                            (selectionChange)="changeForm($event)">
-                    <mat-option *ngFor="let org of organizations"
-                                [value]="org.id">
+                <mat-select [disabled]='!organizations || organizations.length == 0'
+                            [(ngModel)]='tbs.selectedOrgName'
+                            (selectionChange)='changeForm($event)'>
+                    <mat-option *ngFor='let org of organizations'
+                                [value]='org.id'>
                         {{org.name}}
                     </mat-option>
                 </mat-select>
@@ -38,17 +38,17 @@
 
 
             <!--    Select Date    -->
-            <form [formGroup]="tbs.searchForm" dir="rtl">
-                <mat-form-field appearance="outline">
+            <form [formGroup]='tbs.searchForm' dir='rtl'>
+                <mat-form-field appearance='outline'>
 
                     <mat-label>تاریخ</mat-label>
 
                     <input matInput
-                           class="full-wid"
-                           (click)="date.open()"
-                           formControlName="date"
-                           [matDatepicker]="date">
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                           class='full-wid'
+                           (click)='date.open()'
+                           formControlName='date'
+                           [matDatepicker]='date'>
+                    <mat-datepicker-toggle matSuffix [for]='date'></mat-datepicker-toggle>
                     <mat-datepicker #date></mat-datepicker>
 
                     <mat-error>
@@ -61,99 +61,99 @@
         </div>
     </app-header>
 
-    <div class="page-content">
+    <div class='page-content'>
 
         <!--   Table  -->
-        <div *ngIf="!failed"
-             class="fuse-card">
+        <div *ngIf='!failed'
+             class='fuse-card'>
             <mat-table #table
                        [@animateStagger]="{value:'50'}"
-                       [dataSource]="dataSource"
-                       class="mat-elevation-z8">
+                       [dataSource]='dataSource'
+                       class='mat-elevation-z8'>
 
                 <!-- Position Column -->
-                <ng-container matColumnDef="position">
+                <ng-container matColumnDef='position'>
                     <mat-header-cell *matHeaderCellDef> #</mat-header-cell>
-                    <mat-cell *matCellDef="let element; let i = index">{{i + 1}}</mat-cell>
+                    <mat-cell *matCellDef='let element; let i = index'>{{i + 1}}</mat-cell>
                 </ng-container>
 
                 <!-- bourseAccount Column -->
-                <ng-container matColumnDef="bourseAccount">
+                <ng-container matColumnDef='bourseAccount'>
                     <mat-header-cell *matHeaderCellDef>نماد</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
+                    <mat-cell *matCellDef='let element'>
                         {{element.bourseAccount}}
                     </mat-cell>
                 </ng-container>
 
                 <!-- Volume Column -->
-                <ng-container matColumnDef="volume">
+                <ng-container matColumnDef='volume'>
                     <mat-header-cell *matHeaderCellDef>حجم</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
+                    <mat-cell *matCellDef='let element'>
                         {{element.volume | number}}
                     </mat-cell>
                 </ng-container>
 
                 <!-- VWap Column -->
-                <ng-container matColumnDef="vwap">
+                <ng-container matColumnDef='vwap'>
                     <mat-header-cell *matHeaderCellDef>قیمت روز</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.vwap | price}}
+                    <mat-cell *matCellDef='let element'>
+                        {{(element.type === 1100) ? element.vwapAdjusted : element.vwap | price}}
                     </mat-cell>
                 </ng-container>
 
 
                 <!-- Asset Column -->
-                <ng-container matColumnDef="asset">
+                <ng-container matColumnDef='asset'>
                     <mat-header-cell *matHeaderCellDef>ارزش بازار</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
+                    <mat-cell *matCellDef='let element'>
                         {{element.asset | price}}
                     </mat-cell>
                 </ng-container>
 
                 <!-- brokerName Column -->
-                <ng-container matColumnDef="brokerName">
+                <ng-container matColumnDef='brokerName'>
                     <mat-header-cell *matHeaderCellDef>کارگزار</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
+                    <mat-cell *matCellDef='let element'>
                         {{element.brokerName}}
                     </mat-cell>
                 </ng-container>
 
                 <!-- brokerName Column -->
-                <ng-container matColumnDef="btt">
+                <ng-container matColumnDef='btt'>
                     <mat-header-cell *matHeaderCellDef>بهای تمام شده‌ی کل</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
+                    <mat-cell *matCellDef='let element'>
                         {{element.btt|price}}
                     </mat-cell>
                 </ng-container>
 
                 <!-- Date Column -->
-                <ng-container matColumnDef="vwapUpdateDate">
+                <ng-container matColumnDef='vwapUpdateDate'>
                     <mat-header-cell *matHeaderCellDef>آخرین تاریخ بروزرسانی قیمت</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
+                    <mat-cell *matCellDef='let element'>
                         {{(element.dateFa) ? element.dateFa : '-'}}
                     </mat-cell>
                 </ng-container>
 
 
                 <!-- Operations Column -->
-                <ng-container matColumnDef="operations">
+                <ng-container matColumnDef='operations'>
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let el">
+                    <mat-cell *matCellDef='let el'>
 
                         <!--   see   -->
                         <button mat-icon-button
-                                matTooltip="مشاهده"
-                                (click)="showBook(el.organizationType,el.ticker,el.pamCode)">
-                            <mat-icon class="mat-18">
+                                matTooltip='مشاهده'
+                                (click)='showBook(el.organizationType,el.ticker,el.pamCode)'>
+                            <mat-icon class='mat-18'>
                                 visibility
                             </mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>
 
-                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                <mat-header-row *matHeaderRowDef='displayedColumns; sticky: true'></mat-header-row>
 
-                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                <mat-row *matRowDef='let row; columns: displayedColumns;'
                          [@animate]="{value:'*',params:{y:'100%'}}">
                 </mat-row>
             </mat-table>
@@ -161,22 +161,22 @@
 
 
         <!--   Getting Data Failed  -->
-        <div *ngIf="failed" fxLayout="row wrap" fxLayoutAlign="center center">
+        <div *ngIf='failed' fxLayout='row wrap' fxLayoutAlign='center center'>
             دریافت داده ناموفق بود
 
             <button mat-button
-                    class="againBtn"
-                    (click)="get()">
+                    class='againBtn'
+                    (click)='get()'>
                 دریافت دوباره
             </button>
         </div>
 
         <!--   Help Quotes  -->
-        <p *ngIf="!dataToShow && !isWorking && !failed" class="text-center">
+        <p *ngIf='!dataToShow && !isWorking && !failed' class='text-center'>
             برای مشاهده‌ی دفاتر لطفا شرکت را انتخاب کنید.
         </p>
 
-        <p *ngIf="!dataToShow && isWorking && !failed" class="text-center">
+        <p *ngIf='!dataToShow && isWorking && !failed' class='text-center'>
             در حال دریافت اطلاعات
         </p>
 

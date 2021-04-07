@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BranchSettingService } from 'app/services/feature-services/system-setting-services/branch-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { BranchSettingAddComponent } from '../branch-setting-add/branch-setting-add.component';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-branch-setting-list',
@@ -15,71 +14,116 @@ import { BranchSettingAddComponent } from '../branch-setting-add/branch-setting-
     animations: [fuseAnimations],
 })
 export class BranchSettingListComponent implements OnInit {
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = ['bankName', 'branchCode', 'branchName', 'operation'];
-    searchFormGroup: FormGroup;
+    data: any;
+    column: Array<ColumnModel>;
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public branchService: BranchSettingService) {}
+    pagination = { skip: 0, limit: 5, total: 100 };
 
-    createSearchFormGroup() {
-        this.searchFormGroup = this.fb.group({ searchKeyword: '', bankId: '' });
+    constructor(private matDialog: MatDialog, public branchService: BranchSettingService) {}
+
+    ngOnInit(): void {
+        this.get();
+        this.initializeColumns();
     }
 
-    pageHandler(e: PagingEvent) {
-        this.branchService.specificationModel.limit = e.pageSize;
-        this.branchService.specificationModel.skip = e.currentIndex * e.pageSize;
+    initializeColumns(): void {
+        this.column = [
+            {
+                id: 'bankName',
+                name: 'نام بانک',
+                type: 'string',
+            },
+            {
+                id: 'code',
+                name: 'کد شعبه',
+                type: 'number',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.LOCAL,
+                },
+            },
+            {
+                id: 'name',
+                name: 'نام شعبه',
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.LOCAL,
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.put(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.branchService.specificationModel.limit = pageEvent.limit;
+        this.branchService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
-    ngOnInit() {
-        this.createSearchFormGroup();
-        this.get();
-        this.searchFormGroup.valueChanges.subscribe((res) => {
-            this.branchService.specificationModel.searchKeyword = res;
-            this.branchService.specificationModel.skip = 0;
-            this.get();
-        });
-    }
-
-    get() {
-        this.branchService.getBankBranch(this).subscribe((res: any) => {
-            this.dataSource = new MatTableDataSource<any>(res.items);
+    get(): void {
+        this.branchService.getBankBranch().subscribe((res: any) => {
+            this.data = res.items;
+            this.pagination.total = res.total;
             this.branchService.setPageDetailData(res);
         });
     }
 
-    add() {
+    post(): void {
         this.matDialog
             .open(BranchSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
             .subscribe((res) => {
-                if (res) this.get();
-            });
-    }
-
-    delete(element) {
-        this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
-            .afterClosed()
-            .subscribe((res) => {
                 if (res) {
-                    this.branchService.deleteBankBranch(element.id, this).subscribe(() => this.get());
+                    this.get();
                 }
             });
     }
 
-    edit(element) {
+    delete(row): void {
         this.matDialog
-            .open(BranchSettingAddComponent, { panelClass: 'dialog-w60', data: element })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
-                if (res) this.get();
+                if (res) {
+                    this.branchService.delete(row.id).subscribe((x) => {
+                        this.data = this.data.filter((el) => el.id !== row.id);
+                    });
+                }
             });
     }
 
-    handleError(): boolean {
-        return false;
+    put(row): void {
+        this.matDialog
+            .open(BranchSettingAddComponent, { panelClass: 'dialog-w60', data: row })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res) {
+                    _.assign(row, res);
+                }
+            });
     }
-
-    isWorking: any;
 }

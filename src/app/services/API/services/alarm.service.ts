@@ -12,7 +12,6 @@ import { UpdateAlarmDto } from '../models/update-alarm-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
@@ -66,12 +65,7 @@ export class AlarmService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    alarmControllerGetAlarms(params?: {
-        limit?: number;
-        skip?: number;
-        moduleId?: any;
-        searchKeyword?: any;
-    }): Observable<AlarmListResponseDto> {
+    alarmControllerGetAlarms(params?: { limit?: number; skip?: number; moduleId?: any; searchKeyword?: any }): Observable<AlarmListResponseDto> {
         return this.alarmControllerGetAlarms$Response(params).pipe(
             map((r: StrictHttpResponse<AlarmListResponseDto>) => r.body as AlarmListResponseDto)
         );
@@ -115,9 +109,7 @@ export class AlarmService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     alarmControllerUpdateAlarm(params: { body: UpdateAlarmDto }): Observable<AlarmResponseDto> {
-        return this.alarmControllerUpdateAlarm$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto)
-        );
+        return this.alarmControllerUpdateAlarm$Response(params).pipe(map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto));
     }
 
     /**
@@ -158,9 +150,7 @@ export class AlarmService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     alarmControllerCreateAlarm(params: { body: CreateAlarmDto }): Observable<AlarmResponseDto> {
-        return this.alarmControllerCreateAlarm$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto)
-        );
+        return this.alarmControllerCreateAlarm$Response(params).pipe(map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto));
     }
 
     /**
@@ -201,8 +191,6 @@ export class AlarmService extends BaseService {
      * This method doesn't expect any request body.
      */
     alarmControllerGetAlarm(params: { alarmId: number }): Observable<AlarmResponseDto> {
-        return this.alarmControllerGetAlarm$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto)
-        );
+        return this.alarmControllerGetAlarm$Response(params).pipe(map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto));
     }
 }

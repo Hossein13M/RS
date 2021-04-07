@@ -44,7 +44,7 @@ export class FundRoleSettingAddComponent implements OnInit {
     }
 
     getOrgSup(): void {
-        this.organizationSupervisorService.getOrganization(this).subscribe((res: any) => (this.orgSupervisors = res));
+        this.organizationSupervisorService.get(this).subscribe((res: any) => (this.orgSupervisors = res));
     }
 
     addSupervisor(): void {
@@ -78,7 +78,7 @@ export class FundRoleSettingAddComponent implements OnInit {
     }
 
     onCreateBranch(): void {
-        this.fundRoleService.createFundRole(this.form.value, this).subscribe(() => {
+        this.fundRoleService.create(this.form.value, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -86,7 +86,7 @@ export class FundRoleSettingAddComponent implements OnInit {
 
     onEditBranch(): void {
         const obj = { id: this.data['id'], name: this.form.get('name').value };
-        this.fundRoleService.updateFundRole(obj, this).subscribe(() => {
+        this.fundRoleService.update(obj, this).subscribe(() => {
             this.AlertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
