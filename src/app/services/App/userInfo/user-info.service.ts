@@ -28,11 +28,8 @@ export class UserInfoService {
         this.userInfo$ = this.userInfoSubject.asObservable().pipe(
             switchMap(
                 (value: boolean): Observable<any> => {
-                    if (value !== null) {
-                        return of(value);
-                    } else {
-                        return EMPTY;
-                    }
+                    if (value !== null) return of(value);
+                    else return EMPTY;
                 }
             )
         );
@@ -41,29 +38,20 @@ export class UserInfoService {
         this.userTokenInfo$ = this.userInfoSubject.asObservable().pipe(
             switchMap(
                 (value: boolean): Observable<any> => {
-                    if (value !== null) {
-                        return of(value);
-                    } else {
-                        return EMPTY;
-                    }
+                    if (value !== null) return of(value);
+                    else return EMPTY;
                 }
             )
         );
 
         this.authenticationService.userToken$.subscribe((accessToken) => {
-            console.log('===', accessToken);
             const userTokenInfo = jwtDecode(accessToken);
-            console.log(userTokenInfo);
             this.getUserInfo().subscribe();
             this.userTokenInfoSubject.next(userTokenInfo);
         });
     }
 
     getUserInfo(): Observable<any> {
-        return this.http.get('/api/v1/user/details').pipe(
-            tap((res) => {
-                this.userInfoSubject.next(res);
-            })
-        );
+        return this.http.get('/api/v1/user/details').pipe(tap((res) => this.userInfoSubject.next(res)));
     }
 }
