@@ -21,7 +21,6 @@ export class OpRiskManagementService extends Specification {
     };
 
     private latestMappingSubject = new BehaviorSubject<any>(null);
-    public _latestMapping = this.latestMappingSubject.asObservable();
 
     get latestMapping(): any {
         return this.latestMappingSubject.getValue();
@@ -47,21 +46,9 @@ export class OpRiskManagementService extends Specification {
         return this.acs.post(OpRiskManagementService.TreeServiceAPI, data, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getOpRiskHistory(fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/work-flow/history` + this.generateSpecificationString(), fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
     getOpRiskDetail(opId: number, fc?: FormContainer): Observable<any> {
         return this.acs
             .get(OpRiskManagementService.TreeServiceAPI + `/details?opRiskId=${opId}`, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    getActiveOpRisk(fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/work-flow/active`, fc)
             .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
@@ -89,11 +76,19 @@ export class OpRiskManagementService extends Specification {
 
     // http implementation
 
-    getCategories(): Observable<any> {
+    public getActiveOPRiskWorkFlows() {
+        return this.http.get<any>(`/api/v1/operation-risk/work-flow/active`);
+    }
+
+    public getOPRiskWorkFlowHistory(skip: number | string, limit: number | string) {
+        return this.http.get<any>(`/api/v1/operation-risk/work-flow/history?skip=${skip}&limit=${limit}`);
+    }
+
+    public getCategories(): Observable<any> {
         return this.http.get<Array<{ icon: string; id: number; titleEN: string; titleFA: string }>>(`/api/v1/operation-risk/tree/categories`);
     }
 
-    getSubmittedRiskAndLoss(params): Observable<any> {
+    public getSubmittedRiskAndLoss(params): Observable<any> {
         return this.http.get('/api/v1/operation-risk/work-flow/finals', { params });
     }
 }
