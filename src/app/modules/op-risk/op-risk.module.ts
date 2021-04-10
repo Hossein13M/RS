@@ -54,7 +54,7 @@ export class OpRiskModule {
                         type: 'item',
                         url: `/${ORRoutePrefix}/management`,
                     },
-                    { id: 'OpRiskReporting', title: 'گزارشات ریسک عملیاتی', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/reporting` },
+                    { id: 'OpRiskReporting', title: 'گزارش‌های ریسک عملیاتی', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/reporting` },
                     {
                         id: 'OpRiskReporting',
                         title: 'ریسک و زیان‌های ثبت شده',
