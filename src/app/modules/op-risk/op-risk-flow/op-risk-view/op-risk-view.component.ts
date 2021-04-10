@@ -1,11 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-
-interface Operators {
-    flowUsers: Array<{ firstName: string; id: number; lastName: string; userId: number }>;
-    id: number;
-    step: number;
-}
+import { Operators } from '../op-risk-models';
 
 @Component({
     selector: 'app-op-risk-view',
@@ -19,10 +14,10 @@ export class OpRiskViewComponent implements OnInit {
     constructor(public dialogRef: MatDialogRef<OpRiskViewComponent>, @Inject(MAT_DIALOG_DATA) public data) {}
 
     ngOnInit() {
-        this.createForm();
+        this.fetchData();
     }
 
-    createForm() {
+    private fetchData() {
         this.title = this.data.name;
         this.operators = this.data.flowSteps;
     }

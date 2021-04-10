@@ -9,6 +9,8 @@ import { tap } from 'rxjs/operators';
 @Injectable({
     providedIn: 'root',
 })
+
+// TODO: this file needs to be removed completley
 export class OpRiskFlowService extends Specification {
     private static TreeMappingServiceAPI = '/api/v1/operation-risk/flow';
 
@@ -17,7 +19,6 @@ export class OpRiskFlowService extends Specification {
     }
 
     private latestMappingSubject = new BehaviorSubject<any>(null);
-    public _latestMapping = this.latestMappingSubject.asObservable();
 
     get latestMapping() {
         return this.latestMappingSubject.getValue();
@@ -33,33 +34,33 @@ export class OpRiskFlowService extends Specification {
             .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getOpFlow(id, fc?: FormContainer): Observable<any> {
-        return this.acs.get(OpRiskFlowService.TreeMappingServiceAPI + `/${id}`, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    createOpFlow(data, fc?: FormContainer): Observable<any> {
-        return this.acs.post(OpRiskFlowService.TreeMappingServiceAPI, data, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    updateOpFlow(data, fc?: FormContainer): Observable<any> {
-        return this.acs.put(OpRiskFlowService.TreeMappingServiceAPI, fc, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
     getFlowUsers(fc?: FormContainer): Observable<any> {
         return this.acs.get(OpRiskFlowService.TreeMappingServiceAPI + `/user`, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    // HTTP Standard API Call
+    //    HTTP implementation
 
-    getOPRiskFlowUsers(): Observable<any> {
+    public getOPRiskFlowUsers(): Observable<any> {
         return this.http.get('/api/v1/operation-risk/flow/user');
     }
 
-    getOPRiskFlow(pagination: any) {
+    public getOPRiskFlows(pagination: any) {
         return this.http.get<any>(`/api/v1/operation-risk/flow?skip=${pagination.skip * pagination.limit}&limit=${pagination.limit}`);
     }
 
-    toggleOPRiskFlowStatus(flowId: number | string) {
+    public getSingleOpRiskFlow(flowId: number | string) {
+        return this.http.get<any>(`/api/v1/operation-risk/flow/${flowId}`);
+    }
+
+    public toggleOPRiskFlowStatus(flowId: number | string) {
         return this.http.put<any>(`/api/v1/operation-risk/flow/inactive/${flowId}`, {});
+    }
+
+    public createOPRiskFlow(data: any) {
+        return this.http.post<any>(`/api/v1/operation-risk/flow`, data);
+    }
+
+    public updateOPRiskFlow(data: any) {
+        return this.http.put<any>(`/api/v1/operation-risk/flow`, data);
     }
 }
