@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { OrganizationTypeService } from 'app/services/feature-services/system-setting-services/organization-type.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { OrganizationTypeSettingAddComponent } from '../organization-type-setting-add/organization-type-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 
@@ -67,7 +64,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
 
     get(): void {
         this.organizationTypeService.getOrganizationType().subscribe((res: any) => {
-            this.data = res;
+            this.data = [...res];
         });
     }
 

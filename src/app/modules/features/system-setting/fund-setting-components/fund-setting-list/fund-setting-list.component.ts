@@ -173,14 +173,14 @@ export class FundSettingListComponent implements OnInit {
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
+        this.fundSettingService.specificationModel.limit = pageEvent.limit;
+        this.fundSettingService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
     get(): void {
         this.fundSettingService.getAll().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.fundSettingService.setPageDetailData(res);
             console.log(this.data[0]);

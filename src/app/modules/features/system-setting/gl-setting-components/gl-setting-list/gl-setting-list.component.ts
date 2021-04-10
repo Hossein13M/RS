@@ -78,14 +78,14 @@ export class GlSettingListComponent implements AfterViewInit {
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
+        this.glSettingService.specificationModel.limit = pageEvent.limit;
+        this.glSettingService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
     get(): void {
         this.glSettingService.get().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.glSettingService.setPageDetailData(res);
         });

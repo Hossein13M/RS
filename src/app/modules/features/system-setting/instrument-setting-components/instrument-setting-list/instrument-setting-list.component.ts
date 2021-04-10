@@ -155,14 +155,14 @@ export class InstrumentSettingListComponent implements OnInit {
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
+        this.newInstrumentService.specificationModel.limit = pageEvent.limit;
+        this.newInstrumentService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
     get(): void {
         this.newInstrumentService.get().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.newInstrumentService.setPageDetailData(res);
         });
