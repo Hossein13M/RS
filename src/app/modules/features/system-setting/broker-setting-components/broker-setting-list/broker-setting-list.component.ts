@@ -68,7 +68,7 @@ export class BrokerSettingListComponent implements OnInit {
             .getBrokerSettings()
             .pipe(StateManager({ state: this.state }))
             .subscribe((res: any) => {
-                this.data = res;
+                this.data = [...res];
             });
     }
 

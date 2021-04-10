@@ -113,7 +113,7 @@ export class MarketSettingListComponent implements OnInit {
 
     get(): void {
         this.marketSettingService.getAllMarkets(this).subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.marketSettingService.setPageDetailData(res);
         });
     }

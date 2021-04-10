@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { InstrumentTypeService } from 'app/services/feature-services/system-setting-services/instrument-type.service';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { InstrumentTypeSettingAddComponent } from '../instrument-type-setting-add/instrument-type-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 
@@ -104,15 +102,15 @@ export class InstrumentTypeSettingListComponent implements OnInit {
 
     get(): void {
         this.instrumentTypeService.getInstrumentType().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.instrumentTypeService.setPageDetailData(res);
         });
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
+        this.instrumentTypeService.specificationModel.limit = pageEvent.limit;
+        this.instrumentTypeService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
