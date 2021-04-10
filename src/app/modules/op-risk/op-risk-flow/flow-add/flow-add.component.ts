@@ -5,27 +5,8 @@ import { AlertService } from 'app/services/alert.service';
 import { OperatorService } from 'app/services/API/services';
 import { searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { Operator, SelectedOperators } from '../op-risk-models';
 import { OpRiskFlowService } from '../op-risk-flow.service';
-
-interface SelectedOperators {
-    flowUsers: Array<{ firstName: string; id: number; lastName: string; userId: number }>;
-    id: number;
-    step: number;
-}
-
-interface Operator {
-    createdAt: string | null;
-    email: string | null;
-    firstName: string | null;
-    fullName: string | null;
-    id: number | null;
-    lastName: string | null;
-    mobileNumber: string | null;
-    partyId: string | null;
-    personnelCode: number | null;
-    userId: string | null;
-    userName: string | null;
-}
 
 @Component({
     selector: 'app-bank-setting-add',
@@ -94,7 +75,7 @@ export class FlowAddComponent implements OnInit {
         data.steps.push({ users: step2 });
         data.steps.push({ users: step3 });
         console.log(data);
-        this.opRiskFlowService.createOpFlow(data).subscribe(() => {
+        this.opRiskFlowService.createOPRiskFlow(data).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -111,13 +92,14 @@ export class FlowAddComponent implements OnInit {
         data.steps.push({ users: step1 });
         data.steps.push({ users: step2 });
         data.steps.push({ users: step3 });
-        this.opRiskFlowService.updateOpFlow(data).subscribe(() => {
+        this.opRiskFlowService.updateOPRiskFlow(data).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
     }
 
     private getOperators(): void {
+        //TODO: this needs to be fixed after implementation of operators
         this.operatorService.getOperators(100).subscribe((response) => {
             response.items.map((item) => (item.fullName = `${item.firstName} ${item.lastName}`));
             this.operators = response.items;
