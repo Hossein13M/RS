@@ -31,7 +31,6 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
 
         this.dateForm.valueChanges.subscribe((newDate) => {
             this.groupObj = [];
-            this.glService.date = newDate;
             this.getGlCategory();
         });
     }
@@ -39,7 +38,7 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {}
 
     getGlCategory(): void {
-        this.glService.getCategoryApi(this).subscribe((res: any) => {
+        this.glService.getCategoryApi().subscribe((res: any) => {
             if (res) {
                 res.items.map((x) => {
                     x.type = TreeOrderType.Category;
@@ -62,7 +61,7 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
         }
         if (this.groupObj[index].isCollapsed) {
             if (c.type === TreeOrderType.Category) {
-                this.glService.getGroupByCategory(c.code, this).subscribe((res: any) => {
+                this.glService.getGroupByCategory(c.code).subscribe((res: any) => {
                     res.items.map((x) => {
                         x.type = TreeOrderType.Group;
                         x.isCollapsed = false;
@@ -75,7 +74,7 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
                     });
                 });
             } else if (c.type === TreeOrderType.Group) {
-                this.glService.getGeneralByGroup(c.code, this).subscribe((res: any) => {
+                this.glService.getGeneralByGroup(c.code).subscribe((res: any) => {
                     res.items.map((x) => {
                         x.type = TreeOrderType.General;
                         x.isCollapsed = false;
@@ -163,7 +162,6 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
 
     submitDate(): void {
         this.groupObj = [];
-        this.glService.date = this.dateForm.value;
         this.getGlCategory();
     }
 

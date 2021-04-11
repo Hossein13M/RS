@@ -46,7 +46,7 @@ export class GlGridComponent implements OnInit {
 
     getGridData(): void {
         const search = { date: this.dateForm.value, limit: 1000, skip: 0 };
-        this.glService.getGlGridData(search, this).subscribe((res: any) => (this.data = res.items));
+        this.glService.getGlGridData(search).subscribe((res: any) => (this.data = res.items));
     }
 
     handleError(): boolean {
