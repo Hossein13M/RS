@@ -23,9 +23,9 @@ export class GlChangesComponent implements OnInit {
 
     @ViewChild('showTypeInput') showTypeInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
-    visible: boolean = true;
-    selectable: boolean = true;
-    removable: boolean = true;
+    visible = true;
+    selectable = true;
+    removable = true;
     separatorKeysCodes: number[] = [ENTER, COMMA];
     showTypeCtl = new FormControl();
     filteredShowTypes: Observable<string[]>;
@@ -78,14 +78,14 @@ export class GlChangesComponent implements OnInit {
     ngOnInit(): void {
         this.createForm();
 
-        this.glService.getLevelApi(null, TreeOrderType.Category, this).subscribe((res: any[]) => {
+        this.glService.getLevelApi(null, TreeOrderType.Category).subscribe((res: any[]) => {
             this.glCategories = res;
         });
 
         this.form.get('categoryCode').valueChanges.subscribe((res) => {
             this.glGroups = [];
             res.forEach((gr) => {
-                this.glService.getLevelApi(gr, TreeOrderType.Group, this).subscribe((x: any[]) => {
+                this.glService.getLevelApi(gr, TreeOrderType.Group).subscribe((x: any[]) => {
                     this.glGroups.push(...x);
                 });
             });
@@ -94,7 +94,7 @@ export class GlChangesComponent implements OnInit {
         this.form.get('groupCode').valueChanges.subscribe((res) => {
             this.glGeneral = [];
             res.forEach((ge) => {
-                this.glService.getLevelApi(ge, TreeOrderType.General, this).subscribe((x: any[]) => {
+                this.glService.getLevelApi(ge, TreeOrderType.General).subscribe((x: any[]) => {
                     this.glGeneral.push(...x);
                 });
             });
@@ -133,7 +133,7 @@ export class GlChangesComponent implements OnInit {
 
         this.form.get('type').setValue(typeValues);
 
-        this.glService.getChangeApi(this.form.value, this).subscribe((res: any) => {
+        this.glService.getChangeApi(this.form.value).subscribe((res: any) => {
             this.dataToShow = res;
             this.searchCollapse = false;
         });

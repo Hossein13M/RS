@@ -1,139 +1,74 @@
-import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { TreeOrderType } from 'app/modules/features/gl/gl-tree/gl-tree.component';
-import { FormContainer } from '../../shared/models/FromContainer';
-import { ApiClientService } from '../Base/api-client.service';
+import { TreeOrderType } from 'app/modules/gl/gl-tree/gl-tree.component';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GlService {
     private static getCategoryApi = '/api/v1/gl/category';
-    private static getGroupByCategory = '/api/v1/gl/group?categoryLedgerCode={categoryLedgerCode}';
-    private static getGeneralByGroup = '/api/v1/gl/general?groupLedgerCode={groupLedgerCode}';
-    private static getSubsidyByGeneral = '/api/v1/gl/subsidiary?generalLedgerCode={generalLedgerCode}';
-    private static getDetailBySubsidy = '/api/v1/gl/detail?subsidiaryLedgerCode={subsidiaryLedgerCode}';
+    private static getGroupByCategoryApi = '/api/v1/gl/group';
+    private static getGeneralByGroupApi = '/api/v1/gl/general';
+    private static getSubsidyByGeneralApi = '/api/v1/gl/subsidiary';
+    private static getDetailBySubsidyApi = '/api/v1/gl/detail';
     private static getLevelApi = '/api/v1/gl/level';
     private static getChartApi = '/api/v1/gl/chart';
     private static getGLGridDataApi = '/api/v1/gl/list';
     private static GlChangeApi = '/api/v1/gl/change';
-    date;
 
-    convertIfDateExist(api) {
-        if (this.date) {
-            return api + '&date=' + this.convertDate(this.date);
-        } else return api;
+    constructor(private http: HttpClient) {}
+
+    getCategoryApi(): Observable<any> {
+        return this.http.get(GlService.getCategoryApi);
     }
 
-    convertDate(date: Date) {
-        return formatDate(date, 'yyyy-MM-dd', 'en_US');
+    getGroupByCategory(categoryLedgerCode): Observable<any> {
+        return this.http.get(GlService.getGroupByCategoryApi, { params: { categoryLedgerCode } });
     }
 
-    getCategoryApi(fc?: FormContainer) {
-        return this.apiClientService.get(this.convertIfDateExist(GlService.getCategoryApi).replace('&', '?'), fc);
+    getGeneralByGroup(groupLedgerCode): Observable<any> {
+        return this.http.get(GlService.getGeneralByGroupApi, { params: { groupLedgerCode } });
     }
 
-    getGroupByCategory(categoryCode, fc?: FormContainer) {
-        const api = GlService.getGroupByCategory.replace('{categoryLedgerCode}', categoryCode);
-        return this.apiClientService.get(this.convertIfDateExist(api), fc);
+    getSubsidiaryByGeneral(generalLedgerCode): Observable<any> {
+        return this.http.get(GlService.getSubsidyByGeneralApi, { params: { generalLedgerCode } });
     }
 
-    getGeneralByGroup(groupCode, fc?: FormContainer) {
-        const api = GlService.getGeneralByGroup.replace('{groupLedgerCode}', groupCode);
-        return this.apiClientService.get(api, fc);
+    getDetailBySubsidiary(subsidiaryLedgerCode): Observable<any> {
+        return this.http.get(GlService.getDetailBySubsidyApi, { params: { subsidiaryLedgerCode } });
     }
 
-    getSubsidiaryByGeneral(generalCode, fc?: FormContainer) {
-        const api = GlService.getSubsidyByGeneral.replace('{generalLedgerCode}', generalCode);
-        return this.apiClientService.get(this.convertIfDateExist(api), fc);
-    }
-
-    getDetailBySubsidiary(sCode, fc?: FormContainer) {
-        const api = GlService.getDetailBySubsidy.replace('{subsidiaryLedgerCode}', sCode);
-        return this.apiClientService.get(this.convertIfDateExist(api), fc);
-    }
-
-    getLevelApi(code, type: TreeOrderType, fc?: FormContainer) {
-        let api = '';
+    getLevelApi(code, type: TreeOrderType): Observable<any> {
+        const params: any = {};
         switch (type) {
             case TreeOrderType.Category:
-                api = GlService.getLevelApi;
                 break;
             case TreeOrderType.Detail:
-                api = GlService.getLevelApi + '?subsidiaryLedgerCode=' + code;
+                params.ubsidiaryLedgerCode = code;
                 break;
             case TreeOrderType.General:
-                api = GlService.getLevelApi + '?groupLedgerCode=' + code;
+                params.groupLedgerCode = code;
                 break;
             case TreeOrderType.Group:
-                api = GlService.getLevelApi + '?categoryLedgerCode=' + code;
+                params.categoryLedgerCode = code;
                 break;
             case TreeOrderType.Subsidiary:
-                api = GlService.getLevelApi + '?generalLedgerCode=' + code;
+                params.generalLedgerCode = code;
                 break;
         }
-        return this.apiClientService.get(api, fc);
+        return this.http.get(GlService.getLevelApi, { params });
     }
 
-    public getChartApi(model, fc?: FormContainer) {
-        const api =
-            GlService.getChartApi +
-            '?fromDate=' +
-            this.convertDate(model['fromDate']) +
-            '&toDate=' +
-            this.convertDate(model['toDate']) +
-            '&categoryLedgerCode=' +
-            model['categoryLedgerCode'] +
-            '&groupLedgerCode=' +
-            model['groupLedgerCode'] +
-            '&generalLedgerCode=' +
-            model['generalLedgerCode'] +
-            '&subsidiaryLedgerCode=' +
-            model['subsidiaryLedgerCode'] +
-            '&detailLedgerCode=' +
-            model['detailLedgerCode'];
-        return this.apiClientService.get(api, fc);
+    public getChartApi(params): Observable<any> {
+        return this.http.get(GlService.getChartApi, { params });
     }
 
-    getGlGridData(searchModel, fc?: FormContainer) {
-        let api = '';
-        if (searchModel) {
-            api =
-                GlService.getGLGridDataApi +
-                '?date=' +
-                this.convertDate(searchModel['date']) +
-                '&limit=' +
-                searchModel['limit'] +
-                '&skip=' +
-                searchModel['skip'];
-        } else {
-            api = GlService.getGLGridDataApi;
-        }
-        return this.apiClientService.get(api, fc);
+    getGlGridData(params): Observable<any> {
+        return this.http.get(GlService.getGLGridDataApi, { params });
     }
 
-    getChangeApi(model, fc?: FormContainer) {
-        let api =
-            GlService.GlChangeApi +
-            '?fromDate=' +
-            this.convertDate(model['fromDate']) +
-            '&toDate=' +
-            this.convertDate(model['toDate']) +
-            model['type'].map((x) => '&type=' + x) +
-            model['categoryCode'].map((x) => '&categoryCode=' + x) +
-            this.ifHas(model, 'fromPercent') +
-            this.ifHas(model, 'toPercent') +
-            this.ifHas(model, 'fromValue') +
-            this.ifHas(model, 'toValue');
-        api = api.replace(/,/g, '');
-        return this.apiClientService.get(api, fc);
+    getChangeApi(params): Observable<any> {
+        return this.http.get(GlService.GlChangeApi, { params });
     }
-
-    ifHas(model, prop) {
-        if (model[prop] !== null && model[prop] !== undefined && model[prop] !== '') {
-            return '&' + prop + '=' + model[prop];
-        } else return '';
-    }
-
-    constructor(private apiClientService: ApiClientService) {}
 }

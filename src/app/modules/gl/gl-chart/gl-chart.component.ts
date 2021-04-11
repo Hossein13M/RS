@@ -19,7 +19,6 @@ export class GlChartComponent implements OnInit {
     glGeneral = [];
     glSubsidiary = [];
     glDetail = [];
-    isWorking: any;
     data: Array<any>;
 
     constructor(private glService: GlService, private fb: FormBuilder) {
@@ -29,21 +28,21 @@ export class GlChartComponent implements OnInit {
 
     ngOnInit(): void {
         this.createForm();
-        this.glService.getLevelApi(null, TreeOrderType.Category, this).subscribe((res: any[]) => (this.glCategories = res));
+        this.glService.getLevelApi(null, TreeOrderType.Category).subscribe((res: any[]) => (this.glCategories = res));
         this.form.get('categoryLedgerCode').valueChanges.subscribe((res) => {
-            this.glService.getLevelApi(res, TreeOrderType.Group, this).subscribe((x: any[]) => (this.glGroups = x));
+            this.glService.getLevelApi(res, TreeOrderType.Group).subscribe((x: any[]) => (this.glGroups = x));
         });
         this.form.get('groupLedgerCode').valueChanges.subscribe((res) => {
-            this.glService.getLevelApi(res, TreeOrderType.General, this).subscribe((x: any[]) => (this.glGeneral = x));
+            this.glService.getLevelApi(res, TreeOrderType.General).subscribe((x: any[]) => (this.glGeneral = x));
         });
         this.form.get('generalLedgerCode').valueChanges.subscribe((res) => {
-            this.glService.getLevelApi(res, TreeOrderType.Subsidiary, this).subscribe((x: any[]) => {
+            this.glService.getLevelApi(res, TreeOrderType.Subsidiary).subscribe((x: any[]) => {
                 this.glSubsidiary = x;
                 this.form.get('subsidiaryLedgerCode').reset();
             });
         });
         this.form.get('subsidiaryLedgerCode').valueChanges.subscribe((res) => {
-            this.glService.getLevelApi(res, TreeOrderType.Detail, this).subscribe((x: any[]) => (this.glDetail = x));
+            this.glService.getLevelApi(res, TreeOrderType.Detail).subscribe((x: any[]) => (this.glDetail = x));
         });
     }
 
@@ -60,7 +59,7 @@ export class GlChartComponent implements OnInit {
     }
 
     submitForm(): void {
-        this.glService.getChartApi(this.form.value, this).subscribe((res: any) => {
+        this.glService.getChartApi(this.form.value).subscribe((res: any) => {
             if (res) {
                 res.map((x) => {
                     x.value = x.remainedAmount;
@@ -70,9 +69,5 @@ export class GlChartComponent implements OnInit {
             this.data = null;
             setTimeout(() => (this.data = res), 100);
         });
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }

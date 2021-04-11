@@ -68,7 +68,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'gl',
-        loadChildren: () => import('app/modules/features/gl/gl.module').then((m) => m.GlModule),
+        loadChildren: () => import('app/modules/gl/gl.module').then((m) => m.GlModule),
     },
     {
         path: 'system-setting',
