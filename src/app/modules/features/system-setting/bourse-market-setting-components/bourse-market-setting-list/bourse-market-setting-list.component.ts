@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BourseMarketService } from 'app/services/feature-services/system-setting-services/bourse-market.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { BourseMarketSettingAddComponent } from '../bourse-market-setting-add/bourse-market-setting-add.component';
-import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
+import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
 
 @Component({
@@ -31,7 +29,11 @@ export class BourseMarketSettingListComponent implements OnInit {
             {
                 id: 'name',
                 name: 'نام',
-                type: 'string'
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER
+                }
             },
             {
                 id: 'code',
