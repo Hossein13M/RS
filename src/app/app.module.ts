@@ -22,6 +22,7 @@ import { AuthGuard } from './services/auth.guard';
 import { getFarsiPaginatorIntl } from './shared/components/table/farsi-paginator-intl';
 import { MaterialModule } from './shared/material.module';
 import { ShareModule } from './shared/share.module';
+import { GlModule } from './modules/gl/gl.module';
 
 const appRoutes: Routes = [
     {
@@ -67,10 +68,6 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/modules/settings/settings.module').then((m) => m.SettingsModule),
     },
     {
-        path: 'gl',
-        loadChildren: () => import('app/modules/gl/gl.module').then((m) => m.GlModule),
-    },
-    {
         path: 'system-setting',
         loadChildren: () => import('app/modules/features/system-setting/system-setting.module').then((m) => m.SystemSettingModule),
     },
@@ -106,6 +103,8 @@ const appRoutes: Routes = [
         OpRiskModule,
 
         ShareModule,
+
+        GlModule,
 
         TestModule, // --> Test Playground
     ],

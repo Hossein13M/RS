@@ -3,9 +3,7 @@ import { TreeOrderType } from 'app/modules/gl/gl-tree/gl-tree.component';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class GlService {
     private static getCategoryApi = '/api/v1/gl/category';
     private static getGroupByCategoryApi = '/api/v1/gl/group';

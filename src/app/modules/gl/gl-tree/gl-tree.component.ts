@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { GlService } from 'app/services/feature-services/gl.service';
-import { GlPieChartComponent } from '../gl-pie-chart/gl-pie-chart.component';
+import { GlService } from 'app/modules/gl/gl.service';
+import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
 
 export enum TreeOrderType {
     Category = 'Category',

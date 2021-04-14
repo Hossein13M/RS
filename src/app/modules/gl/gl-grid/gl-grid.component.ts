@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { GlService } from 'app/services/feature-services/gl.service';
+import { GlService } from 'app/modules/gl/gl.service';
 
 @Component({
     selector: 'app-gl-grid',

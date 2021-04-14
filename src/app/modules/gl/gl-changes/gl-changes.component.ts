@@ -5,7 +5,7 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { GlService } from 'app/services/feature-services/gl.service';
+import { GlService } from 'app/modules/gl/gl.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TreeOrderType } from '../gl-tree/gl-tree.component';
