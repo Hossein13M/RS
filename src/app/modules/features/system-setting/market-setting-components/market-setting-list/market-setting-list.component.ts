@@ -7,12 +7,13 @@ import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/con
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { TableSearchMode } from '#shared/components/table/table.model';
 import { MarketSettingAddComponent } from '../market-setting-add/market-setting-add.component';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-market-setting-list',
     templateUrl: './market-setting-list.component.html',
     styleUrls: ['./market-setting-list.component.scss'],
-    animations: [fuseAnimations],
+    animations: [fuseAnimations]
 })
 export class MarketSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
@@ -22,8 +23,17 @@ export class MarketSettingListComponent implements OnInit {
     data = [];
     columns: Array<any>;
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public marketSettingService: MarketSettingService) {
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public marketSettingService: MarketSettingService) {
         // Init Table Columns
+    }
+
+    ngOnInit(): void {
+        this.initColumns();
+        this.initSearch();
+        this.get();
+    }
+
+    initColumns(): void {
         this.columns = [
             {
                 name: 'نوع',
@@ -34,18 +44,38 @@ export class MarketSettingListComponent implements OnInit {
                     options: [
                         { name: 'بازارگردانی', value: 'M' },
                         { name: 'تمدن', value: 'T' },
-                        { name: 'صندوق', value: 'F' },
+                        { name: 'صندوق', value: 'F' }
                     ],
-                    mode: TableSearchMode.SERVER,
+                    mode: TableSearchMode.SERVER
                 },
                 convert: (value: any) => {
                     return value === 'T' ? 'تمدن' : value === 'M' ? 'بازارگردانی' : value === 'F' ? 'صندوق' : '';
-                },
+                }
             },
-            { name: 'نماد/عنوان صندوق', id: 'symbolORFundTitle', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'کارگزاری', id: 'brokerName', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'کد بورسی', id: 'bourseCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'شناسه ملی', id: 'nationalId', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            {
+                name: 'نماد/عنوان صندوق',
+                id: 'symbolORFundTitle',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER }
+            },
+            {
+                name: 'کارگزاری',
+                id: 'brokerName',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER }
+            },
+            {
+                name: 'کد بورسی',
+                id: 'bourseCode',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER }
+            },
+            {
+                name: 'شناسه ملی',
+                id: 'nationalId',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER }
+            },
             { name: 'کد پم', id: 'pamCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
             {
                 name: 'دریافت داده',
@@ -55,13 +85,13 @@ export class MarketSettingListComponent implements OnInit {
                     type: 'select',
                     options: [
                         { name: 'فعال', value: true },
-                        { name: 'غیر فغال', value: false },
+                        { name: 'غیر فغال', value: false }
                     ],
-                    mode: TableSearchMode.SERVER,
+                    mode: TableSearchMode.SERVER
                 },
                 convert: (value: any) => {
                     return value ? 'دارد' : 'ندارد';
-                },
+                }
             },
             {
                 name: 'نام کاربری',
@@ -69,7 +99,7 @@ export class MarketSettingListComponent implements OnInit {
                 type: 'string',
                 convert: (value: any) => {
                     return value ? value : '-';
-                },
+                }
             },
             {
                 name: 'رمز عبور',
@@ -77,7 +107,7 @@ export class MarketSettingListComponent implements OnInit {
                 type: 'string',
                 convert: (value: any) => {
                     return value ? value : '-';
-                },
+                }
             },
             {
                 name: 'عملیات',
@@ -87,28 +117,21 @@ export class MarketSettingListComponent implements OnInit {
                 sticky: true,
                 operations: [
                     { name: 'ویرایش', icon: 'edit', color: 'accent', operation: ({ row }: any) => this.edit(row) },
-                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
-                ],
-            },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) }
+                ]
+            }
         ];
-
-        // Init Table Search Form
-        this.searchFormGroup = this.fb.group({
-            organizationType: '',
-            bourseCode: '',
-            nationalId: '',
-            pamCode: '',
-            apiActive: '',
-            symbolORFundTitle: '',
-            isBOC: '',
-            brokerName: '',
-            username: '',
-            password: '',
-        });
     }
 
-    ngOnInit(): void {
-        this.get();
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.columns, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        });
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys
+        });
     }
 
     get(): void {
@@ -147,7 +170,7 @@ export class MarketSettingListComponent implements OnInit {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
             })
             .afterClosed()
             .subscribe((res) => {

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { InstrumentTypeService } from 'app/services/feature-services/system-setting-services/instrument-type.service';
 import { InstrumentTypeSettingAddComponent } from '../instrument-type-setting-add/instrument-type-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-instrument-type-setting-list',
@@ -13,14 +14,16 @@ import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/comp
     animations: [fuseAnimations],
 })
 export class InstrumentTypeSettingListComponent implements OnInit {
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public instrumentTypeService: InstrumentTypeService) {}
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public instrumentTypeService: InstrumentTypeService) {}
 
     ngOnInit(): void {
         this.initColumns();
+        this.initSearch();
         this.get();
     }
 
@@ -98,6 +101,31 @@ export class InstrumentTypeSettingListComponent implements OnInit {
                 ],
             },
         ];
+    }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        })
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys
+        })
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.instrumentTypeService.specificationModel.searchKeyword = searchFilter;
+        this.instrumentTypeService.specificationModel.skip = 0;
+        this.get();
     }
 
     get(): void {
