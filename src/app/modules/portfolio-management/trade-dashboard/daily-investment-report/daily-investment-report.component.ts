@@ -44,7 +44,6 @@ export class DailyInvestmentReportComponent implements OnChanges {
             .show(date, this.pagination)
             .pipe(StateManager(this.dailyInvestment))
             .subscribe((data: any) => {
-                console.log(this.dailyInvestment.state);
                 this.dailyInvestment.data = data.items;
                 this.pagination.total = data.total;
             });
