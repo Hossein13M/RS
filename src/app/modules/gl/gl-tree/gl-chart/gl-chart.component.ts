@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { GlService } from 'app/services/feature-services/gl.service';
+import { GlService } from 'app/modules/gl/gl.service';
 import * as moment from 'jalali-moment';
-import { TreeOrderType } from '../gl-tree/gl-tree.component';
+import { TreeOrderType } from '../gl-tree.component';
 
 @Component({
     selector: 'app-gl-chart',

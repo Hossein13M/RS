@@ -3,8 +3,8 @@ import * as am4core from '@amcharts/amcharts4/core';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { AfterViewInit, Component, Inject, NgZone, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GlService } from 'app/services/feature-services/gl.service';
-import { TreeOrderType } from '../gl-tree/gl-tree.component';
+import { GlService } from 'app/modules/gl/gl.service';
+import { TreeOrderType } from '../gl-tree.component';
 
 @Component({
     selector: 'app-gl-pie-chart',
@@ -38,7 +38,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         }
     }
 
-    createPieChart() {
+    createPieChart(): void {
         this.zone.runOutsideAngular(() => {
             am4core.useTheme(am4themes_animated);
             this.chart = am4core.create('chartdiv', am4charts.PieChart);
