@@ -7,23 +7,28 @@ import { BourseBoardSettingAddComponent } from '../../bourse-board-setting-compo
 import { FundRoleSettingAddComponent } from '../fund-role-setting-add/fund-role-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-fund-role-setting-list',
     templateUrl: './fund-role-setting-list.component.html',
     styleUrls: ['./fund-role-setting-list.component.scss'],
-    animations: [fuseAnimations],
+    animations: [fuseAnimations]
 })
 export class FundRoleSettingListComponent implements OnInit {
-
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, public fundRoleService: FundRoleService) {}
+    constructor(private matDialog: MatDialog,
+                private formBuilder: FormBuilder,
+                public fundRoleService: FundRoleService) {
+    }
 
     ngOnInit(): void {
         this.initColumn();
+        this.initSearch();
         this.get();
     }
 
@@ -35,8 +40,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'تلفن',
@@ -44,8 +49,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'شماره ثبت',
@@ -54,8 +59,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 minWidth: '70px',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'نام نماینده',
@@ -64,8 +69,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 minWidth: '70px',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'تلفن نماینده',
@@ -74,8 +79,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 minWidth: '70px',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'کد ملی',
@@ -84,8 +89,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 minWidth: '70px',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'کد ملی',
@@ -94,8 +99,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 minWidth: '70px',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'آدرس',
@@ -103,8 +108,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'عملیات',
@@ -117,17 +122,42 @@ export class FundRoleSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.edit(row),
+                        operation: ({ row }: any) => this.edit(row)
                     },
                     {
                         name: 'حذف',
                         icon: 'delete',
                         color: 'warn',
-                        operation: ({ row }: any) => this.delete(row),
-                    },
-                ],
-            },
+                        operation: ({ row }: any) => this.delete(row)
+                    }
+                ]
+            }
         ];
+    }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        })
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys
+        })
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.fundRoleService.specificationModel.searchKeyword = searchFilter;
+        this.fundRoleService.specificationModel.skip = 0;
+        this.get();
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
@@ -156,7 +186,10 @@ export class FundRoleSettingListComponent implements OnInit {
     delete(row): void {
         console.log(row);
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {

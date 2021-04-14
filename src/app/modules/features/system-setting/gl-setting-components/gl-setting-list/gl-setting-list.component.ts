@@ -6,6 +6,8 @@ import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/con
 import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { forEach } from '@angular-devkit/schematics';
 
 @Component({
     selector: 'app-gl-setting-list',
@@ -14,16 +16,22 @@ import * as _ from 'lodash';
     animations: [fuseAnimations],
 })
 export class GlSettingListComponent implements AfterViewInit {
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
     @ViewChild('status', { static: false }) statusRef: TemplateRef<any>;
 
-    constructor(private matDialog: MatDialog, public glSettingService: GlSettingService) {}
+    constructor(
+        private matDialog: MatDialog,
+        private formBuilder: FormBuilder,
+        private glSettingService: GlSettingService
+    ) {}
 
     ngAfterViewInit(): void {
         this.initColumns();
+        this.initSearch();
         this.get();
     }
 
@@ -75,6 +83,31 @@ export class GlSettingListComponent implements AfterViewInit {
                 ],
             },
         ];
+    }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        })
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys
+        })
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.glSettingService.specificationModel.searchKeyword = searchFilter;
+        this.glSettingService.specificationModel.skip = 0;
+        this.get();
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
