@@ -6,22 +6,28 @@ import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/con
 import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrument-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-instrument-setting-list',
     templateUrl: './instrument-setting-list.component.html',
     styleUrls: ['./instrument-setting-list.component.scss'],
-    animations: [fuseAnimations],
+    animations: [fuseAnimations]
 })
 export class InstrumentSettingListComponent implements OnInit {
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, public newInstrumentService: NewInstrumentService) {}
+    constructor(private matDialog: MatDialog,
+                private formBuilder: FormBuilder,
+                public newInstrumentService: NewInstrumentService) {
+    }
 
     ngOnInit(): void {
         this.initColumn();
+        this.initSearch();
         this.get();
     }
 
@@ -33,8 +39,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'شماره ثبت',
@@ -42,8 +48,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'نماد',
@@ -51,8 +57,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'نماد انگلیسی',
@@ -60,8 +66,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'وضعیت',
@@ -74,14 +80,14 @@ export class InstrumentSettingListComponent implements OnInit {
                     options: [
                         {
                             name: 'فعال',
-                            value: 'true',
+                            value: 'true'
                         },
                         {
                             name: 'غیرفعال',
-                            value: 'false',
-                        },
-                    ],
-                },
+                            value: 'false'
+                        }
+                    ]
+                }
             },
             {
                 name: 'کد نوع',
@@ -89,28 +95,28 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'محل معامله',
                 id: 'isInBourse',
                 type: 'string',
-                convert: (value) => (value === 'true' ? 'بورس' : 'خارج از بورس' ),
+                convert: (value) => (value === 'true' ? 'بورس' : 'خارج از بورس'),
                 search: {
                     mode: TableSearchMode.SERVER,
                     type: 'select',
                     options: [
                         {
                             name: 'بورس',
-                            value: 'true',
+                            value: 'true'
                         },
                         {
                             name: 'خارج از بورس',
-                            value: 'false',
-                        },
-                    ],
-                },
+                            value: 'false'
+                        }
+                    ]
+                }
             },
             {
                 name: 'تابلو',
@@ -118,8 +124,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'بازار',
@@ -127,8 +133,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                    type: 'text'
+                }
             },
             {
                 name: 'عملیات',
@@ -141,18 +147,44 @@ export class InstrumentSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.edit(row),
+                        operation: ({ row }: any) => this.edit(row)
                     },
                     {
                         name: 'حذف',
                         icon: 'delete',
                         color: 'warn',
-                        operation: ({ row }: any) => this.delete(row),
-                    },
-                ],
-            },
+                        operation: ({ row }: any) => this.delete(row)
+                    }
+                ]
+            }
         ];
     }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        })
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys
+        })
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.newInstrumentService.specificationModel.searchKeyword = searchFilter;
+        this.newInstrumentService.specificationModel.skip = 0;
+        this.get();
+    }
+
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.newInstrumentService.specificationModel.limit = pageEvent.limit;
@@ -172,7 +204,7 @@ export class InstrumentSettingListComponent implements OnInit {
         this.matDialog
             .open(InstrumentSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: null,
+                data: null
             })
             .afterClosed()
             .subscribe((res) => {
@@ -186,7 +218,7 @@ export class InstrumentSettingListComponent implements OnInit {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
             })
             .afterClosed()
             .subscribe((res) => {
@@ -202,7 +234,7 @@ export class InstrumentSettingListComponent implements OnInit {
         this.matDialog
             .open(InstrumentSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: row,
+                data: row
             })
             .afterClosed()
             .subscribe((res) => {

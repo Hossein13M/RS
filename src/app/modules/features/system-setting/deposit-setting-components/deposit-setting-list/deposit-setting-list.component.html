@@ -16,6 +16,7 @@
                         [columns]="column"
                         [paginationSettings]="{ mode: 'backend' }"
                         [paginationObj]="pagination"
+                        (searchCall)="search($event)"
                         (paginationChange)="paginationControl($event)"
                     ></app-table>
                     <ng-container *ngIf="data?.length === 0">

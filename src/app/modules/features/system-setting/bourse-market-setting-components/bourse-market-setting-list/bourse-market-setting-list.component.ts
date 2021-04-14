@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BourseMarketService } from 'app/services/feature-services/system-setting-services/bourse-market.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { BourseMarketSettingAddComponent } from '../bourse-market-setting-add/bourse-market-setting-add.component';
-import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
+import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-bourse-market-setting-list',
@@ -16,12 +15,16 @@ import * as _ from 'lodash';
     animations: [fuseAnimations],
 })
 export class BourseMarketSettingListComponent implements OnInit {
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
 
-    constructor(private matDialog: MatDialog, public bourseMarketService: BourseMarketService) {}
+    constructor(private matDialog: MatDialog,
+                private formBuilder: FormBuilder,
+                public bourseMarketService: BourseMarketService) {}
 
     ngOnInit(): void {
+        this.initColumn();
         this.initColumn();
         this.get();
     }
@@ -31,7 +34,11 @@ export class BourseMarketSettingListComponent implements OnInit {
             {
                 id: 'name',
                 name: 'نام',
-                type: 'string'
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER
+                }
             },
             {
                 id: 'code',
@@ -61,6 +68,32 @@ export class BourseMarketSettingListComponent implements OnInit {
             },
         ]
     }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        })
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys
+        })
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.bourseMarketService.specificationModel.searchKeyword = searchFilter;
+        this.bourseMarketService.specificationModel.skip = 0;
+        this.get();
+    }
+
 
     get(): void {
         this.bourseMarketService.get().subscribe((res: any) => {
