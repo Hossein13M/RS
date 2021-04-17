@@ -5,6 +5,8 @@ import { BankService } from 'app/services/feature-services/bank.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { BankSettingAddComponent } from '../bank-setting-add/bank-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-bank-setting-list',
@@ -13,15 +15,17 @@ import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/comp
     animations: [fuseAnimations],
 })
 export class BankSettingListComponent implements OnInit {
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
 
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, public bankService: BankService) {}
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public bankService: BankService) {}
 
     ngOnInit(): void {
         this.initColumns();
+        this.initSearch();
         this.get();
     }
 
@@ -60,15 +64,40 @@ export class BankSettingListComponent implements OnInit {
         ];
     }
 
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        });
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys,
+        });
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.bankService.specificationModel.searchKeyword = searchFilter;
+        this.bankService.specificationModel.skip = 0;
+        this.get();
+    }
+
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
+        this.bankService.specificationModel.limit = pageEvent.limit;
+        this.bankService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
     get(): void {
         this.bankService.get().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.bankService.setPageDetailData(res);
         });

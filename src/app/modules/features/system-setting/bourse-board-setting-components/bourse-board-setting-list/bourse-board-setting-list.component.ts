@@ -62,7 +62,7 @@ export class BourseBoardSettingListComponent implements OnInit {
 
     get(): void {
         this.bourseBoardService.get().subscribe((res: any) => {
-            this.data = res;
+            this.data = [...res];
         });
     }
 

@@ -83,7 +83,7 @@ export class BranchSettingListComponent implements OnInit {
 
     get(): void {
         this.branchService.getBankBranch().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.branchService.setPageDetailData(res);
         });

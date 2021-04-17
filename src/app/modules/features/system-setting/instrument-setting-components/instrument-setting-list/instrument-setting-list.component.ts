@@ -6,6 +6,7 @@ import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/con
 import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrument-setting-add.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-instrument-setting-list',
@@ -14,14 +15,16 @@ import * as _ from 'lodash';
     animations: [fuseAnimations],
 })
 export class InstrumentSettingListComponent implements OnInit {
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, public newInstrumentService: NewInstrumentService) {}
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public newInstrumentService: NewInstrumentService) {}
 
     ngOnInit(): void {
         this.initColumn();
+        this.initSearch();
         this.get();
     }
 
@@ -154,15 +157,40 @@ export class InstrumentSettingListComponent implements OnInit {
         ];
     }
 
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        });
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys,
+        });
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.newInstrumentService.specificationModel.searchKeyword = searchFilter;
+        this.newInstrumentService.specificationModel.skip = 0;
+        this.get();
+    }
+
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
+        this.newInstrumentService.specificationModel.limit = pageEvent.limit;
+        this.newInstrumentService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
     get(): void {
         this.newInstrumentService.get().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.newInstrumentService.setPageDetailData(res);
         });

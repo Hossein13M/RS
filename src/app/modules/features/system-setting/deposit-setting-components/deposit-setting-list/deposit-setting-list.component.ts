@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { DepositSettingService } from 'app/services/feature-services/system-setting-services/deposit-setting.service';
@@ -15,14 +15,16 @@ import * as _ from 'lodash';
     animations: [fuseAnimations],
 })
 export class DepositSettingListComponent implements OnInit {
+    searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, private fb: FormBuilder, public depositSettingService: DepositSettingService) {}
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public depositSettingService: DepositSettingService) {}
 
     ngOnInit(): void {
         this.initColumns();
+        this.initSearch();
         this.get();
     }
 
@@ -124,15 +126,40 @@ export class DepositSettingListComponent implements OnInit {
         ];
     }
 
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
+        });
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys,
+        });
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+
+        this.depositSettingService.specificationModel.searchKeyword = searchFilter;
+        this.depositSettingService.specificationModel.skip = 0;
+        this.get();
+    }
+
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
+        this.depositSettingService.specificationModel.limit = pageEvent.limit;
+        this.depositSettingService.specificationModel.skip = pageEvent.skip;
         this.get();
     }
 
     get(): void {
         this.depositSettingService.get().subscribe((res: any) => {
-            this.data = res.items;
+            this.data = [...res.items];
             this.pagination.total = res.total;
             this.depositSettingService.setPageDetailData(res);
         });
@@ -154,7 +181,10 @@ export class DepositSettingListComponent implements OnInit {
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
