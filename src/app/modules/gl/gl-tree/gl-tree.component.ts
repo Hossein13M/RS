@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GlService } from 'app/modules/gl/gl.service';
@@ -49,51 +49,87 @@ export class GlTreeComponent implements OnInit {
             }
         };
 
-        if (c.type === TreeOrderType.Category) {
-            this.glService.getGroupByCategory(c.code).subscribe((res) => {
-                res.items.map((x: GroupModel) => {
-                    x.type = TreeOrderType.Group;
-                    x.isCollapsed = false;
-                    x.code = x.groupLedgerCode;
-                    x.name = x.groupLedgerName;
-                    x.parentCode = c.code;
-                    spliceIfNotFound(x);
+        const setRow = (result: RowModel) => {
+            result.type = TreeOrderType.Group;
+            result.isCollapsed = false;
+            result.parentCode = c.code;
+            spliceIfNotFound(result);
+        };
+
+        switch (c.type) {
+            case TreeOrderType.Category:
+                this.glService.getGroupByCategory(c.code).subscribe((res) => {
+                    res.items.map((x: GroupModel) => {
+                        x.code = x.groupLedgerCode;
+                        x.name = x.groupLedgerName;
+                        setRow(x);
+                    });
                 });
-            });
-        } else if (c.type === TreeOrderType.Group) {
-            this.glService.getGeneralByGroup(c.code).subscribe((res) => {
-                res.items.map((x: GeneralModel) => {
-                    x.type = TreeOrderType.General;
-                    x.isCollapsed = false;
-                    x.code = x.generalLedgerCode;
-                    x.name = x.generalLedgerName;
-                    x.parentCode = c.code;
-                    spliceIfNotFound(x);
+                break;
+            case TreeOrderType.Group:
+                this.glService.getGeneralByGroup(c.code).subscribe((res) => {
+                    res.items.map((x: GeneralModel) => {
+                        x.code = x.generalLedgerCode;
+                        x.name = x.generalLedgerName;
+                        setRow(x);
+                    });
                 });
-            });
-        } else if (c.type === TreeOrderType.General) {
-            this.glService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
-                res.items.map((x: SubsidiaryModel) => {
-                    x.type = TreeOrderType.Subsidiary;
-                    x.isCollapsed = false;
-                    x.code = x.subsidiaryLedgerCode;
-                    x.name = x.subsidiaryLedgerName;
-                    x.parentCode = c.code;
-                    spliceIfNotFound(x);
+                break;
+            case TreeOrderType.General:
+                this.glService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
+                    res.items.map((x: SubsidiaryModel) => {
+                        x.code = x.subsidiaryLedgerCode;
+                        x.name = x.subsidiaryLedgerName;
+                        setRow(x);
+                    });
                 });
-            });
-        } else if (c.type === TreeOrderType.Subsidiary) {
-            this.glService.getDetailBySubsidiary(c.code).subscribe((res) => {
-                res.items.map((x: DetailModel) => {
-                    x.type = TreeOrderType.Detail;
-                    x.isCollapsed = false;
-                    x.code = x.detailLedgerCode;
-                    x.name = x.detailLedgerName;
-                    x.parentCode = c.code;
-                    spliceIfNotFound(x);
+                break;
+            case TreeOrderType.Subsidiary:
+                this.glService.getDetailBySubsidiary(c.code).subscribe((res) => {
+                    res.items.map((x: DetailModel) => {
+                        x.code = x.detailLedgerCode;
+                        x.name = x.detailLedgerName;
+                        setRow(x);
+                    });
                 });
-            });
+                break;
+            default:
+                break;
         }
+
+        // if (c.type === TreeOrderType.Category) {
+        //     this.glService.getGroupByCategory(c.code).subscribe((res) => {
+        //         res.items.map((x: GroupModel) => {
+        //             x.code = x.groupLedgerCode;
+        //             x.name = x.groupLedgerName;
+        //             setRow(x);
+        //         });
+        //     });
+        // } else if (c.type === TreeOrderType.Group) {
+        //     this.glService.getGeneralByGroup(c.code).subscribe((res) => {
+        //         res.items.map((x: GeneralModel) => {
+        //             x.code = x.generalLedgerCode;
+        //             x.name = x.generalLedgerName;
+        //             setRow(x);
+        //         });
+        //     });
+        // } else if (c.type === TreeOrderType.General) {
+        //     this.glService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
+        //         res.items.map((x: SubsidiaryModel) => {
+        //             x.code = x.subsidiaryLedgerCode;
+        //             x.name = x.subsidiaryLedgerName;
+        //             setRow(x);
+        //         });
+        //     });
+        // } else if (c.type === TreeOrderType.Subsidiary) {
+        //     this.glService.getDetailBySubsidiary(c.code).subscribe((res) => {
+        //         res.items.map((x: DetailModel) => {
+        //             x.code = x.detailLedgerCode;
+        //             x.name = x.detailLedgerName;
+        //             setRow(x);
+        //         });
+        //     });
+        // }
     }
 
     private unCollapseRow(c: RowModel, removeList: Array<string>): void {
