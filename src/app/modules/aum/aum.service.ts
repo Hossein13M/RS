@@ -68,7 +68,7 @@ export class AUMService {
         let params: HttpParams = new HttpParams();
         Object.keys(searchParams).map((key: string) => {
             if (Array.isArray(searchParams[key])) {
-                searchParams[key].forEach((element) => params.append(key, element));
+                searchParams[key].forEach((element) => (params = params.append(key, element)));
             } else if (searchParams[key] !== '') {
                 params = params.append(key, searchParams[key]);
             }
