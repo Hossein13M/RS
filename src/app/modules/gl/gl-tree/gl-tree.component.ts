@@ -43,6 +43,12 @@ export class GlTreeComponent implements OnInit {
     }
 
     private collapseRow(c: RowModel, index): void {
+        const spliceIfNotFound = (x: RowModel): void => {
+            if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
+                this.groupObj.splice(index + 1, 0, x);
+            }
+        };
+
         if (c.type === TreeOrderType.Category) {
             this.glService.getGroupByCategory(c.code).subscribe((res) => {
                 res.items.map((x: GroupModel) => {
@@ -51,9 +57,7 @@ export class GlTreeComponent implements OnInit {
                     x.code = x.groupLedgerCode;
                     x.name = x.groupLedgerName;
                     x.parentCode = c.code;
-                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                        this.groupObj.splice(index + 1, 0, x);
-                    }
+                    spliceIfNotFound(x);
                 });
             });
         } else if (c.type === TreeOrderType.Group) {
@@ -64,9 +68,7 @@ export class GlTreeComponent implements OnInit {
                     x.code = x.generalLedgerCode;
                     x.name = x.generalLedgerName;
                     x.parentCode = c.code;
-                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                        this.groupObj.splice(index + 1, 0, x);
-                    }
+                    spliceIfNotFound(x);
                 });
             });
         } else if (c.type === TreeOrderType.General) {
@@ -77,9 +79,7 @@ export class GlTreeComponent implements OnInit {
                     x.code = x.subsidiaryLedgerCode;
                     x.name = x.subsidiaryLedgerName;
                     x.parentCode = c.code;
-                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                        this.groupObj.splice(index + 1, 0, x);
-                    }
+                    spliceIfNotFound(x);
                 });
             });
         } else if (c.type === TreeOrderType.Subsidiary) {
@@ -90,17 +90,39 @@ export class GlTreeComponent implements OnInit {
                     x.code = x.detailLedgerCode;
                     x.name = x.detailLedgerName;
                     x.parentCode = c.code;
-                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                        this.groupObj.splice(index + 1, 0, x);
-                    }
+                    spliceIfNotFound(x);
                 });
             });
         }
     }
 
-    // private unCollapseRow(c: RowModel, index): void {
-    //
-    // }
+    private unCollapseRow(c: RowModel, removeList: Array<string>): void {
+        this.groupObj.filter((obj) => {
+            if (obj.parentCode && obj.parentCode === c.code) {
+                removeList.push(obj.code);
+                this.groupObj.filter((x) => {
+                    if (x.parentCode === obj.code) {
+                        removeList.push(x.code);
+                        this.groupObj.filter((y) => {
+                            if (y.parentCode === x.code) {
+                                removeList.push(y.code);
+                                this.groupObj.filter((z) => {
+                                    if (z.parentCode === y.code) {
+                                        removeList.push(z.code);
+                                        this.groupObj.filter((k) => {
+                                            if (k.parentCode === z.code) {
+                                                removeList.push(k.code);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 
     changeCollection(c): void {
         const fundCC: CategoryModel = this.groupObj.find((x) => x.code === c.code && x.type === c.type);
@@ -112,31 +134,7 @@ export class GlTreeComponent implements OnInit {
             this.collapseRow(c, index);
         } else {
             const removeList = [];
-            this.groupObj.filter((obj) => {
-                if (obj.parentCode && obj.parentCode === c.code) {
-                    removeList.push(obj.code);
-                    this.groupObj.filter((x) => {
-                        if (x.parentCode === obj.code) {
-                            removeList.push(x.code);
-                            this.groupObj.filter((y) => {
-                                if (y.parentCode === x.code) {
-                                    removeList.push(y.code);
-                                    this.groupObj.filter((z) => {
-                                        if (z.parentCode === y.code) {
-                                            removeList.push(z.code);
-                                            this.groupObj.filter((k) => {
-                                                if (k.parentCode === z.code) {
-                                                    removeList.push(k.code);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
+            this.unCollapseRow(c, removeList);
             this.groupObj = this.groupObj.filter((x) => {
                 return !removeList.includes(x.code);
             });
