@@ -16,6 +16,7 @@ import { NavProcessDetailDialogComponent } from './nav-process-detail-dialog/nav
 import { NavRoutingModule } from './nav-routing.module';
 import { RiskMeasuringComponent } from './risk-measuring/risk-measuring.component';
 import { YieldCurveComponent } from './yield-curve/yield-curve.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [
@@ -38,6 +39,7 @@ import { YieldCurveComponent } from './yield-curve/yield-curve.component';
         MatProgressSpinnerModule,
         ChartModule,
         LayoutModule,
+        MatProgressBarModule,
     ],
 })
 export class NavModule {}
