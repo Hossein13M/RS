@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { TreeOrderType } from 'app/modules/gl/gl-tree/gl-tree.component';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { TreeOrderType } from './gl.model'
 
 @Injectable()
 export class GlService {

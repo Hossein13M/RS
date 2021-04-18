@@ -4,7 +4,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { AfterViewInit, Component, Inject, NgZone, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GlService } from 'app/modules/gl/gl.service';
-import { TreeOrderType } from '../gl-tree.component';
+import { TreeOrderType } from '../../gl.model';
 
 @Component({
     selector: 'app-gl-pie-chart',
@@ -60,10 +60,10 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         });
     }
 
-    drillUpDeposit() {
+    drillUpDeposit(): void {
         this.drillLevel.pop();
         this.chart.data = this.drillLevel[this.drillLevel.length - 1];
-        if (this.drillLevel.length == 1) {
+        if (this.drillLevel.length === 1) {
             this.button.hidden = true;
             this.button.hide();
         } else {
@@ -73,11 +73,11 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         this.pieSeries.appear();
     }
 
-    clickHandlerDeposit(event) {
+    clickHandlerDeposit(event): void {
         this.callService(event);
     }
 
-    updateChart(event, data) {
+    updateChart(event, data): void {
         if (data && data.length) {
             this.selectedSlice = event.slice;
             this.chart.data = data;
@@ -88,7 +88,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         }
     }
 
-    callService(event) {
+    callService(event): void {
         if (event.dataContext.type === TreeOrderType.Category) {
             this.glService.getGroupByCategory(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
@@ -147,6 +147,4 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
     handleError(): boolean {
         return false;
     }
-
-    isWorking: any;
 }
