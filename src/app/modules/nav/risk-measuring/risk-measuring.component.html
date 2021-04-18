@@ -3,57 +3,52 @@
         <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center"></div>
     </app-header>
 
+    <mat-progress-bar mode="indeterminate" *ngIf="!loading" color="warn"></mat-progress-bar>
+
     <div fxLayout="column" dir="rtl">
-        <form [formGroup]="form" class="form" style="margin: 30px 0" (submit)="get()">
-            <div fxLayout="row" fxLayoutAlign="space-evenly none" fxFlex="100">
-                <div fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
-                    <mat-form-field appearance="outline">
-                        <mat-label>میز / سبد</mat-label>
-                        <mat-select formControlName="owner">
-                            <mat-option value="T">تمدن</mat-option>
-                            <mat-option value="M">بازارگردانی</mat-option>
-                            <mat-option [value]="['T', 'M']">تمدن و بازارگردانی</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
+        <form [formGroup]="form" (submit)="submitForm()" fxLayout="row wrap" fxLayoutGap="20px" class="mt-20">
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <mat-form-field appearance="outline" fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
+                    <mat-label>میز / سبد</mat-label>
+                    <mat-select formControlName="owner" multiple>
+                        <mat-option value="T">تمدن</mat-option>
+                        <mat-option value="M">بازارگردانی</mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-                <div fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
-                    <mat-form-field appearance="outline">
-                        <mat-label>سطح اطمینان به درصد</mat-label>
-                        <input type="number" value="99" formControlName="confidenceInterval" matInput />
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="outline" fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
+                    <mat-label>سطح اطمینان به درصد</mat-label>
+                    <input type="number" value="99" formControlName="confidenceInterval" matInput />
+                </mat-form-field>
 
-                <div fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
-                    <mat-form-field appearance="outline">
-                        <mat-label>تاریخ</mat-label>
-                        <input matInput class="full-wid" (click)="date.open()" formControlName="date" [matDatepicker]="date" />
-                        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                        <mat-datepicker #date></mat-datepicker>
-                        <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
-                    </mat-form-field>
-                </div>
+                <mat-form-field appearance="outline" fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
+                    <mat-label>تاریخ</mat-label>
+                    <input matInput class="full-wid" (click)="date.open()" formControlName="date" [matDatepicker]="date" />
+                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <mat-datepicker #date></mat-datepicker>
+                    <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                </mat-form-field>
+            </div>
 
-                <div fxLayout="column" fxFlex="10" fxLayoutAlign="space-evenly none">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
-                        <mat-icon>search</mat-icon>
-                        جستجو
-                    </button>
-                </div>
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+                    <mat-icon>search</mat-icon>
+                    جستجو
+                </button>
             </div>
         </form>
 
-        <p style="text-align: center" *ngIf="!loading">درحال دریافت اطالاعات</p>
-        <ng-container *ngIf="show">
+        <ng-container *ngIf="hasData">
             <div
                 fxLayout="row"
                 fxLayoutAlign="space-between"
                 fxLayoutGap="20px"
                 fxFlex="100"
                 style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px"
+                class="mx-auto"
             >
                 <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none">
-                    <app-bar-chart-js [data]="barChart" height="100" dataKey="y" labelKey="x" chartName="توضیع سود و زیان"></app-bar-chart-js>
+                    <app-bar-chart-js [data]="barChart" height="100" dataKey="y" labelKey="x" chartName="توزیع سود و زیان"></app-bar-chart-js>
                 </div>
             </div>
 
@@ -63,6 +58,7 @@
                 fxLayoutGap="20px"
                 fxFlex="100"
                 style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px"
+                class="mx-auto"
             >
                 <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none">
                     <div class="fuse-card">
@@ -104,11 +100,11 @@
                 fxLayoutGap="20px"
                 fxFlex="100"
                 style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px"
+                class="mx-auto"
             >
-                <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none">
-                    <app-table [data]="showingData" style="text-align: center" [columns]="showingDataColumns"> </app-table>
-
-                    <app-table [data]="showingData2" style="text-align: center" [columns]="showingDataColumns2"> </app-table>
+                <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none" class="pb-20 mb-20">
+                    <app-table dir="ltr" [data]="showingData" [columns]="showingDataColumns"> </app-table>
+                    <app-table dir="ltr" [data]="showingData2" [columns]="showingDataColumns2"> </app-table>
                 </div>
             </div>
         </ng-container>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { RiskMeasuringService } from '../risk-measuring.service';
 
@@ -6,9 +6,10 @@ import { RiskMeasuringService } from '../risk-measuring.service';
     selector: 'app-risk-measuring',
     templateUrl: './risk-measuring.component.html',
     styleUrls: ['./risk-measuring.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class RiskMeasuringComponent implements OnInit {
-    show = false;
+    hasData = false;
     loading = true;
     form: FormGroup = this.fb.group({
         date: new FormControl(new Date('2019-01-30')),
@@ -21,7 +22,7 @@ export class RiskMeasuringComponent implements OnInit {
     public chartType: string = 'line';
     public chartDatasets: Array<any> = [{ data: [], label: '' }];
     public chartLabels: Array<any> = [];
-    public chartColors: Array<any> = [{ backgroundColor: 'transparent', borderColor: this.randomColor(), borderWidth: 1 }];
+    public chartColors: Array<any> = [{ backgroundColor: 'transparent', borderColor: this.generateRandomColor(), borderWidth: 1 }];
     public chartOptions: any = { responsive: true };
 
     showingData = [];
@@ -41,42 +42,36 @@ export class RiskMeasuringComponent implements OnInit {
     ];
     showingData2 = [];
 
-    constructor(private readonly riskMeasuringService: RiskMeasuringService, private fb: FormBuilder) {}
+    constructor(private riskMeasuringService: RiskMeasuringService, private fb: FormBuilder) {}
 
     ngOnInit(): void {}
 
-    public get() {
+    public submitForm() {
         let searchParams = this.form.value;
         this.loading = false;
         searchParams.date = this.form.value.date.toISOString().split('T')[0];
-        console.log(searchParams);
-        // const date = this.form.value.date.toISOString().split('T')[0];
-        const owner = this.form.value.owner;
-        const confidence = this.form.value.confidenceInterval;
-        this.riskMeasuringService.getRiskManagementValues(searchParams).subscribe((result) => console.log('result is: ', result));
-
-        // this.riskMeasuringService.getYieldCurve(owner, date, confidence).subscribe((response) => {
-        //     this.loading = true;
-        //     this.show = true;
-        //     this.barChart = response.histogramPL.dataset[0].data;
-        //     this.gage = response.VaR.toFixed(3);
-        //     this.createChart(response.historicalVaR.plot);
-        //     this.showingData.push({
-        //         VaR: response.VaR_rial,
-        //         upperBoundVar: response.upperBound_VaR_rial,
-        //         worstVaR: response.worstVaR_rial_ratio,
-        //         provision: response.provision,
-        //     });
-        //     this.showingData2.push({
-        //         VaR: response.VaR_rial_ratio,
-        //         upperBoundVar: response.upperBound_VaR_rial,
-        //         worstVaR: response.worstVaR_rial_ratio,
-        //         provision: response.provision_ratio,
-        //     });
-        // });
+        this.riskMeasuringService.getRiskManagementValues(searchParams).subscribe((result) => {
+            this.loading = true;
+            this.hasData = true;
+            this.barChart = result.histogramPL.dataset[0].data;
+            this.gage = result.VaR.toFixed(3);
+            this.createChart(result.historicalVaR.plot);
+            this.showingData.push({
+                VaR: result.VaR_rial,
+                upperBoundVar: result.upperBound_VaR_rial,
+                worstVaR: result.worstVaR_rial_ratio,
+                provision: result.provision,
+            });
+            this.showingData2.push({
+                VaR: result.VaR_rial_ratio,
+                upperBoundVar: result.upperBound_VaR_rial,
+                worstVaR: result.worstVaR_rial_ratio,
+                provision: result.provision_ratio,
+            });
+        });
     }
 
-    createChart(dataArray) {
+    private createChart(dataArray): void {
         const labels = [];
         const data = [];
         for (let i = 0; i < dataArray.length; i++) {
@@ -88,7 +83,7 @@ export class RiskMeasuringComponent implements OnInit {
         this.chartLabels = labels;
     }
 
-    randomColor() {
+    private generateRandomColor(): string {
         const x = Math.floor(Math.random() * 256);
         const y = Math.floor(Math.random() * 256);
         const z = Math.floor(Math.random() * 256);
