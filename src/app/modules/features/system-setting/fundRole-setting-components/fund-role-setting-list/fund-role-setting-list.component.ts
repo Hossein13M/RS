@@ -13,7 +13,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
     selector: 'app-fund-role-setting-list',
     templateUrl: './fund-role-setting-list.component.html',
     styleUrls: ['./fund-role-setting-list.component.scss'],
-    animations: [fuseAnimations]
+    animations: [fuseAnimations],
 })
 export class FundRoleSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
@@ -21,10 +21,7 @@ export class FundRoleSettingListComponent implements OnInit {
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog,
-                private formBuilder: FormBuilder,
-                public fundRoleService: FundRoleService) {
-    }
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public fundRoleService: FundRoleService) {}
 
     ngOnInit(): void {
         this.initColumn();
@@ -34,83 +31,14 @@ export class FundRoleSettingListComponent implements OnInit {
 
     initColumn(): void {
         this.column = [
-            {
-                name: 'نام',
-                id: 'name',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
-            {
-                name: 'تلفن',
-                id: 'phone',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
-            {
-                name: 'شماره ثبت',
-                id: 'regNumber',
-                type: 'string',
-                minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
-            {
-                name: 'نام نماینده',
-                id: 'agentName',
-                type: 'string',
-                minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
-            {
-                name: 'تلفن نماینده',
-                id: 'agentPhone',
-                type: 'string',
-                minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
-            {
-                name: 'کد ملی',
-                id: 'nationalId',
-                type: 'string',
-                minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
-            {
-                name: 'کد ملی',
-                id: 'nationalId',
-                type: 'string',
-                minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
-            {
-                name: 'آدرس',
-                id: 'address',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
-            },
+            { name: 'نام', id: 'name', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'تلفن', id: 'phone', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'شماره ثبت', id: 'regNumber', type: 'string', minWidth: '70px', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'نام نماینده', id: 'agentName', type: 'string', minWidth: '70px', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'تلفن نماینده', id: 'agentPhone', type: 'string', minWidth: '70px', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'کد ملی', id: 'nationalId', type: 'string', minWidth: '70px', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'کد ملی', id: 'nationalId', type: 'string', minWidth: '70px', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'آدرس', id: 'address', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             {
                 name: 'عملیات',
                 id: 'operation',
@@ -118,38 +46,22 @@ export class FundRoleSettingListComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    {
-                        name: 'ویرایش',
-                        icon: 'create',
-                        color: 'accent',
-                        operation: ({ row }: any) => this.edit(row)
-                    },
-                    {
-                        name: 'حذف',
-                        icon: 'delete',
-                        color: 'warn',
-                        operation: ({ row }: any) => this.delete(row)
-                    }
-                ]
-            }
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.edit(row) },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
+                ],
+            },
         ];
     }
 
     initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.column, 'id'));
         const objectFromKeys = {};
-        mapKeys.forEach((id) => {
-            objectFromKeys[id] = '';
-        })
-        this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
-        })
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
+        if (!searchFilter) return;
 
         Object.keys(searchFilter).forEach((key) => {
             this.searchFormGroup.controls[key].setValue(searchFilter[key]);
@@ -184,11 +96,10 @@ export class FundRoleSettingListComponent implements OnInit {
     }
 
     delete(row): void {
-        console.log(row);
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
             })
             .afterClosed()
             .subscribe((res) => {
@@ -205,9 +116,7 @@ export class FundRoleSettingListComponent implements OnInit {
             .open(BourseBoardSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    _.assign(row, res);
-                }
+                if (res) _.assign(row, res);
             });
     }
 }

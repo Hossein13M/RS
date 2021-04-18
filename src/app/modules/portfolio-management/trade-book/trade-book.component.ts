@@ -25,33 +25,17 @@ export interface TableElement {
     animations: [fuseAnimations],
 })
 export class TradeBookComponent implements OnInit {
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
     pageUrl = `/${PMRoutePrefix}/book`;
-
-    displayedColumns: string[] = [
-        'position', // #
-        'bourseAccount', // نام دفتر
-        'volume', // حجم
-        'vwap', // قیمت روز
-        'asset', // ارزش بازار‌
-        'brokerName', // کارگزار
-        'btt', // بهای تمام شده‌ی کل
-        'vwapUpdateDate', // ناریخ بروزرسانی
-        'operations',
-    ];
+    displayedColumns: string[] = ['position', 'bourseAccount', 'volume', 'vwap', 'asset', 'brokerName', 'btt', 'vwapUpdateDate', 'operations'];
     dataSource: MatTableDataSource<TableElement>;
-
     dataToShow: any;
     data: any;
-
     organizations: Array<any>;
     selectedOrg: any;
-
     isWorking: any;
     failed = false;
-
     selectedOrgName: any;
-
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
 
     constructor(private router: Router, private dialog: MatDialog, public tbs: TradeBookService) {}
 
@@ -67,9 +51,7 @@ export class TradeBookComponent implements OnInit {
         if (lastSearchData) {
             const lastBookParsed = JSON.parse(lastSearchData);
             this.patchData(this.parseData(lastBookParsed.data));
-        } else {
-            this.get();
-        }
+        } else this.get();
     }
 
     get(date?: string): void {
@@ -93,10 +75,8 @@ export class TradeBookComponent implements OnInit {
         });
     }
 
-    parseData(newData: any): void {
-        if (!newData) {
-            return;
-        }
+    parseData(newData: any) {
+        if (!newData) return;
 
         this.organizations = [];
 
@@ -107,21 +87,13 @@ export class TradeBookComponent implements OnInit {
             if (el && el.details) {
                 el.details.forEach((detail) => {
                     let date;
-                    if (detail.vwapAdjusted !== null) {
-                        date = detail.vwapAdjustedUpdateDate;
-                    }
+                    if (detail.vwapAdjusted !== null) date = detail.vwapAdjustedUpdateDate;
 
-                    if (detail.vwap !== null) {
-                        date = detail.vwapUpdateDate;
-                    }
+                    if (detail.vwap !== null) date = detail.vwapUpdateDate;
 
-                    if (detail.vwapAdjusted !== null && detail.vwap !== null) {
-                        date = detail.vwapAdjustedUpdateDate;
-                    }
+                    if (detail.vwapAdjusted !== null && detail.vwap !== null) date = detail.vwapAdjustedUpdateDate;
 
-                    if (!date) {
-                        return;
-                    }
+                    if (!date) return;
 
                     detail.dateFa = new Date(date).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' });
                 });
@@ -133,14 +105,11 @@ export class TradeBookComponent implements OnInit {
             this.selectedOrg = this.data[this.tbs.selectedOrgName];
             return this.data[this.tbs.selectedOrgName].details;
         }
-
         return;
     }
 
     patchData(data: any): void {
-        if (!data) {
-            return;
-        }
+        if (!data) return;
 
         this.dataToShow = data;
         this.dataSource = new MatTableDataSource<TableElement>(this.dataToShow);
@@ -162,9 +131,6 @@ export class TradeBookComponent implements OnInit {
     }
 
     showHistory(): void {
-        this.dialog.open(TradeBookHistoryComponent, {
-            panelClass: 'dialog-w50',
-            data: { date: this.tbs.searchForm.value.date },
-        });
+        this.dialog.open(TradeBookHistoryComponent, { panelClass: 'dialog-w50', data: { date: this.tbs.searchForm.value.date } });
     }
 }
