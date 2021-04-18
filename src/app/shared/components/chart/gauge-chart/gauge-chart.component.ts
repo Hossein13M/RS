@@ -1,7 +1,7 @@
 import * as am4charts from '@amcharts/amcharts4/charts';
 import * as am4core from '@amcharts/amcharts4/core';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import { Component, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, NgZone, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
 am4core.useTheme(am4themes_animated);
 
@@ -15,6 +15,7 @@ export enum stateType {
     selector: 'app-gauge-chart',
     templateUrl: './gauge-chart.component.html',
     styleUrls: ['./gauge-chart.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class GaugeChartComponent implements OnInit, OnDestroy, OnChanges {
     @Input() labels;
