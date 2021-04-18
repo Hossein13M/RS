@@ -3,37 +3,33 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GlService } from 'app/modules/gl/gl.service';
 import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
-import { TreeOrderType } from '../gl.model';
+import { CategoryModel, DetailModel, GeneralModel, GroupModel, RowModel, SubsidiaryModel, TreeOrderType } from '../gl.model';
 
 @Component({
     selector: 'app-gl-tree',
     templateUrl: './gl-tree.component.html',
     styleUrls: ['./gl-tree.component.scss'],
 })
-export class GlTreeComponent implements OnInit, AfterViewInit {
+export class GlTreeComponent implements OnInit {
     groupObj = [];
-    glCategories = [];
-    today = new Date();
+    glCategories: Array<RowModel> = [];
+    today: Date = new Date();
     dateForm = new FormControl(this.today);
-    isWorking: any;
 
     constructor(private glService: GlService, private matDialog: MatDialog) {}
 
     ngOnInit(): void {
         this.getGlCategory();
-
         this.dateForm.valueChanges.subscribe(() => {
             this.groupObj = [];
             this.getGlCategory();
         });
     }
 
-    ngAfterViewInit(): void {}
-
     getGlCategory(): void {
-        this.glService.getCategoryApi().subscribe((res: any) => {
+        this.glService.getCategoryApi().subscribe((res) => {
             if (res) {
-                res.items.map((x) => {
+                res.items.map((x: CategoryModel) => {
                     x.type = TreeOrderType.Category;
                     x.isCollapsed = false;
                     x.code = x.categoryLedgerCode;
@@ -46,66 +42,74 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
         });
     }
 
-    changeCollaption(c): void {
-        const fundCC: any = this.groupObj.find((x) => x.code === c.code && x.type === c.type);
+    private collapseRow(c: RowModel, index): void {
+        if (c.type === TreeOrderType.Category) {
+            this.glService.getGroupByCategory(c.code).subscribe((res) => {
+                res.items.map((x: GroupModel) => {
+                    x.type = TreeOrderType.Group;
+                    x.isCollapsed = false;
+                    x.code = x.groupLedgerCode;
+                    x.name = x.groupLedgerName;
+                    x.parentCode = c.code;
+                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
+                        this.groupObj.splice(index + 1, 0, x);
+                    }
+                });
+            });
+        } else if (c.type === TreeOrderType.Group) {
+            this.glService.getGeneralByGroup(c.code).subscribe((res) => {
+                res.items.map((x: GeneralModel) => {
+                    x.type = TreeOrderType.General;
+                    x.isCollapsed = false;
+                    x.code = x.generalLedgerCode;
+                    x.name = x.generalLedgerName;
+                    x.parentCode = c.code;
+                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
+                        this.groupObj.splice(index + 1, 0, x);
+                    }
+                });
+            });
+        } else if (c.type === TreeOrderType.General) {
+            this.glService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
+                res.items.map((x: SubsidiaryModel) => {
+                    x.type = TreeOrderType.Subsidiary;
+                    x.isCollapsed = false;
+                    x.code = x.subsidiaryLedgerCode;
+                    x.name = x.subsidiaryLedgerName;
+                    x.parentCode = c.code;
+                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
+                        this.groupObj.splice(index + 1, 0, x);
+                    }
+                });
+            });
+        } else if (c.type === TreeOrderType.Subsidiary) {
+            this.glService.getDetailBySubsidiary(c.code).subscribe((res) => {
+                res.items.map((x: DetailModel) => {
+                    x.type = TreeOrderType.Detail;
+                    x.isCollapsed = false;
+                    x.code = x.detailLedgerCode;
+                    x.name = x.detailLedgerName;
+                    x.parentCode = c.code;
+                    if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
+                        this.groupObj.splice(index + 1, 0, x);
+                    }
+                });
+            });
+        }
+    }
+
+    // private unCollapseRow(c: RowModel, index): void {
+    //
+    // }
+
+    changeCollection(c): void {
+        const fundCC: CategoryModel = this.groupObj.find((x) => x.code === c.code && x.type === c.type);
         const index = this.groupObj.indexOf(fundCC);
         if (index > -1) {
             this.groupObj[index].isCollapsed = !this.groupObj[index].isCollapsed;
         }
         if (this.groupObj[index].isCollapsed) {
-            if (c.type === TreeOrderType.Category) {
-                this.glService.getGroupByCategory(c.code).subscribe((res: any) => {
-                    res.items.map((x) => {
-                        x.type = TreeOrderType.Group;
-                        x.isCollapsed = false;
-                        x.code = x.groupLedgerCode;
-                        x.name = x.groupLedgerName;
-                        x.parentCode = c.code;
-                        if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                            this.groupObj.splice(index + 1, 0, x);
-                        }
-                    });
-                });
-            } else if (c.type === TreeOrderType.Group) {
-                this.glService.getGeneralByGroup(c.code).subscribe((res: any) => {
-                    res.items.map((x) => {
-                        x.type = TreeOrderType.General;
-                        x.isCollapsed = false;
-                        x.code = x.generalLedgerCode;
-                        x.name = x.generalLedgerName;
-                        x.parentCode = c.code;
-                        if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                            this.groupObj.splice(index + 1, 0, x);
-                        }
-                    });
-                });
-            } else if (c.type === TreeOrderType.General) {
-                this.glService.getSubsidiaryByGeneral(c.code).subscribe((res: any) => {
-                    res.items.map((x) => {
-                        x.type = TreeOrderType.Subsidiary;
-                        x.isCollapsed = false;
-                        x.code = x.subsidiaryLedgerCode;
-                        x.name = x.subsidiaryLedgerName;
-                        x.parentCode = c.code;
-                        if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                            this.groupObj.splice(index + 1, 0, x);
-                        }
-                    });
-                });
-            } else if (c.type === TreeOrderType.Subsidiary) {
-                this.glService.getDetailBySubsidiary(c.code).subscribe((res: any) => {
-                    res.items.map((x) => {
-                        x.type = TreeOrderType.Detail;
-                        x.isCollapsed = false;
-                        x.code = x.detailLedgerCode;
-                        x.name = x.detailLedgerName;
-                        x.parentCode = c.code;
-                        if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
-                            this.groupObj.splice(index + 1, 0, x);
-                        }
-                    });
-                });
-            }
+            this.collapseRow(c, index);
         } else {
             const removeList = [];
             this.groupObj.filter((obj) => {

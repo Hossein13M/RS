@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TreeOrderType } from './gl.model'
+import {CategoryModelApi, TreeOrderType} from './gl.model'
 
 @Injectable()
 export class GlService {
@@ -17,24 +17,24 @@ export class GlService {
 
     constructor(private http: HttpClient) {}
 
-    getCategoryApi(): Observable<any> {
-        return this.http.get(GlService.getCategoryApi);
+    getCategoryApi(): Observable<CategoryModelApi> {
+        return this.http.get<CategoryModelApi>(GlService.getCategoryApi);
     }
 
-    getGroupByCategory(categoryLedgerCode): Observable<any> {
-        return this.http.get(GlService.getGroupByCategoryApi, { params: { categoryLedgerCode } });
+    getGroupByCategory(categoryLedgerCode): Observable<CategoryModelApi> {
+        return this.http.get<CategoryModelApi>(GlService.getGroupByCategoryApi, { params: { categoryLedgerCode } });
     }
 
-    getGeneralByGroup(groupLedgerCode): Observable<any> {
-        return this.http.get(GlService.getGeneralByGroupApi, { params: { groupLedgerCode } });
+    getGeneralByGroup(groupLedgerCode): Observable<CategoryModelApi> {
+        return this.http.get<CategoryModelApi>(GlService.getGeneralByGroupApi, { params: { groupLedgerCode } });
     }
 
-    getSubsidiaryByGeneral(generalLedgerCode): Observable<any> {
-        return this.http.get(GlService.getSubsidyByGeneralApi, { params: { generalLedgerCode } });
+    getSubsidiaryByGeneral(generalLedgerCode): Observable<CategoryModelApi> {
+        return this.http.get<CategoryModelApi>(GlService.getSubsidyByGeneralApi, { params: { generalLedgerCode } });
     }
 
-    getDetailBySubsidiary(subsidiaryLedgerCode): Observable<any> {
-        return this.http.get(GlService.getDetailBySubsidyApi, { params: { subsidiaryLedgerCode } });
+    getDetailBySubsidiary(subsidiaryLedgerCode): Observable<CategoryModelApi> {
+        return this.http.get<CategoryModelApi>(GlService.getDetailBySubsidyApi, { params: { subsidiaryLedgerCode } });
     }
 
     getLevelApi(code, type: TreeOrderType): Observable<any> {
