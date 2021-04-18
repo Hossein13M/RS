@@ -125,6 +125,8 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
+        Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
+        //the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();
         this.hasSubmitButtonClicked = true;
 
