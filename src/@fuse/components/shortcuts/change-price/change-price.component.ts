@@ -35,7 +35,9 @@ export class ChangePriceComponent implements OnInit {
     ngOnChanges(): void {}
 
     private setPriceUnitValue(): void {
-        this.priceUnit = JSON.parse(localStorage.getItem('priceUnit'));
+        let localStoragePriceUnit = JSON.parse(localStorage.getItem('priceUnit'));
+        if (!!localStoragePriceUnit) this.priceUnit = localStoragePriceUnit;
+
         switch (this.priceUnit.scale) {
             case 0:
                 this.priceUnitScaleString = 'واحد';
