@@ -3,14 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GlService } from 'app/modules/gl/gl.service';
 import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
-
-export enum TreeOrderType {
-    Category = 'Category',
-    Group = 'Group',
-    General = 'General',
-    Subsidiary = 'subsidiary',
-    Detail = 'Detail',
-}
+import { TreeOrderType } from '../gl.model';
 
 @Component({
     selector: 'app-gl-tree',
@@ -29,7 +22,7 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
     ngOnInit(): void {
         this.getGlCategory();
 
-        this.dateForm.valueChanges.subscribe((newDate) => {
+        this.dateForm.valueChanges.subscribe(() => {
             this.groupObj = [];
             this.getGlCategory();
         });
@@ -54,7 +47,7 @@ export class GlTreeComponent implements OnInit, AfterViewInit {
     }
 
     changeCollaption(c): void {
-        const fundCC: any = this.groupObj.find((x) => x.code == c.code && x.type === c.type);
+        const fundCC: any = this.groupObj.find((x) => x.code === c.code && x.type === c.type);
         const index = this.groupObj.indexOf(fundCC);
         if (index > -1) {
             this.groupObj[index].isCollapsed = !this.groupObj[index].isCollapsed;
