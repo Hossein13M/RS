@@ -43,7 +43,7 @@ export class GlTreeComponent implements OnInit {
         });
     }
 
-    private collapseRow(c: RowModel, index): void {
+    private expandRow(selectedRow: RowModel, index): void {
         const spliceIfNotFound = (x: RowModel): void => {
             if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
                 this.groupObj.splice(index + 1, 0, x);
@@ -53,44 +53,44 @@ export class GlTreeComponent implements OnInit {
         const setRow = (result: RowModel, type: TreeOrderType) => {
             result.type = type;
             result.isCollapsed = false;
-            result.parentCode = c.code;
+            result.parentCode = selectedRow.code;
             spliceIfNotFound(result);
         };
 
-        switch (c.type) {
+        switch (selectedRow.type) {
             case TreeOrderType.Category:
-                this.glService.getGroupByCategory(c.code).subscribe((res) => {
-                    res.items.map((x: GroupModel) => {
-                        x.code = x.groupLedgerCode;
-                        x.name = x.groupLedgerName;
-                        setRow(x, TreeOrderType.Group);
+                this.glService.getGroupByCategory(selectedRow.code).subscribe((res) => {
+                    res.items.map((result: GroupModel) => {
+                        result.code = result.groupLedgerCode;
+                        result.name = result.groupLedgerName;
+                        setRow(result, TreeOrderType.Group);
                     });
                 });
                 break;
             case TreeOrderType.Group:
-                this.glService.getGeneralByGroup(c.code).subscribe((res) => {
-                    res.items.map((x: GeneralModel) => {
-                        x.code = x.generalLedgerCode;
-                        x.name = x.generalLedgerName;
-                        setRow(x, TreeOrderType.General);
+                this.glService.getGeneralByGroup(selectedRow.code).subscribe((res) => {
+                    res.items.map((result: GeneralModel) => {
+                        result.code = result.generalLedgerCode;
+                        result.name = result.generalLedgerName;
+                        setRow(result, TreeOrderType.General);
                     });
                 });
                 break;
             case TreeOrderType.General:
-                this.glService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
-                    res.items.map((x: SubsidiaryModel) => {
-                        x.code = x.subsidiaryLedgerCode;
-                        x.name = x.subsidiaryLedgerName;
-                        setRow(x, TreeOrderType.Subsidiary);
+                this.glService.getSubsidiaryByGeneral(selectedRow.code).subscribe((res) => {
+                    res.items.map((result: SubsidiaryModel) => {
+                        result.code = result.subsidiaryLedgerCode;
+                        result.name = result.subsidiaryLedgerName;
+                        setRow(result, TreeOrderType.Subsidiary);
                     });
                 });
                 break;
             case TreeOrderType.Subsidiary:
-                this.glService.getDetailBySubsidiary(c.code).subscribe((res) => {
-                    res.items.map((x: DetailModel) => {
-                        x.code = x.detailLedgerCode;
-                        x.name = x.detailLedgerName;
-                        setRow(x, TreeOrderType.Detail);
+                this.glService.getDetailBySubsidiary(selectedRow.code).subscribe((res) => {
+                    res.items.map((result: DetailModel) => {
+                        result.code = result.detailLedgerCode;
+                        result.name = result.detailLedgerName;
+                        setRow(result, TreeOrderType.Detail);
                     });
                 });
                 break;
@@ -99,7 +99,7 @@ export class GlTreeComponent implements OnInit {
         }
     }
 
-    private unCollapseRow(c: RowModel, removeList: Array<string>): void {
+    private collapseRow(c: RowModel, removeList: Array<string>): void {
         this.groupObj.filter((obj) => {
             if (obj.parentCode && obj.parentCode === c.code) {
                 removeList.push(obj.code);
@@ -127,17 +127,17 @@ export class GlTreeComponent implements OnInit {
         });
     }
 
-    changeCollection(c): void {
-        const fundCC: CategoryModel = this.groupObj.find((x) => x.code === c.code && x.type === c.type);
-        const index = this.groupObj.indexOf(fundCC);
+    public foldRow(selectedRow): void {
+        // const fundCC: CategoryModel = this.groupObj.find((row) => row.code === selectedRow.code && row.type === selectedRow.type);
+        const index = this.groupObj.indexOf(selectedRow);
         if (index > -1) {
             this.groupObj[index].isCollapsed = !this.groupObj[index].isCollapsed;
         }
         if (this.groupObj[index].isCollapsed) {
-            this.collapseRow(c, index);
+            this.expandRow(selectedRow, index);
         } else {
             const removeList = [];
-            this.unCollapseRow(c, removeList);
+            this.collapseRow(selectedRow, removeList);
             this.groupObj = this.groupObj.filter((x) => {
                 return !removeList.includes(x.code);
             });
