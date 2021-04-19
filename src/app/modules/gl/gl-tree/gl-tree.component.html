@@ -1,51 +1,52 @@
-<div class="page-layout">
-    <app-header pageTitle="درختواره‌ی خلاصه‌ی دفتر">
-        <div dir="rtl" style="display: flex">
+<div class='page-layout'>
+    <app-header pageTitle='درختواره‌ی خلاصه‌ی دفتر'>
+        <div dir='rtl' style='display: flex'>
             <button
-                *ngIf="matTabGroup.selectedIndex == 0"
-                style="margin-left: 14px; padding-top: 4px; height: 50px; margin-top: 10px"
-                (click)="openChartDialog()"
-                matTooltip="نمودار دایره ای"
+                *ngIf='matTabGroup.selectedIndex == 0'
+                style='margin-left: 14px; padding-top: 4px; height: 50px; margin-top: 10px'
+                (click)='openChartDialog()'
+                matTooltip='نمودار دایره ای'
                 mat-raised-button
-                color="primary"
+                color='primary'
             >
                 <mat-icon>pie_chart</mat-icon>
             </button>
 
-            <mat-form-field appearance="outline">
-                <mat-label> تاریخ </mat-label>
-                <input (click)="start3.open()" matInput [formControl]="dateForm" [max]="today" [matDatepicker]="start3" />
-                <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
+            <mat-form-field appearance='outline'>
+                <mat-label> تاریخ</mat-label>
+                <input (click)='start3.open()' matInput [formControl]='dateForm' [max]='today'
+                       [matDatepicker]='start3' />
+                <mat-datepicker-toggle matSuffix [for]='start3'></mat-datepicker-toggle>
                 <mat-datepicker #start3></mat-datepicker>
-                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
             </mat-form-field>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div class="gl-back-container" dir="rtl">
-            <div class="gl-tree-container fuse-card">
-                <mat-tab-group #matTabGroup style="height: 100%">
-                    <mat-tab label="درختواره">
-                        <div class="tree-parent">
-                            <div class="table-header">
-                                <div fxFlex="45" class="header-item">عنوان سرفصل</div>
-                                <div fxFlex="10" class="header-item">کد سرفصل</div>
-                                <div fxFlex="15" class="header-item">گردش بدهکار</div>
-                                <div fxFlex="15" class="header-item">گردش بستانکار</div>
-                                <div fxFlex="15" class="header-item" style="border-left: unset">مانده</div>
+    <div class='page-content'>
+        <div class='gl-back-container' dir='rtl'>
+            <div class='gl-tree-container fuse-card'>
+                <mat-tab-group #matTabGroup style='height: 100%'>
+                    <mat-tab label='درختواره'>
+                        <div class='tree-parent'>
+                            <div class='table-header'>
+                                <div fxFlex='45' class='header-item'>عنوان سرفصل</div>
+                                <div fxFlex='10' class='header-item'>کد سرفصل</div>
+                                <div fxFlex='15' class='header-item'>گردش بدهکار</div>
+                                <div fxFlex='15' class='header-item'>گردش بستانکار</div>
+                                <div fxFlex='15' class='header-item' style='border-left: unset'>مانده</div>
                             </div>
-                            <div class="table-body">
-                                <div class="table-row" *ngFor="let c of groupObj; let i = index">
+                            <div class='table-body'>
+                                <div class='table-row' *ngFor='let c of groupObj; let i = index'>
                                     <div
                                         [ngStyle]="{ 'padding-right': calculateMargin(c) }"
-                                        class="table-item"
-                                        (click)="foldRow(c)"
-                                        style="justify-content: flex-start !important; padding-right: 50px; direction: rtl; cursor: pointer"
-                                        fxFlex="45"
+                                        class='table-item'
+                                        (click)='toggleFoldRow(c,i)'
+                                        style='justify-content: flex-start !important; padding-right: 50px; direction: rtl; cursor: pointer'
+                                        fxFlex='45'
                                     >
                                         <mat-icon
-                                            style="cursor: pointer"
+                                            style='cursor: pointer'
                                             [ngStyle]="{
                                                 transform: c?.isCollapsed === true && c?.type !== 'Detail' ? 'rotate(-90deg)' : 'rotate(0)'
                                             }"
@@ -54,16 +55,19 @@
                                         </mat-icon>
                                         {{ c?.name }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="10" [cdkCopyToClipboard]="c?.code">
+                                    <div class='table-item copy' fxFlex='10' [cdkCopyToClipboard]='c?.code'>
                                         {{ c?.code }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="15" [cdkCopyToClipboard]="c?.aggregatedDebitAmount">
+                                    <div class='table-item copy' fxFlex='15'
+                                         [cdkCopyToClipboard]='c?.aggregatedDebitAmount'>
                                         {{ c?.aggregatedDebitAmount | price }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="15" [cdkCopyToClipboard]="c?.aggregatedCreditAmount">
+                                    <div class='table-item copy' fxFlex='15'
+                                         [cdkCopyToClipboard]='c?.aggregatedCreditAmount'>
                                         {{ c?.aggregatedCreditAmount | price }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="15" [cdkCopyToClipboard]="c?.aggregatedRemainedAmount">
+                                    <div class='table-item copy' fxFlex='15'
+                                         [cdkCopyToClipboard]='c?.aggregatedRemainedAmount'>
                                         {{ c?.aggregatedRemainedAmount | price }}
                                     </div>
                                 </div>
