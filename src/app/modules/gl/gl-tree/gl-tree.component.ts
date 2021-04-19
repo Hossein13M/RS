@@ -100,6 +100,7 @@ export class GlTreeComponent implements OnInit {
     }
 
     private collapseRow(selectedRow: RowModel): Array<string> {
+        // todo: fix
         const removeList = [];
         for (const row of this.groupObj) {
             if (row.parentCode && row.parentCode === selectedRow.code) {
