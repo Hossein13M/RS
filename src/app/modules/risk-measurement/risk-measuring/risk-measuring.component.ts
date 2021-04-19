@@ -46,8 +46,8 @@ export class RiskMeasuringComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    public submitForm() {
-        let searchParams = this.form.value;
+    public submitForm(): void {
+        const searchParams = this.form.value;
         this.loading = false;
         searchParams.date = this.form.value.date.toISOString().split('T')[0];
         this.riskMeasuringService.getRiskManagementValues(searchParams).subscribe((result) => {
@@ -74,11 +74,11 @@ export class RiskMeasuringComponent implements OnInit {
     private createChart(dataArray): void {
         const labels = [];
         const data = [];
-        for (let i = 0; i < dataArray.length; i++) {
-            data.push(dataArray[i].VaR);
-            const date = new Date(dataArray[i].date).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
+        dataArray.forEach((element) => {
+            data.push(element.VaR);
+            const date = new Date(element.date).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
             if (!labels.includes(date)) labels.push(date);
-        }
+        });
         this.chartDatasets[0].data = data;
         this.chartLabels = labels;
     }
