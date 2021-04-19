@@ -27,7 +27,7 @@ export class GlTreeComponent implements OnInit {
         });
     }
 
-    getGlCategory(): void {
+    private getGlCategory(): void {
         this.glService.getCategoryApi().subscribe((res) => {
             if (res) {
                 res.items.map((x: CategoryModel) => {
@@ -115,7 +115,7 @@ export class GlTreeComponent implements OnInit {
         return _.uniq(removeList);
     }
 
-    toggleFoldRow(selectedRow: any, index: number): void {
+    public toggleFoldRow(selectedRow: any, index: number): void {
         selectedRow.isCollapsed = !selectedRow.isCollapsed;
         if (selectedRow.isCollapsed) {
             this.expandRow(selectedRow, index);
@@ -125,33 +125,27 @@ export class GlTreeComponent implements OnInit {
         }
     }
 
-    calculateMargin(c): any {
-        if (c.type === TreeOrderType.Category) {
-            return '30px';
-        } else if (c.type === TreeOrderType.Group) {
-            return '70px';
-        } else if (c.type === TreeOrderType.General) {
-            return '110px';
-        } else if (c.type === TreeOrderType.Subsidiary) {
-            return '140px';
-        } else if (c.type === TreeOrderType.Detail) {
-            return '160px';
+    public calculateMargin(type: TreeOrderType): string {
+        switch (type) {
+            case TreeOrderType.Category:
+                return '30px';
+            case TreeOrderType.Group:
+                return '70px';
+            case TreeOrderType.General:
+                return '110px';
+            case TreeOrderType.Subsidiary:
+                return '140px';
+            case TreeOrderType.Detail:
+                return '160px';
+            default:
+                return '0';
         }
     }
 
-    submitDate(): void {
-        this.groupObj = [];
-        this.getGlCategory();
-    }
-
-    openChartDialog(): void {
+    public openChartDialog(): void {
         this.matDialog
             .open(GlPieChartComponent, { panelClass: 'dialog-w60', data: this.glCategories })
             .afterClosed()
             .subscribe(() => {});
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }
