@@ -37,38 +37,38 @@
                                 <div fxFlex='15' class='header-item' style='border-left: unset'>مانده</div>
                             </div>
                             <div class='table-body'>
-                                <div class='table-row' *ngFor='let c of groupObj; let i = index'>
+                                <div class='table-row' *ngFor='let row of groupObj; let index = index'>
                                     <div
-                                        [ngStyle]="{ 'padding-right': calculateMargin(c) }"
+                                        [ngStyle]="{ 'padding-right': calculateMargin(row) }"
                                         class='table-item'
-                                        (click)='toggleFoldRow(c,i)'
+                                        (click)='toggleFoldRow(row,index)'
                                         style='justify-content: flex-start !important; padding-right: 50px; direction: rtl; cursor: pointer'
                                         fxFlex='45'
                                     >
                                         <mat-icon
                                             style='cursor: pointer'
                                             [ngStyle]="{
-                                                transform: c?.isCollapsed === true && c?.type !== 'Detail' ? 'rotate(-90deg)' : 'rotate(0)'
+                                                transform: row?.isCollapsed === true && row?.type !== 'Detail' ? 'rotate(-90deg)' : 'rotate(0)'
                                             }"
                                         >
-                                            keyboard_arrow_left
+                                            {{row.type === 'Detail' ? '' : 'keyboard_arrow_left'}}
                                         </mat-icon>
-                                        {{ c?.name }}
+                                        {{ row?.name }}
                                     </div>
-                                    <div class='table-item copy' fxFlex='10' [cdkCopyToClipboard]='c?.code'>
-                                        {{ c?.code }}
-                                    </div>
-                                    <div class='table-item copy' fxFlex='15'
-                                         [cdkCopyToClipboard]='c?.aggregatedDebitAmount'>
-                                        {{ c?.aggregatedDebitAmount | price }}
+                                    <div class='table-item copy' fxFlex='10' [cdkCopyToClipboard]='row?.code'>
+                                        {{ row?.code }}
                                     </div>
                                     <div class='table-item copy' fxFlex='15'
-                                         [cdkCopyToClipboard]='c?.aggregatedCreditAmount'>
-                                        {{ c?.aggregatedCreditAmount | price }}
+                                         [cdkCopyToClipboard]='row?.aggregatedDebitAmount'>
+                                        {{ row?.aggregatedDebitAmount | price }}
                                     </div>
                                     <div class='table-item copy' fxFlex='15'
-                                         [cdkCopyToClipboard]='c?.aggregatedRemainedAmount'>
-                                        {{ c?.aggregatedRemainedAmount | price }}
+                                         [cdkCopyToClipboard]='row?.aggregatedCreditAmount'>
+                                        {{ row?.aggregatedCreditAmount | price }}
+                                    </div>
+                                    <div class='table-item copy' fxFlex='15'
+                                         [cdkCopyToClipboard]='row?.aggregatedRemainedAmount'>
+                                        {{ row?.aggregatedRemainedAmount | price }}
                                     </div>
                                 </div>
                             </div>

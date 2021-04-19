@@ -50,8 +50,8 @@ export class GlTreeComponent implements OnInit {
             }
         };
 
-        const setRow = (result: RowModel) => {
-            result.type = TreeOrderType.Group;
+        const setRow = (result: RowModel, type: TreeOrderType) => {
+            result.type = type;
             result.isCollapsed = false;
             result.parentCode = c.code;
             spliceIfNotFound(result);
@@ -63,7 +63,7 @@ export class GlTreeComponent implements OnInit {
                     res.items.map((x: GroupModel) => {
                         x.code = x.groupLedgerCode;
                         x.name = x.groupLedgerName;
-                        setRow(x);
+                        setRow(x, TreeOrderType.Group);
                     });
                 });
                 break;
@@ -72,7 +72,7 @@ export class GlTreeComponent implements OnInit {
                     res.items.map((x: GeneralModel) => {
                         x.code = x.generalLedgerCode;
                         x.name = x.generalLedgerName;
-                        setRow(x);
+                        setRow(x, TreeOrderType.General);
                     });
                 });
                 break;
@@ -81,7 +81,7 @@ export class GlTreeComponent implements OnInit {
                     res.items.map((x: SubsidiaryModel) => {
                         x.code = x.subsidiaryLedgerCode;
                         x.name = x.subsidiaryLedgerName;
-                        setRow(x);
+                        setRow(x, TreeOrderType.Subsidiary);
                     });
                 });
                 break;
@@ -90,7 +90,7 @@ export class GlTreeComponent implements OnInit {
                     res.items.map((x: DetailModel) => {
                         x.code = x.detailLedgerCode;
                         x.name = x.detailLedgerName;
-                        setRow(x);
+                        setRow(x, TreeOrderType.Detail);
                     });
                 });
                 break;
@@ -116,7 +116,6 @@ export class GlTreeComponent implements OnInit {
 
     toggleFoldRow(selectedRow: any, index: number): void {
         selectedRow.isCollapsed = !selectedRow.isCollapsed;
-
         if (selectedRow.isCollapsed) {
             this.expandRow(selectedRow, index);
         } else {
@@ -135,7 +134,7 @@ export class GlTreeComponent implements OnInit {
         } else if (c.type === TreeOrderType.Subsidiary) {
             return '140px';
         } else if (c.type === TreeOrderType.Detail) {
-            return '180px';
+            return '160px';
         }
     }
 
