@@ -1,9 +1,9 @@
 export enum TreeOrderType {
-    Category = 'Category',
-    Group = 'Group',
-    General = 'General',
+    Category = 'category',
+    Group = 'group',
+    General = 'general',
     Subsidiary = 'subsidiary',
-    Detail = 'Detail',
+    Detail = 'detail',
 }
 
 export interface CategoryModelApi {

@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CategoryModelApi } from '../gl.model';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {CategoryModelApi, TreeOrderType} from '../gl.model';
+import {HttpClient} from '@angular/common/http';
+import * as _ from 'lodash';
 
 @Injectable()
 export class GlTreeService {
@@ -11,8 +12,23 @@ export class GlTreeService {
     private static getSubsidyByGeneralApi = '/api/v1/gl/subsidiary';
     private static getDetailBySubsidyApi = '/api/v1/gl/detail';
     private static getChartApi = '/api/v1/gl/chart';
+    public glHierarchy: Array<TreeOrderType> = [
+        TreeOrderType.Category,
+        TreeOrderType.Group,
+        TreeOrderType.General,
+        TreeOrderType.Subsidiary,
+        TreeOrderType.Detail,
+    ];
 
     constructor(private http: HttpClient) {}
+
+    getSuperior(gl: TreeOrderType): TreeOrderType {
+        return this.glHierarchy[_.findIndex(this.glHierarchy, (order) => order.toLowerCase() === gl.toLowerCase()) - 1];
+    }
+
+    getInferior(gl: TreeOrderType): TreeOrderType {
+        return this.glHierarchy[_.findIndex(this.glHierarchy, (order) => order.toLowerCase() === gl.toLowerCase()) + 1];
+    }
 
     getCategoryApi(): Observable<CategoryModelApi> {
         return this.http.get<CategoryModelApi>(GlTreeService.getCategoryApi);
