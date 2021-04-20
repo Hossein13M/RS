@@ -4,9 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { LayoutModule } from 'app/layout/layout.module';
 import { take } from 'rxjs/operators';
-// Edit This Section To Change Route Prefix
+
 export const PMRoutePrefix = 'portfolio';
-// ----------------------------------------
 
 const routes: Routes = [
     {
@@ -27,7 +26,6 @@ const routes: Routes = [
         loadChildren: () => import('./trade-dashboard/trade-dashboard.module').then((m) => m.TradeDashboardModule),
     },
 
-    // Settings
     {
         path: 'settings/trade-add',
         loadChildren: () => import('./trade-add/trade-add.module').then((m) => m.TradeAddModule),
@@ -35,13 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        // ADD Routes to Root Of Router
-        // ADD Routes to Root Of Router
-        RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-        LayoutModule,
-    ],
+    imports: [CommonModule, RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }), LayoutModule],
 })
 export class PortfolioManagementModule {
     constructor(private fns: FuseNavigationService) {

@@ -115,6 +115,7 @@ export class TradeBookComponent implements OnInit {
         this.dataSource = new MatTableDataSource<TableElement>(this.dataToShow);
         this.dataSource.sort = this.sort;
     }
+
     handleError(): boolean {
         this.failed = true;
         return false;
