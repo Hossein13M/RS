@@ -20,6 +20,7 @@
                         [data]="data"
                         [columns]="column"
                         [paginationSettings]="{ mode: 'local' }"
+                        (searchCall)='search($event)'
                     ></app-table>
                     <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">

@@ -2,9 +2,7 @@
     <!-- HEADER -->
 
     <app-header pageTitle="لیست اطلاعات بازار">
-        <button color="primary"
-                (click)="add()"
-                mat-raised-button>
+        <button color="primary" (click)="add()" mat-raised-button>
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
@@ -13,27 +11,16 @@
     <div class="page-content">
         <div class="setting-container-back" dir="rtl">
             <div class="setting-panel fuse-card">
-                <div style="width: 100%;">
-
+                <div style="width: 100%">
                     <!-- Table -->
-                    <app-table [data]="data"
-                               [columns]="columns"
-                               (searchCall)="search($event)">
-                    </app-table>
+                    <app-table [data]="data" [columns]="columns" (searchCall)="search($event)" [paginationSettings]="{ mode: 'local' }"></app-table>
 
-                    <app-paginator [data]="marketSettingService.pageEvent" (page)="pageHandler($event)"
-                                   [pageSizeOptions]="[5, 10, 13]"></app-paginator>
-
-                    <ng-container *ngIf="data.length === 0">
-                        <div
-                            style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                            <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                            <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                                موردی وجود ندارد
-                            </div>
+                    <ng-container *ngIf="data?.length === 0">
+                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
-
                 </div>
             </div>
         </div>

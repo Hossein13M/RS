@@ -8,7 +8,7 @@ import { AlertService } from 'app/services/alert.service';
 import { LocalStorageService } from 'app/services/Base/local-storage.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AssetDebitDetailDialogComponent } from '../asset-debit-detail-dialog/asset-debit-detail-dialog.component';
+import { AssetDebitDetailDialogComponent } from '../../risk-measurement/asset-debit-detail-dialog/asset-debit-detail-dialog.component';
 
 @Component({
     selector: 'app-nav-main',
