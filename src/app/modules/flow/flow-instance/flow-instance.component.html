@@ -80,10 +80,10 @@
                 <ng-container matColumnDef="more">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm></mat-header-cell>
                     <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <button mat-icon-button color="accent" (click)="editFlowInstance(flowInstance)">
+                        <button #tooltip="matTooltip" matTooltip="تغییر" mat-icon-button color="accent" (click)="editFlowInstance(flowInstance)">
                             <mat-icon class="mat-18">edit</mat-icon>
                         </button>
-                        <button mat-icon-button color="accent" [routerLink]="['/flow/wizard', flowInstance._id]">
+                        <button #tooltip="matTooltip" matTooltip="مشاهده" mat-icon-button color="accent" [routerLink]="['/flow/wizard', flowInstance._id]">
                             <mat-icon class="mat-18">visibility</mat-icon>
                         </button>
                     </mat-cell>
