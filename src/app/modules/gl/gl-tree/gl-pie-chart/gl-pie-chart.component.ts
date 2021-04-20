@@ -2,10 +2,9 @@ import * as am4charts from '@amcharts/amcharts4/charts';
 import * as am4core from '@amcharts/amcharts4/core';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { AfterViewInit, Component, Inject, NgZone, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GlService } from 'app/modules/gl/gl.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TreeOrderType } from '../../gl.model';
-import {GlTreeService} from "../gl-tree.service";
+import { GlTreeService } from '../gl-tree.service';
 
 @Component({
     selector: 'app-gl-pie-chart',
@@ -13,13 +12,13 @@ import {GlTreeService} from "../gl-tree.service";
     styleUrls: ['./gl-pie-chart.component.scss'],
 })
 export class GlPieChartComponent implements OnInit, AfterViewInit {
-    chart;
-    pieSeries;
-    button;
-    drillLevel = [];
-    selectedSlice;
+    private chart;
+    private pieSeries;
+    private button;
+    private drillLevel = [];
+    private selectedSlice;
 
-    date;
+    public date;
 
     constructor(
         public dialogRef: MatDialogRef<GlPieChartComponent>,
@@ -29,6 +28,14 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
+        this.initData();
+    }
+
+    ngAfterViewInit(): void {
+        this.createPieChart();
+    }
+
+    private initData(): void {
         if (this.data) {
             this.data.map((x) => {
                 x.type = TreeOrderType.Category;
@@ -39,7 +46,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         }
     }
 
-    createPieChart(): void {
+    private createPieChart(): void {
         this.zone.runOutsideAngular(() => {
             am4core.useTheme(am4themes_animated);
             this.chart = am4core.create('chartdiv', am4charts.PieChart);
@@ -48,7 +55,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
             this.pieSeries.dataFields.value = 'value';
             this.pieSeries.dataFields.category = 'name';
             this.drillLevel.push(this.data);
-            this.pieSeries.slices.template.events.on('hit', (event) => this.clickHandlerDeposit(event.target.dataItem), this);
+            this.pieSeries.slices.template.events.on('hit', (event) => this.callService(event.target.dataItem), this);
             this.button = this.chart.chartContainer.createChild(am4core.Button);
             this.button.padding(5, 5, 5, 5);
             this.button.align = 'right';
@@ -61,7 +68,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         });
     }
 
-    drillUpDeposit(): void {
+    private drillUpDeposit(): void {
         this.drillLevel.pop();
         this.chart.data = this.drillLevel[this.drillLevel.length - 1];
         if (this.drillLevel.length === 1) {
@@ -74,11 +81,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         this.pieSeries.appear();
     }
 
-    clickHandlerDeposit(event): void {
-        this.callService(event);
-    }
-
-    updateChart(event, data): void {
+    private updateChart(event, data): void {
         if (data && data.length) {
             this.selectedSlice = event.slice;
             this.chart.data = data;
@@ -89,7 +92,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
         }
     }
 
-    callService(event): void {
+    private callService(event): void {
         if (event.dataContext.type === TreeOrderType.Category) {
             this.glTreeService.getGroupByCategory(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
@@ -139,13 +142,5 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
                 }
             });
         }
-    }
-
-    ngAfterViewInit(): void {
-        this.createPieChart();
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }
