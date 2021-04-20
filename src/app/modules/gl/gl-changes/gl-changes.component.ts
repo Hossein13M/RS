@@ -9,6 +9,7 @@ import { GlService } from 'app/modules/gl/gl.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { TreeOrderType } from '../gl.model';
+import { GlChangesService } from './gl-changes.service';
 
 @Component({
     selector: 'app-gl-changes',
@@ -68,7 +69,7 @@ export class GlChangesComponent implements OnInit {
     glGroups: any[];
     glGeneral: any[];
 
-    constructor(private fb: FormBuilder, private glService: GlService) {
+    constructor(private fb: FormBuilder, private glService: GlService, private glChangesService: GlChangesService) {
         this.filteredShowTypes = this.showTypeCtl.valueChanges.pipe(
             startWith(null),
             map((c: string | null) => (c ? this._filter(c) : this.allShowTypes.slice()))
@@ -133,7 +134,7 @@ export class GlChangesComponent implements OnInit {
 
         this.form.get('type').setValue(typeValues);
 
-        this.glService.getChangeApi(this.form.value).subscribe((res: any) => {
+        this.glChangesService.getChangeApi(this.form.value).subscribe((res: any) => {
             this.dataToShow = res;
             this.searchCollapse = false;
         });

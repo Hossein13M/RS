@@ -4,6 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { GlService } from 'app/modules/gl/gl.service';
 import * as moment from 'jalali-moment';
 import { TreeOrderType } from '../../gl.model';
+import {GlTreeService} from "../gl-tree.service";
 
 @Component({
     selector: 'app-gl-chart',
@@ -21,7 +22,7 @@ export class GlChartComponent implements OnInit {
     glDetail = [];
     data: Array<any>;
 
-    constructor(private glService: GlService, private fb: FormBuilder) {
+    constructor(private glService: GlService, private glTreeService: GlTreeService, private fb: FormBuilder) {
         this.twoDayAgo = new Date();
         this.twoDayAgo.setDate(this.twoDayAgo.getDate() - 2);
     }
@@ -59,7 +60,7 @@ export class GlChartComponent implements OnInit {
     }
 
     submitForm(): void {
-        this.glService.getChartApi(this.form.value).subscribe((res: any) => {
+        this.glTreeService.getChartApi(this.form.value).subscribe((res: any) => {
             if (res) {
                 res.map((x) => {
                     x.value = x.remainedAmount;

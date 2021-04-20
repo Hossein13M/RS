@@ -6,6 +6,7 @@ import { MaterialModule } from '#shared/material.module';
 import { ShareModule } from '#shared/share.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LayoutModule } from '../../../layout/layout.module';
+import { GlChangesService } from './gl-changes.service';
 
 const routes: Routes = [
     {
@@ -18,5 +19,6 @@ const routes: Routes = [
 @NgModule({
     declarations: [GlChangesComponent],
     imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes)],
+    providers: [GlChangesService],
 })
 export class GlChangesModule {}

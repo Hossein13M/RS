@@ -5,6 +5,7 @@ import { GlService } from 'app/modules/gl/gl.service';
 import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
 import { CategoryModel, DetailModel, GeneralModel, GroupModel, RowModel, SubsidiaryModel, TreeOrderType } from '../gl.model';
 import * as _ from 'lodash';
+import {GlTreeService} from "./gl-tree.service";
 
 @Component({
     selector: 'app-gl-tree',
@@ -17,7 +18,7 @@ export class GlTreeComponent implements OnInit {
     today: Date = new Date();
     dateForm = new FormControl(this.today);
 
-    constructor(private glService: GlService, private matDialog: MatDialog) {}
+    constructor(private glTreeService: GlTreeService, private matDialog: MatDialog) {}
 
     ngOnInit(): void {
         this.getGlCategory();
@@ -28,7 +29,7 @@ export class GlTreeComponent implements OnInit {
     }
 
     private getGlCategory(): void {
-        this.glService.getCategoryApi().subscribe((res) => {
+        this.glTreeService.getCategoryApi().subscribe((res) => {
             if (res) {
                 res.items.map((x: CategoryModel) => {
                     x.type = TreeOrderType.Category;
@@ -59,7 +60,7 @@ export class GlTreeComponent implements OnInit {
 
         switch (c.type) {
             case TreeOrderType.Category:
-                this.glService.getGroupByCategory(c.code).subscribe((res) => {
+                this.glTreeService.getGroupByCategory(c.code).subscribe((res) => {
                     res.items.map((x: GroupModel) => {
                         x.code = x.groupLedgerCode;
                         x.name = x.groupLedgerName;
@@ -68,7 +69,7 @@ export class GlTreeComponent implements OnInit {
                 });
                 break;
             case TreeOrderType.Group:
-                this.glService.getGeneralByGroup(c.code).subscribe((res) => {
+                this.glTreeService.getGeneralByGroup(c.code).subscribe((res) => {
                     res.items.map((x: GeneralModel) => {
                         x.code = x.generalLedgerCode;
                         x.name = x.generalLedgerName;
@@ -77,7 +78,7 @@ export class GlTreeComponent implements OnInit {
                 });
                 break;
             case TreeOrderType.General:
-                this.glService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
+                this.glTreeService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
                     res.items.map((x: SubsidiaryModel) => {
                         x.code = x.subsidiaryLedgerCode;
                         x.name = x.subsidiaryLedgerName;
@@ -86,7 +87,7 @@ export class GlTreeComponent implements OnInit {
                 });
                 break;
             case TreeOrderType.Subsidiary:
-                this.glService.getDetailBySubsidiary(c.code).subscribe((res) => {
+                this.glTreeService.getDetailBySubsidiary(c.code).subscribe((res) => {
                     res.items.map((x: DetailModel) => {
                         x.code = x.detailLedgerCode;
                         x.name = x.detailLedgerName;
