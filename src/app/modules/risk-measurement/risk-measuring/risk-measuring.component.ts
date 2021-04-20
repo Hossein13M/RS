@@ -6,7 +6,7 @@ import { RiskMeasuringService } from '../risk-measuring.service';
     selector: 'app-risk-measuring',
     templateUrl: './risk-measuring.component.html',
     styleUrls: ['./risk-measuring.component.scss'],
-    encapsulation: ViewEncapsulation.None,
+    encapsulation: ViewEncapsulation.Emulated,
 })
 export class RiskMeasuringComponent implements OnInit {
     hasData = false;
@@ -19,7 +19,7 @@ export class RiskMeasuringComponent implements OnInit {
     barChart: any;
     gage: any;
 
-    public chartType: string = 'line';
+    public chartType = 'line';
     public chartDatasets: Array<any> = [{ data: [], label: '' }];
     public chartLabels: Array<any> = [];
     public chartColors: Array<any> = [{ backgroundColor: 'transparent', borderColor: this.generateRandomColor(), borderWidth: 1 }];
