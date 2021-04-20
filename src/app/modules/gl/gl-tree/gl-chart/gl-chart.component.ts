@@ -3,7 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { GlService } from 'app/modules/gl/gl.service';
 import * as moment from 'jalali-moment';
-import { TreeOrderType } from '../../gl.model';
+import {
+    GlCategoryModel,
+    GlDetailModel,
+    GlGeneralModel,
+    GlGroupModel,
+    GlSubsidiaryModel,
+    TreeOrderType
+} from '../../gl.model';
 import {GlTreeService} from "../gl-tree.service";
 
 @Component({
@@ -13,14 +20,14 @@ import {GlTreeService} from "../gl-tree.service";
     animations: [fuseAnimations],
 })
 export class GlChartComponent implements OnInit {
-    twoDayAgo: Date;
-    form: FormGroup;
-    glCategories = [];
-    glGroups = [];
-    glGeneral = [];
-    glSubsidiary = [];
-    glDetail = [];
-    data: Array<any>;
+    public twoDayAgo: Date;
+    public form: FormGroup;
+    public glCategories: Array<GlCategoryModel> = [];
+    public glGroups: Array<GlGroupModel> = [];
+    public glGeneral: Array<GlGeneralModel> = [];
+    public glSubsidiary: Array<GlSubsidiaryModel> = [];
+    public glDetail: Array<GlDetailModel> = [];
+    public data: Array<any>;
 
     constructor(private glService: GlService, private glTreeService: GlTreeService, private fb: FormBuilder) {
         this.twoDayAgo = new Date();

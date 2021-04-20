@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { GlService } from 'app/modules/gl/gl.service';
 import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
-import { CategoryModel, DetailModel, GeneralModel, GroupModel, RowModel, SubsidiaryModel, TreeOrderType } from '../gl.model';
+import { GlCategoryModel, GlDetailModel, GlGeneralModel, GlGroupModel, GlModel, GlSubsidiaryModel, TreeOrderType } from '../gl.model';
 import * as _ from 'lodash';
 import {GlTreeService} from "./gl-tree.service";
 
@@ -14,7 +14,7 @@ import {GlTreeService} from "./gl-tree.service";
 })
 export class GlTreeComponent implements OnInit {
     groupObj = [];
-    glCategories: Array<RowModel> = [];
+    glCategories: Array<GlModel> = [];
     today: Date = new Date();
     dateForm = new FormControl(this.today);
 
@@ -31,7 +31,7 @@ export class GlTreeComponent implements OnInit {
     private getGlCategory(): void {
         this.glTreeService.getCategoryApi().subscribe((res) => {
             if (res) {
-                res.items.map((x: CategoryModel) => {
+                res.items.map((x: GlCategoryModel) => {
                     x.type = TreeOrderType.Category;
                     x.isCollapsed = false;
                     x.code = x.categoryLedgerCode;
@@ -44,14 +44,14 @@ export class GlTreeComponent implements OnInit {
         });
     }
 
-    private expandRow(c: RowModel, index): void {
-        const spliceIfNotFound = (x: RowModel): void => {
+    private expandRow(c: GlModel, index): void {
+        const spliceIfNotFound = (x: GlModel): void => {
             if (!this.groupObj.find((y) => y.name === x.name && y.code === x.code)) {
                 this.groupObj.splice(index + 1, 0, x);
             }
         };
 
-        const setRow = (result: RowModel, type: TreeOrderType) => {
+        const setRow = (result: GlModel, type: TreeOrderType) => {
             result.type = type;
             result.isCollapsed = false;
             result.parentCode = c.code;
@@ -61,7 +61,7 @@ export class GlTreeComponent implements OnInit {
         switch (c.type) {
             case TreeOrderType.Category:
                 this.glTreeService.getGroupByCategory(c.code).subscribe((res) => {
-                    res.items.map((x: GroupModel) => {
+                    res.items.map((x: GlGroupModel) => {
                         x.code = x.groupLedgerCode;
                         x.name = x.groupLedgerName;
                         setRow(x, TreeOrderType.Group);
@@ -70,7 +70,7 @@ export class GlTreeComponent implements OnInit {
                 break;
             case TreeOrderType.Group:
                 this.glTreeService.getGeneralByGroup(c.code).subscribe((res) => {
-                    res.items.map((x: GeneralModel) => {
+                    res.items.map((x: GlGeneralModel) => {
                         x.code = x.generalLedgerCode;
                         x.name = x.generalLedgerName;
                         setRow(x, TreeOrderType.General);
@@ -79,7 +79,7 @@ export class GlTreeComponent implements OnInit {
                 break;
             case TreeOrderType.General:
                 this.glTreeService.getSubsidiaryByGeneral(c.code).subscribe((res) => {
-                    res.items.map((x: SubsidiaryModel) => {
+                    res.items.map((x: GlSubsidiaryModel) => {
                         x.code = x.subsidiaryLedgerCode;
                         x.name = x.subsidiaryLedgerName;
                         setRow(x, TreeOrderType.Subsidiary);
@@ -88,7 +88,7 @@ export class GlTreeComponent implements OnInit {
                 break;
             case TreeOrderType.Subsidiary:
                 this.glTreeService.getDetailBySubsidiary(c.code).subscribe((res) => {
-                    res.items.map((x: DetailModel) => {
+                    res.items.map((x: GlDetailModel) => {
                         x.code = x.detailLedgerCode;
                         x.name = x.detailLedgerName;
                         setRow(x, TreeOrderType.Detail);
@@ -100,7 +100,7 @@ export class GlTreeComponent implements OnInit {
         }
     }
 
-    private collapseRow(selectedRow: RowModel): Array<string> {
+    private collapseRow(selectedRow: GlModel): Array<string> {
         // todo: fix
         const removeList = [];
         for (const row of this.groupObj) {

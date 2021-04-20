@@ -8,12 +8,12 @@ export enum TreeOrderType {
 
 export interface CategoryModelApi {
     date: string;
-    items: Array<RowModel>;
+    items: Array<GlModel>;
 }
 
-export type RowModel = CategoryModel | GroupModel | GeneralModel | SubsidiaryModel | DetailModel;
+export type GlModel = GlCategoryModel | GlGroupModel | GlGeneralModel | GlSubsidiaryModel | GlDetailModel;
 
-interface DefaultModel {
+interface DefaultGlModel {
     readonly aggregatedCreditAmount: string;
     readonly aggregatedDebitAmount: string;
     readonly aggregatedRemainedAmount: string;
@@ -24,27 +24,27 @@ interface DefaultModel {
     type: TreeOrderType;
 }
 
-export interface CategoryModel extends DefaultModel {
+export interface GlCategoryModel extends DefaultGlModel {
     readonly categoryLedgerCode: string;
     readonly categoryLedgerName: string;
 }
 
-export interface GroupModel extends DefaultModel {
+export interface GlGroupModel extends DefaultGlModel {
     readonly groupLedgerCode: string;
     readonly groupLedgerName: string;
 }
 
-export interface GeneralModel extends DefaultModel {
+export interface GlGeneralModel extends DefaultGlModel {
     readonly generalLedgerCode: string;
     readonly generalLedgerName: string;
 }
 
-export interface SubsidiaryModel extends DefaultModel {
+export interface GlSubsidiaryModel extends DefaultGlModel {
     readonly subsidiaryLedgerCode: string;
     readonly subsidiaryLedgerName: string;
 }
 
-export interface DetailModel extends DefaultModel {
+export interface GlDetailModel extends DefaultGlModel {
     readonly detailLedgerCode: string;
     readonly detailLedgerName: string;
 }
