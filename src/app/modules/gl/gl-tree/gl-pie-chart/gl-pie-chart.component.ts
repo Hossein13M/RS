@@ -5,6 +5,7 @@ import { AfterViewInit, Component, Inject, NgZone, OnInit } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GlService } from 'app/modules/gl/gl.service';
 import { TreeOrderType } from '../../gl.model';
+import {GlTreeService} from "../gl-tree.service";
 
 @Component({
     selector: 'app-gl-pie-chart',
@@ -23,7 +24,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
     constructor(
         public dialogRef: MatDialogRef<GlPieChartComponent>,
         @Inject(MAT_DIALOG_DATA) public data,
-        public glService: GlService,
+        public glTreeService: GlTreeService,
         private zone: NgZone
     ) {}
 
@@ -90,7 +91,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
 
     callService(event): void {
         if (event.dataContext.type === TreeOrderType.Category) {
-            this.glService.getGroupByCategory(event.dataContext.code).subscribe((res: any) => {
+            this.glTreeService.getGroupByCategory(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.Group;
@@ -102,7 +103,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
                 }
             });
         } else if (event.dataContext.type === TreeOrderType.Group) {
-            this.glService.getGeneralByGroup(event.dataContext.code).subscribe((res: any) => {
+            this.glTreeService.getGeneralByGroup(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.General;
@@ -114,7 +115,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
                 }
             });
         } else if (event.dataContext.type === TreeOrderType.General) {
-            this.glService.getSubsidiaryByGeneral(event.dataContext.code).subscribe((res: any) => {
+            this.glTreeService.getSubsidiaryByGeneral(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.Subsidiary;
@@ -126,7 +127,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
                 }
             });
         } else if (event.dataContext.type === TreeOrderType.Subsidiary) {
-            this.glService.getDetailBySubsidiary(event.dataContext.code).subscribe((res: any) => {
+            this.glTreeService.getDetailBySubsidiary(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.Detail;
