@@ -5,7 +5,7 @@ import { GlService } from 'app/modules/gl/gl.service';
 import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
 import { GlCategoryModel, GlDetailModel, GlGeneralModel, GlGroupModel, GlModel, GlSubsidiaryModel, TreeOrderType } from '../gl.model';
 import * as _ from 'lodash';
-import {GlTreeService} from "./gl-tree.service";
+import { GlTreeService } from './gl-tree.service';
 
 @Component({
     selector: 'app-gl-tree',
@@ -100,19 +100,24 @@ export class GlTreeComponent implements OnInit {
         }
     }
 
-    private collapseRow(selectedRow: GlModel): Array<string> {
-        // todo: fix
-        const removeList = [];
-        for (const row of this.groupObj) {
-            if (row.parentCode && row.parentCode === selectedRow.code) {
+    private collapseRow(selectedRow: GlModel, index: number): Array<string> {
+        let removeList: Array<string> = [];
+        const parentOfSelectedRow = this.glTreeService.getSuperior(selectedRow.type);
+        const modifiedGroupObj = _.slice(this.groupObj, index + 1);
+        for (const row of modifiedGroupObj) {
+            // sibling check
+            if (row.type === selectedRow.type) {
+                break;
+            }
+            // single sibling check
+            if (row.type === parentOfSelectedRow) {
+                break;
+            }
+            if (row.type !== selectedRow.type) {
                 removeList.push(row.code);
-                for (const childRow of this.groupObj) {
-                    if (childRow.parentCode === row.code) {
-                        removeList.concat(this.collapseRow(childRow));
-                    }
-                }
             }
         }
+        removeList = _.compact(removeList);
         return _.uniq(removeList);
     }
 
@@ -121,7 +126,7 @@ export class GlTreeComponent implements OnInit {
         if (selectedRow.isCollapsed) {
             this.expandRow(selectedRow, index);
         } else {
-            const removeList = this.collapseRow(selectedRow);
+            const removeList = this.collapseRow(selectedRow, index);
             this.groupObj = this.groupObj.filter((el) => !removeList.includes(el.code));
         }
     }
