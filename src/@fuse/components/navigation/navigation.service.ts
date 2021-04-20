@@ -134,7 +134,6 @@ export class FuseNavigationService {
         //     }
         // };
         // extractNames(newNavigation);
-        // console.log(labels.map((el) => el.id).join('|'));
         // -----------------------------------------------------
 
         const access = {};

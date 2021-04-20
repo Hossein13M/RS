@@ -23,7 +23,7 @@ export class AumComponent implements OnInit {
     form: FormGroup;
     searchParams: SearchParams = {
         tamadonAssets: false,
-        fundNationalCodes: undefined,
+        fundNationalCodes: [],
         date: undefined,
         listedAsstes: false,
         nonlistedAsstes: false,
@@ -93,14 +93,10 @@ export class AumComponent implements OnInit {
         newFormValue = this.removeEmptyOrNullValuesFromForm(newFormValue);
         let inputDate = new Date(newFormValue?.date);
         !!inputDate.getDate() ? (newFormValue.date = formatDate(inputDate, 'yyyy-MM-dd', 'en_US')) : delete newFormValue.date;
-        this.router.navigate([], {
-            relativeTo: this.activatedRoute,
-            queryParams: newFormValue,
-            queryParamsHandling: '',
-        });
+        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: newFormValue, queryParamsHandling: '' });
     }
 
-    private removeEmptyOrNullValuesFromForm(formValue): void {
+    private removeEmptyOrNullValuesFromForm(formValue) {
         for (const propName in formValue)
             if (formValue[propName] === null || formValue[propName] === '' || (formValue[propName][0] === undefined && propName !== 'date'))
                 delete formValue[propName];
@@ -125,6 +121,8 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
+        Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
+        //the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();
         this.hasSubmitButtonClicked = true;
 

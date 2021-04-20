@@ -53,11 +53,15 @@ const appRoutes: Routes = [
     },
     {
         path: 'alarming',
-        loadChildren: () => import('app/modules/features/alarming/alarming.module').then((x) => x.AlarmingModule),
+        loadChildren: () => import('app/modules/features/alarming/alarming.module').then((m) => m.AlarmingModule),
     },
     {
         path: 'nav',
-        loadChildren: () => import('app/modules/nav/nav.module').then((x) => x.NavModule),
+        loadChildren: () => import('app/modules/nav/nav.module').then((m) => m.NavModule),
+    },
+    {
+        path: 'risk-measurement',
+        loadChildren: () => import('app/modules/risk-measurement/risk-measurement.module').then((m) => m.RiskMeasurementModule),
     },
     {
         path: 'user',
