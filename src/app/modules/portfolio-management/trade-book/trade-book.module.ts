@@ -5,7 +5,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LayoutModule } from 'app/layout/layout.module';
 import { ShareModule } from 'app/shared/share.module';
-import { MaterialModule } from '../../../shared/material.module';
+import { MaterialModule } from '#shared/material.module';
 import { TradeBookHistoryComponent } from './trade-book-history/trade-book-history.component';
 import { TradeBookRoutingModule } from './trade-book-routing.module';
 import { TradeBookShowComponent } from './trade-book-show/trade-book-show.component';
@@ -17,7 +17,6 @@ import { TradeBookService } from './trade-book.service';
     imports: [
         CommonModule,
         MaterialModule,
-
         TradeBookRoutingModule,
         MatSortModule,
         LayoutModule,

@@ -56,7 +56,6 @@ export class TradeSearchComponent implements OnInit {
         { name: 'تفاوت کارمزد فروش', value: 6 },
     ];
 
-    // Show Data Table
     columns: Array<any>;
     displayedColumns: Array<string>;
     dataSource: MatTableDataSource<TableElement>;
@@ -66,7 +65,6 @@ export class TradeSearchComponent implements OnInit {
     stateType: StateType;
     isWorking: any;
     model: any;
-    // Ticker Select Control
     addTicker: FormControl;
     tickersCtrl: FormControl;
     tickers: any;
@@ -85,7 +83,7 @@ export class TradeSearchComponent implements OnInit {
         this.addTicker.valueChanges.pipe(debounceTime(200)).subscribe((newTicker) => newTicker && this.addTicker.reset());
     }
 
-    private paginationControl(pageEvent?: any): void {
+    public paginationControl(pageEvent?: any): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.submitForm();
@@ -139,7 +137,7 @@ export class TradeSearchComponent implements OnInit {
         });
     }
 
-    private submitForm(): void {
+    public submitForm(): void {
         this.stateType = StateType.LOADING;
         this.searchCollapse = false;
 
@@ -160,7 +158,7 @@ export class TradeSearchComponent implements OnInit {
         );
     }
 
-    private clearFilters(): void {
+    public clearFilters(): void {
         this.form.reset();
         this.selectedTickersList = [];
     }
@@ -180,11 +178,11 @@ export class TradeSearchComponent implements OnInit {
         this.dataSource = new MatTableDataSource<TableElement>(this.dataToShow);
     }
 
-    private removeTicker(ticker: any): void {
+    public removeTicker(ticker: any): void {
         this.selectedTickersList = this.selectedTickersList.filter((el) => el.id !== ticker.id);
     }
 
-    private selectTicker(ticker: any): void {
+    public selectTicker(ticker: any): void {
         const existTicker = this.selectedTickersList.find((el) => el.id === ticker.id);
         if (!existTicker) this.selectedTickersList.push(ticker);
     }

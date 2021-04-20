@@ -20,9 +20,7 @@ export class TradeBookService extends Specification {
     createForm(): void {
         const lastDay = new Date();
         lastDay.setDate(lastDay.getDate() - 1);
-        this.searchForm = this.fb.group({
-            date: [lastDay, [Validators.required]],
-        });
+        this.searchForm = this.fb.group({ date: [lastDay, [Validators.required]] });
     }
 
     getAllTradeBooks(fc?: FormContainer): Observable<any> {

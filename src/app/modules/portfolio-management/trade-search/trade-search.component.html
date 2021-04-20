@@ -1,22 +1,24 @@
 <div class="page-layout">
     <app-header pageTitle="جستجوی معاملات">
-        <button class="search-btn"
-                mat-raised-button (click)="searchCollapse = !searchCollapse" [color]="(searchCollapse || !dataToShow || dataToShow.length == 0 )?'accent':'primary'">
+        <button
+            class="search-btn"
+            mat-raised-button
+            (click)="searchCollapse = !searchCollapse"
+            [color]="searchCollapse || !dataToShow || dataToShow.length == 0 ? 'accent' : 'primary'"
+        >
             <mat-icon class="mat-18">search</mat-icon>
         </button>
     </app-header>
 
     <div class="page-content">
-        <!--    Search Section    -->
         <div class="search fuse-card mat-background-accent" *ngIf="searchCollapse || !dataToShow || dataToShow.length == 0" [@expandCollapse]>
             <form dir="rtl" [formGroup]="form" (submit)="submitForm()" fxLayout="column" fxLayoutAlign="start start">
-                <!--      Date Filter     -->
                 <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="20px">
                     <div fxLayout="column wrap" fxLayoutAlign="start start">
                         <h3>تاریخ معامله</h3>
                         <mat-form-field appearance="outline">
                             <mat-label>از تاریخ</mat-label>
-                            <input matInput formControlName="transactionDateStart" [max]="today" [matDatepicker]="fromDate"/>
+                            <input matInput formControlName="transactionDateStart" [max]="today" [matDatepicker]="fromDate" />
                             <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
                             <mat-datepicker #fromDate></mat-datepicker>
                         </mat-form-field>
@@ -35,49 +37,45 @@
                         </mat-form-field>
                     </div>
 
-                    <!--      Volume Filter     -->
                     <div fxLayout="column wrap" fxLayoutAlign="start start" class="box">
                         <h3>حجم معامله</h3>
                         <mat-form-field appearance="outline">
                             <mat-label>از</mat-label>
-                            <input matInput type="number" formControlName="volumeStart"/>
+                            <input matInput type="number" formControlName="volumeStart" />
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>تا</mat-label>
-                            <input matInput type="number" [min]="form.get('volumeStart').value" formControlName="volumeEnd"/>
+                            <input matInput type="number" [min]="form.get('volumeStart').value" formControlName="volumeEnd" />
                         </mat-form-field>
                     </div>
 
-                    <!--      Value Filter     -->
                     <div fxLayout="column wrap" fxLayoutAlign="start start" class="box">
                         <h3>ارزش معامله (ریال)</h3>
                         <mat-form-field appearance="outline">
                             <mat-label>از</mat-label>
-                            <input matInput type="number" formControlName="valueStart"/>
+                            <input matInput type="number" formControlName="valueStart" />
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>تا</mat-label>
-                            <input matInput type="number" [min]="form.get('valueStart').value" formControlName="valueEnd"/>
+                            <input matInput type="number" [min]="form.get('valueStart').value" formControlName="valueEnd" />
                         </mat-form-field>
                     </div>
 
-                    <!--      PLT Filter     -->
                     <div fxLayout="column wrap" fxLayoutAlign="start start" class="box">
                         <h3>سود و زیان کل (ریال)</h3>
                         <mat-form-field appearance="outline">
                             <mat-label>از</mat-label>
-                            <input matInput type="number" formControlName="pltStart"/>
+                            <input matInput type="number" formControlName="pltStart" />
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>تا</mat-label>
-                            <input matInput type="number" [min]="form.get('pltStart').value" formControlName="pltEnd"/>
+                            <input matInput type="number" [min]="form.get('pltStart').value" formControlName="pltEnd" />
                         </mat-form-field>
                     </div>
 
-                    <!--      Type Select     -->
                     <div fxLayout="column wrap" fxLayoutAlign="start start" class="box">
                         <h3>نوع</h3>
                         <mat-form-field appearance="outline">
@@ -99,7 +97,6 @@
                         </mat-form-field>
                     </div>
 
-                    <!--      Org Select     -->
                     <div fxLayout="column wrap" fxLayoutAlign="start start" class="box">
                         <h3>آپشن‌ها</h3>
                         <mat-form-field appearance="outline">
@@ -111,7 +108,6 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <!--   ticker     -->
                         <mat-form-field class="full-wid" appearance="outline" fxFlex="25">
                             <mat-label> اضافه کردن نماد</mat-label>
 
@@ -122,7 +118,6 @@
                                     [placeholderLabel]="'جستجو'"
                                     [formControl]="tickersCtrl"
                                 >
-                                    <!-- TODO: repcae component -->
                                 </ngx-mat-select-search>
                                 <mat-option
                                     style="text-align: right"
@@ -169,7 +164,6 @@
             </form>
         </div>
 
-        <!--    Table    -->
         <div class="fuse-card data-show" *ngIf="dataToShow && dataToShow.length != 0">
             <app-table
                 [data]="dataToShow"
@@ -178,11 +172,7 @@
                 [paginationObj]="pagination"
                 (paginationChange)="paginationControl($event)"
             >
-                <!-- TODO: paginator overflow -->
             </app-table>
         </div>
-
-        <!-- FIXME:  -->
-        <!-- <app-no-data *z[state]="stateType" [dataLength]="dataToShow"></app-no-data> -->
     </div>
 </div>
