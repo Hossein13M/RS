@@ -107,7 +107,6 @@ export class FormBuilderComponent implements OnInit {
 
     ngOnInit(): void {
         this.operatorList = this.data?.operators;
-
         this.flowService.getFlowForm(this.data.stateId, this.data.flowId).subscribe((flowDetail) => {
             if (!flowDetail || !this.operatorList) {
                 return;
@@ -166,15 +165,6 @@ export class FormBuilderComponent implements OnInit {
     }
 
     closeThisDialog(): void {
-        if (this.operatorsFormControl.value.length === 0) {
-            this.redBorder = true;
-            setTimeout(() => {
-                this.redBorder = false;
-            }, 1000);
-            this.snackBar.onError('این مرحله نمی‌تواند بدون سطح دسترسی باشد.');
-            this.operatorsFormControl.markAsDirty();
-            return;
-        }
         if (
             JSON.stringify(this.lastSavedData) ===
             JSON.stringify({
@@ -218,6 +208,15 @@ export class FormBuilderComponent implements OnInit {
     }
 
     send(): void {
+        if (this.operatorsFormControl.value.length === 0) {
+            this.redBorder = true;
+            setTimeout(() => {
+                this.redBorder = false;
+            }, 1000);
+            this.snackBar.onError('این مرحله نمی‌تواند بدون سطح دسترسی باشد.');
+            this.operatorsFormControl.markAsDirty();
+            return;
+        }
         this.flowService
             .addFlowForm(this.data.stateId, this.data.flowId, this.data.stateName, this.formGroup.value, this.operatorsFormControl.value)
             .subscribe(
