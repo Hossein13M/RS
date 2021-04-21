@@ -90,7 +90,6 @@ export class OrganizationTypeSettingListComponent implements OnInit {
         this.get();
     }
 
-
     paginationControl(pageEvent: PaginationChangeType): void {
         this.get();
     }
