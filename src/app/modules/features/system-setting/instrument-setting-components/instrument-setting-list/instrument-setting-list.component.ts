@@ -195,6 +195,7 @@ export class InstrumentSettingListComponent implements OnInit {
     get(): void {
         this.newInstrumentService.get().subscribe((res: any) => {
             this.data = [...res.items];
+            this.pagination.limit = res.limit;
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
             this.newInstrumentService.setPageDetailData(res);

@@ -100,6 +100,7 @@ export class BankSettingListComponent implements OnInit {
     get(): void {
         this.bankService.get().subscribe((res: any) => {
             this.data = [...res.items];
+            this.pagination.limit = res.limit;
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
             this.bankService.setPageDetailData(res);
