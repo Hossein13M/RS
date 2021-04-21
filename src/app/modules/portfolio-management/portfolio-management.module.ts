@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { LayoutModule } from 'app/layout/layout.module';
 import { take } from 'rxjs/operators';
+import { PortfolioManagementRoutingModule } from './portfolio-management-routing.module';
 
 export const PMRoutePrefix = 'portfolio';
 
