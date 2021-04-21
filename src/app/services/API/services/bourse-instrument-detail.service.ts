@@ -175,10 +175,4 @@ export class BourseInstrumentDetailService extends BaseService {
             map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto)
         );
     }
-
-    // implement http request from now on
-
-    getBourseInstrumentDetailControllerGetBondsList(searchKeyword: string) {
-        return this.http.get<any>(`/bourse-instrument-detail/bonds?searchKeyword=${searchKeyword}`);
-    }
 }

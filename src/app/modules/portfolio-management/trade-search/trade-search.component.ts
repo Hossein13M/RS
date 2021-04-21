@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { BourseInstrumentDetailService } from 'app/services/API/services/bourse-instrument-detail.service';
 import { StateType } from 'app/shared/state-type.enum';
 import { debounceTime } from 'rxjs/operators';
 import { TableElement } from '../trade-book/trade-book.component';
@@ -40,13 +39,11 @@ export class TradeSearchComponent implements OnInit {
     pagination = { skip: 0, limit: 5, total: 100 };
     organizations: Array<{ organizationName: string; organizationType: string }>;
     today: Date = new Date();
-
     tradeLocations = [
         { name: 'بورسی', value: 1 },
         { name: 'غیر بورسی', value: 2 },
         { name: 'همه', value: 3 },
     ];
-
     tradeTypes = [
         { name: 'خرید', value: 1 },
         { name: 'فروش', value: 2 },
@@ -55,7 +52,6 @@ export class TradeSearchComponent implements OnInit {
         { name: 'تفاوت کارمزد خرید', value: 5 },
         { name: 'تفاوت کارمزد فروش', value: 6 },
     ];
-
     columns: Array<any>;
     displayedColumns: Array<string>;
     dataSource: MatTableDataSource<TableElement>;
@@ -70,11 +66,10 @@ export class TradeSearchComponent implements OnInit {
     tickers: any;
     selectedTickersList = [];
 
-    constructor(private formBuilder: FormBuilder, private bidService: BourseInstrumentDetailService, private tsService: TradeSearchService) {
-        this.createColumns();
-    }
+    constructor(private formBuilder: FormBuilder, private tradeSearchService: TradeSearchService) {}
 
     ngOnInit(): void {
+        this.createColumns();
         this.getOrganizations();
         this.tickersCtrl = this.formBuilder.control('');
         this.addTicker = this.formBuilder.control('');
@@ -90,7 +85,7 @@ export class TradeSearchComponent implements OnInit {
     }
 
     private getOrganizations() {
-        this.tsService.getOrganizations().subscribe((response) => {
+        this.tradeSearchService.getOrganizations().subscribe((response) => {
             this.organizations = response;
             this.form.controls['organization'].enable(); // need to ask why it is disabled as default
         });
@@ -125,7 +120,7 @@ export class TradeSearchComponent implements OnInit {
     }
 
     private getTickers(searchKeyword: string): void {
-        this.bidService.getBourseInstrumentDetailControllerGetBondsList(searchKeyword).subscribe((list) => {
+        this.tradeSearchService.getBourseInstrumentDetailControllerBondsList(searchKeyword).subscribe((list) => {
             if (!list.items) return;
 
             list.items.forEach((el: Ticker) => {
@@ -148,7 +143,7 @@ export class TradeSearchComponent implements OnInit {
             this.form.get('transactionDateEnd').setValue(this.form.value.transactionDateEnd.toISOString());
         // the reason for the above two if codes are that we do not change them if they are iso string
 
-        this.tsService.searchTrade(this.pagination, this.form.value).subscribe(
+        this.tradeSearchService.searchTrade(this.pagination, this.form.value).subscribe(
             (r) => {
                 this.pagination.total = r.total;
                 this.parseData(r);
