@@ -11,6 +11,7 @@ import { TradeBookRoutingModule } from './trade-book-routing.module';
 import { TradeBookShowComponent } from './trade-book-show/trade-book-show.component';
 import { TradeBookComponent } from './trade-book.component';
 import { TradeBookService } from './trade-book.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [TradeBookComponent, TradeBookShowComponent, TradeBookHistoryComponent],
@@ -23,6 +24,7 @@ import { TradeBookService } from './trade-book.service';
         ShareModule,
         MatProgressSpinnerModule,
         MatTooltipModule,
+        MatProgressBarModule,
     ],
     providers: [TradeBookService],
     entryComponents: [TradeBookHistoryComponent],
