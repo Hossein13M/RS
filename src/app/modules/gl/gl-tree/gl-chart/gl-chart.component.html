@@ -43,10 +43,10 @@
                     <span style="color: red">*</span>
                 </mat-label>
                 <mat-select formControlName="categoryLedgerCode">
-                    <mat-option style="text-align: right" *ngFor="let c of glCategories "
-                                [value]="c?.categoryLedgerCode">
-                        {{c?.categoryLedgerCode}}
-                        <span style="color: #9ea1a9;font-size: 12px">{{c?.categoryLedgerName}}</span>
+                    <mat-option style="text-align: right" *ngFor="let category of glCategories "
+                                [value]="category?.categoryLedgerCode">
+                        {{category?.categoryLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{category?.categoryLedgerName}}</span>
                     </mat-option>
                 </mat-select>
                 <mat-error>
@@ -60,9 +60,9 @@
                     سطح ۱
                 </mat-label>
                 <mat-select formControlName="groupLedgerCode" [disabled]="!form.value.categoryLedgerCode">
-                    <mat-option style="text-align: right" *ngFor="let gr of glGroups " [value]="gr?.groupLedgerCode">
-                        {{gr?.groupLedgerCode}}
-                        <span style="color: #9ea1a9;font-size: 12px">{{gr?.groupLedgerName}}</span>
+                    <mat-option style="text-align: right" *ngFor="let group of glGroups " [value]="group?.groupLedgerCode">
+                        {{group?.groupLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{group?.groupLedgerName}}</span>
                     </mat-option>
                 </mat-select>
                 <mat-error>
@@ -74,9 +74,9 @@
                     سطح ۲
                 </mat-label>
                 <mat-select formControlName="generalLedgerCode" [disabled]="!form.value.groupLedgerCode">
-                    <mat-option style="text-align: right" *ngFor="let ge of glGeneral " [value]="ge?.generalLedgerCode">
-                        {{ge?.generalLedgerCode}}
-                        <span style="color: #9ea1a9;font-size: 12px">{{ge?.generalLedgerName}}</span>
+                    <mat-option style="text-align: right" *ngFor="let general of glGeneral " [value]="general?.generalLedgerCode">
+                        {{general?.generalLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{general?.generalLedgerName}}</span>
                     </mat-option>
                 </mat-select>
                 <mat-error>
@@ -88,10 +88,10 @@
                     سطح ۳
                 </mat-label>
                 <mat-select formControlName="subsidiaryLedgerCode" [disabled]="!form.value.generalLedgerCode">
-                    <mat-option style="text-align: right" *ngFor="let s of glSubsidiary"
-                                [value]="s?.subsidiaryLedgerCode">
-                        {{s?.subsidiaryLedgerCode}}
-                        <span style="color: #9ea1a9;font-size: 12px">{{s?.subsidiaryLedgerName}}</span>
+                    <mat-option style="text-align: right" *ngFor="let subsidiary of glSubsidiary"
+                                [value]="subsidiary?.subsidiaryLedgerCode">
+                        {{subsidiary?.subsidiaryLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{subsidiary?.subsidiaryLedgerName}}</span>
                     </mat-option>
                 </mat-select>
                 <mat-error>
@@ -105,9 +105,9 @@
                     سطح ۴
                 </mat-label>
                 <mat-select formControlName="detailLedgerCode" [disabled]="!form.value.subsidiaryLedgerCode">
-                    <mat-option style="text-align: right" *ngFor="let d of glDetail " [value]="d?.detailLedgerCode">
-                        {{d?.detailLedgerCode}}
-                        <span style="color: #9ea1a9;font-size: 12px">{{d?.detailLedgerName}}</span>
+                    <mat-option style="text-align: right" *ngFor="let detail of glDetail " [value]="detail?.detailLedgerCode">
+                        {{detail?.detailLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{detail?.detailLedgerName}}</span>
                     </mat-option>
                 </mat-select>
                 <mat-error>
@@ -130,7 +130,7 @@
     <div class="no-data" *ngIf="data && data.length === 0">
         <div
             style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-            <img width="140px" height="140px" src="./assets/images/no-data.svg">
+            <img width="140px" height="140px" src='../../../../../assets/images/no-data.svg'>
             <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
                 موردی وجود ندارد
             </div>
