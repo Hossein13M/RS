@@ -77,7 +77,7 @@ export class BranchSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.branchService.specificationModel.limit = pageEvent.limit;
-        this.branchService.specificationModel.skip = pageEvent.skip;
+        this.branchService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
@@ -85,6 +85,7 @@ export class BranchSettingListComponent implements OnInit {
         this.branchService.getBankBranch().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.branchService.setPageDetailData(res);
         });
     }

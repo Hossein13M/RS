@@ -74,7 +74,7 @@ export class FundRoleSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.fundRoleService.specificationModel.limit = pageEvent.limit;
-        this.fundRoleService.specificationModel.skip = pageEvent.skip;
+        this.fundRoleService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
@@ -82,6 +82,7 @@ export class FundRoleSettingListComponent implements OnInit {
         this.fundRoleService.getWithPaging().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.fundRoleService.setPageDetailData(res);
         });
     }

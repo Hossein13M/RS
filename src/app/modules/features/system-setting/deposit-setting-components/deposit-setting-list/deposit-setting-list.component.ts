@@ -154,7 +154,7 @@ export class DepositSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.depositSettingService.specificationModel.limit = pageEvent.limit;
-        this.depositSettingService.specificationModel.skip = pageEvent.skip;
+        this.depositSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
@@ -162,6 +162,7 @@ export class DepositSettingListComponent implements OnInit {
         this.depositSettingService.get().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.depositSettingService.setPageDetailData(res);
         });
     }
