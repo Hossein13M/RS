@@ -38,7 +38,6 @@ const routes: Routes = [
         CommonModule,
 
         // ADD Routes to Root Of Router
-        // ADD Routes to Root Of Router
         RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
         LayoutModule,
     ],

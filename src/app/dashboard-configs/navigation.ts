@@ -33,26 +33,6 @@ export const navigation: FuseNavigation[] = [
         ],
     },
     {
-        id: 'financialModel',
-        title: 'مدل مالی',
-        icon: 'bar_chart',
-        type: 'collapsable',
-        children: [
-            {
-                id: 'glBrief',
-                title: 'خلاصه دفتر کل',
-                type: 'collapsable',
-                icon: 'aspect_ratio',
-                children: [
-                    { id: 'tree', type: 'item', url: '/gl/tree', title: 'درختواره خلاصه دفتر', icon: 'subject' },
-                    { id: 'grid', type: 'item', url: '/gl/grid', title: 'جدول خلاصه دفتر', icon: 'grid_on' },
-                    { id: 'changes', type: 'item', url: 'gl/changes', title: 'تغییرات خلاصه دفتر', icon: 'published_with_changes' },
-                ],
-            },
-        ],
-    },
-
-    {
         id: 'baseData',
         title: 'مدیریت قراردادها',
         icon: 'fact_check',
