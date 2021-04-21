@@ -12,7 +12,7 @@ import * as _ from 'lodash';
     selector: 'app-deposit-setting-list',
     templateUrl: './deposit-setting-list.component.html',
     styleUrls: ['./deposit-setting-list.component.scss'],
-    animations: [fuseAnimations]
+    animations: [fuseAnimations],
 })
 export class DepositSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
@@ -20,8 +20,7 @@ export class DepositSettingListComponent implements OnInit {
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public depositSettingService: DepositSettingService) {
-    }
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public depositSettingService: DepositSettingService) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -37,8 +36,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 id: 'bankName',
@@ -46,8 +45,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 id: 'branchCode',
@@ -55,8 +54,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 id: 'branchName',
@@ -64,8 +63,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 id: 'depositNumber',
@@ -73,8 +72,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 id: 'openingDate',
@@ -82,8 +81,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'date',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'date'
-                }
+                    type: 'date',
+                },
             },
             {
                 id: 'interestRate',
@@ -91,8 +90,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 id: 'glCode',
@@ -100,8 +99,8 @@ export class DepositSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'عملیات',
@@ -114,16 +113,16 @@ export class DepositSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.update(row)
+                        operation: ({ row }: any) => this.update(row),
                     },
                     {
                         name: 'حذف',
                         icon: 'delete',
                         color: 'warn',
-                        operation: ({ row }: any) => this.delete(row)
-                    }
-                ]
-            }
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
         ];
     }
 
@@ -134,7 +133,7 @@ export class DepositSettingListComponent implements OnInit {
             objectFromKeys[id] = '';
         });
         this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
+            ...objectFromKeys,
         });
     }
 
@@ -171,7 +170,7 @@ export class DepositSettingListComponent implements OnInit {
         this.matDialog
             .open(DepositSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: null
+                data: null,
             })
             .afterClosed()
             .subscribe((res) => {
@@ -185,7 +184,7 @@ export class DepositSettingListComponent implements OnInit {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
             })
             .afterClosed()
             .subscribe((res) => {
