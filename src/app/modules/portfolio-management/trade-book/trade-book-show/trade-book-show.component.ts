@@ -5,6 +5,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { TableElement } from '../trade-book.component';
 import { TradeBookService } from '../trade-book.service';
+import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'app-trade-book-show',
@@ -13,40 +14,28 @@ import { TradeBookService } from '../trade-book.service';
     animations: [fuseAnimations],
 })
 export class TradeBookShowComponent implements OnInit {
+    data: any;
+    columns: Array<ColumnModel> = [];
+    pagination = { skip: 0, limit: 5, total: 100 };
+
     org: string;
     ticker: string;
     pamCode: string;
     dateFromParam: string;
     dateFa: string;
 
-    columns: Array<any>;
     displayedColumns: Array<string>;
 
     dataSource: MatTableDataSource<TableElement>;
 
     dataToShow: any;
-    data: any;
 
     organizations: Array<any>;
     selectedOrg: any;
 
-    isWorking: any;
     failed = false;
 
-    constructor(private route: ActivatedRoute, public tbs: TradeBookService) {
-        this.columns = [
-            { name: 'تاریخ', id: 'dateFa', type: 'string', width: '200px' },
-            { name: 'خرید/فروش', id: 'tradeType', type: 'price', width: '200px' },
-            { name: 'حجم', id: 'volume', type: 'number', width: '10px' },
-            { name: 'تعداد موجود', id: 'inventory', type: 'number', width: '200px' },
-            { name: 'محل معامله', id: 'tradeLocation', type: 'string', width: '200px' },
-            { name: 'ارزش', id: 'value', type: 'price', width: '200px' },
-            { name: 'بهای تمام شده‌ی واحد', id: 'btu', type: 'price', width: '200px' },
-            { name: 'بهای تمام شده‌ی کل', id: 'btt', type: 'price', width: '200px' },
-            { name: 'سود و زیان واحد', id: 'plu', type: 'price', width: '200px' },
-            { name: 'سود و زیان کل', id: 'plt', type: 'price', width: '200px' },
-            { name: 'توضیحات', id: 'comments', type: 'price', width: '200px' },
-        ];
+    constructor(private route: ActivatedRoute, public tradeBookService: TradeBookService) {
         this.displayedColumns = ['position'];
         this.displayedColumns = this.displayedColumns.concat(this.columns.map((r) => r.id));
     }
@@ -64,15 +53,37 @@ export class TradeBookShowComponent implements OnInit {
                 day: 'numeric',
             });
 
-            if (!this.tbs.searchForm.value.date) {
-                this.tbs.searchForm.controls['date'].setValue(new Date(parseInt(this.dateFromParam, 10)));
+            if (!this.tradeBookService.searchForm.value.date) {
+                this.tradeBookService.searchForm.controls['date'].setValue(new Date(parseInt(this.dateFromParam, 10)));
             }
 
-            this.tbs.specificationModel.limit = 10;
-            this.tbs.specificationModel.skip = 0;
-
+            this.tradeBookService.specificationModel.limit = 10;
+            this.tradeBookService.specificationModel.skip = 0;
+            this.initializeColumns();
             this.get();
         });
+    }
+
+    initializeColumns(): void {
+        this.columns = [
+            { name: 'تاریخ', id: 'dateFa', type: 'string', minWidth: '200px' },
+            { name: 'خرید/فروش', id: 'tradeType', type: 'price', minWidth: '200px' },
+            { name: 'حجم', id: 'volume', type: 'number', minWidth: '10px' },
+            { name: 'تعداد موجود', id: 'inventory', type: 'number', minWidth: '200px' },
+            { name: 'محل معامله', id: 'tradeLocation', type: 'string', minWidth: '200px' },
+            { name: 'ارزش', id: 'value', type: 'price', minWidth: '200px' },
+            { name: 'بهای تمام شده‌ی واحد', id: 'btu', type: 'price', minWidth: '200px' },
+            { name: 'بهای تمام شده‌ی کل', id: 'btt', type: 'price', minWidth: '200px' },
+            { name: 'سود و زیان واحد', id: 'plu', type: 'price', minWidth: '200px' },
+            { name: 'سود و زیان کل', id: 'plt', type: 'price', minWidth: '200px' },
+            { name: 'توضیحات', id: 'comments', type: 'price', minWidth: '400px' },
+        ];
+    }
+
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.tradeBookService.specificationModel.limit = pageEvent.limit;
+        this.tradeBookService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.get();
     }
 
     get(): void {
@@ -81,19 +92,21 @@ export class TradeBookShowComponent implements OnInit {
         let date;
 
         if (this.dateFromParam) {
-            date = this.tbs.convertDate(new Date(parseInt(this.dateFromParam, 10)));
+            date = this.tradeBookService.convertDate(new Date(parseInt(this.dateFromParam, 10)));
         }
 
-        this.tbs.specificationModel.searchKeyword = {
+        this.tradeBookService.specificationModel.searchKeyword = {
             organization: this.org,
             ticker: this.ticker,
             pamCode: this.pamCode,
             date,
         };
 
-        this.tbs.getTradeData(this).subscribe((r) => {
-            this.tbs.setPageDetailData(r);
-            this.patchData(this.parseData(r));
+        this.tradeBookService.getTradeData(this).subscribe((res) => {
+            this.tradeBookService.setPageDetailData(res);
+            this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
+            this.patchData(this.parseData(res));
         });
     }
 
@@ -121,8 +134,8 @@ export class TradeBookShowComponent implements OnInit {
     }
 
     pageHandler(e: PagingEvent): void {
-        this.tbs.specificationModel.limit = e.pageSize;
-        this.tbs.specificationModel.skip = e.currentIndex * e.pageSize;
+        this.tradeBookService.specificationModel.limit = e.pageSize;
+        this.tradeBookService.specificationModel.skip = e.currentIndex * e.pageSize;
         this.get();
     }
 }
