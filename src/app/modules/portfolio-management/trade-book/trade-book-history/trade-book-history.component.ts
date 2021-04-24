@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PaginationChangeType } from '#shared/components/table/table.model';
 import { StateManager } from '#shared/pipes/stateManager.pipe';
 import { TradeBookHistoryService } from './trade-book-history.service';
+import { StateType } from '#shared/state-type.enum';
 
 @Component({
     selector: 'app-trade-book-history',
@@ -13,9 +14,11 @@ import { TradeBookHistoryService } from './trade-book-history.service';
     providers: [TradeBookHistoryService],
 })
 export class TradeBookHistoryComponent implements OnInit {
+    form: FormGroup = this.fb.group({ date: [this.dialogData.date] });
+    stateType: StateType = StateType.INIT;
+    //******
     tradeBook = { data: [], state: '' };
     columns: Array<any>;
-    searchFormGroup: FormGroup;
 
     isWorking: any = false;
     failed = false;
@@ -30,23 +33,25 @@ export class TradeBookHistoryComponent implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<TradeBookHistoryComponent>,
         @Inject(MAT_DIALOG_DATA) public dialogData,
-        public tbhs: TradeBookHistoryService
+        public tradeBookHistoryService: TradeBookHistoryService
     ) {}
 
     ngOnInit(): void {
-        // Search Group Init
-        this.searchFormGroup = this.fb.group({
-            date: [this.dialogData.date],
-        });
-        this.searchFormGroup.valueChanges.subscribe((newFormValue) => {
-            if (newFormValue.date) {
-                newFormValue.date = formatDate(new Date(newFormValue.date), 'yyyy-MM-dd', 'en_US');
-            }
+        this.createColumns();
+        this.form.valueChanges.subscribe((newFormValue) => {
+            if (newFormValue.date) newFormValue.date = formatDate(new Date(newFormValue.date), 'yyyy-MM-dd', 'en_US');
             this.searchParams = newFormValue;
             this.pagination.skip = 0;
-            this.get();
+            this.getTradeBookHistory();
         });
 
+        this.searchParams = this.form.value;
+        if (this.searchParams.date) this.searchParams.date = formatDate(new Date(this.searchParams.date), 'yyyy-MM-dd', 'en_US');
+
+        this.getTradeBookHistory();
+    }
+
+    private createColumns(): void {
         this.columns = [
             { name: 'سبد', id: 'organizationType', type: 'string' },
             { name: 'نماد', id: 'bourseAccount', type: 'string' },
@@ -56,25 +61,14 @@ export class TradeBookHistoryComponent implements OnInit {
                 id: 'date',
                 type: 'date',
                 convert: (value: any) => {
-                    return new Date(value).toLocaleDateString('fa-Ir', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                    });
+                    return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
                 },
             },
         ];
-
-        this.searchParams = this.searchFormGroup.value;
-        if (this.searchParams.date) {
-            this.searchParams.date = formatDate(new Date(this.searchParams.date), 'yyyy-MM-dd', 'en_US');
-        }
-
-        this.get();
     }
 
-    get(): void {
-        this.tbhs
+    public getTradeBookHistory(): void {
+        this.tradeBookHistoryService
             .show({ ...this.searchParams, ...this.pagination })
             .pipe(StateManager(this.tradeBook))
             .subscribe((data: any) => {
@@ -83,28 +77,21 @@ export class TradeBookHistoryComponent implements OnInit {
             });
     }
 
-    search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
+    public search(searchFilter: any): void {
+        if (!searchFilter) return;
+        if (searchFilter.date) searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
 
-        if (searchFilter.date) {
-            searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-        }
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
+        Object.keys(searchFilter).forEach((key) => this.form.controls[key].setValue(searchFilter[key]));
 
         this.searchParams = searchFilter;
         this.pagination.skip = 0;
-        this.get();
+        this.getTradeBookHistory();
     }
 
     pageHandler(pageEvent: PaginationChangeType): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
-        this.get();
+        this.getTradeBookHistory();
     }
 
     handleError(): boolean {
