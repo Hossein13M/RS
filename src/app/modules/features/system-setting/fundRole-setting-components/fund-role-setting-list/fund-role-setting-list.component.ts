@@ -115,18 +115,8 @@ export class FundRoleSettingListComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    {
-                        name: 'ویرایش',
-                        icon: 'create',
-                        color: 'accent',
-                        operation: ({ row }: any) => this.edit(row),
-                    },
-                    {
-                        name: 'حذف',
-                        icon: 'delete',
-                        color: 'warn',
-                        operation: ({ row }: any) => this.delete(row),
-                    },
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.edit(row) },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
                 ],
             },
         ];
@@ -135,18 +125,12 @@ export class FundRoleSettingListComponent implements OnInit {
     initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.column, 'id'));
         const objectFromKeys = {};
-        mapKeys.forEach((id) => {
-            objectFromKeys[id] = '';
-        });
-        this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys,
-        });
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
+        if (!searchFilter) return;
 
         Object.keys(searchFilter).forEach((key) => {
             this.searchFormGroup.controls[key].setValue(searchFilter[key]);
@@ -159,7 +143,7 @@ export class FundRoleSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.fundRoleService.specificationModel.limit = pageEvent.limit;
-        this.fundRoleService.specificationModel.skip = pageEvent.skip;
+        this.fundRoleService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
@@ -167,6 +151,7 @@ export class FundRoleSettingListComponent implements OnInit {
         this.fundRoleService.getWithPaging().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.fundRoleService.setPageDetailData(res);
         });
     }
@@ -181,7 +166,6 @@ export class FundRoleSettingListComponent implements OnInit {
     }
 
     delete(row): void {
-        console.log(row);
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
@@ -202,9 +186,7 @@ export class FundRoleSettingListComponent implements OnInit {
             .open(BourseBoardSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    _.assign(row, res);
-                }
+                if (res) _.assign(row, res);
             });
     }
 }

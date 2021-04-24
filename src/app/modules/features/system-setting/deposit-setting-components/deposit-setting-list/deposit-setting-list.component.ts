@@ -34,73 +34,49 @@ export class DepositSettingListComponent implements OnInit {
                 id: 'accountType',
                 name: 'نوع حساب',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 id: 'bankName',
                 name: 'نام بانک',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 id: 'branchCode',
                 name: 'کد شعبه',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 id: 'branchName',
                 name: 'نام شعبه',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 id: 'depositNumber',
                 name: 'شماره سپرده',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 id: 'openingDate',
                 name: 'تاریخ افتتاح',
                 type: 'date',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'date',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'date' },
             },
             {
                 id: 'interestRate',
                 name: 'نرخ سود',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 id: 'glCode',
                 name: 'کد سطح GL',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 name: 'عملیات',
@@ -132,9 +108,7 @@ export class DepositSettingListComponent implements OnInit {
         mapKeys.forEach((id) => {
             objectFromKeys[id] = '';
         });
-        this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys,
-        });
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
     search(searchFilter: any): void {
@@ -142,9 +116,7 @@ export class DepositSettingListComponent implements OnInit {
             return;
         }
 
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
 
         this.depositSettingService.specificationModel.searchKeyword = searchFilter;
         this.depositSettingService.specificationModel.skip = 0;
@@ -153,7 +125,7 @@ export class DepositSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.depositSettingService.specificationModel.limit = pageEvent.limit;
-        this.depositSettingService.specificationModel.skip = pageEvent.skip;
+        this.depositSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
@@ -161,30 +133,23 @@ export class DepositSettingListComponent implements OnInit {
         this.depositSettingService.get().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.depositSettingService.setPageDetailData(res);
         });
     }
 
     create(): void {
         this.matDialog
-            .open(DepositSettingAddComponent, {
-                panelClass: 'dialog-w60',
-                data: null,
-            })
+            .open(DepositSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    this.get();
-                }
+                if (res) this.get();
             });
     }
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, {
-                panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
-            })
+            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
@@ -200,9 +165,7 @@ export class DepositSettingListComponent implements OnInit {
             .open(DepositSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    _.assign(row, res);
-                }
+                if (res) _.assign(row, res);
             });
     }
 }

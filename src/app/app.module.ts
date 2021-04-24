@@ -22,6 +22,7 @@ import { AuthGuard } from './services/auth.guard';
 import { getFarsiPaginatorIntl } from './shared/components/table/farsi-paginator-intl';
 import { MaterialModule } from './shared/material.module';
 import { ShareModule } from './shared/share.module';
+import { GlModule } from './modules/gl/gl.module';
 
 const appRoutes: Routes = [
     {
@@ -52,11 +53,15 @@ const appRoutes: Routes = [
     },
     {
         path: 'alarming',
-        loadChildren: () => import('app/modules/features/alarming/alarming.module').then((x) => x.AlarmingModule),
+        loadChildren: () => import('app/modules/features/alarming/alarming.module').then((m) => m.AlarmingModule),
     },
     {
         path: 'nav',
-        loadChildren: () => import('app/modules/nav/nav.module').then((x) => x.NavModule),
+        loadChildren: () => import('app/modules/nav/nav.module').then((m) => m.NavModule),
+    },
+    {
+        path: 'risk-measurement',
+        loadChildren: () => import('app/modules/risk-measurement/risk-measurement.module').then((m) => m.RiskMeasurementModule),
     },
     {
         path: 'user',
@@ -65,10 +70,6 @@ const appRoutes: Routes = [
     {
         path: 'settings',
         loadChildren: () => import('app/modules/settings/settings.module').then((m) => m.SettingsModule),
-    },
-    {
-        path: 'gl',
-        loadChildren: () => import('app/modules/features/gl/gl.module').then((m) => m.GlModule),
     },
     {
         path: 'system-setting',
@@ -106,6 +107,8 @@ const appRoutes: Routes = [
         OpRiskModule,
 
         ShareModule,
+
+        GlModule,
 
         TestModule, // --> Test Playground
     ],

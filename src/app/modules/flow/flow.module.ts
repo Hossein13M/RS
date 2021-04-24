@@ -57,6 +57,7 @@ import { MarketMakingFeesReceivingInfoComponent } from './forms/tabs/market-maki
 import { SecuritiesInfoComponent } from './forms/tabs/securities-info/securities-info.component';
 import { SyndicateMembersNamesComponent } from './forms/tabs/syndicate-members-names/syndicate-members-names.component';
 import { VariableFeesInfoComponent } from './forms/tabs/variable-fees-info/variable-fees-info.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
     declarations: [
@@ -112,7 +113,7 @@ import { VariableFeesInfoComponent } from './forms/tabs/variable-fees-info/varia
         AddCommentDialogComponent,
         EndStateSettingDialogComponent,
     ],
-    imports: [CommonModule, FlowRoutingModule, DragDropModule, ShareModule, MatBottomSheetModule, MatProgressSpinnerModule, LayoutModule],
+    imports: [CommonModule, FlowRoutingModule, DragDropModule, ShareModule, MatBottomSheetModule, MatProgressSpinnerModule, LayoutModule, MatTooltipModule],
     exports: [ReactiveFormsModule, DragDropModule, ShareModule, FormBuilderComponent],
     entryComponents: [
         FormBuilderComponent,

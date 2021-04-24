@@ -33,10 +33,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
                 id: 'name',
                 name: 'نام',
                 type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 name: 'عملیات',
@@ -65,12 +62,8 @@ export class OrganizationTypeSettingListComponent implements OnInit {
     initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.column, 'id'));
         const objectFromKeys = {};
-        mapKeys.forEach((id) => {
-            objectFromKeys[id] = '';
-        });
-        this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys,
-        });
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
     search(searchFilter: any): void {
@@ -78,9 +71,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
             return;
         }
 
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
 
         this.organizationTypeService.specificationModel.searchKeyword = searchFilter;
         this.organizationTypeService.specificationModel.skip = 0;
@@ -92,52 +83,35 @@ export class OrganizationTypeSettingListComponent implements OnInit {
     }
 
     get(): void {
-        this.organizationTypeService.getOrganizationType().subscribe((res: any) => {
-            this.data = [...res];
-        });
+        this.organizationTypeService.getOrganizationType().subscribe((res: any) => (this.data = [...res]));
     }
 
     add(): void {
         this.matDialog
-            .open(OrganizationTypeSettingAddComponent, {
-                panelClass: 'dialog-w60',
-                data: null,
-            })
+            .open(OrganizationTypeSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    this.get();
-                }
+                if (res) this.get();
             });
     }
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, {
-                panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
-            })
+            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.organizationTypeService.deleteOrganizationType(row.id).subscribe((x) => {
-                        this.get();
-                    });
+                    this.organizationTypeService.deleteOrganizationType(row.id).subscribe(() => this.get());
                 }
             });
     }
 
     edit(row): void {
         this.matDialog
-            .open(OrganizationTypeSettingAddComponent, {
-                panelClass: 'dialog-w60',
-                data: row,
-            })
+            .open(OrganizationTypeSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    this.get();
-                }
+                if (res) this.get();
             });
     }
 }

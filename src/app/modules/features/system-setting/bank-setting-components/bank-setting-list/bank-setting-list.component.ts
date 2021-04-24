@@ -91,14 +91,16 @@ export class BankSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.bankService.specificationModel.limit = pageEvent.limit;
-        this.bankService.specificationModel.skip = pageEvent.skip;
+        this.bankService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
     get(): void {
         this.bankService.get().subscribe((res: any) => {
             this.data = [...res.items];
+            this.pagination.limit = res.limit;
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.bankService.setPageDetailData(res);
         });
     }

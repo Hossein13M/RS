@@ -2,16 +2,16 @@ import { FuseNavigation } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
     { id: 'assets', title: 'دارایی های تحت مدیریت', type: 'item', icon: 'money', url: '/aum' },
+    { id: 'nav', title: 'ارزش خالص دارایی ها', type: 'item', icon: 'show_chart', exactMatch: true, url: '/nav' },
     {
         id: 'marketRisk',
         title: 'ریسک بازار',
         icon: 'bar_chart',
         type: 'collapsable',
         children: [
-            { id: 'nav', title: 'ارزش خالص دارایی ها', type: 'item', icon: 'show_chart', exactMatch: true, url: '/nav' },
-            { id: 'yield_curve', title: 'منحنی بازده', type: 'item', icon: 'multiline_chart', url: '/nav/yield_curve' },
-            { id: 'assets_return', title: 'بازده ریسک و دارایی ها', type: 'item', icon: 'assignment_return', url: '/nav/assets_return' },
-            { id: 'risk_measuring', title: 'اندازه گیری ریسک', type: 'item', icon: 'straighten', url: '/nav/risk_measuring' },
+            { id: 'yield_curve', title: 'منحنی بازده', type: 'item', icon: 'multiline_chart', url: '/risk-measurement/yield_curve' },
+            { id: 'assets_return', title: 'بازده ریسک و دارایی ها', type: 'item', icon: 'assignment_return', url: '/risk-measurement/assets_return' },
+            { id: 'risk_measuring', title: 'اندازه گیری ریسک', type: 'item', icon: 'straighten', url: '/risk-measurement/risk_measuring' },
         ],
     },
     {
@@ -32,26 +32,6 @@ export const navigation: FuseNavigation[] = [
             },
         ],
     },
-    {
-        id: 'financialModel',
-        title: 'مدل مالی',
-        icon: 'bar_chart',
-        type: 'collapsable',
-        children: [
-            {
-                id: 'glBrief',
-                title: 'خلاصه دفتر کل',
-                type: 'collapsable',
-                icon: 'aspect_ratio',
-                children: [
-                    { id: 'tree', type: 'item', url: '/gl/tree', title: 'درختواره خلاصه دفتر', icon: 'subject' },
-                    { id: 'grid', type: 'item', url: '/gl/grid', title: 'جدول خلاصه دفتر', icon: 'grid_on' },
-                    { id: 'changes', type: 'item', url: 'gl/changes', title: 'تغییرات خلاصه دفتر', icon: 'published_with_changes' },
-                ],
-            },
-        ],
-    },
-
     {
         id: 'baseData',
         title: 'مدیریت قراردادها',

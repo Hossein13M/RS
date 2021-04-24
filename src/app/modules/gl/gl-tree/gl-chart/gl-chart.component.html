@@ -1,0 +1,189 @@
+<div>
+    <form [formGroup]="form" class="gl-chart-container">
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+
+                <mat-label>
+                    تاریخ دفتر کل ابتدا
+                    <span style="color: red">*</span>
+                </mat-label>
+
+                <input (click)="start3.open()"
+                       [max]="twoDayAgo"
+                       matInput
+                       formControlName="fromDate"
+                       [matDatepicker]="start3">
+                <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
+                <mat-datepicker #start3></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    تاریخ دفتر کل انتها
+                    <span style="color: red">*</span>
+                </mat-label>
+                <input (click)="start1.open()"
+                       [min]="form.get('fromDate').value"
+                       [max]="twoDayAgo"
+                       matInput
+                       formControlName="toDate"
+                       [matDatepicker]="start1">
+                <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                <mat-datepicker #start1></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    سطح ۰
+                    <span style="color: red">*</span>
+                </mat-label>
+                <mat-select formControlName="categoryLedgerCode">
+                    <mat-option style="text-align: right" *ngFor="let category of glCategories "
+                                [value]="category?.categoryLedgerCode">
+                        {{category?.categoryLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{category?.categoryLedgerName}}</span>
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    سطح ۱
+                </mat-label>
+                <mat-select formControlName="groupLedgerCode" [disabled]="!form.value.categoryLedgerCode">
+                    <mat-option style="text-align: right" *ngFor="let group of glGroups " [value]="group?.groupLedgerCode">
+                        {{group?.groupLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{group?.groupLedgerName}}</span>
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    سطح ۲
+                </mat-label>
+                <mat-select formControlName="generalLedgerCode" [disabled]="!form.value.groupLedgerCode">
+                    <mat-option style="text-align: right" *ngFor="let general of glGeneral " [value]="general?.generalLedgerCode">
+                        {{general?.generalLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{general?.generalLedgerName}}</span>
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    سطح ۳
+                </mat-label>
+                <mat-select formControlName="subsidiaryLedgerCode" [disabled]="!form.value.generalLedgerCode">
+                    <mat-option style="text-align: right" *ngFor="let subsidiary of glSubsidiary"
+                                [value]="subsidiary?.subsidiaryLedgerCode">
+                        {{subsidiary?.subsidiaryLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{subsidiary?.subsidiaryLedgerName}}</span>
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="contract-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>
+                    سطح ۴
+                </mat-label>
+                <mat-select formControlName="detailLedgerCode" [disabled]="!form.value.subsidiaryLedgerCode">
+                    <mat-option style="text-align: right" *ngFor="let detail of glDetail " [value]="detail?.detailLedgerCode">
+                        {{detail?.detailLedgerCode}}
+                        <span style="color: #9ea1a9;font-size: 12px">{{detail?.detailLedgerName}}</span>
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <button (click)="submitForm()" [disabled]="form?.invalid" color="warn" mat-raised-button>
+                <mat-icon>trending_up</mat-icon>
+                نمایش
+            </button>
+        </div>
+    </form>
+
+    <app-trend-chart *ngIf="data && data.length !== 0"
+                     convertJalali="true"
+                     height="400px"
+                     [data]="data">
+    </app-trend-chart>
+
+    <div class="no-data" *ngIf="data && data.length === 0">
+        <div
+            style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
+            <img width="140px" height="140px" src='../../../../../assets/images/no-data.svg'>
+            <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
+                موردی وجود ندارد
+            </div>
+        </div>
+    </div>
+
+    <!--<div *ngIf="true" style="height: 350px;overflow-y: scroll" class="form-tab-table-container">-->
+    <!--    <mat-table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">-->
+    <!--        <ng-container matColumnDef="id">-->
+    <!--            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>شناسه</mat-header-cell>-->
+    <!--            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>-->
+    <!--                <p class="email text-truncate">-->
+    <!--                    {{element?.id}}-->
+    <!--                </p>-->
+    <!--            </mat-cell>-->
+    <!--        </ng-container>-->
+    <!--        <ng-container matColumnDef="name">-->
+    <!--            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نام</mat-header-cell>-->
+    <!--            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>-->
+    <!--                <p class="email text-truncate">-->
+    <!--                    {{element?.name}}-->
+    <!--                </p>-->
+    <!--            </mat-cell>-->
+    <!--        </ng-container>-->
+    <!--        <ng-container matColumnDef="remainedAmount">-->
+    <!--            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>مانده</mat-header-cell>-->
+    <!--            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>-->
+    <!--                <p class="email text-truncate" style="direction: ltr">-->
+    <!--                    {{element?.remainedAmount | price}}-->
+    <!--                </p>-->
+    <!--            </mat-cell>-->
+    <!--        </ng-container>-->
+    <!--        <ng-container matColumnDef="date">-->
+    <!--            <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>تاریخ</mat-header-cell>-->
+    <!--            <mat-cell *matCellDef="let element" fxHide fxShow.gt-sm>-->
+    <!--                <p class="email text-truncate">-->
+    <!--                    {{element?.date | convertDate}}-->
+    <!--                </p>-->
+    <!--            </mat-cell>-->
+    <!--        </ng-container>-->
+    <!--        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>-->
+    <!--        <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple-->
+    <!--                 [@animate]="{value:'*',params:{y:'100%'}}">-->
+    <!--        </mat-row>-->
+    <!--    </mat-table>-->
+    <!--    <ng-container *ngIf="dataSource.data.length===0">-->
+    <!--        <div-->
+    <!--            style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">-->
+    <!--            <img width="140px" height="140px" src="./assets/images/no-data.svg">-->
+    <!--            <div style="font-size: 13px;color: #449FDB;margin-top: 7px">-->
+    <!--                موردی وجود ندارد-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </ng-container>-->
+    <!--</div>-->
+</div>

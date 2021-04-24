@@ -1,0 +1,102 @@
+@import '../../../../@fuse/scss/fuse';
+
+.asset-and-debbit-btn-container {
+    flex-basis: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.asset-and-debbit-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    align-items: center;
+    margin: 20px auto 0 auto;
+    padding: 0 40px;
+}
+
+.parent {
+    overflow: hidden;
+    width: 1000px;
+    height: 250px;
+    margin: 20px 0 20px 10px;
+    direction: rtl;
+    position: relative;
+}
+
+.header {
+    width: 100%;
+    height: 40px;
+    background-color: #3e90e5;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+}
+
+.header-item {
+    width: 50%;
+    text-align: center;
+    color: #fff;
+}
+
+.header-item:nth-child(1) {
+    border-left: 1px solid #000;
+}
+
+.body {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 0 40px;
+    height: 170px;
+    overflow: scroll;
+}
+
+.body-item {
+    width: 50%;
+    text-align: center;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.header1 {
+    width: 100%;
+    height: 40px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+}
+
+.body-item strong {
+    margin-bottom: 40px;
+}
+
+.item {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.asset-debit-btn {
+    display: flex;
+    padding: 10px 10px 20px 10px;
+    justify-content: flex-end;
+    align-items: center;
+}

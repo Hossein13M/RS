@@ -11,18 +11,14 @@ export class AuthGuard implements CanActivate {
 
     // FIXME: Remove can activate and implement canActivate Child
     canActivate(): Observable<boolean> {
-        console.log('gu2ard used');
         const out = new BehaviorSubject<boolean>(null);
         if (this.authenticationService.userToken) {
             if (!this.userInfoService.userInfo) {
-                console.log('no user detail');
                 this.userInfoService.userInfo$.subscribe(() => {
                     // FIXME: Implement new route access checker here
                     out.next(true);
                 });
             } else {
-                console.log('has user detail');
-
                 out.next(true);
             }
         } else {
