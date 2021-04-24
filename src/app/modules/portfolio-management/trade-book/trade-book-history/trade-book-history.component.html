@@ -1,54 +1,34 @@
-<div class='container'>
-    <div mat-dialog-title class='header' fxLayout='row wrap' fxLayoutAlign='space-between center' dir='rtl'>
+<div class="container">
+    <div mat-dialog-title class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl">
+        <h1>تاریخچه بروزرسانی IPS‌ها</h1>
 
-        <h1>
-            تاریخچه بروزرسانی IPS‌ها
-        </h1>
-
-        <form [formGroup]='searchFormGroup' dir='rtl'>
-            <mat-form-field appearance='fill'>
-
-                <mat-label>
-                    تاریخ
-                </mat-label>
-
-                <input matInput
-                       formControlName='date'
-                       [max]='today'
-                       [matDatepicker]='picker'>
-                <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+        <form [formGroup]="form" dir="rtl">
+            <mat-form-field appearance="fill">
+                <mat-label> تاریخ </mat-label>
+                <input matInput formControlName="date" [max]="today" [matDatepicker]="picker" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </form>
-
     </div>
 
     <div mat-dialog-content>
         <!--  Table  -->
-        <div class='fuse-card'>
-            <app-table [data]='tradeBook.data'
-                       [columns]='columns'
-                       [paginationSettings]="{ mode: 'backend' }"
-                       [paginationObj]='pagination'
-                       (paginationChange)='pageHandler($event)'
-                       (searchCall)='search($event)'>
+        <div class="fuse-card">
+            <app-table
+                [data]="tradeBook.data"
+                [columns]="columns"
+                [paginationSettings]="{ mode: 'backend' }"
+                [paginationObj]="pagination"
+                (paginationChange)="pageHandler($event)"
+                (searchCall)="search($event)"
+            >
             </app-table>
         </div>
 
         <!--   Getting Data Failed  -->
-        <div *ngIf='tradeBook.state === "FAIL"' fxLayout='row wrap' fxLayoutAlign='center center'>
-            دریافت داده ناموفق بود
-
-            <button mat-button
-                    class='againBtn'
-                    (click)='get()'>
-                دریافت دوباره
-            </button>
-        </div>
-
+        <div *ngIf="tradeBook.state === 'FAIL'" fxLayout="row wrap" fxLayoutAlign="center center">دریافت داده ناموفق بود</div>
         <!--   Help Quotes  -->
-        <p *ngIf='tradeBook.data?.length==0 && tradeBook.state === "PRESENT"' class='text-center'>
-            داده‌ای برای نمایش وجود ندارد
-        </p>
+        <p *ngIf="tradeBook.data?.length == 0 && tradeBook.state === 'PRESENT'" class="text-center">داده‌ای برای نمایش وجود ندارد</p>
     </div>
 </div>

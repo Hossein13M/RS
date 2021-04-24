@@ -17,23 +17,17 @@ export class TradeBookShowComponent implements OnInit {
     data: any;
     columns: Array<ColumnModel> = [];
     pagination = { skip: 0, limit: 5, total: 100 };
-
     org: string;
     ticker: string;
     pamCode: string;
     dateFromParam: string;
     dateFa: string;
-
     displayedColumns: Array<string>;
-
     dataSource: MatTableDataSource<TableElement>;
-
     dataToShow: any;
-
     organizations: Array<any>;
     selectedOrg: any;
-
-    failed = false;
+    failed: boolean = false;
 
     constructor(private route: ActivatedRoute, public tradeBookService: TradeBookService) {
         this.displayedColumns = ['position'];
