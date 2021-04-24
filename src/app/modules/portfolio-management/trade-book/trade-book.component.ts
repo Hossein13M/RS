@@ -33,7 +33,6 @@ interface TradeBook {
 })
 export class TradeBookComponent implements OnInit {
     pageUrl = `/${PMRoutePrefix}/book`;
-    //******************
     stateType: StateType = StateType.INIT;
     form: FormGroup = this.fb.group({ date: [new Date()], tradingBook: [[]] });
     tradeBooksList: Array<{ id: number; name: string }> = [];
@@ -48,12 +47,10 @@ export class TradeBookComponent implements OnInit {
         this.getAllTradingBooks();
     }
 
-    showBook(organizationType: any, ticker: any, pamCode: string): void {
+    public showBook(organizationType: any, ticker: any, pamCode: string): void {
         const date = new Date(this.tradingBookService.searchForm.value.date).getTime();
         this.router.navigate([this.pageUrl, date, organizationType, ticker, pamCode]);
     }
-
-    //***********
 
     private getAllTradingBooks(): void {
         this.stateType = StateType.LOADING;
