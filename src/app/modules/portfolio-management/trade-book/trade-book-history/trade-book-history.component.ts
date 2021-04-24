@@ -5,7 +5,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PaginationChangeType } from '#shared/components/table/table.model';
 import { StateManager } from '#shared/pipes/stateManager.pipe';
 import { TradeBookHistoryService } from './trade-book-history.service';
-import { StateType } from '#shared/state-type.enum';
 
 @Component({
     selector: 'app-trade-book-history',
@@ -15,8 +14,6 @@ import { StateType } from '#shared/state-type.enum';
 })
 export class TradeBookHistoryComponent implements OnInit {
     form: FormGroup = this.fb.group({ date: [this.dialogData.date] });
-    stateType: StateType = StateType.INIT;
-    //******
     tradeBook = { data: [], state: '' };
     columns: Array<any>;
 
@@ -26,8 +23,6 @@ export class TradeBookHistoryComponent implements OnInit {
 
     pagination = { skip: 0, limit: 5, total: 100 };
     searchParams: any = {};
-
-    state: any;
 
     constructor(
         private fb: FormBuilder,
@@ -69,7 +64,7 @@ export class TradeBookHistoryComponent implements OnInit {
 
     public getTradeBookHistory(): void {
         this.tradeBookHistoryService
-            .show({ ...this.searchParams, ...this.pagination })
+            .getIpsUpdateHistory({ ...this.searchParams, ...this.pagination })
             .pipe(StateManager(this.tradeBook))
             .subscribe((data: any) => {
                 this.tradeBook.data = data.items;
@@ -77,25 +72,9 @@ export class TradeBookHistoryComponent implements OnInit {
             });
     }
 
-    public search(searchFilter: any): void {
-        if (!searchFilter) return;
-        if (searchFilter.date) searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-
-        Object.keys(searchFilter).forEach((key) => this.form.controls[key].setValue(searchFilter[key]));
-
-        this.searchParams = searchFilter;
-        this.pagination.skip = 0;
-        this.getTradeBookHistory();
-    }
-
-    pageHandler(pageEvent: PaginationChangeType): void {
+    public pageHandler(pageEvent: PaginationChangeType): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getTradeBookHistory();
-    }
-
-    handleError(): boolean {
-        this.failed = true;
-        return false;
     }
 }

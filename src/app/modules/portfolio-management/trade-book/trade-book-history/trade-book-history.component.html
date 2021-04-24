@@ -13,7 +13,6 @@
     </div>
 
     <div mat-dialog-content>
-        <!--  Table  -->
         <div class="fuse-card">
             <app-table
                 [data]="tradeBook.data"
@@ -21,14 +20,11 @@
                 [paginationSettings]="{ mode: 'backend' }"
                 [paginationObj]="pagination"
                 (paginationChange)="pageHandler($event)"
-                (searchCall)="search($event)"
             >
             </app-table>
         </div>
 
-        <!--   Getting Data Failed  -->
         <div *ngIf="tradeBook.state === 'FAIL'" fxLayout="row wrap" fxLayoutAlign="center center">دریافت داده ناموفق بود</div>
-        <!--   Help Quotes  -->
-        <p *ngIf="tradeBook.data?.length == 0 && tradeBook.state === 'PRESENT'" class="text-center">داده‌ای برای نمایش وجود ندارد</p>
+        <div *ngIf="tradeBook.data?.length == 0 && tradeBook.state === 'PRESENT'" class="text-center">داده‌ای برای نمایش وجود ندارد</div>
     </div>
 </div>
