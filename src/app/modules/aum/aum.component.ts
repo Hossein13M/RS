@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AUMService } from 'app/modules/aum/aum.service';
@@ -8,6 +8,9 @@ import { StateManager } from 'app/shared/pipes/stateManager.pipe';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
+import * as _ from 'lodash';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { diff } from 'ngx-bootstrap/chronos/moment/diff';
 
 @Component({
     selector: 'app-aum',
@@ -204,5 +207,26 @@ export class AumComponent implements OnInit {
     private getAumDepositCertificate(): void {
         // FIXME: the following method has not been implemented yet!
         // this.aumService.getAumCertificateDeposit(this.searchParams.date).subscribe((result) => (this.aumCertificateDeposit = result));
+    }
+
+    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
+        const control: AbstractControl = this.form.controls[controlName];
+        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
+        const difference = _.difference(mappedValues, control.value).length;
+        console.log(difference);
+        if (difference === 0) {
+            return 'all';
+        } else if (difference === values.length) {
+            return 'none';
+        }
+        return 'indeterminate';
+    }
+
+    public selectAllHandler(basketsAllOption: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
+        if (basketsAllOption.checked) {
+            this.form.controls[controlName].patchValue(_.map(_.map(values, key), (value) => value.toString()));
+        } else {
+            this.form.controls[controlName].patchValue([]);
+        }
     }
 }

@@ -14,6 +14,14 @@
                                 (+{{ form.controls['baskets'].value.length }} {{ 'سبد' }})
                             </span>
                         </mat-select-trigger>
+                        <mat-checkbox
+                            #basketsAllOption
+                            class="mat-option"
+                            (change)="selectAllHandler(basketsAllOption, 'baskets', baskets)"
+                            [checked]="OptionAllState('baskets', baskets) === 'all'"
+                            [indeterminate]="OptionAllState('baskets', baskets) === 'indeterminate'"
+                            >همه</mat-checkbox
+                        >
                         <mat-option *ngFor="let basket of baskets" [value]="basket.id.toString()">{{ basket.title }}</mat-option>
                     </mat-select>
                 </mat-form-field>
