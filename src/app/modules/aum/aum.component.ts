@@ -213,7 +213,6 @@ export class AumComponent implements OnInit {
         const control: AbstractControl = this.form.controls[controlName];
         const mappedValues = _.map(_.map(values, key), (value) => value.toString());
         const difference = _.difference(mappedValues, control.value).length;
-        console.log(difference);
         if (difference === 0) {
             return 'all';
         } else if (difference === values.length) {
