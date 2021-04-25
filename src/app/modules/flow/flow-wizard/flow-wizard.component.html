@@ -126,12 +126,15 @@
 
             <ng-container *ngIf="flowWizard && formId">
                 <div *ngIf="flowWizard?.currentStateIndex>-1">
-                    <mat-horizontal-stepper [disableRipple]="true" #stepper dir="rtl"
+                    <mat-horizontal-stepper #stepper dir="rtl"
                                             class="fuse-card"
                                             [selectedIndex]="flowWizard?.currentStateIndex"
                                             style="width: 100%;margin:10px 0">
-                        <mat-step *ngFor="let f of flowWizard?.allStates;let i=index">
+                        <mat-step color="accent" [tabIndex]="i" *ngFor="let f of flowWizard?.allStates;let i=index" [completed]="i<flowWizard.currentStateIndex">
                             <ng-template matStepLabel>{{f}}</ng-template>
+                            <ng-template matStepperIcon="edit">
+                                <mat-icon color="primary">done</mat-icon>
+                            </ng-template>
                             <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></mat-header-row>
                             <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
                                      [@animate]="{value:'*',params:{y:'100%'}}">
