@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { formatDate } from '@angular/common';
 import { AssetsMonitoringService } from './assets-monitoring.service';
 import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
+import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
 
 @Component({
     selector: 'app-assets-monitoring',
@@ -15,9 +16,10 @@ export class AssetsMonitoringComponent implements OnInit {
     selectedInstrument: Instrument = { ticker: '', symbol: '' };
     haveInstrumentsAchieved: boolean = false;
     instruments: Array<Instrument> = [];
-    loading: boolean = false;
     assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [] };
-    showTable: boolean = false;
+    // implement state manager
+    loading: boolean = false;
+    isSectionShowing: boolean = false;
     dataLoading: boolean = false;
     tableColumn: Array<any> = [
         { id: 'type', name: '', type: 'string' },
@@ -39,7 +41,6 @@ export class AssetsMonitoringComponent implements OnInit {
             id: 'lastUpdateDate',
             name: 'آخرین تاریخ به‌روز‌رسانی',
             type: 'date',
-
             convert: (value: any) => {
                 return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
             },
@@ -63,6 +64,7 @@ export class AssetsMonitoringComponent implements OnInit {
             basket: this.form.value.basket,
             date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
         };
+        // let fixedSearchParams = this.checkDateForToday(searchParams);
         this.getInstruments(searchParams);
     }
 
@@ -75,13 +77,30 @@ export class AssetsMonitoringComponent implements OnInit {
             basket: this.form.value.basket,
             ticker: this.instrumentForm.value,
         };
+        // let fixedSearchParams = this.checkDateForToday(searchParam);
 
         this.assetsMonitoringService.getAssetMonitoringData(searchParam).subscribe((response) => {
-            this.showTable = true;
+            this.isSectionShowing = true;
+            this.dataLoading = true;
             this.loading = false;
             this.assetsMonitoringData = response;
-            this.dataLoading = true;
         });
+    }
+
+    private checkDateForToday(searchParams) {
+        //    for some reason (Danial asked) if the user chooses today, we need to return yesterday's date to Backend
+        if (this.isToday(this.form.value.date)) {
+            console.log('hello');
+            let yesterday = new Date(this.form.get('date').value.getTime());
+            yesterday.setDate(this.form.get('date').value.getDate() - 1);
+            searchParams.date = yesterday;
+        } else console.log('bye');
+        return searchParams;
+    }
+
+    private isToday(date): boolean {
+        let today = new Date();
+        return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
     }
 
     private getInstruments(searchParams: InstrumentSearchParams): void {
@@ -96,4 +115,13 @@ export class AssetsMonitoringComponent implements OnInit {
     public checkForValidationButton(): boolean {
         return this.form.valid && !this.form.get('date').hasError('required');
     }
+
+    public searchInstrument = (searchKey, data): void => {
+        data.state = searchSelectStateType.PRESENT;
+        if (!searchKey) {
+            data.list = this.instruments;
+            return;
+        }
+        data.list = this.instruments?.filter((el) => el.symbol?.includes(searchKey));
+    };
 }
