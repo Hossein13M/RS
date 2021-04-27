@@ -64,22 +64,22 @@ export class AssetsMonitoringComponent implements OnInit {
             basket: this.form.value.basket,
             date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
         };
-        // let fixedSearchParams = this.checkDateForToday(searchParams);
-        this.getInstruments(searchParams);
+        let fixedSearchParams = this.checkDateForToday(searchParams);
+        this.getInstruments(fixedSearchParams);
     }
 
     public getAssetsMonitoringDate(): void {
         this.dataLoading = false;
         this.loading = true;
         this.assetsMonitoringData.trendChart = [];
-        let searchParam = {
+        let searchParams = {
             date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
             basket: this.form.value.basket,
             ticker: this.instrumentForm.value,
         };
-        // let fixedSearchParams = this.checkDateForToday(searchParam);
+        let fixedSearchParams = this.checkDateForToday(searchParams);
 
-        this.assetsMonitoringService.getAssetMonitoringData(searchParam).subscribe((response) => {
+        this.assetsMonitoringService.getAssetMonitoringData(fixedSearchParams).subscribe((response) => {
             this.isSectionShowing = true;
             this.dataLoading = true;
             this.loading = false;
@@ -89,17 +89,16 @@ export class AssetsMonitoringComponent implements OnInit {
 
     private checkDateForToday(searchParams) {
         //    for some reason (Danial asked) if the user chooses today, we need to return yesterday's date to Backend
-        if (this.isToday(this.form.value.date)) {
-            console.log('hello');
-            let yesterday = new Date(this.form.get('date').value.getTime());
-            yesterday.setDate(this.form.get('date').value.getDate() - 1);
-            searchParams.date = yesterday;
-        } else console.log('bye');
+        if (this.isToday(this.form.value.date._d)) {
+            let yesterday = new Date(this.form.get('date').value._d.getTime());
+            yesterday.setDate(this.form.get('date').value._d.getDate() - 1);
+            searchParams.date = formatDate(yesterday, 'yyyy-MM-dd', 'en_US');
+        }
         return searchParams;
     }
 
     private isToday(date): boolean {
-        let today = new Date();
+        const today = new Date();
         return date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
     }
 
