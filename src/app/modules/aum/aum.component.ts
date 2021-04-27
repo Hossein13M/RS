@@ -221,8 +221,8 @@ export class AumComponent implements OnInit {
         return 'indeterminate';
     }
 
-    public selectAllHandler(basketsAllOption: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
-        if (basketsAllOption.checked) {
+    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
+        if (checkbox.checked) {
             this.form.controls[controlName].patchValue(_.map(_.map(values, key), (value) => value.toString()));
         } else {
             this.form.controls[controlName].patchValue([]);
