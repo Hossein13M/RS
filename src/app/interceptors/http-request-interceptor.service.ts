@@ -28,7 +28,8 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         // add base url
 
         // TODO: this condition is temp:  request.url.startsWith(`http://172.21.255.236:3003`)
-        if (!request.url.startsWith(`${environment.serviceUrl}`) && !request.url.startsWith(`http://172.21.255.236:3003`)) {
+        // && !request.url.startsWith(`http://172.21.253.98:3003`)
+        if (!request.url.startsWith(`${environment.serviceUrl}`)) {
             request = request.clone({ url: environment.serviceUrl + request.url });
         }
 
