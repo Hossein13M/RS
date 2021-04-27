@@ -228,4 +228,12 @@ export class AumComponent implements OnInit {
             this.form.controls[controlName].patchValue([]);
         }
     }
+
+    public filterCategories(): Array<Category> {
+        let categories = [];
+        if (this.categories) {
+            categories = this.categories.filter((row) => row.id !== 3);
+        }
+        return categories;
+    }
 }
