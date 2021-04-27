@@ -16,7 +16,8 @@
                         </mat-select-trigger>
                         <mat-checkbox
                             #basketsAllOption
-                            class="mat-option"
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
                             (change)="selectAllHandler(basketsAllOption, 'baskets', baskets)"
                             [checked]="OptionAllState('baskets', baskets) === 'all'"
                             [indeterminate]="OptionAllState('baskets', baskets) === 'indeterminate'"
@@ -34,7 +35,8 @@
                         </mat-select-trigger>
                         <mat-checkbox
                             #fundsAllOption
-                            class="mat-option"
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
                             (change)="selectAllHandler(fundsAllOption, 'funds', funds, 'nationalId')"
                             [checked]="OptionAllState('funds', funds, 'nationalId') === 'all'"
                             [indeterminate]="OptionAllState('funds', funds, 'nationalId') === 'indeterminate'"
@@ -54,7 +56,8 @@
                         </mat-select-trigger>
                         <mat-checkbox
                             #categoriesAllOption
-                            class="mat-option"
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
                             (change)="selectAllHandler(categoriesAllOption, 'categories', filterCategories())"
                             [checked]="OptionAllState('categories', filterCategories()) === 'all'"
                             [indeterminate]="OptionAllState('categories', filterCategories()) === 'indeterminate'"
@@ -74,7 +77,8 @@
                     <mat-select formControlName="NL" multiple required>
                         <mat-checkbox
                             #NLAllOption
-                            class="mat-option"
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
                             (change)="selectAllHandler(NLAllOption, 'NL', [{ id: 0 }, { id: 1 }])"
                             [checked]="OptionAllState('NL', [{ id: 0 }, { id: 1 }]) === 'all'"
                             [indeterminate]="OptionAllState('NL', [{ id: 0 }, { id: 1 }]) === 'indeterminate'"

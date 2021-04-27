@@ -13,3 +13,21 @@ textarea {
     -webkit-appearance: none;
     outline: none;
 }
+
+
+mat-checkbox.mat-all-option {
+    padding: 0;
+
+    & > label.mat-checkbox-layout {
+        margin: 0 16px;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+
+        & > span.mat-checkbox-inner-container {
+            margin-left: 8px !important;
+            margin-right: 0 !important;
+        }
+    }
+}
