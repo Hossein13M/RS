@@ -55,9 +55,9 @@
                         <mat-checkbox
                             #categoriesAllOption
                             class="mat-option"
-                            (change)="selectAllHandler(categoriesAllOption, 'categories', categories)"
-                            [checked]="OptionAllState('categories', categories) === 'all'"
-                            [indeterminate]="OptionAllState('categories', categories) === 'indeterminate'"
+                            (change)="selectAllHandler(categoriesAllOption, 'categories', filterCategories())"
+                            [checked]="OptionAllState('categories', filterCategories()) === 'all'"
+                            [indeterminate]="OptionAllState('categories', filterCategories()) === 'indeterminate'"
                             ><span>همه</span></mat-checkbox
                         >
                         <ng-container *ngFor="let category of categories">
@@ -72,6 +72,14 @@
                 <mat-form-field appearance="outline" style="min-width: 185px">
                     <mat-label>کل دارایی‌ها</mat-label>
                     <mat-select formControlName="NL" multiple required>
+                        <mat-checkbox
+                            #NLAllOption
+                            class="mat-option"
+                            (change)="selectAllHandler(NLAllOption, 'NL', [{ id: 0 }, { id: 1 }])"
+                            [checked]="OptionAllState('NL', [{ id: 0 }, { id: 1 }]) === 'all'"
+                            [indeterminate]="OptionAllState('NL', [{ id: 0 }, { id: 1 }]) === 'indeterminate'"
+                            ><span>همه</span></mat-checkbox
+                        >
                         <mat-option value="0"> بورسی </mat-option>
                         <mat-option value="1"> غیر بورسی </mat-option>
                     </mat-select>
