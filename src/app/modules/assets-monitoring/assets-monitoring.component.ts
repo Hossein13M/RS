@@ -1,0 +1,99 @@
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { formatDate } from '@angular/common';
+import { AssetsMonitoringService } from './assets-monitoring.service';
+import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
+
+@Component({
+    selector: 'app-assets-monitoring',
+    templateUrl: './assets-monitoring.component.html',
+    styleUrls: ['./assets-monitoring.component.scss'],
+})
+export class AssetsMonitoringComponent implements OnInit {
+    form: FormGroup = this.fb.group({ basket: [[], [Validators.required]], date: [] });
+    instrumentForm: FormControl = new FormControl('', Validators.required);
+    selectedInstrument: Instrument = { ticker: '', symbol: '' };
+    haveInstrumentsAchieved: boolean = false;
+    instruments: Array<Instrument> = [];
+    loading: boolean = false;
+    assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [] };
+    showTable: boolean = false;
+    dataLoading: boolean = false;
+    tableColumn: Array<any> = [
+        { id: 'type', name: '', type: 'string' },
+        { id: 'symbol', name: 'نماد', type: 'string' },
+        { id: 'price', name: 'قیمت پایانی', type: 'price' },
+        { id: 'value', name: 'ارزش کل', type: 'price' },
+        { id: 'volume', name: 'حجم کل', type: 'number' },
+        { id: 'percentOfTotalAssets', name: 'درصد از کل دارایی', type: 'number' },
+        { id: 'tradeLocation', name: 'محل معامله', type: 'string' },
+        {
+            id: 'maturityDate',
+            name: 'تاریخ سررسید',
+            type: 'date',
+            convert: (value: any) => {
+                return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
+            },
+        },
+        {
+            id: 'lastUpdateDate',
+            name: 'آخرین تاریخ به‌روز‌رسانی',
+            type: 'date',
+
+            convert: (value: any) => {
+                return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
+            },
+        },
+    ];
+
+    constructor(private fb: FormBuilder, private assetsMonitoringService: AssetsMonitoringService) {}
+
+    ngOnInit(): void {
+        this.form.valueChanges.subscribe(() => {
+            if (this.checkForValidationButton()) this.prepareDataForAPI();
+        });
+    }
+
+    public submitForm(): void {
+        this.getAssetsMonitoringDate();
+    }
+
+    private prepareDataForAPI(): void {
+        let searchParams: InstrumentSearchParams = {
+            basket: this.form.value.basket,
+            date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
+        };
+        this.getInstruments(searchParams);
+    }
+
+    public getAssetsMonitoringDate(): void {
+        this.dataLoading = false;
+        this.loading = true;
+        this.assetsMonitoringData.trendChart = [];
+        let searchParam = {
+            date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
+            basket: this.form.value.basket,
+            ticker: this.instrumentForm.value,
+        };
+
+        this.assetsMonitoringService.getAssetMonitoringData(searchParam).subscribe((response) => {
+            this.showTable = true;
+            this.loading = false;
+            this.assetsMonitoringData = response;
+            this.dataLoading = true;
+        });
+    }
+
+    private getInstruments(searchParams: InstrumentSearchParams): void {
+        this.loading = true;
+        this.haveInstrumentsAchieved = true;
+        this.assetsMonitoringService.getAssetInstruments(searchParams).subscribe((response) => {
+            this.loading = false;
+            this.instruments = response;
+        });
+    }
+
+    public checkForValidationButton(): boolean {
+        return this.form.valid && !this.form.get('date').hasError('required');
+    }
+}
