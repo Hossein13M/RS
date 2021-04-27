@@ -17,6 +17,7 @@ textarea {
 
 mat-checkbox.mat-all-option {
     padding: 0;
+    border-bottom: 1px solid #dfdfdf;
 
     & > label.mat-checkbox-layout {
         margin: 0 16px;
