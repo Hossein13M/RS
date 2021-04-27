@@ -13,7 +13,7 @@
                     <mat-select formControlName="owner" multiple>
                         <mat-checkbox
                             #ownerAllOption
-                            class="mat-option"
+                            class="mat-all-option mat-option"
                             (change)="selectAllHandler(ownerAllOption, 'owner', [{ id: 'T' }, { id: 'M' }])"
                             [checked]="OptionAllState('owner', [{ id: 'T' }, { id: 'M' }]) === 'all'"
                             [indeterminate]="OptionAllState('owner', [{ id: 'T' }, { id: 'M' }]) === 'indeterminate'"
