@@ -32,6 +32,14 @@
                         <mat-select-trigger>
                             <span *ngIf="form.controls['funds'].value?.length > 0"> (+{{ form.controls['funds'].value.length }} {{ 'صندوق' }}) </span>
                         </mat-select-trigger>
+                        <mat-checkbox
+                            #fundsAllOption
+                            class="mat-option"
+                            (change)="selectAllHandler(fundsAllOption, 'funds', funds, 'nationalId')"
+                            [checked]="OptionAllState('funds', funds, 'nationalId') === 'all'"
+                            [indeterminate]="OptionAllState('funds', funds, 'nationalId') === 'indeterminate'"
+                            >همه</mat-checkbox
+                        >
                         <mat-option *ngFor="let fund of funds" [value]="fund.nationalId.toString()">{{ fund.name }}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -44,6 +52,14 @@
                                 (+{{ form.controls['categories'].value.length }} {{ 'دارایی' }})
                             </span>
                         </mat-select-trigger>
+                        <mat-checkbox
+                            #categoriesAllOption
+                            class="mat-option"
+                            (change)="selectAllHandler(categoriesAllOption, 'categories', categories)"
+                            [checked]="OptionAllState('categories', categories) === 'all'"
+                            [indeterminate]="OptionAllState('categories', categories) === 'indeterminate'"
+                            ><span>همه</span></mat-checkbox
+                        >
                         <ng-container *ngFor="let category of categories">
                             <!-- remove this سبد سپرده -> id = 3-->
                             <mat-option *ngIf="category.id !== 3" [value]="category.id.toString()">
