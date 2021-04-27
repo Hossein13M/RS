@@ -58,7 +58,6 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
     public onClick(targetElement): void {
         if (this.alarmContainer) {
             const clickedInside = this.alarmContainer.nativeElement.contains(targetElement);
-            if (!clickedInside) console.log('outside clicked');
         }
     }
 
