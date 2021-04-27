@@ -105,6 +105,15 @@
                         <mat-form-field appearance="outline">
                             <mat-label>دفتر/میز</mat-label>
                             <mat-select formControlName="organization" multiple>
+                                <mat-checkbox
+                                    #organizationAllOption
+                                    class="mat-all-option mat-option"
+                                    (click)="$event.stopPropagation()"
+                                    (change)="selectAllHandler(organizationAllOption, 'organization', organizations, 'organizationType')"
+                                    [checked]="OptionAllState('organization', organizations, 'organizationType') === 'all'"
+                                    [indeterminate]="OptionAllState('organization', organizations, 'organizationType') === 'indeterminate'"
+                                >همه</mat-checkbox
+                                >
                                 <mat-option *ngFor="let org of organizations" [value]="org.organizationType">
                                     {{ org.organizationName }}
                                 </mat-option>
