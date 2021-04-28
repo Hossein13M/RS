@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { AssetsMonitoringService } from './assets-monitoring.service';
-import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
 import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
+import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
 
 @Component({
     selector: 'app-assets-monitoring',
@@ -12,8 +12,7 @@ import { searchSelectStateType } from '#shared/components/search-select/search-s
 })
 export class AssetsMonitoringComponent implements OnInit {
     form: FormGroup = this.fb.group({ basket: [[], [Validators.required]], date: [] });
-    instrumentForm: FormControl = new FormControl('', Validators.required);
-    selectedInstrument: Instrument = { ticker: '', symbol: '' };
+    instrumentFormControl: FormControl = new FormControl([], Validators.required);
     haveInstrumentsAchieved: boolean = false;
     instruments: Array<Instrument> = [];
     assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [] };
@@ -75,7 +74,7 @@ export class AssetsMonitoringComponent implements OnInit {
         let searchParams = {
             date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
             basket: this.form.value.basket,
-            ticker: this.instrumentForm.value,
+            ticker: this.instrumentFormControl.value,
         };
         let fixedSearchParams = this.checkDateForToday(searchParams);
 
