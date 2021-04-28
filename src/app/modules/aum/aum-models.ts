@@ -20,7 +20,7 @@ export interface SearchParams {
     fundNationalCodes: any;
     date: any;
     listedAssets: boolean;
-    nonListedAssets: boolean;
+    nonlistedAssets: boolean;
     bondsAssets: boolean;
     stocksAssets: boolean;
     fundsAssets: boolean;
