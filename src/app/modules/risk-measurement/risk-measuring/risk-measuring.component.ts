@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { RiskMeasuringService } from '../risk-measuring.service';
+import * as _ from "lodash";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
     selector: 'app-risk-measuring',
@@ -88,5 +90,25 @@ export class RiskMeasuringComponent implements OnInit {
         const y = Math.floor(Math.random() * 256);
         const z = Math.floor(Math.random() * 256);
         return 'rgb(' + x + ',' + y + ',' + z + ')';
+    }
+
+    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
+        const control: AbstractControl = this.form.controls[controlName];
+        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
+        const difference = _.difference(mappedValues, control.value).length;
+        if (difference === 0) {
+            return 'all';
+        } else if (difference === values.length) {
+            return 'none';
+        }
+        return 'indeterminate';
+    }
+
+    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
+        if (checkbox.checked) {
+            this.form.controls[controlName].patchValue(_.map(_.map(values, key), (value) => value.toString()));
+        } else {
+            this.form.controls[controlName].patchValue([]);
+        }
     }
 }
