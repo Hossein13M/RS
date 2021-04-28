@@ -79,6 +79,11 @@ const appRoutes: Routes = [
         path: 'welcome',
         loadChildren: () => import('app/modules/welcome/welcome.module').then((m) => m.WelcomeModule),
     },
+
+    {
+        path: 'assets-monitoring',
+        loadChildren: () => import('app/modules/assets-monitoring/assets-monitoring.module').then((m) => m.AssetsMonitoringModule),
+    },
 ];
 
 @NgModule({
@@ -103,11 +108,8 @@ const appRoutes: Routes = [
         FuseThemeOptionsModule,
 
         PortfolioManagementModule,
-
         OpRiskModule,
-
         ShareModule,
-
         GlModule,
 
         TestModule, // --> Test Playground

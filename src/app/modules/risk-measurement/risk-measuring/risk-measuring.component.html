@@ -11,6 +11,14 @@
                 <mat-form-field appearance="outline" fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
                     <mat-label>میز / سبد</mat-label>
                     <mat-select formControlName="owner" multiple>
+                        <mat-checkbox
+                            #ownerAllOption
+                            class="mat-all-option mat-option"
+                            (change)="selectAllHandler(ownerAllOption, 'owner', [{ id: 'T' }, { id: 'M' }])"
+                            [checked]="OptionAllState('owner', [{ id: 'T' }, { id: 'M' }]) === 'all'"
+                            [indeterminate]="OptionAllState('owner', [{ id: 'T' }, { id: 'M' }]) === 'indeterminate'"
+                            ><span>همه</span></mat-checkbox
+                        >
                         <mat-option value="T">تمدن</mat-option>
                         <mat-option value="M">بازارگردانی</mat-option>
                     </mat-select>

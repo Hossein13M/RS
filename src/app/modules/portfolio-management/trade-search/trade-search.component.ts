@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BourseInstrumentDetailService } from 'app/services/API/services/bourse-instrument-detail.service';
@@ -7,6 +7,8 @@ import { StateType } from 'app/shared/state-type.enum';
 import { debounceTime } from 'rxjs/operators';
 import { TableElement } from '../trade-book/trade-book.component';
 import { TradeSearchService } from './trade-search.service';
+import {MatCheckbox} from "@angular/material/checkbox";
+import * as _ from "lodash";
 
 interface Ticker {
     id: number;
@@ -38,7 +40,7 @@ export class TradeSearchComponent implements OnInit {
     });
     searchCollapse: boolean = true;
     pagination = { skip: 0, limit: 5, total: 100 };
-    organizations: Array<{ organizationName: string; organizationType: string }>;
+    organizations: Array<{ organizationName: string; organizationType: string }> = [];
     today: Date = new Date();
 
     tradeLocations = [
@@ -187,5 +189,25 @@ export class TradeSearchComponent implements OnInit {
     private selectTicker(ticker: any): void {
         const existTicker = this.selectedTickersList.find((el) => el.id === ticker.id);
         if (!existTicker) this.selectedTickersList.push(ticker);
+    }
+
+    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
+        if (checkbox.checked) {
+            this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
+        } else {
+            this.form.controls[controlName].patchValue([]);
+        }
+    }
+
+    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
+        const control: AbstractControl = this.form.controls[controlName];
+        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
+        const difference = _.difference(mappedValues, control.value).length;
+        if (difference === 0) {
+            return 'all';
+        } else if (difference === values.length) {
+            return 'none';
+        }
+        return 'indeterminate';
     }
 }
