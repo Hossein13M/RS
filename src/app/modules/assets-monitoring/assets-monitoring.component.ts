@@ -4,6 +4,8 @@ import { formatDate } from '@angular/common';
 import { AssetsMonitoringService } from './assets-monitoring.service';
 import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
 import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
+import { MatDialog } from '@angular/material/dialog';
+import { AssetsMonitoringIpsDialogComponent } from './assets-monitoring-ips-dialog/assets-monitoring-ips-dialog.component';
 
 @Component({
     selector: 'app-assets-monitoring',
@@ -46,7 +48,7 @@ export class AssetsMonitoringComponent implements OnInit {
         },
     ];
 
-    constructor(private fb: FormBuilder, private assetsMonitoringService: AssetsMonitoringService) {}
+    constructor(private fb: FormBuilder, private assetsMonitoringService: AssetsMonitoringService, private dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.form.valueChanges.subscribe(() => {
@@ -122,4 +124,8 @@ export class AssetsMonitoringComponent implements OnInit {
         }
         data.list = this.instruments?.filter((el) => el.symbol?.includes(searchKey));
     };
+
+    public openIpsHistoryDialog(): void {
+        this.dialog.open(AssetsMonitoringIpsDialogComponent, { width: '1000px' });
+    }
 }
