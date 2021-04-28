@@ -5,7 +5,7 @@
 .mat-card-am {
     display: flex;
     justify-content: space-between;
-    gap: 30px;
+    gap: 60px;
     mat-card {
         padding: 0;
         width: 100%;
@@ -43,7 +43,5 @@ mat-card-header {
 
 .chart-mat-card {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-grow: 1;
 }
