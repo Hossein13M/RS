@@ -28,7 +28,7 @@ export class AumComponent implements OnInit {
         fundNationalCodes: [],
         date: undefined,
         listedAssets: false,
-        nonListedAssets: false,
+        nonlistedAssets: false,
         bondsAssets: false,
         stocksAssets: false,
         fundsAssets: false,
@@ -117,7 +117,7 @@ export class AumComponent implements OnInit {
         this.searchParams.tamadonAssets = this.form.get('baskets').value.includes('1');
         this.searchParams.date = formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US');
         this.searchParams.listedAssets = this.form.value.NL.includes('0');
-        this.searchParams.nonListedAssets = this.form.value.NL.includes('1');
+        this.searchParams.nonlistedAssets = this.form.value.NL.includes('1');
         this.searchParams.bondsAssets = this.form.get('categories').value.includes('1');
         this.searchParams.stocksAssets = this.form.get('categories').value.includes('2');
         this.searchParams.fundsAssets = this.form.get('categories').value.includes('4');
