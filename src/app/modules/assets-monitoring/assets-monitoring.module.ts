@@ -17,6 +17,7 @@ import { ChartModule } from '#shared/components/chart/chart.module';
 import { AssetsMonitoringService } from './assets-monitoring.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AssetsMonitoringIpsDialogModule } from './assets-monitoring-ips-dialog/assets-monitoring-ips-dialog.module';
 
 @NgModule({
     declarations: [AssetsMonitoringComponent],
@@ -37,6 +38,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatExpansionModule,
         MatProgressSpinnerModule,
         ChartModule,
+        AssetsMonitoringIpsDialogModule,
     ],
     providers: [AssetsMonitoringService],
 })
