@@ -41,3 +41,11 @@ export interface AssetMonitoring {
     trendChart: Array<TrendChart>;
     pieChart: Array<PieChart>;
 }
+
+export interface AssetsMonitoringIPSHistory {
+    date: string;
+    fundNationalCode: string;
+    organizationType: string;
+    symbol: string;
+    ticker: string;
+}
