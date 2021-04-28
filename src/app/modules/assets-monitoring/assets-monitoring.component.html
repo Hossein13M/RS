@@ -1,5 +1,10 @@
 <div class="page-layout">
-    <app-header pageTitle="پایش دارایی‌ها" class="wp-100"> </app-header>
+    <app-header pageTitle="پایش دارایی‌ها" class="wp-100">
+        <button mat-stroked-button (click)="openIpsHistoryDialog()">
+            <mat-icon class="mat-18">history</mat-icon>
+            نمایش تاریخچه‌ی IPSها
+        </button>
+    </app-header>
     <mat-progress-bar mode="indeterminate" color="warn" *ngIf="loading"></mat-progress-bar>
     <div class="container fuse-card mx-20 mt-20" dir="rtl" style="flex: 1">
         <form [formGroup]="form" (submit)="submitForm()" fxLayout="row wrap" fxLayoutGap="20px" style="padding: 30px">
