@@ -28,9 +28,16 @@ export interface TrendChart {
     totalVolume: number;
 }
 
+export interface PieChart {
+    children: Array<{ name: string; value: string }>;
+    name: string;
+    value: number;
+}
+
 export interface AssetMonitoring {
     tableOfAssets: Array<AssetsTable>;
     totalVolume: number;
     totalValue: number;
     trendChart: Array<TrendChart>;
+    pieChart: Array<PieChart>;
 }
