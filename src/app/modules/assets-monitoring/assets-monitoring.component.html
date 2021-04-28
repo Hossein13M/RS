@@ -58,7 +58,6 @@
                         <mat-card-title>ارزش کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <mat-spinner *ngIf="loading" class="mx-auto"></mat-spinner>
                         <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalValue | price }}</p>
                     </mat-card-content>
                 </div>
@@ -67,8 +66,7 @@
                         <mat-card-title>حجم کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <mat-spinner *ngIf="loading" class="mx-auto"></mat-spinner>
-                        <p *ngIf="!loading" class="text-center">تعداد: {{ assetsMonitoringData.totalVolume | number }}</p>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number }}</p>
                     </mat-card-content>
                 </div>
             </mat-card>
@@ -78,7 +76,14 @@
                     <mat-card-title>نمودار دایره‌ای</mat-card-title>
                 </mat-card-header>
                 <mat-card-content class="chart-mat-card">
-                    <p>نمودار</p>
+                    <app-pie-chart
+                        [data]="assetsMonitoringData.pieChart"
+                        height="300px"
+                        chartName="نمودار دایره‌ای"
+                        [cardLayout]="false"
+                        categoryLabel="name"
+                    >
+                    </app-pie-chart>
                 </mat-card-content>
             </mat-card>
         </div>
@@ -88,7 +93,6 @@
                 <mat-card-title class="text-center">نمودار ارزش کل دارایی‌ها</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <mat-spinner *ngIf="!dataLoading" class="mx-auto"></mat-spinner>
                 <app-trend-chart *ngIf="dataLoading" [data]="assetsMonitoringData.trendChart" [convertJalali]="true" height="380px">
                 </app-trend-chart>
             </mat-card-content>
@@ -99,7 +103,6 @@
                 <mat-card-title class="text-center">جدول ارزش کل دارایی‌ها</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <mat-spinner *ngIf="loading" class="mx-auto"></mat-spinner>
                 <app-table
                     class="app-table mt-20"
                     *ngIf="!loading"
