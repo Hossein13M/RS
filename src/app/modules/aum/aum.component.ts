@@ -10,7 +10,6 @@ import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
 import * as _ from 'lodash';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { diff } from 'ngx-bootstrap/chronos/moment/diff';
 
 @Component({
     selector: 'app-aum',
