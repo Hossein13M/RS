@@ -1,0 +1,47 @@
+.app-table {
+    width: 100%;
+}
+
+.mat-card-am {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+    mat-card {
+        padding: 0;
+        width: 100%;
+        min-height: 350px;
+        justify-content: space-between;
+        align-items: center;
+        & > div {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            flex-grow: 1;
+            & > mat-card-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-grow: 1;
+                height: 100%;
+                p {
+                    font-size: 25px;
+                }
+            }
+        }
+    }
+}
+
+mat-card-header {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 0;
+    mat-card-title {
+        margin-bottom: 0;
+    }
+}
+
+.chart-mat-card {
+    display: flex;
+    flex-grow: 1;
+}

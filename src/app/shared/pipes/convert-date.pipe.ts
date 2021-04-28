@@ -10,8 +10,6 @@ export class ConvertDatePipe implements PipeTransform {
             moment.locale('fa', { useGregorianParser: true });
             let MomentDate = moment(value).locale('fa').format('jYYYY/jMM/jDD');
             return MomentDate;
-        } else {
-            return null;
-        }
+        } else return null;
     }
 }

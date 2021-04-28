@@ -1,0 +1,116 @@
+<div class="page-layout">
+    <app-header pageTitle="پایش دارایی‌ها" class="wp-100"> </app-header>
+    <mat-progress-bar mode="indeterminate" color="warn" *ngIf="loading"></mat-progress-bar>
+    <div class="container fuse-card mx-20 mt-20" dir="rtl" style="flex: 1">
+        <form [formGroup]="form" (submit)="submitForm()" fxLayout="row wrap" fxLayoutGap="20px" style="padding: 30px">
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <mat-form-field appearance="outline" style="min-width: 150px">
+                    <mat-label>سبد</mat-label>
+                    <mat-select formControlName="basket">
+                        <mat-option value="T">تمدن</mat-option>
+                        <mat-option value="F">صندوق</mat-option>
+                        <mat-option [value]="['F', 'T']">همه</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-wid" appearance="outline">
+                    <mat-label>تاریخ</mat-label>
+                    <input (click)="picker.open()" matInput formControlName="date" [matDatepicker]="picker" required />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <app-search-select
+                    *ngIf="haveInstrumentsAchieved"
+                    [searchFn]="searchInstrument"
+                    [formControl]="instrumentFormControl"
+                    [list]="instruments"
+                    valuePropertyName="ticker"
+                    label="فهرست ابزارها"
+                    uiPropertyName="symbol"
+                    [multi]="false"
+                    [required]="true"
+                    style="width: 150px"
+                >
+                </app-search-select>
+            </div>
+
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <button
+                    mat-stroked-button
+                    color="accent"
+                    [disabled]="!checkForValidationButton() || loading || instrumentFormControl.invalid"
+                    type="submit"
+                >
+                    <mat-icon class="mat-18"> search </mat-icon>
+                    جستجو
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="fuse-card mt-40 mx-20" *ngIf="isSectionShowing">
+        <div class="mb-40 pt-20 mx-20 mat-card-am">
+            <mat-card fxLayout="column wrap">
+                <div>
+                    <mat-card-header class="accent">
+                        <mat-card-title>ارزش کل</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalValue | price }}</p>
+                    </mat-card-content>
+                </div>
+                <div>
+                    <mat-card-header class="accent">
+                        <mat-card-title>حجم کل</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number }}</p>
+                    </mat-card-content>
+                </div>
+            </mat-card>
+
+            <mat-card fxLayout="column wrap">
+                <mat-card-header class="accent">
+                    <mat-card-title>نمودار دایره‌ای</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="chart-mat-card">
+                    <app-pie-chart
+                        [data]="assetsMonitoringData.pieChart"
+                        height="300px"
+                        chartName="نمودار دایره‌ای"
+                        [cardLayout]="false"
+                        categoryLabel="name"
+                    >
+                    </app-pie-chart>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <mat-card class="mb-40 mt-40 mx-20 p-0">
+            <mat-card-header class="accent">
+                <mat-card-title class="text-center">نمودار ارزش کل دارایی</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <app-trend-chart *ngIf="dataLoading" [data]="assetsMonitoringData.trendChart" [convertJalali]="true" height="380px">
+                </app-trend-chart>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="mb-40 mt-40 mx-20 p-0">
+            <mat-card-header class="accent">
+                <mat-card-title class="text-center">جدول ارزش کل دارایی</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <app-table
+                    class="app-table mt-20"
+                    *ngIf="!loading"
+                    [data]="assetsMonitoringData.tableOfAssets"
+                    [columns]="tableColumn"
+                    [paginationSettings]="{ mode: 'local' }"
+                >
+                </app-table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -138,6 +138,17 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
             this.button.hidden = false;
             this.button.appear();
             this.pieSeries.appear();
+        } else if (event.dataContext.hasOwnProperty('children')) {
+            this.selectedSlice = event.slice;
+            const fill = this.selectedSlice.fill;
+            const count = event.dataContext.children.length;
+            this.pieSeries.colors.list = [];
+            // for (var i = 0; i < count; i++) this.nlpieSeries.colors.list.push(fill.brighten((i * 2) / count));
+            this.chart.data = event.dataContext.children;
+            this.drillLevels.push(event.dataContext.children);
+            this.button.hidden = false;
+            this.button.appear();
+            this.pieSeries.appear();
         }
     }
 
