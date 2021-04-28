@@ -16,7 +16,7 @@ export class AssetsMonitoringComponent implements OnInit {
     selectedInstrument: Instrument = { ticker: '', symbol: '' };
     haveInstrumentsAchieved: boolean = false;
     instruments: Array<Instrument> = [];
-    assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [] };
+    assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [], pieChart: [] };
     // implement state manager
     loading: boolean = false;
     isSectionShowing: boolean = false;
