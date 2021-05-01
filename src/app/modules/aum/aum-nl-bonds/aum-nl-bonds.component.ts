@@ -30,7 +30,7 @@ export class AumNlBondsComponent {
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبداوراق', id: 'percentageOfBonds', type: 'number' },
             { name: 'نرخ سود اسمی', id: 'couponRate', type: 'number' },
-            { name: 'ارزش', id: 'value', type: 'number' },
+            { name: 'ارزش', id: 'value', type: 'price' },
             {
                 id: 'rowDetail',
                 type: 'rowDetail',
