@@ -136,8 +136,8 @@ export class AumComponent implements OnInit {
                         else if (element == 1) this.getAumBond(false);
                         else if (element == 4) this.getAumFund(false);
                     } else if (isBourse == 1) {
-                        if (element == 2) this.getAumBond();
-                        else if (element == 1) this.getAumStock();
+                        if (element == 1) this.getAumBond();
+                        else if (element == 2) this.getAumStock();
                         else if (element == 4) this.getAumFund();
                     }
                 });
@@ -148,7 +148,7 @@ export class AumComponent implements OnInit {
             if (this.form.get('baskets').value.length > 1 || this.form.get('categories').value.length > 1 || this.form.get('NL').value.length > 1)
                 this.getAumEtf();
         }, 100);
-        // 100 ms delay is beacuse angular bug: not detecting changes fast
+        // 100 ms delay is because angular bug: not detecting changes fast
     }
 
     // *** method for getting data on formSubmit ***
