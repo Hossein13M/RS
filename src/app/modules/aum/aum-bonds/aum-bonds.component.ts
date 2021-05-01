@@ -23,7 +23,7 @@ export class AumBondsComponent {
     createColumn() {
         this.columns = [
             { name: 'نام', id: 'name', type: 'string', search: { type: 'text', mode: TableSearchMode.LOCAL } },
-            { name: 'ارزش روز', id: 'dayValue', type: 'number' },
+            { name: 'ارزش روز', id: 'dayValue', type: 'price' },
             { name: 'قیمت روز', id: 'dayPrice', type: 'price' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبداوراق', id: 'percentageOfBonds', type: 'number' },
