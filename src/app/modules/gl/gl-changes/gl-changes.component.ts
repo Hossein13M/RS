@@ -8,7 +8,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { GlService } from 'app/modules/gl/gl.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import {GlCategoryModel, GlGeneralModel, GlGroupModel, TreeOrderType} from '../gl.model';
+import { GlCategoryModel, GlGeneralModel, GlGroupModel, TreeOrderType } from '../gl.model';
 import { GlChangesService } from './gl-changes.service';
 
 @Component({

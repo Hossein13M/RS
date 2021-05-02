@@ -81,7 +81,7 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
             this.chart.numberFormatter.numberFormat = {
                 style: 'decimal',
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 2
+                maximumFractionDigits: 2,
             };
             this.chart.rtl = true;
             this.chart.data = data;

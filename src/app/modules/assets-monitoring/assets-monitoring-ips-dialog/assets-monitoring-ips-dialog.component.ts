@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { AssetsMonitoringService } from '../assets-monitoring.service';
 import { formatDate } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { AssetsMonitoringIPSHistory } from '../assets-monitoring.model';
+import { AssetsMonitoringService } from '../assets-monitoring.service';
 
 @Component({
     selector: 'app-assets-monitoring-ips-dialog',

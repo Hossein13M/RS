@@ -1,7 +1,7 @@
 /* tslint:disable */
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
+import { environment } from '#env/environment';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ApiConfiguration } from '../api-configuration';

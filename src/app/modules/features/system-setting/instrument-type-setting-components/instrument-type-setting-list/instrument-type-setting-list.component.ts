@@ -1,11 +1,11 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { InstrumentTypeService } from 'app/services/feature-services/system-setting-services/instrument-type.service';
-import { InstrumentTypeSettingAddComponent } from '../instrument-type-setting-add/instrument-type-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { InstrumentTypeSettingAddComponent } from '../instrument-type-setting-add/instrument-type-setting-add.component';
 
 @Component({
     selector: 'app-instrument-type-setting-list',

@@ -12,12 +12,12 @@ import { IssuerLicenceService } from 'app/services/App/IssuerLicence/issuer-lice
 import { SearchSelectDataType, searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
 import * as moment from 'jalali-moment';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { fuseAnimations } from '../../../../@fuse/animations';
 import { CollaterallsComponent } from './collateralls/collateralls.component';
 import { DateComponent } from './date/date.component';
 import { GuarantorsComponent } from './guarantors/guarantors.component';
 import { MarketMakerComponent } from './market-maker/market-maker.component';
 import { UnderWriterComponent } from './under-writer/under-writer.component';
-import { fuseAnimations } from '../../../../@fuse/animations';
 
 export enum stateType {
     'LOADING',

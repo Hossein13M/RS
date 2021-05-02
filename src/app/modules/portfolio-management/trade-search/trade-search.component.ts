@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { BourseInstrumentDetailService } from 'app/services/API/services/bourse-instrument-detail.service';
 import { StateType } from 'app/shared/state-type.enum';
+import * as _ from 'lodash';
 import { debounceTime } from 'rxjs/operators';
 import { TableElement } from '../trade-book/trade-book.component';
 import { TradeSearchService } from './trade-search.service';
-import {MatCheckbox} from "@angular/material/checkbox";
-import * as _ from "lodash";
 
 interface Ticker {
     id: number;

@@ -1,12 +1,12 @@
+import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { BourseMarketService } from 'app/services/feature-services/system-setting-services/bourse-market.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { BourseMarketSettingAddComponent } from '../bourse-market-setting-add/bourse-market-setting-add.component';
-import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { BourseMarketSettingAddComponent } from '../bourse-market-setting-add/bourse-market-setting-add.component';
 
 @Component({
     selector: 'app-bourse-market-setting-list',
@@ -19,9 +19,7 @@ export class BourseMarketSettingListComponent implements OnInit {
     data: any = [];
     column: Array<ColumnModel>;
 
-    constructor(private matDialog: MatDialog,
-                private formBuilder: FormBuilder,
-                public bourseMarketService: BourseMarketService) {}
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public bourseMarketService: BourseMarketService) {}
 
     ngOnInit(): void {
         this.initColumn();
@@ -37,13 +35,13 @@ export class BourseMarketSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     type: 'text',
-                    mode: TableSearchMode.SERVER
-                }
+                    mode: TableSearchMode.SERVER,
+                },
             },
             {
                 id: 'code',
                 name: 'کد',
-                type: 'string'
+                type: 'string',
             },
             {
                 name: 'عملیات',
@@ -66,7 +64,7 @@ export class BourseMarketSettingListComponent implements OnInit {
                     },
                 ],
             },
-        ]
+        ];
     }
 
     initSearch(): void {
@@ -74,10 +72,10 @@ export class BourseMarketSettingListComponent implements OnInit {
         const objectFromKeys = {};
         mapKeys.forEach((id) => {
             objectFromKeys[id] = '';
-        })
+        });
         this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
-        })
+            ...objectFromKeys,
+        });
     }
 
     search(searchFilter: any): void {
@@ -93,7 +91,6 @@ export class BourseMarketSettingListComponent implements OnInit {
         this.bourseMarketService.specificationModel.skip = 0;
         this.get();
     }
-
 
     get(): void {
         this.bourseMarketService.get().subscribe((res: any) => {

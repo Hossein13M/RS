@@ -1,16 +1,16 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AUMService } from 'app/modules/aum/aum.service';
 import { StateManager } from 'app/shared/pipes/stateManager.pipe';
+import * as _ from 'lodash';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
-import * as _ from 'lodash';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-aum',
