@@ -25,10 +25,12 @@ export class PricePipe implements PipeTransform {
         if (!price) {
             return '-';
         }
-        let priceNumber = parseFloat(price);
-        if (!priceNumber) {
-            return price;
-        }
+
+        let priceNumber;
+        this.pricePipeService.downScaleOrder === 0 ? (priceNumber = parseFloat(price.toFixed())) : (priceNumber = parseFloat(price));
+
+        if (!priceNumber) return price;
+
         priceNumber = priceNumber / Math.pow(10, this.pricePipeService.downScaleOrder);
         return new DecimalPipe('en-US').transform(priceNumber, this.pricePipeService.decimalInfo);
     }
