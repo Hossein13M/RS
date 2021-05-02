@@ -1,5 +1,5 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
@@ -10,6 +10,7 @@ import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
 import * as _ from 'lodash';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
     selector: 'app-aum',
@@ -33,6 +34,7 @@ export class AumComponent implements OnInit {
         stocksAssets: false,
         fundsAssets: false,
     };
+    @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
     aumData: AumData = {
         etf: { data: {}, state: 'INIT' },
@@ -123,8 +125,11 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
+        if (this.tabGroup) {
+            this.tabGroup.selectedIndex = 0;
+        }
         Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
-        //the above line is for setting back every tab to disable by default
+        // the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();
         this.hasSubmitButtonClicked = true;
 
