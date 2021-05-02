@@ -1,7 +1,7 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
-import { TableSearchMode } from '#shared/components/table/table.model';
 import { tableMockData } from './table-mock-data';
 
 @Component({

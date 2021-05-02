@@ -1,18 +1,18 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { BankService } from 'app/services/feature-services/bank.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { BankSettingAddComponent } from '../bank-setting-add/bank-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
+import { BankSettingAddComponent } from '../bank-setting-add/bank-setting-add.component';
 
 @Component({
     selector: 'app-bank-setting-list',
     templateUrl: './bank-setting-list.component.html',
     styleUrls: ['./bank-setting-list.component.scss'],
-    animations: [fuseAnimations]
+    animations: [fuseAnimations],
 })
 export class BankSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
@@ -21,8 +21,7 @@ export class BankSettingListComponent implements OnInit {
 
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public bankService: BankService) {
-    }
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public bankService: BankService) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -38,8 +37,8 @@ export class BankSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     type: 'text',
-                    mode: TableSearchMode.SERVER
-                }
+                    mode: TableSearchMode.SERVER,
+                },
             },
             {
                 name: 'عملیات',
@@ -52,16 +51,16 @@ export class BankSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.update(row)
+                        operation: ({ row }: any) => this.update(row),
                     },
                     {
                         name: 'حذف',
                         icon: 'delete',
                         color: 'warn',
-                        operation: ({ row }: any) => this.delete(row)
-                    }
-                ]
-            }
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
         ];
     }
 
@@ -72,7 +71,7 @@ export class BankSettingListComponent implements OnInit {
             objectFromKeys[id] = '';
         });
         this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
+            ...objectFromKeys,
         });
     }
 
@@ -89,7 +88,6 @@ export class BankSettingListComponent implements OnInit {
         this.bankService.specificationModel.skip = 0;
         this.get();
     }
-
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.bankService.specificationModel.limit = pageEvent.limit;
@@ -111,7 +109,7 @@ export class BankSettingListComponent implements OnInit {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: null
+                data: null,
             })
             .afterClosed()
             .subscribe((res) => {
@@ -125,7 +123,7 @@ export class BankSettingListComponent implements OnInit {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
             })
             .afterClosed()
             .subscribe((res) => {
@@ -141,7 +139,7 @@ export class BankSettingListComponent implements OnInit {
         this.matDialog
             .open(BankSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: row
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {

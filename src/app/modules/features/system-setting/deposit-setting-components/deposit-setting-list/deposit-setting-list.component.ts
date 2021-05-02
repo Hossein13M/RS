@@ -1,12 +1,12 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { DepositSettingService } from 'app/services/feature-services/system-setting-services/deposit-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { DepositSettingAddComponent } from '../deposit-setting-add/deposit-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { DepositSettingAddComponent } from '../deposit-setting-add/deposit-setting-add.component';
 
 @Component({
     selector: 'app-deposit-setting-list',

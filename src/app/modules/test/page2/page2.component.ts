@@ -211,11 +211,11 @@ export class Page2Component implements OnInit {
         [
             {
                 name: 'بازارگردانی',
-                value: 20.30,
+                value: 20.3,
             },
             {
                 name: 'تمدن',
-                value: 80.70,
+                value: 80.7,
             },
         ],
     ];

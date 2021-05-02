@@ -3,15 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { GlService } from 'app/modules/gl/gl.service';
 import * as moment from 'jalali-moment';
-import {
-    GlCategoryModel,
-    GlDetailModel,
-    GlGeneralModel,
-    GlGroupModel,
-    GlSubsidiaryModel,
-    TreeOrderType
-} from '../../gl.model';
-import {GlTreeService} from "../gl-tree.service";
+import { GlCategoryModel, GlDetailModel, GlGeneralModel, GlGroupModel, GlSubsidiaryModel, TreeOrderType } from '../../gl.model';
+import { GlTreeService } from '../gl-tree.service';
 
 @Component({
     selector: 'app-gl-chart',

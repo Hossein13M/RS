@@ -1,8 +1,7 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { PagingEvent } from '#shared/components/paginator/paginator.component';
-import { TableSearchMode } from '#shared/components/table/table.model';
+import { FormControl, FormGroup } from '@angular/forms';
 import { YieldCurveService } from '../yield-curve.service';
 
 @Component({

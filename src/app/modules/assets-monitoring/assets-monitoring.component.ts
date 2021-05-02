@@ -1,11 +1,11 @@
+import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { formatDate } from '@angular/common';
-import { AssetsMonitoringService } from './assets-monitoring.service';
-import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
-import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
 import { MatDialog } from '@angular/material/dialog';
 import { AssetsMonitoringIpsDialogComponent } from './assets-monitoring-ips-dialog/assets-monitoring-ips-dialog.component';
+import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
+import { AssetsMonitoringService } from './assets-monitoring.service';
 
 @Component({
     selector: 'app-assets-monitoring',

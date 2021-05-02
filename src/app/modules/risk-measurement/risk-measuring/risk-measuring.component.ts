@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import * as _ from 'lodash';
 import { RiskMeasuringService } from '../risk-measuring.service';
-import * as _ from "lodash";
-import {MatCheckbox} from "@angular/material/checkbox";
 
 @Component({
     selector: 'app-risk-measuring',

@@ -33,7 +33,7 @@ interface SimpleColumnModel {
         options?: Array<{
             value: string | number | boolean;
             name: string | number;
-        }>
+        }>;
     };
     convert?(value: unknown): any;
 }
@@ -51,5 +51,5 @@ interface OperationColumnModel extends SimpleColumnModel {
 
 interface CustomColModel extends SimpleColumnModel {
     type: 'custom';
-    cellTemplate: TemplateRef<any>
+    cellTemplate: TemplateRef<any>;
 }
