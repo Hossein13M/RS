@@ -20,7 +20,7 @@ import { PricePipeService } from 'app/shared/pipes/price-pipe.service';
             <mat-form-field appearance="outline">
                 <mat-label>مقیاس قیمت‌ها</mat-label>
                 <mat-select formControlName="scale">
-                    <mat-option [value]="0">واحد</mat-option>
+                    <mat-option [value]="0">یک</mat-option>
                     <mat-option [value]="3">هزار </mat-option>
                     <mat-option [value]="6">میلیون </mat-option>
                     <mat-option [value]="9">میلیارد </mat-option>
