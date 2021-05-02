@@ -34,17 +34,13 @@ export class AssetsMonitoringComponent implements OnInit {
             id: 'maturityDate',
             name: 'تاریخ سررسید',
             type: 'date',
-            convert: (value: any) => {
-                return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-            },
+            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
         },
         {
             id: 'lastUpdateDate',
             name: 'آخرین تاریخ به‌روز‌رسانی',
             type: 'date',
-            convert: (value: any) => {
-                return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-            },
+            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
         },
     ];
 

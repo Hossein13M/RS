@@ -23,22 +23,17 @@ export class AssetsMonitoringIpsDialogComponent implements OnInit {
     private initiateColumns(): void {
         this.columns = [
             { name: 'سبد', id: 'organizationType', type: 'string' },
-            { name: 'نام / نماد', id: 'symbol', type: 'string' },
             {
                 name: 'کارگزاری',
                 id: 'broker',
                 type: 'string',
-                convert: (value: string | null) => {
-                    return value ? value : '-';
-                },
+                convert: (value: string | null) => (value ? value : '-'),
             },
             {
                 name: 'تاریخ',
                 id: 'date',
                 type: 'date',
-                convert: (value: any) => {
-                    return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-                },
+                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
             },
         ];
     }
