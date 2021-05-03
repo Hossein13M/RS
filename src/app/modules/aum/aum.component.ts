@@ -11,6 +11,8 @@ import * as _ from 'lodash';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
+import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-aum',
@@ -48,7 +50,13 @@ export class AumComponent implements OnInit {
     };
     hasSubmitButtonClicked: boolean = false;
 
-    constructor(private aumService: AUMService, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {}
+    constructor(
+        private aumService: AUMService,
+        private fb: FormBuilder,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private dialog: MatDialog
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -243,5 +251,9 @@ export class AumComponent implements OnInit {
             categories = this.categories.filter((row) => row.id !== 3);
         }
         return categories;
+    }
+
+    public openIpsHistoryDialog(): void {
+        this.dialog.open(IpsDialogComponent, { width: '1000px', data: { basket: ['T', 'F', 'M'], withDetails: false } });
     }
 }
