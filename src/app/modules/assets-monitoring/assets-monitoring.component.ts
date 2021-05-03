@@ -18,7 +18,6 @@ export class AssetsMonitoringComponent implements OnInit {
     haveInstrumentsAchieved: boolean = false;
     instruments: Array<Instrument> = [];
     assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [], pieChart: [] };
-    // implement state manager
     loading: boolean = false;
     isSectionShowing: boolean = false;
     dataLoading: boolean = false;
@@ -36,12 +35,12 @@ export class AssetsMonitoringComponent implements OnInit {
             type: 'date',
             convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
         },
-        {
-            id: 'lastUpdateDate',
-            name: 'آخرین تاریخ به‌روز‌رسانی',
-            type: 'date',
-            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
-        },
+        // {
+        //     id: 'lastUpdateDate',
+        //     name: 'آخرین تاریخ به‌روز‌رسانی',
+        //     type: 'date',
+        //     convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+        // },
     ];
 
     constructor(private fb: FormBuilder, private assetsMonitoringService: AssetsMonitoringService, private dialog: MatDialog) {}
