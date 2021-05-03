@@ -1,28 +1,25 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { OrganizationTypeService } from 'app/services/feature-services/system-setting-services/organization-type.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { OrganizationTypeSettingAddComponent } from '../organization-type-setting-add/organization-type-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
+import { OrganizationTypeSettingAddComponent } from '../organization-type-setting-add/organization-type-setting-add.component';
 
 @Component({
     selector: 'app-organization-type-setting-list',
     templateUrl: './organization-type-setting-list.component.html',
     styleUrls: ['./organization-type-setting-list.component.scss'],
-    animations: [fuseAnimations]
+    animations: [fuseAnimations],
 })
 export class OrganizationTypeSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
 
-    constructor(private matDialog: MatDialog,
-                private formBuilder: FormBuilder,
-                public organizationTypeService: OrganizationTypeService) {
-    }
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public organizationTypeService: OrganizationTypeService) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -38,8 +35,8 @@ export class OrganizationTypeSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'عملیات',
@@ -52,16 +49,16 @@ export class OrganizationTypeSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.edit(row)
+                        operation: ({ row }: any) => this.edit(row),
                     },
                     {
                         name: 'حذف',
                         icon: 'delete',
                         color: 'warn',
-                        operation: ({ row }: any) => this.delete(row)
-                    }
-                ]
-            }
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
         ];
     }
 
@@ -70,10 +67,10 @@ export class OrganizationTypeSettingListComponent implements OnInit {
         const objectFromKeys = {};
         mapKeys.forEach((id) => {
             objectFromKeys[id] = '';
-        })
+        });
         this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
-        })
+            ...objectFromKeys,
+        });
     }
 
     search(searchFilter: any): void {
@@ -90,7 +87,6 @@ export class OrganizationTypeSettingListComponent implements OnInit {
         this.get();
     }
 
-
     paginationControl(pageEvent: PaginationChangeType): void {
         this.get();
     }
@@ -105,7 +101,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
         this.matDialog
             .open(OrganizationTypeSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: null
+                data: null,
             })
             .afterClosed()
             .subscribe((res) => {
@@ -119,7 +115,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
             })
             .afterClosed()
             .subscribe((res) => {
@@ -135,7 +131,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
         this.matDialog
             .open(OrganizationTypeSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: row
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {

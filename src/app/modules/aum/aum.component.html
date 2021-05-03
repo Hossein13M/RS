@@ -14,6 +14,15 @@
                                 (+{{ form.controls['baskets'].value.length }} {{ 'سبد' }})
                             </span>
                         </mat-select-trigger>
+                        <mat-checkbox
+                            #basketsAllOption
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
+                            (change)="selectAllHandler(basketsAllOption, 'baskets', baskets)"
+                            [checked]="OptionAllState('baskets', baskets) === 'all'"
+                            [indeterminate]="OptionAllState('baskets', baskets) === 'indeterminate'"
+                            >همه</mat-checkbox
+                        >
                         <mat-option *ngFor="let basket of baskets" [value]="basket.id.toString()">{{ basket.title }}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -24,6 +33,15 @@
                         <mat-select-trigger>
                             <span *ngIf="form.controls['funds'].value?.length > 0"> (+{{ form.controls['funds'].value.length }} {{ 'صندوق' }}) </span>
                         </mat-select-trigger>
+                        <mat-checkbox
+                            #fundsAllOption
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
+                            (change)="selectAllHandler(fundsAllOption, 'funds', funds, 'nationalId')"
+                            [checked]="OptionAllState('funds', funds, 'nationalId') === 'all'"
+                            [indeterminate]="OptionAllState('funds', funds, 'nationalId') === 'indeterminate'"
+                            >همه</mat-checkbox
+                        >
                         <mat-option *ngFor="let fund of funds" [value]="fund.nationalId.toString()">{{ fund.name }}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -36,6 +54,15 @@
                                 (+{{ form.controls['categories'].value.length }} {{ 'دارایی' }})
                             </span>
                         </mat-select-trigger>
+                        <mat-checkbox
+                            #categoriesAllOption
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
+                            (change)="selectAllHandler(categoriesAllOption, 'categories', filterCategories())"
+                            [checked]="OptionAllState('categories', filterCategories()) === 'all'"
+                            [indeterminate]="OptionAllState('categories', filterCategories()) === 'indeterminate'"
+                            ><span>همه</span></mat-checkbox
+                        >
                         <ng-container *ngFor="let category of categories">
                             <!-- remove this سبد سپرده -> id = 3-->
                             <mat-option *ngIf="category.id !== 3" [value]="category.id.toString()">
@@ -48,6 +75,15 @@
                 <mat-form-field appearance="outline" style="min-width: 185px">
                     <mat-label>کل دارایی‌ها</mat-label>
                     <mat-select formControlName="NL" multiple required>
+                        <mat-checkbox
+                            #NLAllOption
+                            class="mat-all-option mat-option"
+                            (click)="$event.stopPropagation()"
+                            (change)="selectAllHandler(NLAllOption, 'NL', [{ id: 0 }, { id: 1 }])"
+                            [checked]="OptionAllState('NL', [{ id: 0 }, { id: 1 }]) === 'all'"
+                            [indeterminate]="OptionAllState('NL', [{ id: 0 }, { id: 1 }]) === 'indeterminate'"
+                            ><span>همه</span></mat-checkbox
+                        >
                         <mat-option value="0"> بورسی </mat-option>
                         <mat-option value="1"> غیر بورسی </mat-option>
                     </mat-select>
@@ -69,7 +105,7 @@
             </div>
         </form>
 
-        <mat-tab-group *ngIf="hasSubmitButtonClicked" class="mt-20" mat-stretch-tabs>
+        <mat-tab-group *ngIf="hasSubmitButtonClicked" class="mt-20 content" mat-stretch-tabs>
             <mat-tab [disabled]="aumData.etf.state !== 'PRESENT'">
                 <ng-template mat-tab-label>
                     <span>کل دارایی‌ها</span>

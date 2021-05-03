@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { LayoutModule } from 'app/layout/layout.module';
 import { ShareModule } from 'app/shared/share.module';
 import { AddFlowCategoryComponent } from './flow-category/add-flow-category/add-flow-category.component';
@@ -112,7 +113,16 @@ import { VariableFeesInfoComponent } from './forms/tabs/variable-fees-info/varia
         AddCommentDialogComponent,
         EndStateSettingDialogComponent,
     ],
-    imports: [CommonModule, FlowRoutingModule, DragDropModule, ShareModule, MatBottomSheetModule, MatProgressSpinnerModule, LayoutModule],
+    imports: [
+        CommonModule,
+        FlowRoutingModule,
+        DragDropModule,
+        ShareModule,
+        MatBottomSheetModule,
+        MatProgressSpinnerModule,
+        LayoutModule,
+        MatTooltipModule,
+    ],
     exports: [ReactiveFormsModule, DragDropModule, ShareModule, FormBuilderComponent],
     entryComponents: [
         FormBuilderComponent,

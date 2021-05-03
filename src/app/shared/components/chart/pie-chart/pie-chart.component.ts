@@ -78,12 +78,16 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
         this.drillLevels = [];
         this.zone.runOutsideAngular(() => {
             this.chart = am4core.create(this.id, am4charts.PieChart);
+            this.chart.numberFormatter.numberFormat = {
+                style: 'decimal',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+            };
             this.chart.rtl = true;
             this.chart.data = data;
             this.pieSeries = this.chart.series.push(new am4charts.PieSeries());
             this.pieSeries.dataFields.value = this.valueLabel;
             this.pieSeries.dataFields.category = this.categoryLabel;
-
             this.pieSeries.hiddenState.properties.opacity = 1;
             this.pieSeries.hiddenState.properties.endAngle = -90;
             this.pieSeries.hiddenState.properties.startAngle = -90;
@@ -135,6 +139,17 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
             // for (var i = 0; i < count; i++) this.nlpieSeries.colors.list.push(fill.brighten((i * 2) / count));
             this.chart.data = event.dataContext.childs;
             this.drillLevels.push(event.dataContext.childs);
+            this.button.hidden = false;
+            this.button.appear();
+            this.pieSeries.appear();
+        } else if (event.dataContext.hasOwnProperty('children')) {
+            this.selectedSlice = event.slice;
+            const fill = this.selectedSlice.fill;
+            const count = event.dataContext.children.length;
+            this.pieSeries.colors.list = [];
+            // for (var i = 0; i < count; i++) this.nlpieSeries.colors.list.push(fill.brighten((i * 2) / count));
+            this.chart.data = event.dataContext.children;
+            this.drillLevels.push(event.dataContext.children);
             this.button.hidden = false;
             this.button.appear();
             this.pieSeries.appear();

@@ -1,11 +1,11 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { BranchSettingService } from 'app/services/feature-services/system-setting-services/branch-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { BranchSettingAddComponent } from '../branch-setting-add/branch-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { BranchSettingAddComponent } from '../branch-setting-add/branch-setting-add.component';
 
 @Component({
     selector: 'app-branch-setting-list',
@@ -77,7 +77,7 @@ export class BranchSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.branchService.specificationModel.limit = pageEvent.limit;
-        this.branchService.specificationModel.skip = pageEvent.skip;
+        this.branchService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
@@ -85,6 +85,7 @@ export class BranchSettingListComponent implements OnInit {
         this.branchService.getBankBranch().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.branchService.setPageDetailData(res);
         });
     }

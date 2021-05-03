@@ -1,3 +1,4 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -5,7 +6,6 @@ import { AlertService } from 'app/services/alert.service';
 import { BourseInstrumentDetailService, PortfolioManagementServiceService } from 'app/services/API/services';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import { debounceTime } from 'rxjs/operators';
-import { TableSearchMode } from '#shared/components/table/table.model';
 import { TradeAddService } from './trade-add.service';
 
 export const tradeTypes = [

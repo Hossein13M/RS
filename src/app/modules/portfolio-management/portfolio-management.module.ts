@@ -26,6 +26,7 @@ const routes: Routes = [
         loadChildren: () => import('./trade-dashboard/trade-dashboard.module').then((m) => m.TradeDashboardModule),
     },
 
+    // Settings
     {
         path: 'settings/trade-add',
         loadChildren: () => import('./trade-add/trade-add.module').then((m) => m.TradeAddModule),

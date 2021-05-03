@@ -1,7 +1,7 @@
+import { formatDate } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { formatDate } from '@angular/common';
 
 @Injectable()
 export class DailyInvestmentReportService {
