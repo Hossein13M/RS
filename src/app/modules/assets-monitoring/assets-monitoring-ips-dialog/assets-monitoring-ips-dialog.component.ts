@@ -42,6 +42,7 @@ export class AssetsMonitoringIpsDialogComponent implements OnInit {
         let searchParams = {
             basket: ['T', 'F', 'M'], // for some reason this is the type of IPS history for assets monitoring section
             date: formatDate(new Date(), 'yyyy-MM-dd', 'en_US'),
+            withDetails: false,
         };
         this.assetsMonitoringService.getAssetsMonitoringIPSHistory(searchParams).subscribe((response) => {
             this.loading = false;
