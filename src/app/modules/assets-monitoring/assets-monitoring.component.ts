@@ -3,7 +3,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AssetsMonitoringIpsDialogComponent } from './assets-monitoring-ips-dialog/assets-monitoring-ips-dialog.component';
+import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
 import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
 import { AssetsMonitoringService } from './assets-monitoring.service';
 
@@ -121,6 +121,6 @@ export class AssetsMonitoringComponent implements OnInit {
     };
 
     public openIpsHistoryDialog(): void {
-        this.dialog.open(AssetsMonitoringIpsDialogComponent, { width: '1000px' });
+        this.dialog.open(IpsDialogComponent, { width: '1000px', data: { basket: ['T', 'F', 'M'], withDetails: false } });
     }
 }

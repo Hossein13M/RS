@@ -14,7 +14,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { LayoutModule } from '../../layout/layout.module';
-import { AssetsMonitoringIpsDialogModule } from './assets-monitoring-ips-dialog/assets-monitoring-ips-dialog.module';
+import { IpsDialogModule } from '#shared/components/ips-dialog/ips-dialog.module';
 import { AssetsMonitoringRoutingModule } from './assets-monitoring-routing.module';
 import { AssetsMonitoringComponent } from './assets-monitoring.component';
 import { AssetsMonitoringService } from './assets-monitoring.service';
@@ -38,7 +38,7 @@ import { AssetsMonitoringService } from './assets-monitoring.service';
         MatExpansionModule,
         MatProgressSpinnerModule,
         ChartModule,
-        AssetsMonitoringIpsDialogModule,
+        IpsDialogModule,
     ],
     providers: [AssetsMonitoringService],
 })
