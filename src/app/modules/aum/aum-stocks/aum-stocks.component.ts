@@ -22,7 +22,7 @@ export class AumStocksComponent {
     createColumns() {
         this.columns = [
             { name: 'نام', id: 'name', type: 'string' },
-            { name: 'ارزش روز', id: 'dayValue', type: 'number' },
+            { name: 'ارزش روز', id: 'dayValue', type: 'price' },
             { name: 'قیمت روز', id: 'dayPrice', type: 'price' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبد سهام', id: 'percentageOfStocks', type: 'number' },

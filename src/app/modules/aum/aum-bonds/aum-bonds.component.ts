@@ -1,9 +1,9 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import * as am4core from '@amcharts/amcharts4/core';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
-import { TableSearchMode } from '#shared/components/table/table.model';
 
 am4core.useTheme(am4themes_animated);
 
@@ -23,7 +23,7 @@ export class AumBondsComponent {
     createColumn() {
         this.columns = [
             { name: 'نام', id: 'name', type: 'string', search: { type: 'text', mode: TableSearchMode.LOCAL } },
-            { name: 'ارزش روز', id: 'dayValue', type: 'number' },
+            { name: 'ارزش روز', id: 'dayValue', type: 'price' },
             { name: 'قیمت روز', id: 'dayPrice', type: 'price' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبداوراق', id: 'percentageOfBonds', type: 'number' },

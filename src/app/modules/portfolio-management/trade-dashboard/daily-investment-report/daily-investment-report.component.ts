@@ -1,9 +1,9 @@
+import { PaginationChangeType } from '#shared/components/table/table.model';
+import { StateManager } from '#shared/pipes/stateManager.pipe';
 import { formatDate } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DailyInvestmentReportService } from './daily-investment-report.service';
-import { StateManager } from '#shared/pipes/stateManager.pipe';
-import { PaginationChangeType } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'app-daily-investment-report',

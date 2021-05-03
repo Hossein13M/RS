@@ -1,13 +1,13 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { FundRoleService } from 'app/services/feature-services/system-setting-services/fund-role.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
+import * as _ from 'lodash';
 import { BourseBoardSettingAddComponent } from '../../bourse-board-setting-components/bourse-board-setting-add/bourse-board-setting-add.component';
 import { FundRoleSettingAddComponent } from '../fund-role-setting-add/fund-role-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
-import * as _ from 'lodash';
-import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-fund-role-setting-list',
@@ -74,7 +74,7 @@ export class FundRoleSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.fundRoleService.specificationModel.limit = pageEvent.limit;
-        this.fundRoleService.specificationModel.skip = pageEvent.skip;
+        this.fundRoleService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
@@ -82,6 +82,7 @@ export class FundRoleSettingListComponent implements OnInit {
         this.fundRoleService.getWithPaging().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.fundRoleService.setPageDetailData(res);
         });
     }

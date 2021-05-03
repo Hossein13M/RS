@@ -1,11 +1,11 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { FundSettingService } from 'app/services/feature-services/system-setting-services/fund-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { FundSettingAddComponent } from '../fund-setting-add/fund-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { FundSettingAddComponent } from '../fund-setting-add/fund-setting-add.component';
 
 @Component({
     selector: 'app-fund-setting-list',
@@ -131,13 +131,14 @@ export class FundSettingListComponent implements OnInit {
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.fundSettingService.specificationModel.limit = pageEvent.limit;
-        this.fundSettingService.specificationModel.skip = pageEvent.skip;
+        this.fundSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.get();
     }
 
     get(): void {
         this.fundSettingService.getAll().subscribe((res: any) => {
             this.data = [...res.items];
+            this.pagination.limit = res.limit;
             this.pagination.total = res.total;
             this.fundSettingService.setPageDetailData(res);
         });

@@ -1,3 +1,4 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -5,15 +6,14 @@ import { fuseAnimations } from '@fuse/animations';
 import { MarketSettingService } from 'app/services/feature-services/system-setting-services/market-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
-import { TableSearchMode } from '#shared/components/table/table.model';
-import { MarketSettingAddComponent } from '../market-setting-add/market-setting-add.component';
 import * as _ from 'lodash';
+import { MarketSettingAddComponent } from '../market-setting-add/market-setting-add.component';
 
 @Component({
     selector: 'app-market-setting-list',
     templateUrl: './market-setting-list.component.html',
     styleUrls: ['./market-setting-list.component.scss'],
-    animations: [fuseAnimations]
+    animations: [fuseAnimations],
 })
 export class MarketSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
@@ -44,37 +44,37 @@ export class MarketSettingListComponent implements OnInit {
                     options: [
                         { name: 'بازارگردانی', value: 'M' },
                         { name: 'تمدن', value: 'T' },
-                        { name: 'صندوق', value: 'F' }
+                        { name: 'صندوق', value: 'F' },
                     ],
-                    mode: TableSearchMode.SERVER
+                    mode: TableSearchMode.SERVER,
                 },
                 convert: (value: any) => {
                     return value === 'T' ? 'تمدن' : value === 'M' ? 'بازارگردانی' : value === 'F' ? 'صندوق' : '';
-                }
+                },
             },
             {
                 name: 'نماد/عنوان صندوق',
                 id: 'symbolORFundTitle',
                 type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER }
+                search: { type: 'text', mode: TableSearchMode.SERVER },
             },
             {
                 name: 'کارگزاری',
                 id: 'brokerName',
                 type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER }
+                search: { type: 'text', mode: TableSearchMode.SERVER },
             },
             {
                 name: 'کد بورسی',
                 id: 'bourseCode',
                 type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER }
+                search: { type: 'text', mode: TableSearchMode.SERVER },
             },
             {
                 name: 'شناسه ملی',
                 id: 'nationalId',
                 type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER }
+                search: { type: 'text', mode: TableSearchMode.SERVER },
             },
             { name: 'کد پم', id: 'pamCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
             {
@@ -85,13 +85,13 @@ export class MarketSettingListComponent implements OnInit {
                     type: 'select',
                     options: [
                         { name: 'فعال', value: true },
-                        { name: 'غیر فغال', value: false }
+                        { name: 'غیر فغال', value: false },
                     ],
-                    mode: TableSearchMode.SERVER
+                    mode: TableSearchMode.SERVER,
                 },
                 convert: (value: any) => {
                     return value ? 'دارد' : 'ندارد';
-                }
+                },
             },
             {
                 name: 'نام کاربری',
@@ -99,7 +99,7 @@ export class MarketSettingListComponent implements OnInit {
                 type: 'string',
                 convert: (value: any) => {
                     return value ? value : '-';
-                }
+                },
             },
             {
                 name: 'رمز عبور',
@@ -107,7 +107,7 @@ export class MarketSettingListComponent implements OnInit {
                 type: 'string',
                 convert: (value: any) => {
                     return value ? value : '-';
-                }
+                },
             },
             {
                 name: 'عملیات',
@@ -117,9 +117,9 @@ export class MarketSettingListComponent implements OnInit {
                 sticky: true,
                 operations: [
                     { name: 'ویرایش', icon: 'edit', color: 'accent', operation: ({ row }: any) => this.edit(row) },
-                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) }
-                ]
-            }
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
+                ],
+            },
         ];
     }
 
@@ -130,7 +130,7 @@ export class MarketSettingListComponent implements OnInit {
             objectFromKeys[id] = '';
         });
         this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
+            ...objectFromKeys,
         });
     }
 
@@ -170,7 +170,7 @@ export class MarketSettingListComponent implements OnInit {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
             })
             .afterClosed()
             .subscribe((res) => {

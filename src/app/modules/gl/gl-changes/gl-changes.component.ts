@@ -5,10 +5,11 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { GlService } from 'app/services/feature-services/gl.service';
+import { GlService } from 'app/modules/gl/gl.service';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { TreeOrderType } from '../gl-tree/gl-tree.component';
+import { GlCategoryModel, GlGeneralModel, GlGroupModel, TreeOrderType } from '../gl.model';
+import { GlChangesService } from './gl-changes.service';
 
 @Component({
     selector: 'app-gl-changes',
@@ -23,16 +24,16 @@ export class GlChangesComponent implements OnInit {
 
     @ViewChild('showTypeInput') showTypeInput: ElementRef<HTMLInputElement>;
     @ViewChild('auto') matAutocomplete: MatAutocomplete;
-    visible: boolean = true;
-    selectable: boolean = true;
-    removable: boolean = true;
+    visible = true;
+    selectable = true;
+    removable = true;
     separatorKeysCodes: number[] = [ENTER, COMMA];
     showTypeCtl = new FormControl();
     filteredShowTypes: Observable<string[]>;
     showTypes: string[] = ['کدهای با افزایش مبلغ', 'کدهای با کاهش مبلغ', 'کدهای حذف شده', 'کدهای اضافه شده'];
     allShowTypes: string[] = ['کدهای با افزایش مبلغ', 'کدهای با کاهش مبلغ', 'کدهای حذف شده', 'کدهای اضافه شده'];
 
-    form: FormGroup;
+    public form: FormGroup;
 
     public displayedColumns = [
         'type',
@@ -47,7 +48,7 @@ export class GlChangesComponent implements OnInit {
         'rate',
     ];
 
-    dataToShow = [];
+    public dataToShow = [];
     columns: any = [
         { id: 'type', name: 'نوع تغییر', type: 'string' },
         { id: 'categoryLedgerName', name: 'گروه', type: 'string' },
@@ -62,13 +63,13 @@ export class GlChangesComponent implements OnInit {
     ];
     dataSource = new MatTableDataSource<any>(this.dataToShow);
 
-    searchCollapse = false;
+    public searchCollapse = false;
 
-    glCategories: any[];
-    glGroups: any[];
-    glGeneral: any[];
+    public glCategories: Array<GlCategoryModel>;
+    public glGroups: Array<GlGroupModel>;
+    public glGeneral: Array<GlGeneralModel>;
 
-    constructor(private fb: FormBuilder, private glService: GlService) {
+    constructor(private fb: FormBuilder, private glService: GlService, private glChangesService: GlChangesService) {
         this.filteredShowTypes = this.showTypeCtl.valueChanges.pipe(
             startWith(null),
             map((c: string | null) => (c ? this._filter(c) : this.allShowTypes.slice()))
@@ -78,14 +79,14 @@ export class GlChangesComponent implements OnInit {
     ngOnInit(): void {
         this.createForm();
 
-        this.glService.getLevelApi(null, TreeOrderType.Category, this).subscribe((res: any[]) => {
+        this.glService.getLevelApi(null, TreeOrderType.Category).subscribe((res: Array<GlCategoryModel>) => {
             this.glCategories = res;
         });
 
         this.form.get('categoryCode').valueChanges.subscribe((res) => {
             this.glGroups = [];
             res.forEach((gr) => {
-                this.glService.getLevelApi(gr, TreeOrderType.Group, this).subscribe((x: any[]) => {
+                this.glService.getLevelApi(gr, TreeOrderType.Group).subscribe((x: Array<GlGroupModel>) => {
                     this.glGroups.push(...x);
                 });
             });
@@ -94,7 +95,7 @@ export class GlChangesComponent implements OnInit {
         this.form.get('groupCode').valueChanges.subscribe((res) => {
             this.glGeneral = [];
             res.forEach((ge) => {
-                this.glService.getLevelApi(ge, TreeOrderType.General, this).subscribe((x: any[]) => {
+                this.glService.getLevelApi(ge, TreeOrderType.General).subscribe((x: Array<GlGeneralModel>) => {
                     this.glGeneral.push(...x);
                 });
             });
@@ -133,7 +134,7 @@ export class GlChangesComponent implements OnInit {
 
         this.form.get('type').setValue(typeValues);
 
-        this.glService.getChangeApi(this.form.value, this).subscribe((res: any) => {
+        this.glChangesService.getChangeApi(this.form.value).subscribe((res: any) => {
             this.dataToShow = res;
             this.searchCollapse = false;
         });

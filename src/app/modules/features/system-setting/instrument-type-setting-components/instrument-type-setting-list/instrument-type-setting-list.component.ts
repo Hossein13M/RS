@@ -1,11 +1,11 @@
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { InstrumentTypeService } from 'app/services/feature-services/system-setting-services/instrument-type.service';
-import { InstrumentTypeSettingAddComponent } from '../instrument-type-setting-add/instrument-type-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { InstrumentTypeSettingAddComponent } from '../instrument-type-setting-add/instrument-type-setting-add.component';
 
 @Component({
     selector: 'app-instrument-type-setting-list',
@@ -108,10 +108,10 @@ export class InstrumentTypeSettingListComponent implements OnInit {
         const objectFromKeys = {};
         mapKeys.forEach((id) => {
             objectFromKeys[id] = '';
-        })
+        });
         this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
-        })
+            ...objectFromKeys,
+        });
     }
 
     search(searchFilter: any): void {
@@ -128,18 +128,19 @@ export class InstrumentTypeSettingListComponent implements OnInit {
         this.get();
     }
 
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.instrumentTypeService.specificationModel.limit = pageEvent.limit;
+        this.instrumentTypeService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.get();
+    }
+
     get(): void {
         this.instrumentTypeService.getInstrumentType().subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.instrumentTypeService.setPageDetailData(res);
         });
-    }
-
-    paginationControl(pageEvent: PaginationChangeType): void {
-        this.instrumentTypeService.specificationModel.limit = pageEvent.limit;
-        this.instrumentTypeService.specificationModel.skip = pageEvent.skip;
-        this.get();
     }
 
     edit(row): void {

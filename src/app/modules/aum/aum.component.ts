@@ -1,10 +1,13 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AUMService } from 'app/modules/aum/aum.service';
 import { StateManager } from 'app/shared/pipes/stateManager.pipe';
+import * as _ from 'lodash';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
@@ -25,12 +28,13 @@ export class AumComponent implements OnInit {
         tamadonAssets: false,
         fundNationalCodes: [],
         date: undefined,
-        listedAsstes: false,
-        nonlistedAsstes: false,
+        listedAssets: false,
+        nonlistedAssets: false,
         bondsAssets: false,
         stocksAssets: false,
         fundsAssets: false,
     };
+    @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
     aumData: AumData = {
         etf: { data: {}, state: 'INIT' },
@@ -110,8 +114,8 @@ export class AumComponent implements OnInit {
     private gatherDataForSearchParams(): void {
         this.searchParams.tamadonAssets = this.form.get('baskets').value.includes('1');
         this.searchParams.date = formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US');
-        this.searchParams.listedAsstes = this.form.value.NL.includes('0');
-        this.searchParams.nonlistedAsstes = this.form.value.NL.includes('1');
+        this.searchParams.listedAssets = this.form.value.NL.includes('0');
+        this.searchParams.nonlistedAssets = this.form.value.NL.includes('1');
         this.searchParams.bondsAssets = this.form.get('categories').value.includes('1');
         this.searchParams.stocksAssets = this.form.get('categories').value.includes('2');
         this.searchParams.fundsAssets = this.form.get('categories').value.includes('4');
@@ -121,8 +125,11 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
+        if (this.tabGroup) {
+            this.tabGroup.selectedIndex = 0;
+        }
         Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
-        //the above line is for setting back every tab to disable by default
+        // the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();
         this.hasSubmitButtonClicked = true;
 
@@ -134,8 +141,8 @@ export class AumComponent implements OnInit {
                         else if (element == 1) this.getAumBond(false);
                         else if (element == 4) this.getAumFund(false);
                     } else if (isBourse == 1) {
-                        if (element == 2) this.getAumBond();
-                        else if (element == 1) this.getAumStock();
+                        if (element == 1) this.getAumBond();
+                        else if (element == 2) this.getAumStock();
                         else if (element == 4) this.getAumFund();
                     }
                 });
@@ -146,7 +153,7 @@ export class AumComponent implements OnInit {
             if (this.form.get('baskets').value.length > 1 || this.form.get('categories').value.length > 1 || this.form.get('NL').value.length > 1)
                 this.getAumEtf();
         }, 100);
-        // 100 ms delay is beacuse angular bug: not detecting changes fast
+        // 100 ms delay is because angular bug: not detecting changes fast
     }
 
     // *** method for getting data on formSubmit ***
@@ -204,5 +211,37 @@ export class AumComponent implements OnInit {
     private getAumDepositCertificate(): void {
         // FIXME: the following method has not been implemented yet!
         // this.aumService.getAumCertificateDeposit(this.searchParams.date).subscribe((result) => (this.aumCertificateDeposit = result));
+    }
+
+    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
+        const control: AbstractControl = this.form.controls[controlName];
+        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
+        const difference = _.difference(mappedValues, control.value).length;
+        if (difference === 0) {
+            return 'all';
+        } else if (difference === values.length) {
+            return 'none';
+        }
+        return 'indeterminate';
+    }
+
+    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
+        if (checkbox.checked) {
+            this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
+        } else {
+            this.form.controls[controlName].patchValue([]);
+        }
+
+        if (controlName === 'baskets' && checkbox.checked) {
+            this.getAUMFundOnBasketChange();
+        }
+    }
+
+    public filterCategories(): Array<Category> {
+        let categories = [];
+        if (this.categories) {
+            categories = this.categories.filter((row) => row.id !== 3);
+        }
+        return categories;
     }
 }

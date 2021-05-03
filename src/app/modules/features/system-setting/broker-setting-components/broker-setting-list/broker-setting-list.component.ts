@@ -1,13 +1,13 @@
+import { ColumnModel } from '#shared/components/table/table.model';
+import { StateManager } from '#shared/pipes/stateManager.pipe';
+import { StateType } from '#shared/state-type.enum';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { BrokerSettingService } from 'app/services/feature-services/system-setting-services/broker-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { BrokerSettingAddComponent } from '../broker-setting-add/broker-setting-add.component';
-import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
-import { StateType } from '#shared/state-type.enum';
-import { StateManager } from '#shared/pipes/stateManager.pipe';
+import { BrokerSettingAddComponent } from '../broker-setting-add/broker-setting-add.component';
 
 @Component({
     selector: 'app-broker-setting-list',

@@ -47,7 +47,7 @@ export class AuthenticationService {
     login(body): Observable<any> {
         return this.authService.authControllerLogin(body).pipe(
             map((res) => {
-                localStorage.clear();
+                localStorage.removeItem('accessToken');
                 localStorage.setItem('accessToken', res.accessToken);
                 this.userTokenSubject.next(res.accessToken);
                 this.router.navigate(['/welcome']);
@@ -57,7 +57,7 @@ export class AuthenticationService {
     }
 
     logout(): Promise<any> {
-        localStorage.clear();
+        localStorage.removeItem('accessToken');
         return this.router.navigate(['/login']);
     }
 }

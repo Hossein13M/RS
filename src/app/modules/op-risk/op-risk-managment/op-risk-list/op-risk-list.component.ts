@@ -1,8 +1,8 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
-import { TableSearchMode } from '#shared/components/table/table.model';
 import { OpLossManagementService } from '../op-loss-management.service';
 import { OpRiskManagementService } from '../op-risk-management.service';
 import { RejectOpRiskComponent } from '../reject-op-risk/reject-op-risk.component';

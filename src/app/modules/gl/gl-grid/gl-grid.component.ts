@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { GlService } from 'app/services/feature-services/gl.service';
+import { GlGridService } from './gl-grid.service';
 
 @Component({
     selector: 'app-gl-grid',
@@ -37,7 +37,7 @@ export class GlGridComponent implements OnInit {
     ];
     isWorking: any;
 
-    constructor(private glService: GlService) {}
+    constructor(private glGridService: GlGridService) {}
 
     ngOnInit(): void {
         this.getGridData();
@@ -46,7 +46,7 @@ export class GlGridComponent implements OnInit {
 
     getGridData(): void {
         const search = { date: this.dateForm.value, limit: 1000, skip: 0 };
-        this.glService.getGlGridData(search, this).subscribe((res: any) => (this.data = res.items));
+        this.glGridService.getGlGridData(search).subscribe((res: any) => (this.data = res.items));
     }
 
     handleError(): boolean {
