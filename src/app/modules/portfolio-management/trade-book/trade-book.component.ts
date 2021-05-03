@@ -170,7 +170,6 @@ export class TradeBookComponent implements OnInit {
     }
 
     private createTableData(data): void {
-        console.log(data);
         if (!data) return;
         this.dataSource = [...data];
     }
