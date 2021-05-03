@@ -37,70 +37,13 @@
     <div class="page-content">
         <!--   Table  -->
         <div *ngIf="stateType === 'PRESENT' && !!selectedTradingBook" class="fuse-card">
-            <mat-table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
-                <!-- Position Column -->
-                <ng-container matColumnDef="position">
-                    <mat-header-cell *matHeaderCellDef> #</mat-header-cell>
-                    <mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</mat-cell>
-                </ng-container>
-
-                <!-- bourseAccount Column -->
-                <ng-container matColumnDef="bourseAccount">
-                    <mat-header-cell *matHeaderCellDef>نماد</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{ element.bourseAccount }}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Volume Column -->
-                <ng-container matColumnDef="volume">
-                    <mat-header-cell *matHeaderCellDef>حجم</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.volume | number }} </mat-cell>
-                </ng-container>
-
-                <!-- VWap Column -->
-                <ng-container matColumnDef="vwap">
-                    <mat-header-cell *matHeaderCellDef>قیمت روز</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.vwap | price }} </mat-cell>
-                </ng-container>
-
-                <!-- Asset Column -->
-                <ng-container matColumnDef="asset">
-                    <mat-header-cell *matHeaderCellDef>ارزش بازار</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.asset | price }} </mat-cell>
-                </ng-container>
-
-                <!-- brokerName Column -->
-                <ng-container matColumnDef="brokerName">
-                    <mat-header-cell *matHeaderCellDef>کارگزار</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.brokerName }} </mat-cell>
-                </ng-container>
-
-                <!-- brokerName Column -->
-                <ng-container matColumnDef="btt">
-                    <mat-header-cell *matHeaderCellDef>بهای تمام شده‌ی کل</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.btt | price }} </mat-cell>
-                </ng-container>
-
-                <!-- Date Column -->
-                <ng-container matColumnDef="vwapUpdateDate">
-                    <mat-header-cell *matHeaderCellDef>آخرین تاریخ بروزرسانی قیمت</mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{ element.dateFa ? element.dateFa : '-' }} </mat-cell>
-                </ng-container>
-
-                <!-- Operations Column -->
-                <ng-container matColumnDef="operations">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let el">
-                        <button mat-icon-button matTooltip="مشاهده" (click)="showBook(el.organizationType, el.ticker, el.pamCode)">
-                            <mat-icon class="mat-18"> visibility </mat-icon>
-                        </button>
-                    </mat-cell>
-                </ng-container>
-
-                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns" [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
-            </mat-table>
+            <div style='width: 100%'>
+                <app-table
+                    [data]='dataSource'
+                    [columns]='column'
+                    [paginationSettings]="{ mode: 'local'}">
+                </app-table>
+            </div>
         </div>
 
         <!--   Getting Data Failed  -->
