@@ -9,9 +9,8 @@ export class PricePipe implements PipeTransform {
     constructor(private pricePipeService: PricePipeService) {}
 
     public static convertPrice(value: any): string {
-        if (!value) {
-            return '-';
-        }
+        if (!value) return '-';
+
         return (
             '﷼' +
             value
@@ -22,9 +21,7 @@ export class PricePipe implements PipeTransform {
     }
 
     transform(price: any): string {
-        if (!price) {
-            return '-';
-        }
+        if (!price) return '-';
 
         let priceNumber;
         this.pricePipeService.downScaleOrder === 0 ? (priceNumber = parseFloat(price.toFixed())) : (priceNumber = parseFloat(price));
