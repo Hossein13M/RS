@@ -70,7 +70,7 @@
                         <mat-card-title>حجم کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number }}</p>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number:'.0-4' }}</p>
                     </mat-card-content>
                 </div>
             </mat-card>
