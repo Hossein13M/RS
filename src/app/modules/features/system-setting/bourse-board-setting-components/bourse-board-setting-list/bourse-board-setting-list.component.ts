@@ -1,11 +1,11 @@
+import { ColumnModel } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { BourseBoardService } from 'app/services/feature-services/system-setting-services/bourse-board.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { BourseBoardSettingAddComponent } from '../bourse-board-setting-add/bourse-board-setting-add.component';
-import { ColumnModel } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { BourseBoardSettingAddComponent } from '../bourse-board-setting-add/bourse-board-setting-add.component';
 
 @Component({
     selector: 'app-bourse-board-setting-list',

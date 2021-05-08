@@ -1,11 +1,11 @@
+import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { OrganizationSupervisorService } from 'app/services/feature-services/system-setting-services/organization-supervisor.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { OrganizationSupervisorAddComponent } from '../organization-supervisor-add/organization-supervisor-add.component';
-import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
+import { OrganizationSupervisorAddComponent } from '../organization-supervisor-add/organization-supervisor-add.component';
 
 @Component({
     selector: 'app-organization-supervisor-list',

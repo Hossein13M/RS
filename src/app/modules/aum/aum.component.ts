@@ -1,15 +1,18 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AUMService } from 'app/modules/aum/aum.service';
 import { StateManager } from 'app/shared/pipes/stateManager.pipe';
+import * as _ from 'lodash';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
-import * as _ from 'lodash';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-aum',
@@ -33,6 +36,7 @@ export class AumComponent implements OnInit {
         stocksAssets: false,
         fundsAssets: false,
     };
+    @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
 
     aumData: AumData = {
         etf: { data: {}, state: 'INIT' },
@@ -46,7 +50,13 @@ export class AumComponent implements OnInit {
     };
     hasSubmitButtonClicked: boolean = false;
 
-    constructor(private aumService: AUMService, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {}
+    constructor(
+        private aumService: AUMService,
+        private fb: FormBuilder,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private dialog: MatDialog
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -123,8 +133,11 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
+        if (this.tabGroup) {
+            this.tabGroup.selectedIndex = 0;
+        }
         Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
-        //the above line is for setting back every tab to disable by default
+        // the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();
         this.hasSubmitButtonClicked = true;
 
@@ -136,8 +149,8 @@ export class AumComponent implements OnInit {
                         else if (element == 1) this.getAumBond(false);
                         else if (element == 4) this.getAumFund(false);
                     } else if (isBourse == 1) {
-                        if (element == 2) this.getAumBond();
-                        else if (element == 1) this.getAumStock();
+                        if (element == 1) this.getAumBond();
+                        else if (element == 2) this.getAumStock();
                         else if (element == 4) this.getAumFund();
                     }
                 });
@@ -148,7 +161,7 @@ export class AumComponent implements OnInit {
             if (this.form.get('baskets').value.length > 1 || this.form.get('categories').value.length > 1 || this.form.get('NL').value.length > 1)
                 this.getAumEtf();
         }, 100);
-        // 100 ms delay is beacuse angular bug: not detecting changes fast
+        // 100 ms delay is because angular bug: not detecting changes fast
     }
 
     // *** method for getting data on formSubmit ***
@@ -238,5 +251,9 @@ export class AumComponent implements OnInit {
             categories = this.categories.filter((row) => row.id !== 3);
         }
         return categories;
+    }
+
+    public openIpsHistoryDialog(): void {
+        this.dialog.open(IpsDialogComponent, { width: '1000px', data: { basket: ['T', 'F', 'M'], withDetails: false } });
     }
 }

@@ -4,9 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { LayoutModule } from 'app/layout/layout.module';
 import { take } from 'rxjs/operators';
-// Edit This Section To Change Route Prefix
+
 export const PMRoutePrefix = 'portfolio';
-// ----------------------------------------
 
 const routes: Routes = [
     {
@@ -35,17 +34,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-
-        // ADD Routes to Root Of Router
-        RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-        LayoutModule,
-    ],
+    imports: [CommonModule, RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }), LayoutModule],
 })
 export class PortfolioManagementModule {
-    constructor(private fns: FuseNavigationService) {
-        this.fns.onNavigationRegistered.pipe(take(1)).subscribe((s) => {
+    constructor(private fuseNavigationService: FuseNavigationService) {
+        this.fuseNavigationService.onNavigationRegistered.pipe(take(1)).subscribe(() => {
             // ------------------------------------ General Menu
             const customFunctionNavItem = {
                 id: 'portfolio-management',
@@ -76,8 +69,8 @@ export class PortfolioManagementModule {
                     },
                 ],
             };
-            if (this.fns.getNavigationItem('marketRisk')) {
-                this.fns.addNavigationItem(customFunctionNavItem, 'marketRisk');
+            if (this.fuseNavigationService.getNavigationItem('marketRisk')) {
+                this.fuseNavigationService.addNavigationItem(customFunctionNavItem, 'marketRisk');
             } else {
                 const marketRisk = {
                     id: 'marketRisk',
@@ -86,7 +79,7 @@ export class PortfolioManagementModule {
                     type: 'collapsable',
                     children: [customFunctionNavItem],
                 };
-                this.fns.addNavigationItem(marketRisk, 'end');
+                this.fuseNavigationService.addNavigationItem(marketRisk, 'end');
             }
 
             // ------------------------------------ Setting Menu
@@ -99,10 +92,10 @@ export class PortfolioManagementModule {
                     url: '/settings/trade-add',
                 },
             ];
-            let newSettingsMenu = this.fns.getNavigationItem('settings');
+            let newSettingsMenu = this.fuseNavigationService.getNavigationItem('settings');
             if (newSettingsMenu) {
                 portfolioManagementSettingMenu.forEach((el) => newSettingsMenu.children.push(el));
-                this.fns.updateNavigationItem('settings', newSettingsMenu);
+                this.fuseNavigationService.updateNavigationItem('settings', newSettingsMenu);
             } else {
                 newSettingsMenu = {
                     id: 'settings',
@@ -111,7 +104,7 @@ export class PortfolioManagementModule {
                     icon: 'dashboard',
                     children: [...portfolioManagementSettingMenu],
                 };
-                this.fns.addNavigationItem(newSettingsMenu, 'end');
+                this.fuseNavigationService.addNavigationItem(newSettingsMenu, 'end');
             }
         });
     }

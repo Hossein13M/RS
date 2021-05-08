@@ -1,7 +1,10 @@
 <div class="page-layout">
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
-        <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> دارایی‌های تحت مدیریت </span>
-    </div>
+    <app-header pageTitle="دارایی‌های تحت مدیریت" class="wp-100">
+        <button mat-stroked-button (click)="openIpsHistoryDialog()">
+            <mat-icon class="mat-18">history</mat-icon>
+            نمایش پیشینه‌ی IPSها
+        </button>
+    </app-header>
 
     <div class="container fuse-card" dir="rtl" wrap style="flex: 1">
         <form [formGroup]="form" fxLayout="row wrap" fxLayoutGap="20px" style="padding: 30px" (submit)="submitForm()">
