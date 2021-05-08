@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
-import { StateType } from '../../../../shared/state-type.enum';
 import { OpRiskManagementService } from '../op-risk-management.service';
 
 @Component({

@@ -4,14 +4,8 @@ import { TradeBookShowComponent } from './trade-book-show/trade-book-show.compon
 import { TradeBookComponent } from './trade-book.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: TradeBookComponent,
-    },
-    {
-        path: ':date/:org/:ticker/:pamCode',
-        component: TradeBookShowComponent,
-    },
+    { path: '', component: TradeBookComponent },
+    { path: ':date/:org/:ticker/:pamCode', component: TradeBookShowComponent },
 ];
 
 @NgModule({

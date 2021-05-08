@@ -1,18 +1,18 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { NewInstrumentService } from 'app/services/feature-services/system-setting-services/new-instrument.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrument-setting-add.component';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrument-setting-add.component';
 
 @Component({
     selector: 'app-instrument-setting-list',
     templateUrl: './instrument-setting-list.component.html',
     styleUrls: ['./instrument-setting-list.component.scss'],
-    animations: [fuseAnimations]
+    animations: [fuseAnimations],
 })
 export class InstrumentSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
@@ -20,10 +20,7 @@ export class InstrumentSettingListComponent implements OnInit {
     column: Array<ColumnModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog,
-                private formBuilder: FormBuilder,
-                public newInstrumentService: NewInstrumentService) {
-    }
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public newInstrumentService: NewInstrumentService) {}
 
     ngOnInit(): void {
         this.initColumn();
@@ -39,8 +36,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'شماره ثبت',
@@ -48,8 +45,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'نماد',
@@ -57,8 +54,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'نماد انگلیسی',
@@ -66,8 +63,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'وضعیت',
@@ -80,14 +77,14 @@ export class InstrumentSettingListComponent implements OnInit {
                     options: [
                         {
                             name: 'فعال',
-                            value: 'true'
+                            value: 'true',
                         },
                         {
                             name: 'غیرفعال',
-                            value: 'false'
-                        }
-                    ]
-                }
+                            value: 'false',
+                        },
+                    ],
+                },
             },
             {
                 name: 'کد نوع',
@@ -95,8 +92,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'محل معامله',
@@ -109,14 +106,14 @@ export class InstrumentSettingListComponent implements OnInit {
                     options: [
                         {
                             name: 'بورس',
-                            value: 'true'
+                            value: 'true',
                         },
                         {
                             name: 'خارج از بورس',
-                            value: 'false'
-                        }
-                    ]
-                }
+                            value: 'false',
+                        },
+                    ],
+                },
             },
             {
                 name: 'تابلو',
@@ -124,8 +121,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'بازار',
@@ -133,8 +130,8 @@ export class InstrumentSettingListComponent implements OnInit {
                 type: 'string',
                 search: {
                     mode: TableSearchMode.SERVER,
-                    type: 'text'
-                }
+                    type: 'text',
+                },
             },
             {
                 name: 'عملیات',
@@ -147,16 +144,16 @@ export class InstrumentSettingListComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: ({ row }: any) => this.edit(row)
+                        operation: ({ row }: any) => this.edit(row),
                     },
                     {
                         name: 'حذف',
                         icon: 'delete',
                         color: 'warn',
-                        operation: ({ row }: any) => this.delete(row)
-                    }
-                ]
-            }
+                        operation: ({ row }: any) => this.delete(row),
+                    },
+                ],
+            },
         ];
     }
 
@@ -165,10 +162,10 @@ export class InstrumentSettingListComponent implements OnInit {
         const objectFromKeys = {};
         mapKeys.forEach((id) => {
             objectFromKeys[id] = '';
-        })
+        });
         this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys
-        })
+            ...objectFromKeys,
+        });
     }
 
     search(searchFilter: any): void {
@@ -184,7 +181,6 @@ export class InstrumentSettingListComponent implements OnInit {
         this.newInstrumentService.specificationModel.skip = 0;
         this.get();
     }
-
 
     paginationControl(pageEvent: PaginationChangeType): void {
         this.newInstrumentService.specificationModel.limit = pageEvent.limit;
@@ -206,7 +202,7 @@ export class InstrumentSettingListComponent implements OnInit {
         this.matDialog
             .open(InstrumentSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: null
+                data: null,
             })
             .afterClosed()
             .subscribe((res) => {
@@ -220,7 +216,7 @@ export class InstrumentSettingListComponent implements OnInit {
         this.matDialog
             .open(ConfirmDialogComponent, {
                 panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' }
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
             })
             .afterClosed()
             .subscribe((res) => {
@@ -236,7 +232,7 @@ export class InstrumentSettingListComponent implements OnInit {
         this.matDialog
             .open(InstrumentSettingAddComponent, {
                 panelClass: 'dialog-w60',
-                data: row
+                data: row,
             })
             .afterClosed()
             .subscribe((res) => {

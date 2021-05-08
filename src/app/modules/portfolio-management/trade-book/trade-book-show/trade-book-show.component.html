@@ -37,47 +37,17 @@
                         <div *ngIf="col.type == 'price'">
                             {{el[col.id] | price}}
                         </div>
-
-                        <div *ngIf="col.type == 'number'">
-                            {{el[col.id] | number}}
-                        </div>
-
-                        <div *ngIf="col.type == 'string'">
-                            {{el[col.id]}}
-                        </div>
-                    </mat-cell>
-                </ng-container>
-
-                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-
-                <mat-row *matRowDef="let row; columns: displayedColumns;"
-                         [@animate]="{value:'*',params:{y:'100%'}}">
-                </mat-row>
-            </mat-table>
+                    </ng-container>
+                </div>
+            </div>
         </div>
-
-        <!--    Paginator    -->
-        <app-paginator *ngIf="dataToShow && dataToShow.length!=0 "
-                       [data]="tbs.pageEvent"
-                       (page)="pageHandler($event)"
-                       [pageSizeOptions]="[5, 10,20, 50]">
-        </app-paginator>
-
         <!--   Getting Data Failed  -->
         <div *ngIf="failed" fxLayout="row wrap" fxLayoutAlign="center center">
             دریافت داده ناموفق بود
-
-            <button mat-button
-                    class="againBtn"
-                    (click)="get()">
-                دریافت دوباره
-            </button>
+            <button mat-button class="againBtn" (click)="get()">دریافت دوباره</button>
         </div>
 
         <!--   Help Quotes  -->
-        <p *ngIf="dataToShow && dataToShow.length==0 && !isWorking && !failed" class="text-center">
-            داده‌ای برای نمایش وجود ندارد
-        </p>
-
+        <!--        <p *ngIf="dataToShow && dataToShow.length == 0 && !isWorking && !failed" class="text-center">داده‌ای برای نمایش وجود ندارد</p>-->
     </div>
 </div>

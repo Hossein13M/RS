@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LayoutModule } from 'app/layout/layout.module';
@@ -12,7 +13,6 @@ import { AssetsReturnComponent } from './assets-return/assets-return.component';
 import { RiskMeasurementRoutingModule } from './risk-measurement-routing.module';
 import { RiskMeasuringComponent } from './risk-measuring/risk-measuring.component';
 import { YieldCurveComponent } from './yield-curve/yield-curve.component';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
     declarations: [AssetDebitDetailDialogComponent, YieldCurveComponent, AssetsReturnComponent, RiskMeasuringComponent],

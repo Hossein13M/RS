@@ -1,10 +1,10 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { AlertService } from 'app/services/alert.service';
 import { LocalStorageService } from 'app/services/Base/local-storage.service';
-import { TableSearchMode } from '#shared/components/table/table.model';
 import { NavAddChangeDialogComponent } from '../nav-add-change-dialog/nav-add-change-dialog.component';
 import { NavTransactionModel } from '../nav-main/nav-main.component';
 import { NavService } from '../nav.service';

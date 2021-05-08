@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FuseNavigationService } from '../../../@fuse/components/navigation/navigation.service';
 import { take } from 'rxjs/operators';
+import { FuseNavigationService } from '../../../@fuse/components/navigation/navigation.service';
 import { GlService } from './gl.service';
 
 // Edit This Section To Change Route Prefix

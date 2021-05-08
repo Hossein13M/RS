@@ -87,7 +87,7 @@
 
                         <!-- Number -->
                         <div *ngIf="col.type == 'number'">
-                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
+                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number:'.0-4' }}
                         </div>
 
                         <!-- Profit -->
@@ -98,7 +98,7 @@
                                 *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] < 0"
                                 class="negative"
                             >
-                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
+                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number:'.0-4' }}
                                 <mat-icon class="mat-18">arrow_drop_down</mat-icon>
                             </div>
 
@@ -108,7 +108,7 @@
                                 *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] > 0"
                                 class="positive"
                             >
-                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number }}
+                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number:'.0-4' }}
                                 <mat-icon class="mat-18">arrow_drop_up</mat-icon>
                             </div>
                         </div>
