@@ -8,7 +8,8 @@ import { FlowsService } from 'app/services/App/flow/flow.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AddFlowCategoryComponent } from '../flow-category/add-flow-category/add-flow-category.component';
 import { AddFlowComponent } from './add-flow/add-flow.component';
-import {ColumnModel, TableSearchMode} from "#shared/components/table/table.model";
+import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-flows',
@@ -27,7 +28,7 @@ export class FlowsComponent implements OnInit {
     displayedColumns = ['name', 'categoryId'];
     // displayedColumns = ['name', 'categoryId','delete'];
 
-    constructor(private flowService: FlowsService, private _matDialog: MatDialog) {
+    constructor(private flowService: FlowsService, private _matDialog: MatDialog, private router: Router) {
         this.searchInput = new FormControl('');
     }
 
@@ -73,9 +74,30 @@ export class FlowsComponent implements OnInit {
                 id: 'category',
                 name: 'دسته‌بندی قرارداد',
                 type: 'string',
-                convert: (value) => value?.name
+                convert: (value) => value?.name,
             },
-        ]
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'visibility',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.navigateToFlowMaker(row?._id),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.delete(row?._id),
+                    },
+                ],
+            },
+        ];
     }
 
     get(): void {
@@ -87,7 +109,9 @@ export class FlowsComponent implements OnInit {
 
     delete(flowID): void {
         this.flowService.deleteFlow(flowID).subscribe((res) => {
-            // nothing
+            if (res) {
+                this.data = this.data.filter((el) => el._id !== flowID);
+            }
         });
     }
 
@@ -103,7 +127,7 @@ export class FlowsComponent implements OnInit {
         });
 
         this.dialogRef.afterClosed().subscribe((response) => {
-            //nothing
+            // nothing
         });
     }
 
@@ -119,7 +143,11 @@ export class FlowsComponent implements OnInit {
         });
 
         this.dialogRef.afterClosed().subscribe((response) => {
-            //nothing
+            // nothing
         });
+    }
+
+    navigateToFlowMaker(id: string): void {
+        this.router.navigate(['/flow/maker', id]);
     }
 }
