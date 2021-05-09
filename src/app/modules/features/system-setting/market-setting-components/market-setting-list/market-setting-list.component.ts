@@ -1,4 +1,4 @@
-import { TableSearchMode } from '#shared/components/table/table.model';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,11 +17,9 @@ import { MarketSettingAddComponent } from '../market-setting-add/market-setting-
 })
 export class MarketSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
-
-    isWorking: any;
-
+    pagination = { skip: 0, limit: 5, total: 100 };
     data = [];
-    columns: Array<any>;
+    columns: Array<ColumnModel>;
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public marketSettingService: MarketSettingService) {
         // Init Table Columns
@@ -134,9 +132,17 @@ export class MarketSettingListComponent implements OnInit {
         });
     }
 
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.marketSettingService.specificationModel.limit = pageEvent.limit;
+        this.marketSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.get();
+    }
+
     get(): void {
         this.marketSettingService.getAllMarkets(this).subscribe((res: any) => {
             this.data = [...res.items];
+            this.pagination.total = res.total;
+            this.pagination.limit = res.limit;
             this.marketSettingService.setPageDetailData(res);
         });
     }
