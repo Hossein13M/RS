@@ -35,7 +35,7 @@ interface SimpleColumnModel {
             name: string | number;
         }>;
     };
-    convert?(value: unknown): any;
+    convert?(value: any): any;
 }
 
 interface OperationColumnModel extends SimpleColumnModel {
