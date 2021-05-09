@@ -4,14 +4,17 @@ import { FindFlowInstanceResponseDto } from 'app/services/API/models';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FlowInstanceService } from '../../API/services/flow-instance.service';
+import {Specification} from "#shared/models/Specification";
 
 @Injectable({
     providedIn: 'root',
 })
-export class FlowsInstanceService {
+export class FlowsInstanceService extends Specification {
     public flowInstances: BehaviorSubject<Array<FindFlowInstanceResponseDto>> = new BehaviorSubject([]);
 
-    constructor(private flowInstanceService: FlowInstanceService, private http: HttpClient) {}
+    constructor(private flowInstanceService: FlowInstanceService, private http: HttpClient) {
+        super();
+    }
 
     public addFlowInstance(
         title: string,
