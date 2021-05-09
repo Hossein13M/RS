@@ -5,7 +5,7 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { LayoutModule } from 'app/layout/layout.module';
 import { take } from 'rxjs/operators';
 
-export const PMRoutePrefix = 'portfolio';
+export const PMRoutePrefix = 'portfolio-management';
 
 const routes: Routes = [
     {

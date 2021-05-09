@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-export const PMRoutePrefix = 'portfolio';
+export const PMRoutePrefix = 'portfolio-management';
 
 export const routes: Routes = [
     {

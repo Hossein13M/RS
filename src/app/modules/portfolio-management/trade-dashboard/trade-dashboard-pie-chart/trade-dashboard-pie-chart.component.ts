@@ -19,7 +19,6 @@ import { TradeDashboardPieChartService } from './trade-dashboard-pie-chart.servi
                 <app-pie-chart [data]="data" [state]="state"> </app-pie-chart>
             </div>
 
-            <!--   Getting Data Failed  -->
             <div *ngIf="state === stateType.FAILED" fxLayout="row wrap" fxLayoutAlign="center center" class="full">
                 دریافت داده ناموفق بود
 
@@ -37,13 +36,6 @@ import { TradeDashboardPieChartService } from './trade-dashboard-pie-chart.servi
             .chart {
                 height: 100%;
                 width: 100%;
-            }
-
-            .center {
-                width: 100%;
-                justify-content: center;
-                align-items: center;
-                display: flex;
             }
 
             .header {
@@ -71,21 +63,21 @@ export class TradeDashboardPieChartComponent implements OnInit, OnChanges {
     stateType = stateType;
     state = stateType.LOADING;
 
-    constructor(private tdpcs: TradeDashboardPieChartService) {}
+    constructor(private tradeDashboardPieChartService: TradeDashboardPieChartService) {}
 
     ngOnInit(): void {
         this.get();
     }
 
     ngOnChanges() {
-        this.tdpcs.searchForm.get('date').setValue(this.date);
+        this.tradeDashboardPieChartService.searchForm.get('date').setValue(this.date);
         this.get();
     }
 
     get(): void {
         this.state = stateType.LOADING;
         this.data = null;
-        this.tdpcs.getPieChart(this).subscribe(
+        this.tradeDashboardPieChartService.getPieChart(this).subscribe(
             (data) => {
                 this.state = stateType.PRESENT;
                 this.data = data;
