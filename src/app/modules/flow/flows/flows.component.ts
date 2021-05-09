@@ -28,7 +28,7 @@ export class FlowsComponent implements OnInit {
         this.searchInput = new FormControl('');
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.flowService.getFlows().subscribe((i) => {
             //  nothing
         });

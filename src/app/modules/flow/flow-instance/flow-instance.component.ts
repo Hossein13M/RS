@@ -8,6 +8,7 @@ import { FlowsInstanceService } from 'app/services/App/flow/flow-instance.servic
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AddFlowInstanceComponent } from './add-flow-instance/add-flow-instance.component';
 import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-flow-instance',
@@ -22,13 +23,20 @@ export class FlowInstanceComponent implements OnInit {
     column: Array<ColumnModel>;
     dialogRef: any;
     loading = false;
-    dataSource = new Array<any>(this.ELEMENT_DATA);
+    dataSource = [];
     displayedColumns = ['code', 'title', 'customerName', 'flowName', 'date', 'state', 'more'];
 
-    constructor(private flowsInstanceService: FlowsInstanceService, private _matDialog: MatDialog, private fb: FormBuilder) {}
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private flowsInstanceService: FlowsInstanceService,
+        private _matDialog: MatDialog,
+        private fb: FormBuilder,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
+        this.initColumns();
         this.get();
     }
 
@@ -80,7 +88,28 @@ export class FlowInstanceComponent implements OnInit {
                 id: 'state',
                 name: 'وضعیت',
                 type: 'string',
-            }
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editFlowInstance(row),
+                    },
+                    {
+                        name: 'مشاهده',
+                        icon: 'visibility',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.showFlow(row.id),
+                    },
+                ],
+            },
         ];
     }
 
@@ -88,7 +117,7 @@ export class FlowInstanceComponent implements OnInit {
         this.flowsInstanceService.flowInstances.subscribe((res) => {
             this.flowInstancesList = res;
             this.ELEMENT_DATA = res;
-            this.dataSource = new Array<any>(this.ELEMENT_DATA);
+            this.dataSource = res;
         });
         this.flowsInstanceService.getFlowInstances().subscribe();
     }
@@ -135,5 +164,9 @@ export class FlowInstanceComponent implements OnInit {
                 action: 'edit',
             },
         });
+    }
+
+    showFlow(flowInstance: { id: string }): void {
+        this.router.navigate(['../wizard', { relativeTo: this.activatedRoute }]);
     }
 }
