@@ -106,7 +106,7 @@ export class FlowInstanceComponent implements OnInit {
                         name: 'مشاهده',
                         icon: 'visibility',
                         color: 'accent',
-                        operation: ({ row }: any) => this.showFlow(row.id),
+                        operation: ({ row }: any) => this.showFlow(row._id),
                     },
                 ],
             },
@@ -166,7 +166,7 @@ export class FlowInstanceComponent implements OnInit {
         });
     }
 
-    showFlow(flowInstance: { id: string }): void {
-        this.router.navigate(['../wizard', { relativeTo: this.activatedRoute }]);
+    showFlow(id: string): void {
+        this.router.navigate(['/flow/wizard', id]);
     }
 }
