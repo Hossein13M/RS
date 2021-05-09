@@ -19,9 +19,9 @@ import { PortfolioManagementModule } from './modules/portfolio-management/portfo
 import { TestModule } from './modules/test/test.module';
 import { ApiModule } from './services/API/api.module';
 import { AuthGuard } from './services/auth.guard';
-import { getFarsiPaginatorIntl } from './shared/components/table/farsi-paginator-intl';
-import { MaterialModule } from './shared/material.module';
-import { ShareModule } from './shared/share.module';
+import { getFarsiPaginatorIntl } from '#shared/components/table/farsi-paginator-intl';
+import { MaterialModule } from '#shared/material.module';
+import { ShareModule } from '#shared/share.module';
 import { GlModule } from './modules/gl/gl.module';
 
 const appRoutes: Routes = [
@@ -106,10 +106,10 @@ const appRoutes: Routes = [
         SnotifyModule,
         LayoutModule,
         FuseThemeOptionsModule,
-
         PortfolioManagementModule,
         OpRiskModule,
         ShareModule,
+
         GlModule,
 
         TestModule, // --> Test Playground

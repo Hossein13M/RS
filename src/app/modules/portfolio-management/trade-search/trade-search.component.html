@@ -109,7 +109,7 @@
                                     (change)="selectAllHandler(organizationAllOption, 'organization', organizations, 'organizationType')"
                                     [checked]="OptionAllState('organization', organizations, 'organizationType') === 'all'"
                                     [indeterminate]="OptionAllState('organization', organizations, 'organizationType') === 'indeterminate'"
-                                >همه</mat-checkbox
+                                    >همه</mat-checkbox
                                 >
                                 <mat-option *ngFor="let org of organizations" [value]="org.organizationType">
                                     {{ org.organizationName }}
@@ -143,7 +143,6 @@
 
                     <div fxFlex="100" *ngIf="selectedTickersList.length !== 0">
                         <h3>نماد‌های انتخاب شده</h3>
-
                         <mat-chip-list>
                             <mat-chip
                                 *ngFor="let ticker of selectedTickersList"
@@ -160,7 +159,7 @@
                     </div>
                 </div>
                 <div class="w-100-p" fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
-                    <button mat-flat-button color="accent" type="submit" class="ml-20">
+                    <button mat-flat-button color="accent" type="submit" class="ml-20" [disabled]="form.invalid">
                         <mat-icon>search</mat-icon>
                         <span>جست‌و‌جو</span>
                     </button>

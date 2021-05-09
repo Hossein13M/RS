@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
@@ -25,17 +25,17 @@ interface Ticker {
 })
 export class TradeSearchComponent implements OnInit {
     form: FormGroup = this.formBuilder.group({
-        transactionDateStart: ['', []],
-        transactionDateEnd: ['', []],
-        valueStart: ['', []],
-        valueEnd: ['', []],
-        pltStart: ['', []],
-        pltEnd: ['', []],
-        volumeStart: ['', []],
-        volumeEnd: ['', []],
-        tradeType: ['', []],
-        tradeLocation: ['', []],
-        organization: ['', { disabled: true }, []],
+        transactionDateStart: ['', [Validators.required]],
+        transactionDateEnd: ['', [Validators.required]],
+        valueStart: ['', [Validators.required]],
+        valueEnd: ['', [Validators.required]],
+        pltStart: ['', [Validators.required]],
+        pltEnd: ['', [Validators.required]],
+        volumeStart: ['', [Validators.required]],
+        volumeEnd: ['', [Validators.required]],
+        tradeType: ['', [Validators.required]],
+        tradeLocation: ['', [Validators.required]],
+        organization: ['', { disabled: true }, [Validators.required]],
     });
     searchCollapse: boolean = true;
     pagination = { skip: 0, limit: 5, total: 100 };
@@ -187,9 +187,7 @@ export class TradeSearchComponent implements OnInit {
     public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
         if (checkbox.checked) {
             this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
-        } else {
-            this.form.controls[controlName].patchValue([]);
-        }
+        } else this.form.controls[controlName].patchValue([]);
     }
 
     public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
