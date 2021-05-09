@@ -6,92 +6,14 @@
 
     <div class="page" dir="rtl" style="flex: 1">
         <div id="table-container" class="fuse-card">
-            <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }">
-                <ng-container matColumnDef="code">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                        <mat-form-field appearance="fill">
-                            <input matInput class="form-field" [formControl]="SearchInput.controls['code']" placeholder="کد قرارداد"/>
-                        </mat-form-field>
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <p class="email text-truncate" style="direction: ltr">
-                            {{ flowInstance.code }}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="title">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                        <mat-form-field appearance="fill">
-                            <input matInput class="form-field" [formControl]="SearchInput.controls['title']" placeholder="عنوان قرارداد"/>
-                        </mat-form-field>
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <p class="email text-truncate">
-                            {{ flowInstance.title }}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="customerName">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                        <mat-form-field appearance="fill">
-                            <input matInput class="form-field" [formControl]="SearchInput.controls['customerName']" placeholder="طرف قرارداد"/>
-                        </mat-form-field>
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <p class="email text-truncate">
-                            {{ flowInstance.customerName }}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="flowName">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
-                        <mat-form-field appearance="fill">
-                            <input matInput class="form-field" [formControl]="SearchInput.controls['flowName']" placeholder="الگو قرارداد"/>
-                        </mat-form-field>
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <p class="email text-truncate">
-                            {{ flowInstance.flowId.name }}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="date">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>تاریخ ثبت اولیه</mat-header-cell>
-                    <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <p class="email text-truncate">
-                            {{ flowInstance.date | convertDate }}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>وضعیت</mat-header-cell>
-                    <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <p class="email text-truncate">
-                            {{ flowInstance.state }}
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="more">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm></mat-header-cell>
-                    <mat-cell *matCellDef="let flowInstance" fxHide fxShow.gt-sm>
-                        <button #tooltip="matTooltip" matTooltip="تغییر" mat-icon-button color="accent" (click)="editFlowInstance(flowInstance)">
-                            <mat-icon class="mat-18">edit</mat-icon>
-                        </button>
-                        <button #tooltip="matTooltip" matTooltip="مشاهده" mat-icon-button color="accent" [routerLink]="['/flow/wizard', flowInstance._id]">
-                            <mat-icon class="mat-18">visibility</mat-icon>
-                        </button>
-                    </mat-cell>
-                </ng-container>
-
-                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns" [@animate]="{ value: '*', params: { y: '100%' } }"></mat-row>
-            </mat-table>
+            <div style="width: 100%">
+                <app-table
+                    [data]="dataSource"
+                    [columns]="column"
+                    [paginationSettings]="{ mode: 'local' }"
+                    (searchCall)="search($event)"
+                ></app-table>
+            </div>
         </div>
     </div>
 </div>

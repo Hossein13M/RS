@@ -8,18 +8,21 @@ import { GetFlowCategoryDto } from '../../API/models/get-flow-category-dto';
 import { FlowCategoryService } from '../../API/services';
 import { FlowFormService } from '../../API/services/flow-form.service';
 import { FlowService } from '../../API/services/flow.service';
+import {Specification} from "#shared/models/Specification";
 
 @Injectable({
     providedIn: 'root',
 })
-export class FlowsService {
+export class FlowsService extends Specification {
     constructor(
         private flowService: FlowService,
         private flowCategoryService: FlowCategoryService,
         private flowForm: FlowFormService,
         private router: Router,
         private http: HttpClient
-    ) {}
+    ) {
+        super();
+    }
 
     flowCategories: BehaviorSubject<Array<GetFlowCategoryDto>> = new BehaviorSubject({} as Array<GetFlowCategoryDto>);
     flows: BehaviorSubject<Array<GetFlowResponseDto>> = new BehaviorSubject([] as Array<GetFlowResponseDto>);

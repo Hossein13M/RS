@@ -1,32 +1,18 @@
 <div class="page-layout">
     <app-header pageTitle="ریز معاملات">
-        <div subtitle>تا تاریخ {{ this.dateFa }}</div>
-
+        <div subtitle>
+            تا تاریخ
+            {{ this.dateFa }}
+        </div>
         <div>
             <button mat-raised-button color="primary" routerLink="../../../..">دفتر معاملات</button>
         </div>
     </app-header>
 
     <div class="page-content">
-        <div class="setting-container-back" dir="rtl">
-            <div class="setting-panel fuse-card">
-                <div style="width: 100%">
-                    <app-table
-                        [data]="dataToShow"
-                        [columns]="columns"
-                        [paginationSettings]="{ mode: 'backend' }"
-                        [paginationObj]="pagination"
-                        (paginationChange)="paginationControl($event)"
-                    >
-                    </app-table>
-                    <ng-container *ngIf="data?.length === 0">
-                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
-                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
-                        </div>
-                    </ng-container>
-                </div>
-            </div>
+        <!--   Table  -->
+        <div style="width: 100%">
+            <app-table [data]="data" [columns]="columns" [paginationSettings]="{ mode: 'local' }"></app-table>
         </div>
         <!--   Getting Data Failed  -->
         <div *ngIf="failed" fxLayout="row wrap" fxLayoutAlign="center center">

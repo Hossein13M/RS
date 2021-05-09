@@ -2,7 +2,7 @@
     <app-header pageTitle="پایش دارایی‌ها" class="wp-100">
         <button mat-stroked-button (click)="openIpsHistoryDialog()">
             <mat-icon class="mat-18">history</mat-icon>
-            نمایش تاریخچه‌ی IPSها
+            نمایش پیشینه‌ی IPSها
         </button>
     </app-header>
     <mat-progress-bar mode="indeterminate" color="warn" *ngIf="loading"></mat-progress-bar>
@@ -70,7 +70,7 @@
                         <mat-card-title>حجم کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number }}</p>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number:'.0-4' }}</p>
                     </mat-card-content>
                 </div>
             </mat-card>
