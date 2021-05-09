@@ -8,6 +8,7 @@ import { FlowsService } from 'app/services/App/flow/flow.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AddFlowCategoryComponent } from '../flow-category/add-flow-category/add-flow-category.component';
 import { AddFlowComponent } from './add-flow/add-flow.component';
+import {ColumnModel, TableSearchMode} from "#shared/components/table/table.model";
 
 @Component({
     selector: 'app-flows',
@@ -20,7 +21,9 @@ export class FlowsComponent implements OnInit {
     ELEMENT_DATA: GetFlowResponseDto[] = [];
     searchInput: FormControl;
     dialogRef: any;
+    column: Array<ColumnModel>;
     dataSource = new MatTableDataSource<GetFlowResponseDto>(this.ELEMENT_DATA);
+    data = [];
     displayedColumns = ['name', 'categoryId'];
     // displayedColumns = ['name', 'categoryId','delete'];
 
@@ -32,12 +35,8 @@ export class FlowsComponent implements OnInit {
         this.flowService.getFlows().subscribe((i) => {
             //  nothing
         });
-        this.flowService.flows.subscribe((res) => {
-            this.flowsList = res;
-            this.ELEMENT_DATA = res;
-            this.dataSource = new MatTableDataSource<GetFlowResponseDto>(this.ELEMENT_DATA);
-        });
-
+        this.intiColumns();
+        this.get();
         this.searchInput.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((searchText) => {
             this.flowService.getFlows(searchText).subscribe((i) => {
                 //  nothing
@@ -45,7 +44,48 @@ export class FlowsComponent implements OnInit {
         });
     }
 
-    delete(flowID) {
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchInput.setValue(searchFilter[key]);
+        });
+
+        this.flowService.specificationModel.searchKeyword = searchFilter;
+        this.flowService.specificationModel.skip = 0;
+        this.get();
+    }
+
+    intiColumns(): void {
+        this.column = [
+            {
+                id: 'name',
+                name: 'نام قرارداد',
+                type: 'string',
+                search: {
+                    mode: TableSearchMode.SERVER,
+                    type: 'text',
+                },
+            },
+            {
+                id: 'category',
+                name: 'دسته‌بندی قرارداد',
+                type: 'string',
+                convert: (value) => value?.name
+            },
+        ]
+    }
+
+    get(): void {
+        this.flowService.flows.subscribe((res) => {
+            this.flowsList = res;
+            this.data = res;
+        });
+    }
+
+    delete(flowID): void {
         this.flowService.deleteFlow(flowID).subscribe((res) => {
             // nothing
         });
