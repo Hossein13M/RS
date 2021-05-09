@@ -13,7 +13,14 @@
             <div class="setting-panel fuse-card">
                 <div style="width: 100%">
                     <!-- Table -->
-                    <app-table [data]="data" [columns]="columns" (searchCall)="search($event)" [paginationSettings]="{ mode: 'local' }"></app-table>
+                    <app-table
+                        [data]="data"
+                        [columns]="columns"
+                        (searchCall)="search($event)"
+                        [paginationSettings]="{ mode: 'backend' }"
+                        [paginationObj]="pagination"
+                        (paginationChange)="paginationControl($event)"
+                    ></app-table>
 
                     <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">

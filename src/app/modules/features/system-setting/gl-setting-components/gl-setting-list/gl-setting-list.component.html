@@ -20,7 +20,7 @@
                         (paginationChange)="paginationControl($event)"
                     ></app-table>
                     <ng-template let-row="row" #status>
-                        <p>{{row.status === 'active'? 'فعال' : 'غیر فعال'}}</p>
+                        <p>{{ row.status === 'active' ? 'فعال' : 'غیر فعال' }}</p>
                     </ng-template>
                     <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">

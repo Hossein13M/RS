@@ -3,7 +3,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AssetsMonitoringIpsDialogComponent } from './assets-monitoring-ips-dialog/assets-monitoring-ips-dialog.component';
+import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
 import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
 import { AssetsMonitoringService } from './assets-monitoring.service';
 
@@ -18,7 +18,6 @@ export class AssetsMonitoringComponent implements OnInit {
     haveInstrumentsAchieved: boolean = false;
     instruments: Array<Instrument> = [];
     assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [], pieChart: [] };
-    // implement state manager
     loading: boolean = false;
     isSectionShowing: boolean = false;
     dataLoading: boolean = false;
@@ -36,12 +35,12 @@ export class AssetsMonitoringComponent implements OnInit {
             type: 'date',
             convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
         },
-        {
-            id: 'lastUpdateDate',
-            name: 'آخرین تاریخ به‌روز‌رسانی',
-            type: 'date',
-            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
-        },
+        // {
+        //     id: 'lastUpdateDate',
+        //     name: 'آخرین تاریخ به‌روز‌رسانی',
+        //     type: 'date',
+        //     convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+        // },
     ];
 
     constructor(private fb: FormBuilder, private assetsMonitoringService: AssetsMonitoringService, private dialog: MatDialog) {}
@@ -122,6 +121,6 @@ export class AssetsMonitoringComponent implements OnInit {
     };
 
     public openIpsHistoryDialog(): void {
-        this.dialog.open(AssetsMonitoringIpsDialogComponent, { width: '1000px' });
+        this.dialog.open(IpsDialogComponent, { width: '1000px', data: { basket: ['T', 'F', 'M'], withDetails: false } });
     }
 }

@@ -1,19 +1,20 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { AssetsMonitoringIPSHistory } from '../assets-monitoring.model';
-import { AssetsMonitoringService } from '../assets-monitoring.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { AssetsMonitoringIPSHistory } from '../../../modules/assets-monitoring/assets-monitoring.model';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { IpsService } from '#shared/components/ips-dialog/ips.service';
 
 @Component({
     selector: 'app-assets-monitoring-ips-dialog',
-    templateUrl: './assets-monitoring-ips-dialog.component.html',
-    styleUrls: ['./assets-monitoring-ips-dialog.component.scss'],
+    templateUrl: './ips-dialog.component.html',
+    styleUrls: ['./ips-dialog.component.scss'],
 })
-export class AssetsMonitoringIpsDialogComponent implements OnInit {
+export class IpsDialogComponent implements OnInit {
     columns: Array<{ name: string; id: string; type: string; convert?: any }>;
     loading: boolean = true;
     tableData: Array<AssetsMonitoringIPSHistory> = [];
 
-    constructor(private assetsMonitoringService: AssetsMonitoringService) {}
+    constructor(private ipsService: IpsService, @Inject(MAT_DIALOG_DATA) public data: { basket: string; withDetails: boolean }) {}
 
     ngOnInit(): void {
         this.initiateColumns();
@@ -39,12 +40,8 @@ export class AssetsMonitoringIpsDialogComponent implements OnInit {
     }
 
     private getAssetsMonitoringIPSHistory(): void {
-        let searchParams = {
-            basket: ['T', 'F', 'M'], // for some reason this is the type of IPS history for assets monitoring section
-            date: formatDate(new Date(), 'yyyy-MM-dd', 'en_US'),
-            withDetails: false,
-        };
-        this.assetsMonitoringService.getAssetsMonitoringIPSHistory(searchParams).subscribe((response) => {
+        let searchParams = { basket: this.data.basket, date: formatDate(new Date(), 'yyyy-MM-dd', 'en_US'), withDetails: this.data.withDetails };
+        this.ipsService.getIPSHistory(searchParams).subscribe((response) => {
             this.loading = false;
             this.tableData = response.items;
         });
