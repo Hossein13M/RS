@@ -60,8 +60,6 @@ export class TradeBookShowComponent implements OnInit {
     }
 
     public paginationControl(pageEvent: PaginationChangeType): void {
-        this.tradeBookService.specificationModel.limit = pageEvent.limit;
-        this.tradeBookService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
         this.getTradeBookData();
     }
 
