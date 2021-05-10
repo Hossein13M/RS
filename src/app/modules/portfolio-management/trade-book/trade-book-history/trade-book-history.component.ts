@@ -55,9 +55,7 @@ export class TradeBookHistoryComponent implements OnInit {
                 name: 'تاریخ بروزرسانی',
                 id: 'date',
                 type: 'date',
-                convert: (value: any) => {
-                    return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-                },
+                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
             },
         ];
     }

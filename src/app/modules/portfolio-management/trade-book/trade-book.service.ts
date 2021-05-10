@@ -27,6 +27,10 @@ export class TradeBookService extends Specification {
         return this.acs.get(TradeBookService.TradeAPI + '/trade-data' + this.generateSpecificationString(), fc);
     }
 
+    public getTradeDataByDate(searchParams): Observable<any> {
+        return this.http.get(`/api/v1/portfolio-management-service/trade-data`, { params: searchParams });
+    }
+
     //    **********
     public getTradingBooks(date: string): Observable<any> {
         return this.http.get(`/api/v1/portfolio-management-service/trading-book`, { params: { date } });
