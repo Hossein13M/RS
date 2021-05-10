@@ -30,16 +30,16 @@ export class RiskMeasuringComponent implements OnInit {
     showingData = [];
 
     showingDataColumns = [
-        { name: 'VaR', id: 'VaR', type: 'string', minWidth: '130px', headerAlign: 'center', dataAlign: 'center' },
+        { name: 'VaR', id: 'VaR', type: 'number', minWidth: '130px', headerAlign: 'center', dataAlign: 'center' },
         { name: 'Upper bound VaR', id: 'upperBoundVar', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'worstVaR', id: 'worstVaR', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
+        { name: 'worstVaR', id: 'worstVaR', type: 'number', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
         { name: 'Provision', id: 'provision', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
     ];
 
     showingDataColumns2 = [
-        { name: 'VaR/سرمایه', id: 'VaR', type: 'string', minWidth: '130px', headerAlign: 'center', dataAlign: 'center' },
+        { name: 'VaR/سرمایه', id: 'VaR', type: 'number', minWidth: '130px', headerAlign: 'center', dataAlign: 'center' },
         { name: 'Upper bound VaR/سرمایه', id: 'upperBoundVar', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'worst VaR/سرمایه', id: 'worstVaR', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
+        { name: 'worst VaR/سرمایه', id: 'worstVaR', type: 'number', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
         { name: 'Provision/سرمایه', id: 'provision', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
     ];
     showingData2 = [];
