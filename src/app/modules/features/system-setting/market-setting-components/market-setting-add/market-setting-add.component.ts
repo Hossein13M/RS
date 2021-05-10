@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
 import { BankService } from 'app/services/feature-services/bank.service';
@@ -7,6 +7,7 @@ import { BourseInstrumentDetailService } from 'app/services/feature-services/bou
 import { BrokerSettingService } from 'app/services/feature-services/system-setting-services/broker-setting.service';
 import { FundSettingService } from 'app/services/feature-services/system-setting-services/fund-setting.service';
 import { MarketSettingService } from 'app/services/feature-services/system-setting-services/market-setting.service';
+import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 
 @Component({
     selector: 'app-market-setting-add',
@@ -15,6 +16,7 @@ import { MarketSettingService } from 'app/services/feature-services/system-setti
 })
 export class MarketSettingAddComponent implements OnInit {
     form: FormGroup;
+    public symbolORFundTitleSearchKeyword: FormControl = new FormControl('');
     title = '';
     banks = [];
     funds = [];
@@ -33,9 +35,10 @@ export class MarketSettingAddComponent implements OnInit {
         private fb: FormBuilder
     ) {}
 
-    getBourse() {
-        this.bourseBonds.getBonds(this).subscribe((res: any) => {
+    getBourse(searchKeyword?: string) {
+        this.bourseBonds.getBonds(searchKeyword, this).subscribe((res: any) => {
             this.bonds = res.items;
+            console.log(searchKeyword, res.length);
         });
     }
 
@@ -61,6 +64,10 @@ export class MarketSettingAddComponent implements OnInit {
         this.getBrockers();
         this.getFunds();
         this.getBourse();
+
+        this.symbolORFundTitleSearchKeyword.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => {
+            this.getBourse(res);
+        });
     }
 
     creatForm() {
