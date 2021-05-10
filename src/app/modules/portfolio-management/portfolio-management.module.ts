@@ -25,10 +25,8 @@ const routes: Routes = [
         path: `${PMRoutePrefix}/dashboard`,
         loadChildren: () => import('./trade-dashboard/trade-dashboard.module').then((m) => m.TradeDashboardModule),
     },
-
-    // Settings
     {
-        path: 'settings/trade-add',
+        path: `${PMRoutePrefix}/trade-add`,
         loadChildren: () => import('./trade-add/trade-add.module').then((m) => m.TradeAddModule),
     },
 ];
@@ -39,7 +37,6 @@ const routes: Routes = [
 export class PortfolioManagementModule {
     constructor(private fuseNavigationService: FuseNavigationService) {
         this.fuseNavigationService.onNavigationRegistered.pipe(take(1)).subscribe(() => {
-            // ------------------------------------ General Menu
             const customFunctionNavItem = {
                 id: 'portfolio-management',
                 title: 'مدیریت سبد',
@@ -67,6 +64,13 @@ export class PortfolioManagementModule {
                         type: 'item',
                         url: `/${PMRoutePrefix}/search`,
                     },
+                    {
+                        icon: 'library_add',
+                        id: 'trade-add',
+                        title: 'ثبت دستی معاملات',
+                        type: 'item',
+                        url: `/${PMRoutePrefix}/trade-add`,
+                    },
                 ],
             };
             if (this.fuseNavigationService.getNavigationItem('marketRisk')) {
@@ -80,31 +84,6 @@ export class PortfolioManagementModule {
                     children: [customFunctionNavItem],
                 };
                 this.fuseNavigationService.addNavigationItem(marketRisk, 'end');
-            }
-
-            // ------------------------------------ Setting Menu
-            const portfolioManagementSettingMenu = [
-                {
-                    icon: 'library_add',
-                    id: 'trade-add',
-                    title: 'ثبت دستی معاملات',
-                    type: 'item',
-                    url: '/settings/trade-add',
-                },
-            ];
-            let newSettingsMenu = this.fuseNavigationService.getNavigationItem('settings');
-            if (newSettingsMenu) {
-                portfolioManagementSettingMenu.forEach((el) => newSettingsMenu.children.push(el));
-                this.fuseNavigationService.updateNavigationItem('settings', newSettingsMenu);
-            } else {
-                newSettingsMenu = {
-                    id: 'settings',
-                    title: 'تنظیمات سیستم',
-                    type: 'collapsable',
-                    icon: 'dashboard',
-                    children: [...portfolioManagementSettingMenu],
-                };
-                this.fuseNavigationService.addNavigationItem(newSettingsMenu, 'end');
             }
         });
     }

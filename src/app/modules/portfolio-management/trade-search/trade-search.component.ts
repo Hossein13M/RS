@@ -6,8 +6,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { StateType } from 'app/shared/state-type.enum';
 import * as _ from 'lodash';
 import { debounceTime } from 'rxjs/operators';
-import { TableElement } from '../trade-book/trade-book.component';
 import { TradeSearchService } from './trade-search.service';
+import { TableElement } from '../trade-book/trade-book.model';
 
 interface Ticker {
     id: number;

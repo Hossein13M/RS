@@ -23,7 +23,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'settings/trade-add',
+        path: `${PMRoutePrefix}/trade-add`,
         loadChildren: () => import('./trade-add/trade-add.module').then((m) => m.TradeAddModule),
     },
 ];

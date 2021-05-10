@@ -8,13 +8,6 @@ import { PagingEvent } from 'app/shared/components/paginator/paginator.component
 import { debounceTime } from 'rxjs/operators';
 import { TradeAddService } from './trade-add.service';
 
-export const tradeTypes = [
-    { name: 'خرید', value: '1' },
-    { name: 'فروش', value: '2' },
-];
-
-export let organizationTypes = [];
-
 @Component({
     selector: 'app-trade-add',
     templateUrl: './trade-add.component.html',
@@ -24,15 +17,11 @@ export class TradeAddComponent implements OnInit {
     data: Array<any>;
     columns: Array<any>;
     searchFormGroup: FormGroup;
-
     addForm: FormGroup;
-
     isWorking: any = false;
     failed = false;
-
     organizationTypes: any;
     getOrganizationsFail = false;
-
     today = new Date();
 
     // Ticker Select Control
@@ -42,7 +31,10 @@ export class TradeAddComponent implements OnInit {
 
     editTradeId: any;
 
-    tradeTypes = tradeTypes;
+    tradeTypes: Array<{ name: string; value: string }> = [
+        { name: 'خرید', value: '1' },
+        { name: 'فروش', value: '2' },
+    ];
 
     constructor(
         private fb: FormBuilder,
@@ -137,10 +129,7 @@ export class TradeAddComponent implements OnInit {
 
     private getOrganisationTypes(): void {
         this.pms.portfolioManagementControllerGetOrganizations().subscribe(
-            (ot) => {
-                this.organizationTypes = ot;
-                organizationTypes = ot;
-            },
+            (ot) => (this.organizationTypes = ot),
             () => (this.getOrganizationsFail = true)
         );
     }
@@ -149,9 +138,7 @@ export class TradeAddComponent implements OnInit {
         this.bids.bourseInstrumentDetailControllerGetBondsList({ searchKeyword }).subscribe((list) => {
             if (this.selectedTicker) {
                 this.tickers = [this.selectedTicker, ...list.items];
-            } else {
-                this.tickers = list.items;
-            }
+            } else this.tickers = list.items;
         });
     }
 
@@ -236,12 +223,12 @@ export class TradeAddComponent implements OnInit {
     // ------------------------------------- CRUD END
 
     organizationTypeCompareFn(org1: any, org2: any): boolean {
-        org2 = organizationTypes.find((el) => el.organizationName === org2);
+        org2 = this.organizationTypes.find((el) => el.organizationName === org2);
         return org1 && org2 && org1 === org2.organizationType;
     }
 
     tradeTypeCompareFn(type1: any, type2: any): boolean {
-        type2 = tradeTypes.find((el) => el.name === type2);
+        type2 = this.tradeTypes.find((el) => el.name === type2);
         return type1 && type2 && type1 === type2.value;
     }
 
