@@ -35,6 +35,13 @@
                     <span style="color: red">*</span>
                 </mat-label>
                 <mat-select formControlName="symbolORFundTitle">
+                    <ngx-mat-select-search
+                        [clearSearchInput]="false"
+                        style="text-align: right"
+                        [noEntriesFoundLabel]="'یافت نشد'"
+                        [placeholderLabel]="'جستجو'"
+                        [formControl]="symbolORFundTitleSearchKeyword"
+                    ></ngx-mat-select-search>
                     <mat-option style="text-align: right" *ngFor="let c of bonds"
                                 [value]="c?.id">
                         {{c?.name}}
