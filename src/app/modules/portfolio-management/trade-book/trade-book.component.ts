@@ -64,7 +64,7 @@ export class TradeBookComponent implements OnInit {
     }
 
     public showBook(organizationType: string, ticker: any, pamCode: string): void {
-        const date = new Date(this.tradingBookService.searchForm.value.date).getTime();
+        const date = new Date(this.form.value.date).getTime();
         this.router.navigate([`/${PMRoutePrefix}/book`, date, organizationType, ticker, pamCode]);
     }
 

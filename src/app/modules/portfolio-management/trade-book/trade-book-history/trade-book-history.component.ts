@@ -16,11 +16,8 @@ export class TradeBookHistoryComponent implements OnInit {
     form: FormGroup = this.fb.group({ date: [this.dialogData.date] });
     tradeBook = { data: [], state: '' };
     columns: Array<any>;
-
-    isWorking: any = false;
     failed = false;
     today = new Date();
-
     pagination = { skip: 0, limit: 5, total: 100 };
     searchParams: any = {};
 
@@ -32,7 +29,7 @@ export class TradeBookHistoryComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.createColumns();
+        this.initializeTableColumns();
         this.form.valueChanges.subscribe((newFormValue) => {
             if (newFormValue.date) newFormValue.date = formatDate(new Date(newFormValue.date), 'yyyy-MM-dd', 'en_US');
             this.searchParams = newFormValue;
@@ -46,7 +43,7 @@ export class TradeBookHistoryComponent implements OnInit {
         this.getTradeBookHistory();
     }
 
-    private createColumns(): void {
+    private initializeTableColumns(): void {
         this.columns = [
             { name: 'سبد', id: 'organizationType', type: 'string' },
             { name: 'نماد', id: 'bourseAccount', type: 'string' },
