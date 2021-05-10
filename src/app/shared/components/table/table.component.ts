@@ -166,6 +166,12 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
         this.data.forEach((el) => (el.tableSelect = false));
         this.patchData(this.data);
+
+        this.handleSetLastSearch();
+    }
+
+    handleSetLastSearch(): void {
+        this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
     }
 
     ngAfterViewInit(): void {
