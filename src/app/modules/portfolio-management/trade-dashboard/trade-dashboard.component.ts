@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -6,11 +6,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     templateUrl: './trade-dashboard.component.html',
     styleUrls: ['./trade-dashboard.component.scss'],
 })
-export class TradeDashboardComponent implements OnInit {
-    form: FormGroup = this.fb.group({ date: [new Date(), Validators.required] });
+export class TradeDashboardComponent {
+    form: FormGroup;
     today = new Date();
 
-    constructor(private fb: FormBuilder) {}
-
-    ngOnInit(): void {}
+    constructor(private fb: FormBuilder) {
+        const lastDay = new Date();
+        lastDay.setDate(lastDay.getDate() - 1);
+        this.form = this.fb.group({ date: [lastDay, [Validators.required]] });
+    }
 }
