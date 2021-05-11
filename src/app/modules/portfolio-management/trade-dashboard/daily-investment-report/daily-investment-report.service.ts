@@ -9,13 +9,8 @@ export class DailyInvestmentReportService {
 
     constructor(private http: HttpClient) {}
 
-    show(inputDate: Date, pagination: any): Observable<any> {
+    getDailyInvestmentReport(inputDate: Date, pagination: any): Observable<any> {
         const date = formatDate(new Date(inputDate), 'yyyy-MM-dd', 'en_US');
-        return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, {
-            params: {
-                ...pagination,
-                date,
-            },
-        });
+        return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, { params: { ...pagination, date } });
     }
 }

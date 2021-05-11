@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { TradeDashboardService } from './trade-dashboard.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-trade-dashboard',
@@ -8,10 +7,10 @@ import { TradeDashboardService } from './trade-dashboard.service';
     styleUrls: ['./trade-dashboard.component.scss'],
 })
 export class TradeDashboardComponent implements OnInit {
-    searchFormGroup: FormGroup;
+    form: FormGroup = this.fb.group({ date: [new Date(), Validators.required] });
     today = new Date();
 
-    constructor(public tds: TradeDashboardService) {}
+    constructor(private fb: FormBuilder) {}
 
     ngOnInit(): void {}
 }
