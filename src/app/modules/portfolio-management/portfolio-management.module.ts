@@ -67,7 +67,7 @@ export class PortfolioManagementModule {
                     {
                         icon: 'library_add',
                         id: 'trade-add',
-                        title: 'ثبت دستی معاملات',
+                        title: 'افزودن دستی معاملات',
                         type: 'item',
                         url: `/${PMRoutePrefix}/trade-add`,
                     },
