@@ -1,16 +1,6 @@
-<div class="container fuse-card">
+<div class="container fuse-card" dir="rtl">
     <div class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl">
-        <h3>گزارش روزانه‌ی سرمایه‌گزاری‌ها</h3>
-
-        <form [formGroup]="searchFormGroup" dir="rtl" *ngIf="ownDatePicker">
-            <mat-form-field appearance="fill">
-                <mat-label> تاریخ </mat-label>
-
-                <input matInput formControlName="date" [max]="today" [matDatepicker]="picker" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-        </form>
+        <h3 class="pr-10">گزارش روزانه‌ی سرمایه‌گزاری‌ها</h3>
     </div>
 
     <mat-divider></mat-divider>
@@ -27,18 +17,10 @@
             </app-table>
         </div>
 
-        <div *ngIf="dailyInvestment.state === 'FAIL'" fxLayout="row wrap" fxLayoutAlign="center center" class="full">
-            دریافت داده ناموفق بود
-
-            <button mat-button class="againBtn" (click)="get(date)">دریافت دوباره</button>
-        </div>
-
-        <p *ngIf="dailyInvestment.state === 'PRESENT' && dailyInvestment.data && dailyInvestment.data.length == 0" class="text-center">
-            داده‌ای برای نمایش وجود ندارد
-        </p>
-
-        <div *ngIf="dailyInvestment.state === 'LOADING'" fxLayout="row wrap" fxLayoutAlign="center center" class="full">
-            <mat-spinner></mat-spinner>
+        <div fxLayout="row wrap" fxLayoutAlign="center center" class="full">
+            <mat-spinner *ngIf="dailyInvestment.state === 'LOADING'"></mat-spinner>
+            <p *ngIf="dailyInvestment.state === 'FAIL'">دریافت داده ناموفق بود</p>
+            <p *ngIf="dailyInvestment.state === 'PRESENT' && dailyInvestment.data && dailyInvestment.data.length == 0">داده‌ای برای نمایش وجود ندارد</p>
         </div>
     </div>
 </div>
