@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -37,6 +37,7 @@ export class AumComponent implements OnInit {
         fundsAssets: false,
     };
     @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+    fundsControlRequired: boolean = false;
 
     aumData: AumData = {
         etf: { data: {}, state: 'INIT' },
@@ -67,6 +68,16 @@ export class AumComponent implements OnInit {
                 this.form.get('baskets').valueChanges.subscribe(() => this.getAUMFund());
                 this.form.valueChanges.subscribe((formValue) => this.addRouterParamsOnFormValueChanges(formValue));
             });
+        });
+        this.form.controls.baskets.valueChanges.subscribe((value) => {
+            if (value.includes('2')) {
+                this.fundsControlRequired = true;
+                this.form.controls.funds.setValidators([Validators.required]);
+            } else {
+                this.fundsControlRequired = false;
+                this.form.controls.funds.setValidators([]);
+            }
+            console.log(this.form.status)
         });
     }
 
@@ -108,7 +119,7 @@ export class AumComponent implements OnInit {
         this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: newFormValue, queryParamsHandling: '' });
     }
 
-    private removeEmptyOrNullValuesFromForm(formValue) {
+    private removeEmptyOrNullValuesFromForm(formValue): void {
         for (const propName in formValue)
             if (formValue[propName] === null || formValue[propName] === '' || (formValue[propName][0] === undefined && propName !== 'date'))
                 delete formValue[propName];
@@ -133,8 +144,9 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
+        const selectedIndex = 0;
         if (this.tabGroup) {
-            this.tabGroup.selectedIndex = 0;
+            this.tabGroup.selectedIndex = selectedIndex;
         }
         Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
         // the above line is for setting back every tab to disable by default
