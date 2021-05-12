@@ -21,7 +21,7 @@ export class MarketSettingAddComponent implements OnInit {
     banks = [];
     funds = [];
     bonds = [];
-    brockers = [];
+    brokers = [];
 
     constructor(
         public dialogRef: MatDialogRef<MarketSettingAddComponent>,
@@ -48,9 +48,9 @@ export class MarketSettingAddComponent implements OnInit {
         });
     }
 
-    getBrockers() {
+    getBrokers() {
         this.borckerService.getBrokerSettings(this).subscribe((res: any) => {
-            this.brockers = res;
+            this.brokers = res;
         });
     }
 
@@ -61,7 +61,7 @@ export class MarketSettingAddComponent implements OnInit {
             this.title = 'ایجاد ';
         }
         this.creatForm();
-        this.getBrockers();
+        this.getBrokers();
         this.getFunds();
         this.getBourse();
 
@@ -73,7 +73,7 @@ export class MarketSettingAddComponent implements OnInit {
     creatForm() {
         this.form = this.fb.group({
             organizationType: [this.data ? this.data.organizationType : 'M', Validators.required],
-            brockerId: [this.data ? this.data.brokerId : ''],
+            brokerId: [this.data ? this.data.brokerId : ''],
             bourseCode: [this.data ? this.data.bourseCode : ''],
             nationalId: [this.data ? this.data.nationalId : '', Validators.required],
             pamCode: [this.data ? this.data.pamCode : '', Validators.required],
