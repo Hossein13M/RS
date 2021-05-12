@@ -13,11 +13,7 @@
             <form [formGroup]="form" dir="rtl">
                 <mat-form-field appearance="outline" class="section">
                     <mat-label>شرکت</mat-label>
-                    <mat-select
-                        [disabled]="stateType === 'LOADING'"
-                        formControlName="tradingBook"
-                        (selectionChange)="onTradeBookChange($event.value)"
-                    >
+                    <mat-select [disabled]="stateType === 'LOADING'" formControlName="tradingBook" (selectionChange)="onTradeBookChange($event.value)">
                         <mat-option *ngFor="let tradeBook of tradeBooksList" [value]="tradeBook.id"> {{ tradeBook.name }} </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -35,21 +31,16 @@
     <mat-progress-bar mode="indeterminate" color="warn" *ngIf="stateType === 'LOADING'"></mat-progress-bar>
 
     <div class="page-content">
-        <!--   Table  -->
         <div *ngIf="stateType === 'PRESENT' && !!selectedTradingBook" class="fuse-card">
-            <div style='width: 100%'>
-                <app-table
-                    [data]='dataSource'
-                    [columns]='column'
-                    [paginationSettings]="{ mode: 'local'}">
-                </app-table>
+            <div style="width: 100%">
+                <app-table [data]="dataSource" [columns]="column" [paginationSettings]="{ mode: 'local' }"> </app-table>
             </div>
         </div>
 
-        <!--   Getting Data Failed  -->
-        <div *ngIf="stateType === 'FAIL'" fxLayout="row wrap" fxLayoutAlign="center center">دریافت داده ناموفق بود</div>
-        <!--   Help Quotes  -->
-        <p *ngIf="stateType === 'PRESENT' && !!!selectedTradingBook" class="text-center">برای مشاهده‌ی دفاتر لطفا شرکت را انتخاب کنید.</p>
-        <p *ngIf="stateType === 'LOADING'" class="text-center">در حال دریافت اطلاعات</p>
+        <div fxLayout="row wrap" fxLayoutAlign="center center">
+            <p *ngIf="stateType === 'FAIL'">دریافت داده ناموفق بود</p>
+            <p *ngIf="stateType === 'PRESENT' && !!!selectedTradingBook">برای مشاهده‌ی دفترها، شرکت را انتخاب کنید</p>
+            <p *ngIf="stateType === 'LOADING'">در حال دریافت اطلاعات</p>
+        </div>
     </div>
 </div>

@@ -87,8 +87,8 @@
                     کارگزاری
                     <span style="color: red">*</span>
                 </mat-label>
-                <mat-select formControlName="brockerId">
-                    <mat-option style="text-align: right" *ngFor="let c of brockers"
+                <mat-select formControlName="brokerId">
+                    <mat-option style="text-align: right" *ngFor="let c of brokers"
                                 [value]="c?.id">
                         {{c?.name}}
                     </mat-option>
@@ -98,7 +98,7 @@
                 </mat-error>
             </mat-form-field>
         </div>
-        <div class="setting-form-row">
+       <div class="setting-form-row">
             <mat-form-field appearance="outline">
                 <mat-label>کد بورسی</mat-label>
                 <input formControlName="bourseCode" matInput>

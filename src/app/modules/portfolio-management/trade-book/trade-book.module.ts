@@ -28,5 +28,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     ],
     providers: [TradeBookService],
     entryComponents: [TradeBookHistoryComponent],
+    exports: [TradeBookComponent],
 })
 export class TradeBookModule {}
