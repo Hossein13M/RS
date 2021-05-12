@@ -32,7 +32,7 @@
 
                 <mat-form-field *ngIf="form.get('baskets').value.includes('2')" appearance="outline" style="min-width: 250px">
                     <mat-label>صندوق های تحت مدیریت</mat-label>
-                    <mat-select formControlName="funds" multiple>
+                    <mat-select formControlName="funds" multiple required>
                         <mat-select-trigger>
                             <span *ngIf="form.controls['funds'].value?.length > 0"> (+{{ form.controls['funds'].value.length }} {{ 'صندوق' }}) </span>
                         </mat-select-trigger>

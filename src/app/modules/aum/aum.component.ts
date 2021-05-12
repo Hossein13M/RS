@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -64,7 +64,10 @@ export class AumComponent implements OnInit {
             this.setFormValueFromParams();
             this.getAUMFund().subscribe(() => {
                 this.setFormValueFromParams();
-                this.form.get('baskets').valueChanges.subscribe(() => this.getAUMFund());
+                this.form.get('baskets').valueChanges.subscribe((value: Array<string>) => {
+                    value.includes('2') ? this.form.addControl('funds', new FormControl([], Validators.required)) : this.form.removeControl('funds');
+                    this.getAUMFund();
+                });
                 this.form.valueChanges.subscribe((formValue) => this.addRouterParamsOnFormValueChanges(formValue));
             });
         });
