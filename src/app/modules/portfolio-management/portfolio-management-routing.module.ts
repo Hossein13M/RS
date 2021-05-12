@@ -1,7 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-export const PMRoutePrefix = 'portfolio';
+export const PMRoutePrefix = 'portfolio-management';
 
 export const routes: Routes = [
     {
@@ -23,7 +23,7 @@ export const routes: Routes = [
     },
 
     {
-        path: 'settings/trade-add',
+        path: `${PMRoutePrefix}/trade-add`,
         loadChildren: () => import('./trade-add/trade-add.module').then((m) => m.TradeAddModule),
     },
 ];
