@@ -1,30 +1,47 @@
 import { Injectable } from '@angular/core';
-import { ApiClientService } from 'app/services/Base/api-client.service';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { Specification } from 'app/shared/models/Specification';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Ticker, TradeOrganization } from './trade-add.model';
 
 @Injectable()
-export class TradeAddService extends Specification {
-    private static TradeAddAPI = '/api/v1/trade-registration';
+export class TradeAddService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private acs: ApiClientService) {
-        super();
+    public getOrganizations(): Observable<Array<{ organizationName: string; organizationType: string }>> {
+        return this.http.get<any>(`/api/v1/portfolio-management-service/organizations`);
     }
 
-    show(fc?: FormContainer): Observable<any> {
-        return this.acs.get(TradeAddService.TradeAddAPI + this.generateSpecificationString(), fc);
+    public getTickersByKeyword(searchKeyword: string): Observable<{ items: Array<Ticker>; limit: number | string; skip: number | string }> {
+        return this.http.get<any>(`/api/v1/bourse-instrument-detail/bonds`, { params: { searchKeyword } });
     }
 
-    add(data: any, fc?: FormContainer): Observable<any> {
-        return this.acs.post(TradeAddService.TradeAddAPI, data, fc);
+    public getTradeRegistration(paginationParams): Observable<{ items: Array<TradeOrganization>; limit: number; skip: number; total: number }> {
+        const params: HttpParams = this.prepareParamsForObjects(paginationParams);
+        return this.http.get<any>(`/api/v1/trade-registration`, { params });
     }
 
-    delete(id: any, fc?: FormContainer): Observable<any> {
-        return this.acs.delete(`${TradeAddService.TradeAddAPI}/${id}`, fc);
+    public deleteTradeRegistration(tradeRegistrationId: number | string) {
+        return this.http.delete(`/api/v1/trade-registration/${tradeRegistrationId}`);
     }
 
-    edit(data: any, fc?: FormContainer): Observable<any> {
-        return this.acs.put(TradeAddService.TradeAddAPI, fc, data);
+    public createTradeRegistration(tradeRegistrationInfo) {
+        return this.http.post(`/api/v1/trade-registration`, tradeRegistrationInfo);
+    }
+
+    public updateTradeRegistration(tradeRegistrationInfo) {
+        return this.http.put(`/api/v1/trade-registration`, tradeRegistrationInfo);
+    }
+
+    // *** the following method has been implemented to create the query params we need to append to our requests
+    private prepareParamsForObjects(searchParams: any): HttpParams {
+        let params: HttpParams = new HttpParams();
+        Object.keys(searchParams).map((key: string) => {
+            if (Array.isArray(searchParams[key])) {
+                searchParams[key].forEach((element) => (params = params.append(key, element)));
+            } else if (searchParams[key] !== '') {
+                params = params.append(key, searchParams[key]);
+            }
+        });
+        return params;
     }
 }

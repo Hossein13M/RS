@@ -1,0 +1,18 @@
+.fuse-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+}
+
+.trend-chart-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    height: 100%;
+    width: 100%;
+}
+
+.header {
+    padding: 0 1rem;
+}

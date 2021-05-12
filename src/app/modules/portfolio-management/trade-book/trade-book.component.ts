@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { PMRoutePrefix } from '../portfolio-management.module';
@@ -11,21 +10,7 @@ import { formatDate } from '@angular/common';
 import { StateType } from '#shared/state-type.enum';
 import { ColumnModel } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
-
-export interface TableElement {
-    bourseAccount: string;
-    volume: number;
-    vwap: number;
-    asset: string;
-    brokerName: string;
-    vwapUpdateDate: string;
-}
-
-interface TradeBook {
-    details: Array<any>;
-    organization: string;
-    totalAssets: string;
-}
+import { TradeBook } from './trade-book.model';
 
 @Component({
     selector: 'app-trade-book',
@@ -34,7 +19,6 @@ interface TradeBook {
     animations: [fuseAnimations],
 })
 export class TradeBookComponent implements OnInit {
-    pageUrl = `/${PMRoutePrefix}/book`;
     stateType: StateType = StateType.INIT;
     column: Array<ColumnModel>;
     form: FormGroup = this.fb.group({ date: [new Date()], tradingBook: [[]] });
@@ -48,52 +32,19 @@ export class TradeBookComponent implements OnInit {
 
     ngOnInit(): void {
         this.getAllTradingBooks();
-        this.initColumns();
+        this.initializeTableColumns();
     }
 
-    initColumns(): void {
+    private initializeTableColumns(): void {
         this.column = [
-            {
-                id: 'row',
-                name: '#',
-                type: 'string',
-            },
-            {
-                id: 'bourseAccount',
-                name: 'نماد',
-                type: 'string',
-            },
-            {
-                id: 'volume',
-                name: 'حجم',
-                type: 'number',
-            },
-            {
-                id: 'vwap',
-                name: 'قیمت روز',
-                type: 'price',
-            },
-            {
-                id: 'asset',
-                name: 'ارزش بازار',
-                type: 'price',
-            },
-            {
-                id: 'brokerName',
-                name: 'کارگزار',
-                type: 'string',
-            },
-            {
-                id: 'btt',
-                name: 'بهای تمام شده‌ی کل',
-                type: 'price',
-            },
-            {
-                id: 'btt',
-                name: 'آخرین تاریخ بروزرسانی قیمت',
-                type: 'date',
-                convert: (value: unknown) => (value ? value : '-'),
-            },
+            { id: 'row', name: '#', type: 'string' },
+            { id: 'bourseAccount', name: 'نماد', type: 'string' },
+            { id: 'volume', name: 'حجم', type: 'number' },
+            { id: 'vwap', name: 'قیمت روز', type: 'price' },
+            { id: 'asset', name: 'ارزش بازار', type: 'price' },
+            { id: 'brokerName', name: 'کارگزار', type: 'string' },
+            { id: 'btt', name: 'بهای تمام شده‌ی کل', type: 'price' },
+            { id: 'btt', name: 'آخرین تاریخ بروزرسانی قیمت', type: 'date', convert: (value: unknown) => (value ? value : '-') },
             {
                 name: 'عملیات',
                 id: 'operation',
@@ -112,9 +63,9 @@ export class TradeBookComponent implements OnInit {
         ];
     }
 
-    public showBook(organizationType: any, ticker: any, pamCode: string): void {
-        const date = new Date(this.tradingBookService.searchForm.value.date).getTime();
-        this.router.navigate([this.pageUrl, date, organizationType, ticker, pamCode]);
+    public showBook(organizationType: string, ticker: any, pamCode: string): void {
+        const date = new Date(this.form.value.date).getTime();
+        this.router.navigate([`/${PMRoutePrefix}/book`, date, organizationType, ticker, pamCode]);
     }
 
     private getAllTradingBooks(): void {
@@ -129,12 +80,7 @@ export class TradeBookComponent implements OnInit {
                 this.stateType = StateType.PRESENT;
                 this.tradeBookData = result;
                 this.handleTradingBooksDate();
-                result.map((element, index: number) =>
-                    this.tradeBooksList.push({
-                        id: index,
-                        name: element.organization,
-                    })
-                );
+                result.map((element, index: number) => this.tradeBooksList.push({ id: index, name: element.organization }));
             },
             () => (this.stateType = StateType.FAIL)
         );
@@ -154,11 +100,7 @@ export class TradeBookComponent implements OnInit {
                     if (detail.vwap !== null) date = detail.vwapUpdateDate;
                     if (detail.vwapAdjusted !== null && detail.vwap !== null) date = detail.vwapAdjustedUpdateDate;
                     if (!date) return;
-                    detail.dateFa = new Date(date).toLocaleDateString('fa-Ir', {
-                        year: 'numeric',
-                        month: 'numeric',
-                        day: 'numeric',
-                    });
+                    detail.dateFa = new Date(date).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' });
                 });
             }
         });
