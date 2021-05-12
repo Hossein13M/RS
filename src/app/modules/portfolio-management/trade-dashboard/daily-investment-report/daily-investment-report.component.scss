@@ -1,6 +1,5 @@
 .container {
     width: 100%;
-    height: 500px;
     direction: rtl;
     overflow: hidden;
     position: relative;
@@ -15,10 +14,6 @@
     .table-container {
         height: calc(100% - 70px);
         overflow-y: auto;
-
-        .table {
-            height: auto;
-        }
     }
 
     app-paginator {
@@ -29,7 +24,13 @@
     }
 
     .full {
-        height: 320px;
         width: 100%;
+
+        & > mat-spinner {
+            margin: 150px auto !important;
+        }
+        & > p {
+            margin: 200px auto;
+        }
     }
 }

@@ -13,9 +13,7 @@ export class TradeSearchService {
         let params = this.prepareParams(searchParams);
         return this.http.get<any>(
             `/api/v1/portfolio-management-service/search-trade-data?skip=${paginationInfo.skip}&limit=${paginationInfo.limit}`,
-            {
-                params: params,
-            }
+            { params }
         );
     }
 
