@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { CreateFlowDto } from 'app/services/API/models';
 import { FlowsService } from 'app/services/App/flow/flow.service';
 import { SnotifyService } from 'ng-snotify';
+import { initialBpmn } from './initial-bpmn.js';
 
 @Component({
     selector: 'app-add-flow',
@@ -50,7 +51,7 @@ export class AddFlowComponent implements OnInit {
     newFlow() {
         this.loading = true;
 
-        this.flowService.addNewFlow(this.flowForm.controls['name'].value, this.flowForm.controls['category'].value, this.intial_bpmn).subscribe(
+        this.flowService.addNewFlow(this.flowForm.controls['name'].value, this.flowForm.controls['category'].value, initialBpmn ).subscribe(
             (res) => {
                 // this.snotifyService.success("قرارداد با موفقیت ثبت شد");
                 this.snackBar.open('قرارداد با موفقیت ثبت شد', '', {
@@ -73,59 +74,4 @@ export class AddFlowComponent implements OnInit {
             }
         );
     }
-
-    intial_bpmn = {
-        _declaration: {
-            _attributes: {
-                version: '1.0',
-                encoding: 'UTF-8',
-            },
-        },
-        'bpmn:definitions': {
-            _attributes: {
-                'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-                'xmlns:bpmn': 'http://www.omg.org/spec/BPMN/20100524/MODEL',
-                'xmlns:bpmndi': 'http://www.omg.org/spec/BPMN/20100524/DI',
-                'xmlns:dc': 'http://www.omg.org/spec/DD/20100524/DC',
-                id: 'Definitions_1',
-                targetNamespace: 'http://bpmn.io/schema/bpmn',
-            },
-            'bpmn:process': {
-                _attributes: {
-                    id: 'Process_1',
-                    isExecutable: 'false',
-                },
-                'bpmn:startEvent': {
-                    _attributes: {
-                        id: 'StartEvent_1',
-                    },
-                },
-            },
-            'bpmndi:BPMNDiagram': {
-                _attributes: {
-                    id: 'BPMNDiagram_1',
-                },
-                'bpmndi:BPMNPlane': {
-                    _attributes: {
-                        id: 'BPMNPlane_1',
-                        bpmnElement: 'Process_1',
-                    },
-                    'bpmndi:BPMNShape': {
-                        _attributes: {
-                            id: '_BPMNShape_StartEvent_2',
-                            bpmnElement: 'StartEvent_1',
-                        },
-                        'dc:Bounds': {
-                            _attributes: {
-                                x: '173',
-                                y: '102',
-                                width: '36',
-                                height: '36',
-                            },
-                        },
-                    },
-                },
-            },
-        },
-    };
 }
