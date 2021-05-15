@@ -169,14 +169,14 @@ export class BpmnComponent implements OnInit {
             // Check End Conditions
             const endEvents = flowExport['bpmn:definitions']['bpmn:process']['bpmn:endEvent'];
 
-            if (typeof endEvents[Symbol.iterator] === 'function') {
-                this.snackBar.onError('روندنما نمی‌تواند بیش از یک پایان داشته باشد.');
+            if (!endEvents) {
+                this.snackBar.onError('مرحله‌ی پایانی‌ای برای روندنما موجود نیست.');
                 this.waiting = false;
                 return;
             }
 
-            if (!endEvents) {
-                this.snackBar.onError('مرحله‌ی پایانی‌ای برای روندنما موجود نیست.');
+            if (typeof endEvents[Symbol.iterator] === 'function') {
+                this.snackBar.onError('روندنما نمی‌تواند بیش از یک پایان داشته باشد.');
                 this.waiting = false;
                 return;
             }

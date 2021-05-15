@@ -122,7 +122,12 @@ export class TableComponent implements OnChanges, AfterViewInit {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!this.data || !this.columns) {
+        let data = this.data;
+        if (changes.hasOwnProperty('data')) {
+            data = changes.data.currentValue;
+        }
+
+        if (!data || !this.columns || data.length === 0 || !Array.isArray(data)) {
             return;
         }
 
@@ -161,17 +166,21 @@ export class TableComponent implements OnChanges, AfterViewInit {
         // add operation to each row
         const tableOperation = this.columns.find((element) => element.type === 'operation');
         if (tableOperation && tableOperation?.operations) {
-            this.data.forEach((element) => (element.tableOperation = [...tableOperation.operations.map((el: any) => ({ ...el }))]));
+            data?.forEach((element) => (element.tableOperation = [...tableOperation.operations.map((el: any) => ({ ...el }))]));
         }
 
-        this.data.forEach((el) => (el.tableSelect = false));
+        data?.forEach((el) => (el.tableSelect = false));
         this.patchData(this.data);
 
         this.handleSetLastSearch();
     }
 
     handleSetLastSearch(): void {
-        this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
+        try {
+            this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
+        } catch (e) {
+            return;
+        }
     }
 
     ngAfterViewInit(): void {
