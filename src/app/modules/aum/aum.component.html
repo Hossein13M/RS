@@ -13,9 +13,7 @@
                     <mat-label>سبد</mat-label>
                     <mat-select formControlName="baskets" multiple required (selectionChange)="getAUMFundOnBasketChange()">
                         <mat-select-trigger>
-                            <span *ngIf="form.controls['baskets'].value?.length > 0">
-                                (+{{ form.controls['baskets'].value.length }} {{ 'سبد' }})
-                            </span>
+                            <span *ngIf="form.controls['baskets'].value?.length > 0"> (+{{ form.controls['baskets'].value.length }} {{ 'سبد' }}) </span>
                         </mat-select-trigger>
                         <mat-checkbox
                             #basketsAllOption
@@ -107,8 +105,10 @@
                 </button>
             </div>
         </form>
-
-        <mat-tab-group *ngIf="hasSubmitButtonClicked" class="mt-20 content" mat-stretch-tabs>
+        <div class="loader" *ngIf="hasSubmitButtonClicked">
+            <mat-progress-bar color="primary" mode="buffer"></mat-progress-bar>
+        </div>
+        <mat-tab-group *ngIf="didAllAumDateCame" class="mt-20 content" mat-stretch-tabs>
             <mat-tab [disabled]="aumData.etf.state !== 'PRESENT'">
                 <ng-template mat-tab-label>
                     <span>کل دارایی‌ها</span>
