@@ -17,6 +17,7 @@ import { AumStocksComponent } from './aum-stocks/aum-stocks.component';
 import { AumComponent } from './aum.component';
 import { IpsDialogModule } from '#shared/components/ips-dialog/ips-dialog.module';
 import { LayoutModule } from '../../layout/layout.module';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @NgModule({
     declarations: [
@@ -31,7 +32,7 @@ import { LayoutModule } from '../../layout/layout.module';
         AumFundsComponent,
         AumNlFundsComponent,
     ],
-    imports: [CommonModule, AUMRoutingModule, ShareModule, ChartModule, MatProgressSpinnerModule, IpsDialogModule, LayoutModule],
+    imports: [CommonModule, AUMRoutingModule, ShareModule, ChartModule, MatProgressSpinnerModule, IpsDialogModule, LayoutModule, MatProgressBarModule],
     entryComponents: [TableDialogComponent],
 })
 export class AUMModule {}

@@ -26,6 +26,7 @@ export class AumComponent implements OnInit {
     categories: Array<Category>;
     funds: Array<Fund>;
     form: FormGroup;
+    didAll;
     searchParams: SearchParams = {
         tamadonAssets: false,
         fundNationalCodes: [],
@@ -50,6 +51,7 @@ export class AumComponent implements OnInit {
         deposit: { data: {}, state: 'INIT' },
     };
     hasSubmitButtonClicked: boolean = false;
+    didAllAumDateCame: boolean = false;
 
     constructor(
         private aumService: AUMService,
@@ -80,7 +82,7 @@ export class AumComponent implements OnInit {
                 this.fundsControlRequired = false;
                 this.form.controls.funds.setValidators([]);
             }
-            console.log(this.form.status)
+            console.log(this.form.status);
         });
     }
 
@@ -147,26 +149,32 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
-        const selectedIndex = 0;
-        if (this.tabGroup) {
-            this.tabGroup.selectedIndex = selectedIndex;
-        }
         Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
         // the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();
         this.hasSubmitButtonClicked = true;
+        this.didAllAumDateCame = false;
+        const $forkAllCalls: Array<Observable<any>> = [];
 
         setTimeout(() => {
             this.form.get('categories').value.forEach((element) => {
                 this.form.get('NL').value.forEach((isBourse) => {
                     if (isBourse == 0) {
-                        if (element == 2) this.getAumStock(false);
-                        else if (element == 1) this.getAumBond(false);
-                        else if (element == 4) this.getAumFund(false);
+                        if (element == 2) {
+                            $forkAllCalls.push(this.getAumStock(false));
+                        } else if (element == 1) {
+                            $forkAllCalls.push(this.getAumBond(false));
+                        } else if (element == 4) {
+                            $forkAllCalls.push(this.getAumFund(false));
+                        }
                     } else if (isBourse == 1) {
-                        if (element == 1) this.getAumBond();
-                        else if (element == 2) this.getAumStock();
-                        else if (element == 4) this.getAumFund();
+                        if (element == 1) {
+                            $forkAllCalls.push(this.getAumBond());
+                        } else if (element == 2) {
+                            $forkAllCalls.push(this.getAumStock());
+                        } else if (element == 4) {
+                            $forkAllCalls.push(this.getAumFund());
+                        }
                     }
                 });
                 // if (element == 3) this.getAumDeposit();
@@ -174,9 +182,27 @@ export class AumComponent implements OnInit {
             });
 
             if (this.form.get('baskets').value.length > 1 || this.form.get('categories').value.length > 1 || this.form.get('NL').value.length > 1)
-                this.getAumEtf();
+                $forkAllCalls.push(this.getAumEtf());
         }, 100);
         // 100 ms delay is because angular bug: not detecting changes fast
+
+        setTimeout(() => {
+            forkJoin($forkAllCalls).subscribe(() => {
+                this.hasSubmitButtonClicked = false;
+                this.didAllAumDateCame = true;
+                const aumArray = _.values(this.aumData);
+                let counter = 0;
+                setTimeout(() => {
+                    for (const aumObject of aumArray) {
+                        if (aumObject.state === 'PRESENT' && this.tabGroup) {
+                            this.tabGroup.selectedIndex = counter;
+                            break;
+                        }
+                        counter++;
+                    }
+                }, 200)
+            });
+        }, 200);
     }
 
     // *** method for getting data on formSubmit ***
@@ -188,47 +214,47 @@ export class AumComponent implements OnInit {
             .subscribe((result) => (this.aumData.deposit.data = result));
     }
 
-    private getAumStock(isNl: boolean = true) {
-        isNl
-            ? this.aumService
-                  .getAumNLStocks(this.searchParams)
-                  .pipe(StateManager(this.aumData.nlStocks))
-                  .subscribe((result) => (this.aumData.nlStocks.data = result))
-            : this.aumService
-                  .getAumStocks(this.searchParams)
-                  .pipe(StateManager(this.aumData.stocks))
-                  .subscribe((result) => (this.aumData.stocks.data = result));
+    private getAumStock(isNl: boolean = true): Observable<any> {
+        return isNl
+            ? this.aumService.getAumNLStocks(this.searchParams).pipe(
+                  StateManager(this.aumData.nlStocks),
+                  tap((result) => (this.aumData.nlStocks.data = result))
+              )
+            : this.aumService.getAumStocks(this.searchParams).pipe(
+                  StateManager(this.aumData.stocks),
+                  tap((result) => (this.aumData.stocks.data = result))
+              );
     }
 
-    private getAumBond(isNl: boolean = true) {
-        isNl
-            ? this.aumService
-                  .getAumNlBond(this.searchParams)
-                  .pipe(StateManager(this.aumData.nlBond))
-                  .subscribe((result) => (this.aumData.nlBond.data = result))
-            : this.aumService
-                  .getAumBond(this.searchParams)
-                  .pipe(StateManager(this.aumData.bond))
-                  .subscribe((result) => (this.aumData.bond.data = result));
+    private getAumBond(isNl: boolean = true): Observable<any> {
+        return isNl
+            ? this.aumService.getAumNlBond(this.searchParams).pipe(
+                  StateManager(this.aumData.nlBond),
+                  tap((result) => (this.aumData.nlBond.data = result))
+              )
+            : this.aumService.getAumBond(this.searchParams).pipe(
+                  StateManager(this.aumData.bond),
+                  tap((result) => (this.aumData.bond.data = result))
+              );
     }
 
-    private getAumFund(isNl: boolean = true) {
-        isNl
-            ? this.aumService
-                  .getAumNlFunds(this.searchParams)
-                  .pipe(StateManager(this.aumData.nlFunds))
-                  .subscribe((result) => (this.aumData.nlFunds.data = result))
-            : this.aumService
-                  .getAumFunds(this.searchParams)
-                  .pipe(StateManager(this.aumData.funds))
-                  .subscribe((result) => (this.aumData.funds.data = result));
+    private getAumFund(isNl: boolean = true): Observable<any> {
+        return isNl
+            ? this.aumService.getAumNlFunds(this.searchParams).pipe(
+                  StateManager(this.aumData.nlFunds),
+                  tap((result) => (this.aumData.nlFunds.data = result))
+              )
+            : this.aumService.getAumFunds(this.searchParams).pipe(
+                  StateManager(this.aumData.funds),
+                  tap((result) => (this.aumData.funds.data = result))
+              );
     }
 
-    private getAumEtf(): void {
-        this.aumService
-            .getAumEtf(this.searchParams)
-            .pipe(StateManager(this.aumData.etf))
-            .subscribe((result) => (this.aumData.etf.data = result));
+    private getAumEtf(): Observable<any> {
+        return this.aumService.getAumEtf(this.searchParams).pipe(
+            StateManager(this.aumData.etf),
+            tap((result) => (this.aumData.etf.data = result))
+        );
     }
 
     private getAumDepositCertificate(): void {
