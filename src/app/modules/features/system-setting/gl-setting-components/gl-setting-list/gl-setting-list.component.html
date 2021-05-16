@@ -1,5 +1,4 @@
 <div class="page-layout">
-    <!-- HEADER -->
     <app-header pageTitle="نگاشت کد دفتر">
         <button mat-raised-button (click)="create()" color="primary">
             <mat-icon>add</mat-icon>
@@ -24,7 +23,7 @@
                     </ng-template>
                     <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" alt="not found" />
                             <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
