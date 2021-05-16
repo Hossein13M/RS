@@ -9,6 +9,7 @@ import { GlChartComponent } from './gl-chart/gl-chart.component';
 import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
 import { GlTreeComponent } from './gl-tree.component';
 import { GlTreeService } from './gl-tree.service';
+import { PipesModule } from '#shared/pipes/pipes.module';
 
 const routes: Routes = [
     {
@@ -20,7 +21,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [GlTreeComponent, GlChartComponent, GlPieChartComponent],
-    imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes)],
+    imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes), PipesModule],
     providers: [GlTreeService],
 })
 export class GlTreeModule {}

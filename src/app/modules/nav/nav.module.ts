@@ -13,6 +13,7 @@ import { NavItemDetailComponent } from './nav-item-detail/nav-item-detail.compon
 import { NavMainComponent } from './nav-main/nav-main.component';
 import { NavProcessDetailDialogComponent } from './nav-process-detail-dialog/nav-process-detail-dialog.component';
 import { NavRoutingModule } from './nav-routing.module';
+import { PipesModule } from '#shared/pipes/pipes.module';
 
 @NgModule({
     declarations: [NavMainComponent, NavItemDetailComponent, NavProcessDetailDialogComponent, NavAddChangeDialogComponent],
@@ -27,6 +28,7 @@ import { NavRoutingModule } from './nav-routing.module';
         ChartModule,
         LayoutModule,
         MatProgressBarModule,
-    ],
+        PipesModule
+    ]
 })
 export class NavModule {}

@@ -34,6 +34,7 @@ import { OrganizationSupervisorListComponent } from './organization-supervisor-s
 import { OrganizationTypeSettingAddComponent } from './organization-type-setting-components/organization-type-setting-add/organization-type-setting-add.component';
 import { OrganizationTypeSettingListComponent } from './organization-type-setting-components/organization-type-setting-list/organization-type-setting-list.component';
 import { SystemSettingRoutingModule } from './system-setting-routing.module';
+import { PipesModule } from '#shared/pipes/pipes.module';
 
 @NgModule({
     declarations: [
@@ -67,7 +68,7 @@ import { SystemSettingRoutingModule } from './system-setting-routing.module';
         MarketSettingAddComponent,
         MarketSettingListComponent,
     ],
-    imports: [CommonModule, MaterialModule, ShareModule, SystemSettingRoutingModule, NgxMatSelectSearchModule, LayoutModule],
+    imports: [CommonModule, MaterialModule, ShareModule, SystemSettingRoutingModule, NgxMatSelectSearchModule, LayoutModule, PipesModule],
     entryComponents: [
         BranchSettingAddComponent,
         BrokerSettingAddComponent,

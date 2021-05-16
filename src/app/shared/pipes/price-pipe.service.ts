@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class PricePipeService {
     decimalInfo = '1.0-0';
     downScaleOrder = 9; // 10 ^^ x

@@ -89,9 +89,7 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [AppComponent],
     imports: [
-        // Navigation
         FuseNavigationModule,
-
         LoginModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -109,9 +107,7 @@ const appRoutes: Routes = [
         PortfolioManagementModule,
         OpRiskModule,
         ShareModule,
-
         GlModule,
-
         TestModule, // --> Test Playground
     ],
     bootstrap: [AppComponent],

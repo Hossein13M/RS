@@ -10,15 +10,11 @@ import { AlarmDetailComponent } from './alarm-detail/alarm-detail.component';
 import { AlarmReminderDetailComponent } from './alarm-reminder-detail/alarm-reminder-detail.component';
 import { AlarmReminderComponent } from './alarm-reminder/alarm-reminder.component';
 import { ListAlarmComponent } from './list-alarm/list-alarm.component';
+import { PipesModule } from '#shared/pipes/pipes.module';
+
 const routes: Routes = [
-    {
-        path: 'list',
-        component: ListAlarmComponent,
-    },
-    {
-        path: 'remindList',
-        component: AlarmReminderComponent,
-    },
+    { path: 'list', component: ListAlarmComponent },
+    { path: 'remindList', component: AlarmReminderComponent },
 ];
 
 @NgModule({
@@ -30,7 +26,7 @@ const routes: Routes = [
         AddAlarmReminderComponent,
         AlarmReminderDetailComponent,
     ],
-    imports: [CommonModule, RouterModule.forChild(routes), MaterialModule, ShareModule, NgxMatSelectSearchModule],
+    imports: [CommonModule, RouterModule.forChild(routes), MaterialModule, ShareModule, NgxMatSelectSearchModule, PipesModule],
     entryComponents: [AddAlarmComponent, AlarmDetailComponent, AddAlarmReminderComponent, AlarmReminderDetailComponent],
 })
 export class AlarmingModule {}

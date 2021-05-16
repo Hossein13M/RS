@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Ticker, TradeOrganization } from './trade-add.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable()
 export class TradeAddService {
@@ -16,7 +17,7 @@ export class TradeAddService {
     }
 
     public getTradeRegistration(paginationParams): Observable<{ items: Array<TradeOrganization>; limit: number; skip: number; total: number }> {
-        const params: HttpParams = this.prepareParamsForObjects(paginationParams);
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls(paginationParams);
         return this.http.get<any>(`/api/v1/trade-registration`, { params });
     }
 
@@ -30,18 +31,5 @@ export class TradeAddService {
 
     public updateTradeRegistration(tradeRegistrationInfo) {
         return this.http.put(`/api/v1/trade-registration`, tradeRegistrationInfo);
-    }
-
-    // *** the following method has been implemented to create the query params we need to append to our requests
-    private prepareParamsForObjects(searchParams: any): HttpParams {
-        let params: HttpParams = new HttpParams();
-        Object.keys(searchParams).map((key: string) => {
-            if (Array.isArray(searchParams[key])) {
-                searchParams[key].forEach((element) => (params = params.append(key, element)));
-            } else if (searchParams[key] !== '') {
-                params = params.append(key, searchParams[key]);
-            }
-        });
-        return params;
     }
 }
