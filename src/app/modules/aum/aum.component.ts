@@ -82,7 +82,6 @@ export class AumComponent implements OnInit {
                 this.fundsControlRequired = false;
                 this.form.controls.funds.setValidators([]);
             }
-            console.log(this.form.status);
         });
     }
 

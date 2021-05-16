@@ -17,6 +17,7 @@ import { IssuerGoalComponent } from './issuer-goal/issuer-goal.component';
 import { IssuerLicenseComponent } from './issuer-license/issuer-license.component';
 import { IssuerComponent } from './issuer/issuer.component';
 import { SettingsRoutingModule } from './settings-routing.module';
+import { PipesModule } from '#shared/pipes/pipes.module';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,7 @@ import { SettingsRoutingModule } from './settings-routing.module';
         MarketMakerComponent,
         BourceInstrumentDetailComponent,
     ],
-    imports: [CommonModule, SettingsRoutingModule, ShareModule, NgxMatSelectSearchModule, FuseSharedModule, MaterialModule],
+    imports: [CommonModule, SettingsRoutingModule, ShareModule, NgxMatSelectSearchModule, FuseSharedModule, MaterialModule, PipesModule],
     entryComponents: [CollaterallsComponent, GuarantorsComponent, DateComponent, UnderWriterComponent, MarketMakerComponent],
 })
 export class SettingsModule {}

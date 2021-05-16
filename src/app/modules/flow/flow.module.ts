@@ -58,6 +58,7 @@ import { MarketMakingFeesReceivingInfoComponent } from './forms/tabs/market-maki
 import { SecuritiesInfoComponent } from './forms/tabs/securities-info/securities-info.component';
 import { SyndicateMembersNamesComponent } from './forms/tabs/syndicate-members-names/syndicate-members-names.component';
 import { VariableFeesInfoComponent } from './forms/tabs/variable-fees-info/variable-fees-info.component';
+import { PipesModule } from '#shared/pipes/pipes.module';
 
 @NgModule({
     declarations: [
@@ -122,6 +123,7 @@ import { VariableFeesInfoComponent } from './forms/tabs/variable-fees-info/varia
         MatProgressSpinnerModule,
         LayoutModule,
         MatTooltipModule,
+        PipesModule
     ],
     exports: [ReactiveFormsModule, DragDropModule, ShareModule, FormBuilderComponent],
     entryComponents: [
