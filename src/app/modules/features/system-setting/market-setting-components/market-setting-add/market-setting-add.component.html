@@ -1,39 +1,21 @@
 <div class="dialog-container">
-    <div title="{{title}}"
-         appDialogHeader>
+    <div title="{{ title }}" appDialogHeader>
         <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
     </div>
     <form [formGroup]="form" class="setting-form-container" dir="rtl">
         <div class="setting-form-row">
             <mat-form-field appearance="outline">
-                <mat-label>
-                    نوع
-                    <span style="color: red">*</span>
-                </mat-label>
+                <mat-label>نوع <span style="color: red">*</span> </mat-label>
                 <mat-select formControlName="organizationType">
-                    <!--                    <mat-option style="text-align: right" *ngFor="let c of bankAccountTypes"-->
-                    <!--                                [value]="c?.id">-->
-                    <!--                        {{c?.name}}-->
-                    <!--                    </mat-option>-->
-                    <mat-option style="text-align: right" [value]="'M'">
-                        بازارگردانی
-                    </mat-option>
-                    <mat-option style="text-align: right" [value]="'T'">
-                        تمدن
-                    </mat-option>
-                    <mat-option style="text-align: right" [value]="'F'">
-                        صندوق
-                    </mat-option>
+                    <mat-option style="text-align: right" [value]="'M'"> بازارگردانی </mat-option>
+                    <mat-option style="text-align: right" [value]="'T'"> تمدن </mat-option>
+                    <mat-option style="text-align: right" [value]="'F'"> صندوق </mat-option>
                 </mat-select>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
+
             <mat-form-field *ngIf="form.get('organizationType').value === 'M'" appearance="outline">
-                <mat-label>
-                    نماد
-                    <span style="color: red">*</span>
-                </mat-label>
+                <mat-label> نماد <span style="color: red">*</span> </mat-label>
                 <mat-select formControlName="symbolORFundTitle">
                     <ngx-mat-select-search
                         [clearSearchInput]="false"
@@ -42,125 +24,79 @@
                         [placeholderLabel]="'جستجو'"
                         [formControl]="symbolORFundTitleSearchKeyword"
                     ></ngx-mat-select-search>
-                    <mat-option style="text-align: right" *ngFor="let c of bonds"
-                                [value]="c?.id">
-                        {{c?.name}}
-                    </mat-option>
+                    <mat-option style="text-align: right" *ngFor="let c of bonds" [value]="c?.name"> {{ c?.name }} </mat-option>
                 </mat-select>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
+
             <mat-form-field *ngIf="form.get('organizationType').value === 'F'" appearance="outline">
-                <mat-label>
-                    عنوان
-                    <span style="color: red">*</span>
-                </mat-label>
+                <mat-label>عنوان <span style="color: red">*</span> </mat-label>
                 <mat-select formControlName="symbolORFundTitle">
-                    <mat-option style="text-align: right" *ngFor="let c of funds"
-                                [value]="c?.id">
-                        {{c?.name}}
-                    </mat-option>
+                    <mat-option style="text-align: right" *ngFor="let c of funds" [value]="c?.id"> {{ c?.name }} </mat-option>
                 </mat-select>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
+
             <mat-form-field *ngIf="form.get('organizationType').value === 'T'" appearance="outline">
-                <mat-label>
-                    IsBOC
-                </mat-label>
+                <mat-label>IsBOC </mat-label>
                 <mat-select formControlName="isBOC">
-                    <mat-option style="text-align: right" [value]="true">
-                        بله
-                    </mat-option>
-                    <mat-option style="text-align: right" [value]="false">
-                        خیر
-                    </mat-option>
+                    <mat-option style="text-align: right" [value]="true"> بله </mat-option>
+                    <mat-option style="text-align: right" [value]="false"> خیر </mat-option>
                 </mat-select>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
+
             <mat-form-field appearance="outline">
-                <mat-label>
-                    کارگزاری
-                    <span style="color: red">*</span>
-                </mat-label>
+                <mat-label>کارگزاری <span style="color: red">*</span> </mat-label>
                 <mat-select formControlName="brokerId">
-                    <mat-option style="text-align: right" *ngFor="let c of brokers"
-                                [value]="c?.id">
-                        {{c?.name}}
-                    </mat-option>
+                    <mat-option style="text-align: right" *ngFor="let c of brokers" [value]="c?.id"> {{ c?.name }} </mat-option>
                 </mat-select>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
-            </mat-form-field>
-        </div>
-       <div class="setting-form-row">
-            <mat-form-field appearance="outline">
-                <mat-label>کد بورسی</mat-label>
-                <input formControlName="bourseCode" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>
-                    شناسه ملی
-                    <span style="color: red">*</span>
-                </mat-label>
-                <input formControlName="nationalId" matInput>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>
-                    کد پم
-                    <span style="color: red">*</span>
-                </mat-label>
-                <input matInput formControlName="pamCode">
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
         </div>
         <div class="setting-form-row">
             <mat-form-field appearance="outline">
-                <mat-label>
-                    دریافت داده
-                </mat-label>
+                <mat-label>کد بورسی</mat-label>
+                <input formControlName="bourseCode" matInput />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label> شناسه ملی <span style="color: red">*</span> </mat-label>
+                <input formControlName="nationalId" matInput />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>کد پم <span style="color: red">*</span> </mat-label>
+                <input matInput formControlName="pamCode" />
+            </mat-form-field>
+        </div>
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label> دریافت داده </mat-label>
                 <mat-select formControlName="apiActive">
-                    <mat-option style="text-align: right" [value]="true">
-                        دارد
-                    </mat-option>
-                    <mat-option style="text-align: right" [value]="false">
-                        ندارد
-                    </mat-option>
+                    <mat-option style="text-align: right" [value]="true"> دارد </mat-option>
+                    <mat-option style="text-align: right" [value]="false"> ندارد </mat-option>
                 </mat-select>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>نام کاربری</mat-label>
-                <input matInput formControlName="username">
+                <input matInput formControlName="username" />
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>کلمه عبور</mat-label>
-                <input matInput formControlName="password">
+                <input matInput formControlName="password" />
             </mat-form-field>
         </div>
         <div class="setting-form-row">
             <mat-form-field *ngIf="form.get('organizationType').value !== 'T'" appearance="outline">
-                <mat-label>
-                    IsBOC
-                </mat-label>
+                <mat-label> IsBOC </mat-label>
                 <mat-select formControlName="isBOC">
-                    <mat-option style="text-align: right" [value]="true">
-                        بله
-                    </mat-option>
-                    <mat-option style="text-align: right" [value]="false">
-                        خیر
-                    </mat-option>
+                    <mat-option style="text-align: right" [value]="true"> بله </mat-option>
+                    <mat-option style="text-align: right" [value]="false"> خیر </mat-option>
                 </mat-select>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
         </div>
 

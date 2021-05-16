@@ -21,9 +21,7 @@ export class MarketSettingListComponent implements OnInit {
     data = [];
     columns: Array<ColumnModel>;
 
-    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public marketSettingService: MarketSettingService) {
-        // Init Table Columns
-    }
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public marketSettingService: MarketSettingService) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -46,34 +44,12 @@ export class MarketSettingListComponent implements OnInit {
                     ],
                     mode: TableSearchMode.SERVER,
                 },
-                convert: (value: any) => {
-                    return value === 'T' ? 'تمدن' : value === 'M' ? 'بازارگردانی' : value === 'F' ? 'صندوق' : '';
-                },
+                convert: (value: any) => (value === 'T' ? 'تمدن' : value === 'M' ? 'بازارگردانی' : value === 'F' ? 'صندوق' : ''),
             },
-            {
-                name: 'نماد/عنوان صندوق',
-                id: 'symbolORFundTitle',
-                type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER },
-            },
-            {
-                name: 'کارگزاری',
-                id: 'brokerName',
-                type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER },
-            },
-            {
-                name: 'کد بورسی',
-                id: 'bourseCode',
-                type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER },
-            },
-            {
-                name: 'شناسه ملی',
-                id: 'nationalId',
-                type: 'string',
-                search: { type: 'text', mode: TableSearchMode.SERVER },
-            },
+            { name: 'نماد/عنوان صندوق', id: 'symbolORFundTitle', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            { name: 'کارگزاری', id: 'brokerName', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            { name: 'کد بورسی', id: 'bourseCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            { name: 'شناسه ملی', id: 'nationalId', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
             { name: 'کد پم', id: 'pamCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
             {
                 name: 'دریافت داده',
@@ -87,25 +63,19 @@ export class MarketSettingListComponent implements OnInit {
                     ],
                     mode: TableSearchMode.SERVER,
                 },
-                convert: (value: any) => {
-                    return value ? 'دارد' : 'ندارد';
-                },
+                convert: (value: any) => (value ? 'دارد' : 'ندارد'),
             },
             {
                 name: 'نام کاربری',
                 id: 'username',
                 type: 'string',
-                convert: (value: any) => {
-                    return value ? value : '-';
-                },
+                convert: (value: any) => (value ? value : '-'),
             },
             {
                 name: 'رمز عبور',
                 id: 'password',
                 type: 'string',
-                convert: (value: any) => {
-                    return value ? value : '-';
-                },
+                convert: (value: any) => (value ? value : '-'),
             },
             {
                 name: 'عملیات',
@@ -124,12 +94,8 @@ export class MarketSettingListComponent implements OnInit {
     initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.columns, 'id'));
         const objectFromKeys = {};
-        mapKeys.forEach((id) => {
-            objectFromKeys[id] = '';
-        });
-        this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys,
-        });
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
@@ -148,13 +114,9 @@ export class MarketSettingListComponent implements OnInit {
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
+        if (!searchFilter) return;
 
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
 
         this.marketSettingService.specificationModel.searchKeyword = searchFilter;
         this.marketSettingService.specificationModel.skip = 0;
@@ -166,23 +128,16 @@ export class MarketSettingListComponent implements OnInit {
             .open(MarketSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    this.get();
-                }
+                if (res) this.get();
             });
     }
 
     delete(element): void {
         this.matDialog
-            .open(ConfirmDialogComponent, {
-                panelClass: 'dialog-w40',
-                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
-            })
+            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    this.marketSettingService.deleteMarket(element.ticker, this).subscribe(() => this.get());
-                }
+                if (res) this.marketSettingService.deleteMarket(element.ticker, this).subscribe(() => this.get());
             });
     }
 
@@ -191,9 +146,7 @@ export class MarketSettingListComponent implements OnInit {
             .open(MarketSettingAddComponent, { panelClass: 'dialog-w60', data: element })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    this.get();
-                }
+                if (res) this.get();
             });
     }
 
