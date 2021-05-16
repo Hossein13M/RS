@@ -32,30 +32,9 @@ export class GlSettingListComponent implements AfterViewInit {
 
     initColumns(): void {
         this.column = [
-            {
-                id: 'symbol',
-                name: 'نماد',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
-            },
-            {
-                id: 'status',
-                name: 'وضعیت',
-                type: 'custom',
-                cellTemplate: this.statusRef,
-            },
-            {
-                id: 'glCode',
-                name: 'کد دفتر کل',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
-            },
+            { id: 'symbol', name: 'نماد', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { id: 'status', name: 'وضعیت', type: 'custom', cellTemplate: this.statusRef },
+            { id: 'glCode', name: 'کد دفتر کل', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             {
                 name: 'عملیات',
                 id: 'operation',
@@ -63,18 +42,8 @@ export class GlSettingListComponent implements AfterViewInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    {
-                        name: 'ویرایش',
-                        icon: 'create',
-                        color: 'accent',
-                        operation: ({ row }: any) => this.update(row),
-                    },
-                    {
-                        name: 'حذف',
-                        icon: 'delete',
-                        color: 'warn',
-                        operation: ({ row }: any) => this.delete(row),
-                    },
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.update(row) },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
                 ],
             },
         ];
@@ -83,22 +52,14 @@ export class GlSettingListComponent implements AfterViewInit {
     initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.column, 'id'));
         const objectFromKeys = {};
-        mapKeys.forEach((id) => {
-            objectFromKeys[id] = '';
-        });
-        this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys,
-        });
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
+        if (!searchFilter) return;
 
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
 
         this.glSettingService.specificationModel.searchKeyword = searchFilter;
         this.glSettingService.specificationModel.skip = 0;
@@ -125,9 +86,7 @@ export class GlSettingListComponent implements AfterViewInit {
             .open(GlSettingAddComponent, { panelClass: 'dialog-w60', data: null })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    this.get();
-                }
+                if (res) this.get();
             });
     }
 
@@ -137,9 +96,7 @@ export class GlSettingListComponent implements AfterViewInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.glSettingService.delete(row.id).subscribe(() => {
-                        this.data = this.data.filter((el) => el.id !== row.id);
-                    });
+                    this.glSettingService.delete(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
                 }
             });
     }
@@ -149,9 +106,7 @@ export class GlSettingListComponent implements AfterViewInit {
             .open(GlSettingAddComponent, { panelClass: 'dialog-w60', data: row })
             .afterClosed()
             .subscribe((res) => {
-                if (res) {
-                    _.assign(row, res);
-                }
+                if (res) _.assign(row, res);
             });
     }
 }

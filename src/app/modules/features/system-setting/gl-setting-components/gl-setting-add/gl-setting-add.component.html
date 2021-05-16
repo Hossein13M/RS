@@ -5,19 +5,13 @@
     <form [formGroup]="form" class="setting-form-container" dir="rtl">
         <div class="setting-form-row" fxLayout="row" fxLayoutAlign="space-around center">
             <mat-form-field appearance="outline">
-                <mat-label>
-                    نام نماد
-                    <span style="color: red">*</span>
-                </mat-label>
-                <input formControlName="ticker" matInput />
+                <mat-label> نام نماد <span style="color: red">*</span> </mat-label>
+                <input formControlName="symbol" matInput />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-                <mat-label>
-                    شناسه‌ی نماد
-                    <span style="color: red">*</span>
-                </mat-label>
-                <input type="text" formControlName="symbol" matInput />
+                <mat-label> شناسه‌ی نماد <span style="color: red">*</span> </mat-label>
+                <input type="text" formControlName="ticker" matInput />
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -29,10 +23,7 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-                <mat-label>
-                    کد دفتر کل
-                    <span style="color: red">*</span>
-                </mat-label>
+                <mat-label> کد دفتر کل <span style="color: red">*</span> </mat-label>
                 <input type="number" formControlName="glCode" matInput />
             </mat-form-field>
         </div>
