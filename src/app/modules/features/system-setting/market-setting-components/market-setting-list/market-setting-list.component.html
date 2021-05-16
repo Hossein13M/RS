@@ -1,6 +1,4 @@
 <div class="page-layout">
-    <!-- HEADER -->
-
     <app-header pageTitle="لیست اطلاعات بازار">
         <button color="primary" (click)="add()" mat-raised-button>
             <mat-icon>add</mat-icon>
@@ -12,7 +10,6 @@
         <div class="setting-container-back" dir="rtl">
             <div class="setting-panel fuse-card">
                 <div style="width: 100%">
-                    <!-- Table -->
                     <app-table
                         [data]="data"
                         [columns]="columns"
@@ -24,7 +21,7 @@
 
                     <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                            <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                            <img width="140px" height="140px" src="./assets/images/no-data.svg" alt="not found" />
                             <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
