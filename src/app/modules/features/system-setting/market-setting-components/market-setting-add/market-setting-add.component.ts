@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
 import { BankService } from 'app/services/feature-services/bank.service';
@@ -7,7 +7,7 @@ import { BourseInstrumentDetailService } from 'app/services/feature-services/bou
 import { BrokerSettingService } from 'app/services/feature-services/system-setting-services/broker-setting.service';
 import { FundSettingService } from 'app/services/feature-services/system-setting-services/fund-setting.service';
 import { MarketSettingService } from 'app/services/feature-services/system-setting-services/market-setting.service';
-import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     selector: 'app-market-setting-add',
@@ -38,7 +38,6 @@ export class MarketSettingAddComponent implements OnInit {
     getBourse(searchKeyword?: string) {
         this.bourseBonds.getBonds(searchKeyword, this).subscribe((res: any) => {
             this.bonds = res.items;
-            console.log(searchKeyword, res.length);
         });
     }
 
@@ -55,22 +54,17 @@ export class MarketSettingAddComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.data) {
-            this.title = 'ویرایش ';
-        } else {
-            this.title = 'ایجاد ';
-        }
-        this.creatForm();
+        this.data ? (this.title = 'ویرایش ') : (this.title = 'ایجاد ');
+
+        this.createForm();
         this.getBrokers();
         this.getFunds();
         this.getBourse();
 
-        this.symbolORFundTitleSearchKeyword.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => {
-            this.getBourse(res);
-        });
+        this.symbolORFundTitleSearchKeyword.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => this.getBourse(res));
     }
 
-    creatForm() {
+    createForm() {
         this.form = this.fb.group({
             organizationType: [this.data ? this.data.organizationType : 'M', Validators.required],
             brokerId: [this.data ? this.data.brokerId : ''],
