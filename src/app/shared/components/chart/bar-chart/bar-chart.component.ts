@@ -19,8 +19,6 @@ export class BarChartComponent implements OnDestroy, OnChanges {
     @Input() valueName: string;
     @Input() valueType = 'price';
     @Input() chartScroll = true;
-
-    // Chart Data
     barChart: any;
     xAxis: any;
 
@@ -30,15 +28,11 @@ export class BarChartComponent implements OnDestroy, OnChanges {
         this.categoryName = this.categoryName ? this.categoryName : 'name';
         this.valueName = this.valueName ? this.valueName : 'value';
 
-        if (this.data) {
-            this.buildChart(this.data, this.categoryName, this.valueName, this.chartScroll);
-        }
+        if (this.data) this.buildChart(this.data, this.categoryName, this.valueName, this.chartScroll);
     }
 
     buildChart(data: Array<any>, categoryName: string, valueName: string, chartScroll = false): void {
-        if (!data || data.length === 0) {
-            return;
-        }
+        if (!data || data.length === 0) return;
 
         this.zone.runOutsideAngular(() => {
             this.barChart = am4core.create('barChart', am4charts.XYChart);
@@ -119,9 +113,7 @@ export class BarChartComponent implements OnDestroy, OnChanges {
                     if (!series.isHidden && !series.isHiding) {
                         series.dummyData = newIndex;
                         newIndex++;
-                    } else {
-                        series.dummyData = this.barChart.series.indexOf(series);
-                    }
+                    } else series.dummyData = this.barChart.series.indexOf(series);
                 });
                 let visibleCount = newIndex;
                 let newMiddle = visibleCount / 2;
@@ -133,14 +125,7 @@ export class BarChartComponent implements OnDestroy, OnChanges {
                     let dx = (newIndex - trueIndex + middle - newMiddle) * delta;
 
                     series.animate({ property: 'dx', to: dx }, series.interpolationDuration, series.interpolationEasing);
-                    series.bulletsContainer.animate(
-                        {
-                            property: 'dx',
-                            to: dx,
-                        },
-                        series.interpolationDuration,
-                        series.interpolationEasing
-                    );
+                    series.bulletsContainer.animate({ property: 'dx', to: dx }, series.interpolationDuration, series.interpolationEasing);
                 });
             }
         }
@@ -148,9 +133,7 @@ export class BarChartComponent implements OnDestroy, OnChanges {
 
     ngOnDestroy(): void {
         this.zone.runOutsideAngular(() => {
-            if (this.barChart) {
-                this.barChart.dispose();
-            }
+            if (this.barChart) this.barChart.dispose();
         });
     }
 }
