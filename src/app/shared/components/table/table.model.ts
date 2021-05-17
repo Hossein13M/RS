@@ -7,7 +7,7 @@ export enum TableSearchMode {
 }
 
 export interface PaginationSetting {
-    mode: 'local' | 'backend';
+    mode: 'local' | 'backend' | 'scroll';
     pageSize?: string | number;
     pageSizeOptions?: Array<number>;
 }
