@@ -12,9 +12,9 @@
                 <mat-form-field appearance="outline" style="min-width: 150px">
                     <mat-label>سبد</mat-label>
                     <mat-select formControlName="basket">
+                        <mat-option [value]="['F', 'T']">همه</mat-option>
                         <mat-option value="T">تمدن</mat-option>
                         <mat-option value="F">صندوق</mat-option>
-                        <mat-option [value]="['F', 'T']">همه</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -83,6 +83,7 @@
                     <app-pie-chart
                         [data]="assetsMonitoringData.pieChart"
                         height="300px"
+                        width='500px'
                         chartName="نمودار دایره‌ای"
                         [cardLayout]="false"
                         categoryLabel="name"
