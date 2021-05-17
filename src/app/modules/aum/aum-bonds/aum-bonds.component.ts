@@ -25,6 +25,7 @@ export class AumBondsComponent {
             { name: 'نام', id: 'name', type: 'string', search: { type: 'text', mode: TableSearchMode.LOCAL } },
             { name: 'ارزش روز', id: 'dayValue', type: 'price' },
             { name: 'قیمت روز', id: 'dayPrice', type: 'price' },
+            { name: 'حجم کل', id: 'volume', type: 'number' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبداوراق', id: 'percentageOfBonds', type: 'number' },
             { name: 'نرخ سود اسمی', id: 'couponRate', type: 'number' },
