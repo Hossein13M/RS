@@ -56,6 +56,7 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
 
     ngAfterViewInit(): void {
         this.makeChart(this.data);
+        this.chart.legend.valueLabels.template.text = "{value.percent.formatNumber('#.00')}%";
 
         if (this.data == null) this.state = stateType.PRESENT;
         else if (this.data !== undefined && this.data.length > 0) this.state = stateType.PRESENT;
