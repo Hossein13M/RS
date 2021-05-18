@@ -4,7 +4,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { AfterViewInit, Component, Inject, NgZone, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TreeOrderType } from '../../gl.model';
-import { GlTreeService } from '../gl-tree.service';
+import { GlService } from '../../gl.service';
 
 @Component({
     selector: 'app-gl-pie-chart',
@@ -17,15 +17,9 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
     private button;
     private drillLevel = [];
     private selectedSlice;
-
     public date;
 
-    constructor(
-        public dialogRef: MatDialogRef<GlPieChartComponent>,
-        @Inject(MAT_DIALOG_DATA) public data,
-        public glTreeService: GlTreeService,
-        private zone: NgZone
-    ) {}
+    constructor(public dialogRef: MatDialogRef<GlPieChartComponent>, @Inject(MAT_DIALOG_DATA) public data, public glService: GlService, private zone: NgZone) {}
 
     ngOnInit(): void {
         this.initData();
@@ -49,7 +43,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
     private createPieChart(): void {
         this.zone.runOutsideAngular(() => {
             am4core.useTheme(am4themes_animated);
-            this.chart = am4core.create('chartdiv', am4charts.PieChart);
+            this.chart = am4core.create('chartDiv', am4charts.PieChart);
             this.chart.data = this.data;
             this.pieSeries = this.chart.series.push(new am4charts.PieSeries());
             this.pieSeries.dataFields.value = 'value';
@@ -94,7 +88,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
 
     private callService(event): void {
         if (event.dataContext.type === TreeOrderType.Category) {
-            this.glTreeService.getGroupByCategory(event.dataContext.code).subscribe((res: any) => {
+            this.glService.getGroupByCategory(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.Group;
@@ -106,7 +100,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
                 }
             });
         } else if (event.dataContext.type === TreeOrderType.Group) {
-            this.glTreeService.getGeneralByGroup(event.dataContext.code).subscribe((res: any) => {
+            this.glService.getGeneralByGroup(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.General;
@@ -118,7 +112,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
                 }
             });
         } else if (event.dataContext.type === TreeOrderType.General) {
-            this.glTreeService.getSubsidiaryByGeneral(event.dataContext.code).subscribe((res: any) => {
+            this.glService.getSubsidiaryByGeneral(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.Subsidiary;
@@ -130,7 +124,7 @@ export class GlPieChartComponent implements OnInit, AfterViewInit {
                 }
             });
         } else if (event.dataContext.type === TreeOrderType.Subsidiary) {
-            this.glTreeService.getDetailBySubsidiary(event.dataContext.code).subscribe((res: any) => {
+            this.glService.getDetailBySubsidiary(event.dataContext.code).subscribe((res: any) => {
                 if (res) {
                     res.items.map((x) => {
                         x.type = TreeOrderType.Detail;
