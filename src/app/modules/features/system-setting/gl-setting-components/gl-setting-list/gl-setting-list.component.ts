@@ -7,7 +7,7 @@ import { GlSettingService } from 'app/modules/features/system-setting/gl-setting
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import * as _ from 'lodash';
 import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.component';
-import { formatDate } from '@angular/common';
+
 
 @Component({
     selector: 'app-gl-setting-list',
@@ -64,7 +64,7 @@ export class GlSettingListComponent implements AfterViewInit {
     }
 
     get(search?: any): void {
-        this.glSettingService.get(this.pagination, search).subscribe((res: any) => {
+        this.glSettingService.getGlSettings(this.pagination, search).subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
@@ -92,7 +92,7 @@ export class GlSettingListComponent implements AfterViewInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.glSettingService.delete(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
+                    this.glSettingService.deleteGlSetting(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
                 }
             });
     }
