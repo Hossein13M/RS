@@ -44,7 +44,7 @@ export class FundRoleSettingAddComponent implements OnInit {
     }
 
     getOrgSup(): void {
-        this.organizationSupervisorService.get(this).subscribe((res: any) => (this.orgSupervisors = res));
+        this.organizationSupervisorService.get().subscribe((res: any) => (this.orgSupervisors = res));
     }
 
     addSupervisor(): void {

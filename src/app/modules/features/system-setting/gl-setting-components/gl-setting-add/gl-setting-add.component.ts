@@ -37,7 +37,7 @@ export class GlSettingAddComponent implements OnInit {
     }
 
     onCreateBranch(): void {
-        this.glSettingService.create(this.form.value, this).subscribe(() => {
+        this.glSettingService.create(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -51,7 +51,7 @@ export class GlSettingAddComponent implements OnInit {
             status: this.form.get('status').value,
             symbol: this.form.get('symbol').value,
         };
-        this.glSettingService.update(obj, this).subscribe(() => {
+        this.glSettingService.update(obj).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });

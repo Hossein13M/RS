@@ -1,33 +1,32 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class GlSettingService extends Specification {
+export class GlSettingService {
     private static glSettingApi = '/api/v1/inst-gl-mapping';
 
-    create(model, fc?: FormContainer) {
-        return this.apiClientService.post(GlSettingService.glSettingApi, model, fc);
+    constructor(private http: HttpClient) {}
+
+    public create(model): Observable<any> {
+        return this.http.post(GlSettingService.glSettingApi, model);
     }
 
-    public delete(id, fc?: FormContainer) {
+    public delete(id): Observable<any> {
         const api = GlSettingService.glSettingApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
+        return this.http.delete(api);
     }
 
-    update(model, fc?: FormContainer) {
-        return this.apiClientService.put(GlSettingService.glSettingApi, fc, model);
+    public update(model): Observable<any> {
+        return this.http.put(GlSettingService.glSettingApi, model);
     }
 
-    get(fc?: FormContainer) {
-        const api = GlSettingService.glSettingApi + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
-    }
-
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    public get(paginationParams, searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        const api = GlSettingService.glSettingApi;
+        return this.http.get(api, { params });
     }
 }

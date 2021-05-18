@@ -7,6 +7,7 @@ import { GlSettingService } from 'app/services/feature-services/system-setting-s
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import * as _ from 'lodash';
 import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.component';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'app-gl-setting-list',
@@ -58,27 +59,22 @@ export class GlSettingListComponent implements AfterViewInit {
 
     search(searchFilter: any): void {
         if (!searchFilter) return;
-
         Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
-
-        this.glSettingService.specificationModel.searchKeyword = searchFilter;
-        this.glSettingService.specificationModel.skip = 0;
-        this.get();
+        this.get(this.searchFormGroup.value);
     }
 
-    paginationControl(pageEvent: PaginationChangeType): void {
-        this.glSettingService.specificationModel.limit = pageEvent.limit;
-        this.glSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
-        this.get();
-    }
-
-    get(): void {
-        this.glSettingService.get().subscribe((res: any) => {
+    get(search?: any): void {
+        this.glSettingService.get(this.pagination, search).subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
-            this.glSettingService.setPageDetailData(res);
         });
+    }
+
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
     }
 
     create(): void {
