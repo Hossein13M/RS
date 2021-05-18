@@ -1,11 +1,7 @@
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
-@Injectable({
-    providedIn: 'root',
-})
 export class GlSettingService {
     private static glSettingApi = '/api/v1/inst-gl-mapping';
 
