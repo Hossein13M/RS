@@ -28,7 +28,8 @@ export class UserInfoService {
         this.userInfo$ = this.userInfoSubject.asObservable().pipe(
             switchMap(
                 (value: boolean): Observable<any> => {
-                    return value !== null ? of(value) : EMPTY;
+                    if (value !== null) return of(value);
+                    else return EMPTY;
                 }
             )
         );
@@ -37,7 +38,8 @@ export class UserInfoService {
         this.userTokenInfo$ = this.userInfoSubject.asObservable().pipe(
             switchMap(
                 (value: boolean): Observable<any> => {
-                    return value !== null ? of(value) : EMPTY;
+                    if (value !== null) return of(value);
+                    else return EMPTY;
                 }
             )
         );

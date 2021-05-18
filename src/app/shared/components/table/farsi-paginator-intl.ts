@@ -18,11 +18,11 @@ const dutchRangeLabel = (page: number, pageSize: number, length: number) => {
 export function getFarsiPaginatorIntl(): MatPaginatorIntl {
     const paginatorIntl = new MatPaginatorIntl();
 
-    paginatorIntl.itemsPerPageLabel = 'سطر در هر صفحه :';
+    paginatorIntl.itemsPerPageLabel = 'تعداد در هر صفحه :';
     paginatorIntl.nextPageLabel = 'صفحه‌ی بعد';
-    paginatorIntl.previousPageLabel = 'صفحه‌ی قبل';
-    paginatorIntl.lastPageLabel = 'صفحه‌ی آخر';
-    paginatorIntl.firstPageLabel = 'صفحه‌ی اول';
+    paginatorIntl.previousPageLabel = 'صفحه‌ی پیشین';
+    paginatorIntl.lastPageLabel = 'صفحه‌ی پایانی';
+    paginatorIntl.firstPageLabel = 'صفحه‌ی نخستین';
     paginatorIntl.getRangeLabel = dutchRangeLabel;
 
     return paginatorIntl;
