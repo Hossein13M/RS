@@ -84,7 +84,7 @@ export class OpRiskListComponent implements OnInit {
                     icon: 'check',
                     color: 'accent',
                     operation: ({ row }: any) => {
-                        if (row.type == 'risk') {
+                        if (row.type === 'risk') {
                             const data = { opRiskId: row.opRiskId };
                             this.opRiskManagementService.acceptOpRisk(data).subscribe((response) => {
                                 this.alertService.onSuccess('ریسک با موفقیت تایید شد');
@@ -101,7 +101,7 @@ export class OpRiskListComponent implements OnInit {
                     icon: 'clear',
                     color: 'warn',
                     operation: ({ row }: any) => {
-                        if (row.type == 'risk') this.showRejectOpRisk(row.opRiskId, 'risk');
+                        if (row.type === 'risk') this.showRejectOpRisk(row.opRiskId, 'risk');
                         else this.showRejectOpRisk(row.opLossId, 'lose');
                     },
                 },
@@ -201,12 +201,12 @@ export class OpRiskListComponent implements OnInit {
         },
     ];
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.onGetOpRiskActive();
         this.getHistory();
     }
 
-    onGetOpRiskActive() {
+    onGetOpRiskActive(): void {
         this.opRiskManagementService.getActiveOpRisk().subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;
@@ -215,7 +215,7 @@ export class OpRiskListComponent implements OnInit {
         });
     }
 
-    getHistory() {
+    getHistory(): void {
         this.opRiskManagementService.getOpRiskHistory().subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;
