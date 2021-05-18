@@ -2,13 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiClientService } from 'app/services/Base/api-client.service';
 import { FormContainer } from 'app/shared/models/FromContainer';
-import { PageEvent, Specification, SpecificationModel } from 'app/shared/models/Specification';
+import { Specification } from 'app/shared/models/Specification';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
+
+// TODO: this file needs to be removed completley
 export class OpRiskFlowService extends Specification {
     private static TreeMappingServiceAPI = '/api/v1/operation-risk/flow';
 
@@ -16,18 +18,7 @@ export class OpRiskFlowService extends Specification {
         super();
     }
 
-    public pageEvent: PageEvent = {
-        currentIndex: 0,
-        pageSize: 10,
-    };
-    public specificationModel: SpecificationModel = {
-        limit: 10,
-        skip: 0,
-        searchKeyword: {},
-    };
-
     private latestMappingSubject = new BehaviorSubject<any>(null);
-    public _latestMapping = this.latestMappingSubject.asObservable();
 
     get latestMapping() {
         return this.latestMappingSubject.getValue();
@@ -43,35 +34,33 @@ export class OpRiskFlowService extends Specification {
             .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getOpFlow(id, fc?: FormContainer): Observable<any> {
-        return this.acs.get(OpRiskFlowService.TreeMappingServiceAPI + `/${id}`, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    createOpFlow(data, fc?: FormContainer): Observable<any> {
-        return this.acs.post(OpRiskFlowService.TreeMappingServiceAPI, data, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    updateOpFlow(data, fc?: FormContainer): Observable<any> {
-        return this.acs.put(OpRiskFlowService.TreeMappingServiceAPI, fc, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    inActiveOpFlow(flowId, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .put(OpRiskFlowService.TreeMappingServiceAPI + `/inactive/${flowId}`, fc, {})
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
     getFlowUsers(fc?: FormContainer): Observable<any> {
         return this.acs.get(OpRiskFlowService.TreeMappingServiceAPI + `/user`, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    // from here, we implement API calls this way:
+    //    HTTP implementation
 
-    getOPRiskFlow(pagination: any) {
+    public getOPRiskFlowUsers(): Observable<any> {
+        return this.http.get('/api/v1/operation-risk/flow/user');
+    }
+
+    public getOPRiskFlows(pagination: any) {
         return this.http.get<any>(`/api/v1/operation-risk/flow?skip=${pagination.skip * pagination.limit}&limit=${pagination.limit}`);
     }
 
-    toggleOpFlowStatus(flowId: number | string) {
+    public getSingleOpRiskFlow(flowId: number | string) {
+        return this.http.get<any>(`/api/v1/operation-risk/flow/${flowId}`);
+    }
+
+    public toggleOPRiskFlowStatus(flowId: number | string) {
         return this.http.put<any>(`/api/v1/operation-risk/flow/inactive/${flowId}`, {});
+    }
+
+    public createOPRiskFlow(data: any) {
+        return this.http.post<any>(`/api/v1/operation-risk/flow`, data);
+    }
+
+    public updateOPRiskFlow(data: any) {
+        return this.http.put<any>(`/api/v1/operation-risk/flow`, data);
     }
 }

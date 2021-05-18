@@ -1,15 +1,37 @@
 <div class="page-layout">
     <app-header pageTitle="{{ title }}">
         <div>
-            <button *ngIf="!inEdit&&flows?.data?.length>0&& flows.state === 'PRESENT'" (click)="onCreate()" color="primary" style="margin-left: 10px" mat-raised-button>ذخیره</button>
-            <button *ngIf="inEdit&&flows?.data?.length>0&& flows.state === 'PRESENT'" (click)="onEdit()" color="primary" style="margin-left: 10px" mat-raised-button>بروزرسانی</button>
-            <a [routerLink]="[((back)?back:'/op-risk/management')]" color="accent" mat-raised-button>
+            <button
+                *ngIf="!inEdit && flows?.data?.length > 0 && flows.state === 'PRESENT'"
+                (click)="onCreate()"
+                color="primary"
+                style="margin-left: 10px"
+                mat-raised-button
+            >
+                ذخیره
+            </button>
+            <button
+                *ngIf="inEdit && flows?.data?.length > 0 && flows.state === 'PRESENT'"
+                (click)="onEdit()"
+                color="primary"
+                style="margin-left: 10px"
+                mat-raised-button
+            >
+                بروزرسانی
+            </button>
+            <a [routerLink]="[back ? back : '/op-risk/management']" color="accent" mat-raised-button>
                 <mat-icon>arrow_back</mat-icon>
             </a>
         </div>
     </app-header>
 
-    <div fxLayout="column wrap" class="page-content" dir="rtl" *ngIf="show&&flows?.data?.length>0&& flows.state === 'PRESENT'" style="overflow: auto">
+    <div
+        fxLayout="column wrap"
+        class="page-content"
+        dir="rtl"
+        *ngIf="show && flows?.data?.length > 0 && flows.state === 'PRESENT'"
+        style="overflow: auto"
+    >
         <div class="form" [formGroup]="form">
             <div fxLayout="row" fxLayoutAlign="space-evenly center" *ngIf="!inAdd">
                 <div fxLayout="column" fxFlex="95" fxLayoutAlign="space-evenly none">
@@ -36,7 +58,7 @@
                     <div fxLayout="column" fxFlex="200px" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>عنوان ریسک</mat-label>
-                            <input matInput formControlName="title" required/>
+                            <input matInput formControlName="title" required />
                         </mat-form-field>
                     </div>
 
@@ -51,7 +73,7 @@
                         </mat-form-field>
                         <mat-form-field *ngIf="!inAdd">
                             <mat-label>گروه دسترسی</mat-label>
-                            <input matInput formControlName="flow" [value]="form.value.flow.name" required/>
+                            <input matInput formControlName="flow" [value]="form.value.flow.name" required />
                         </mat-form-field>
                     </div>
                 </div>
@@ -125,7 +147,7 @@
                         <div class="form-container">
                             <mat-form-field appearance="outline">
                                 <mat-label>میانگین متوسط رخداد</mat-label>
-                                <input matInput formControlName="averageIncome" type="number" required/>
+                                <input matInput formControlName="averageIncome" type="number" required />
                             </mat-form-field>
                         </div>
                     </div>
@@ -156,7 +178,7 @@
                     <div fxLayout="column" fxFlex="66" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح محرکه عملیاتی</mat-label>
-                            <input matInput formControlName="driversDescription"/>
+                            <input matInput formControlName="driversDescription" />
                         </mat-form-field>
                     </div>
                 </div>
@@ -176,7 +198,7 @@
                 </div>
             </div>
 
-            <div class="fuse-card" style="margin: 20px 0; padding: 20px"1 *ngIf="form.value.control === 'available'">
+            <div class="fuse-card" style="margin: 20px 0; padding: 20px" *ngIf="form.value.control === 'available'">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
                     <div fxLayout="column" fxFlex="33" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
@@ -191,15 +213,15 @@
                     <div fxLayout="column" fxFlex="33" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح کنترل عملیاتی</mat-label>
-                            <input matInput formControlName="controlDescription" required *ngIf="!inAdd"/>
-                            <input matInput formControlName="controlDescription" required *ngIf="inAdd"/>
+                            <input matInput formControlName="controlDescription" required *ngIf="!inAdd" />
+                            <input matInput formControlName="controlDescription" required *ngIf="inAdd" />
                         </mat-form-field>
                     </div>
 
                     <div fxLayout="column" fxFlex="33" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>میانگین هزینه کنترل عملیاتی</mat-label>
-                            <input matInput formControlName="controlValue" type="number" required/>
+                            <input matInput formControlName="controlValue" type="number" required />
                         </mat-form-field>
                     </div>
 
@@ -233,14 +255,14 @@
                     <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح پوشش عملیاتی</mat-label>
-                            <input matInput formControlName="recoveriesDescription"/>
+                            <input matInput formControlName="recoveriesDescription" />
                         </mat-form-field>
                     </div>
 
                     <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>متوسط پوشش عملیاتی</mat-label>
-                            <input matInput formControlName="recoveriesAvg" type="number"/>
+                            <input matInput formControlName="recoveriesAvg" type="number" />
                         </mat-form-field>
                     </div>
 
@@ -261,14 +283,14 @@
                     <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح زیان مستقیم</mat-label>
-                            <input matInput formControlName="directLossesDescription"/>
+                            <input matInput formControlName="directLossesDescription" />
                         </mat-form-field>
                     </div>
 
                     <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>متوسط زیان مستقیم</mat-label>
-                            <input matInput formControlName="directLossesAvg" type="number"/>
+                            <input matInput formControlName="directLossesAvg" type="number" />
                         </mat-form-field>
                     </div>
 
@@ -289,34 +311,22 @@
                     <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح زیان غیر مستقیم</mat-label>
-                            <input matInput formControlName="inDirectLossesDescription"/>
+                            <input matInput formControlName="inDirectLossesDescription" />
                         </mat-form-field>
                     </div>
 
                     <div fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>متوسط زیان غیر مستقیم</mat-label>
-                            <input matInput formControlName="inDirectLossesAvg" type="number"/>
+                            <input matInput formControlName="inDirectLossesAvg" type="number" />
                         </mat-form-field>
                     </div>
                 </div>
             </div>
-
-            <div fxLayout="row" fxLayoutAlign="start none" style="margin-top: 20px" *ngIf="inAdd">
-                <div fxLayout="column" fxFlex="10" fxLayoutAlign="space-evenly none">
-                    <!--                <button (click)="onDraft()" color="accent" mat-raised-button>-->
-                    <!--                    <mat-icon>edit</mat-icon>-->
-                    <!--                    پیش نویس-->
-                    <!--                </button>-->
-                </div>
-                <div fxLayout="column" fxFlex="58" fxLayoutAlign="space-evenly none"></div>
-            </div>
         </div>
     </div>
 
-    <div *ngIf="show&&(!flows||flows?.data?.length==0) && flows.state === 'PRESENT'" class="no-flow-error">
-        <h1>
-            هیچ جریان فعالی برای شما وجود ندارد.
-        </h1>
+    <div *ngIf="show && (!flows || flows?.data?.length == 0) && flows.state === 'PRESENT'" class="no-flow-error">
+        <h1>هیچ جریان فعالی برای شما وجود ندارد.</h1>
     </div>
 </div>

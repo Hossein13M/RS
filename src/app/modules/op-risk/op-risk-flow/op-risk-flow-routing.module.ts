@@ -3,15 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { OpRiskFlowComponent } from './op-risk-flow/op-risk-flow.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        pathMatch: 'full',
-        component: OpRiskFlowComponent,
-    },
-    {
-        path: ':name',
-        component: OpRiskFlowComponent,
-    },
+    { path: '', pathMatch: 'full', component: OpRiskFlowComponent },
+    { path: ':name', component: OpRiskFlowComponent },
 ];
 
 @NgModule({

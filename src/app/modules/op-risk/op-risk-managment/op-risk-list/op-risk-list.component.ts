@@ -30,8 +30,7 @@ export class OpRiskListComponent implements OnInit {
             minWidth: '130px',
             sticky: true,
             convert: (value: any) => {
-                if (value === 'risk') return 'ریسک';
-                if (value === 'loss') return 'زیان';
+                return value === 'risk' ? 'ریسک' : 'زیان';
             },
         },
         {
@@ -86,9 +85,9 @@ export class OpRiskListComponent implements OnInit {
                     operation: ({ row }: any) => {
                         if (row.type == 'risk') {
                             const data = { opRiskId: row.opRiskId };
-                            this.opRiskManagementService.acceptOpRisk(data).subscribe((response) => {
+                            this.opRiskManagementService.acceptOpRisk(data).subscribe(() => {
                                 this.alertService.onSuccess('ریسک با موفقیت تایید شد');
-                                this.onGetOpRiskActive();
+                                this.getActiveOPRiskWorkFlows();
                             });
                         } else {
                             const data = { opLossId: row.opLossId };
@@ -202,12 +201,12 @@ export class OpRiskListComponent implements OnInit {
     ];
 
     ngOnInit() {
-        this.onGetOpRiskActive();
+        this.getActiveOPRiskWorkFlows();
         this.getHistory();
     }
 
-    onGetOpRiskActive() {
-        this.opRiskManagementService.getActiveOpRisk().subscribe((response) => {
+    private getActiveOPRiskWorkFlows() {
+        this.opRiskManagementService.getActiveOPRiskWorkFlows().subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;
             });
@@ -215,8 +214,8 @@ export class OpRiskListComponent implements OnInit {
         });
     }
 
-    getHistory() {
-        this.opRiskManagementService.getOpRiskHistory().subscribe((response) => {
+    private getHistory() {
+        this.opRiskManagementService.getOPRiskWorkFlowHistory(0, 10).subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;
             });
@@ -224,23 +223,20 @@ export class OpRiskListComponent implements OnInit {
         });
     }
 
-    showRejectOpRisk(id, type): void {
+    private showRejectOpRisk(id, type): void {
         this.dialog
             .open(RejectOpRiskComponent, { panelClass: 'dialog-w50', data: { id: id, type: type } })
             .afterClosed()
             .subscribe((res) => {
-                if (res) this.onGetOpRiskActive();
+                if (res) this.getActiveOPRiskWorkFlows();
             });
     }
 
-    search(filter: any): void {
+    public search(filter: any): void {
         if (filter.createdAt.fromDate || filter.createdAt.toDate) {
             const fromDate = this.opRiskManagementService.convertDate(new Date(filter.createdAt.fromDate));
             const toDate = this.opRiskManagementService.convertDate(new Date(filter.createdAt.toDate));
-            this.opRiskManagementService.specificationModel.searchKeyword = {
-                fromDate: fromDate,
-                toDate: toDate,
-            };
+            this.opRiskManagementService.specificationModel.searchKeyword = { fromDate: fromDate, toDate: toDate };
             this.getHistory();
         }
     }
