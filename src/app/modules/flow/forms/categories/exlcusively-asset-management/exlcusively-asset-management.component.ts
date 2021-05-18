@@ -108,7 +108,7 @@ export class ExlcusivelyAssetManagementComponent extends BaseFormModel implement
     }
 
     getAllBanks() {
-        this.bankService.get(this).subscribe((res: any) => {
+        this.bankService.getBankSettings(this).subscribe((res: any) => {
             this.banks = res.items;
         });
     }

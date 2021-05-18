@@ -155,7 +155,7 @@ export class UnderWritingAndMarketMakingComponent extends BaseFormModel implemen
     }
 
     getAllBanks() {
-        this.bankService.get(this).subscribe((res: any) => (this.banks = res.items));
+        this.bankService.getBankSettings(this).subscribe((res: any) => (this.banks = res.items));
     }
 
     handleError(): boolean {

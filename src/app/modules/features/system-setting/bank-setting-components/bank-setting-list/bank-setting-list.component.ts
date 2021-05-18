@@ -18,7 +18,6 @@ export class BankSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     data: any = [];
     column: Array<ColumnModel>;
-
     pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public bankService: BankService) {}
@@ -79,29 +78,23 @@ export class BankSettingListComponent implements OnInit {
         if (!searchFilter) {
             return;
         }
-
         Object.keys(searchFilter).forEach((key) => {
             this.searchFormGroup.controls[key].setValue(searchFilter[key]);
         });
-
-        this.bankService.specificationModel.searchKeyword = searchFilter;
-        this.bankService.specificationModel.skip = 0;
-        this.get();
+        this.get(this.searchFormGroup.value);
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.bankService.specificationModel.limit = pageEvent.limit;
-        this.bankService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.bankService.get().subscribe((res: any) => {
+    get(search?: any): void {
+        this.bankService.getBankSettings(this.pagination, search).subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.limit = res.limit;
             this.pagination.total = res.total;
-            this.pagination.limit = res.limit;
-            this.bankService.setPageDetailData(res);
         });
     }
 
@@ -128,7 +121,7 @@ export class BankSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.bankService.delete(row.id).subscribe((x) => {
+                    this.bankService.deleteBankSetting(row.id).subscribe((x) => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
