@@ -20,25 +20,25 @@ export class BranchSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<BranchSettingAddComponent>,
         private bankService: BankService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private branchSettingService: BranchSettingService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
             this.title = 'ایجاد ';
         }
-        this.bankService.get(this).subscribe((res: any) => {
+        this.bankService.getBankSettings(this).subscribe((res: any) => {
             this.banks = res.items;
         });
         this.creatForm();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             bankId: [this.data ? this.data.bankId : '', Validators.required],
             name: [this.data ? this.data.name : '', Validators.required],
@@ -46,14 +46,14 @@ export class BranchSettingAddComponent implements OnInit {
         });
     }
 
-    onCreateBranch() {
+    onCreateBranch(): void {
         this.branchSettingService.post(this.form.value, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = {
             id: this.data['id'],
             name: this.form.get('name').value,
@@ -61,18 +61,16 @@ export class BranchSettingAddComponent implements OnInit {
             bankId: this.form.get('bankId').value,
         };
         this.branchSettingService.put(obj, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
 
     handleError(): boolean {
         return false;
     }
-
-    isWorking: any;
 }

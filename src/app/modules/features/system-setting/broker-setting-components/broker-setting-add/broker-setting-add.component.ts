@@ -30,7 +30,7 @@ export class BrokerSettingAddComponent implements OnInit {
         } else {
             this.title = 'ایجاد ';
         }
-        this.bankService.get().subscribe((res: any) => {
+        this.bankService.getBankSettings().subscribe((res: any) => {
             this.banks = res.items;
         });
         this.creatForm();

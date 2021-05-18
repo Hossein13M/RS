@@ -148,7 +148,7 @@ export class MarketMakingComponent extends BaseFormModel implements OnInit {
     }
 
     getAllBanks(): void {
-        this.bankService.get(this).subscribe((res: any) => {
+        this.bankService.getBankSettings(this).subscribe((res: any) => {
             this.banks = res.items;
         });
     }
