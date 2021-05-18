@@ -21,15 +21,15 @@ export class TradeAddService {
         return this.http.get<any>(`/api/v1/trade-registration`, { params });
     }
 
-    public deleteTradeRegistration(tradeRegistrationId: number | string) {
+    public deleteTradeRegistration(tradeRegistrationId: number | string): Observable<any> {
         return this.http.delete(`/api/v1/trade-registration/${tradeRegistrationId}`);
     }
 
-    public createTradeRegistration(tradeRegistrationInfo) {
+    public createTradeRegistration(tradeRegistrationInfo): Observable<any> {
         return this.http.post(`/api/v1/trade-registration`, tradeRegistrationInfo);
     }
 
-    public updateTradeRegistration(tradeRegistrationInfo) {
+    public updateTradeRegistration(tradeRegistrationInfo): Observable<any> {
         return this.http.put(`/api/v1/trade-registration`, tradeRegistrationInfo);
     }
 }
