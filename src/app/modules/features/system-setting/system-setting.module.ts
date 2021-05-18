@@ -68,7 +68,6 @@ import { GlSettingService } from './gl-setting-components/gl-setting.service';
         FundSettingListComponent,
         MarketSettingAddComponent,
         MarketSettingListComponent,
-        GlSettingService
     ],
     imports: [CommonModule, MaterialModule, ShareModule, SystemSettingRoutingModule, NgxMatSelectSearchModule, LayoutModule, PipesModule],
     entryComponents: [
@@ -88,5 +87,6 @@ import { GlSettingService } from './gl-setting-components/gl-setting.service';
         InstrumentTypeSettingAddComponent,
         MarketSettingAddComponent,
     ],
+    providers: [GlSettingService],
 })
 export class SystemSettingModule {}
