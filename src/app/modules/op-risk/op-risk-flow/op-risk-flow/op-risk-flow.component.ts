@@ -62,6 +62,7 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
         this.opRiskFlowService.getOPRiskFlow(this.pagination).subscribe(
             (response) => {
                 this.pagination.total = response.total;
+                this.pagination.limit = response.limit;
                 response.items.forEach((value, index) => (response.items[index].positionNumber = index + 1));
                 this.data = response.items;
             },

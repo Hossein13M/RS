@@ -62,6 +62,4 @@ export class OrganizationSupervisorAddComponent implements OnInit {
     handleError(): boolean {
         return false;
     }
-
-    isWorking: any;
 }
