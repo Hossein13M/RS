@@ -68,7 +68,7 @@ export class OpRiskMappingDialogComponent implements OnInit {
 
     get(): void {
         this.state = stateType.LOADING;
-        this.ortcs.getTree(this.data.treeName, this).subscribe(
+        this.ortcs.getTree(this.data.treeName).subscribe(
             (tree) => {
                 this.state = stateType.PRESENT;
 
