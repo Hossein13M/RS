@@ -1,15 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TreeOrderType } from './gl.model';
+import { GlListServerResponse, TreeOrderType } from './gl.model';
 
 @Injectable()
 export class GlService {
-    private static getLevelApi = '/api/v1/gl/level';
-
     constructor(private http: HttpClient) {}
 
-    getLevelApi(code, type: TreeOrderType): Observable<any> {
+    public getGLLevels(code, type: TreeOrderType): Observable<any> {
         const params: any = {};
         switch (type) {
             case TreeOrderType.Category:
@@ -27,6 +25,15 @@ export class GlService {
                 params.generalLedgerCode = code;
                 break;
         }
-        return this.http.get(GlService.getLevelApi, { params });
+
+        return this.http.get(`/api/v1/gl/level`, { params });
+    }
+
+    public getGlGridData(params): Observable<GlListServerResponse> {
+        return this.http.get<GlListServerResponse>(`/api/v1/gl/list`, { params });
+    }
+
+    public getGLChangesHistory(params): Observable<any> {
+        return this.http.get<any>(`/api/v1/gl/change`, { params });
     }
 }

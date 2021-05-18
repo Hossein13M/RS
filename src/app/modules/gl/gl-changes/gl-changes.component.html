@@ -1,28 +1,22 @@
 <div class="page-layout">
     <app-header pageTitle="تغییرات خلاصه‌ی دفتر">
-        <div>
-            <button
-                mat-raised-button
-                [color]="searchCollapse && !(!dataToShow || dataToShow.length == 0) ? '' : 'primary'"
-                (click)="searchCollapse = !searchCollapse"
-                style="padding: 3px 8px 0 8px !important; min-width: unset"
-            >
-                <mat-icon class="mat-18">search</mat-icon>
-            </button>
-        </div>
+        <button
+            mat-raised-button
+            [color]="searchCollapse && !(!dataToShow || dataToShow.length == 0) ? '' : 'primary'"
+            (click)="searchCollapse = !searchCollapse"
+            style="padding: 3px 8px 0 8px !important; min-width: unset"
+        >
+            <mat-icon class="mat-18">search</mat-icon>
+        </button>
     </app-header>
 
     <div class="page-content">
         <div class="gl-back-container" dir="rtl">
-            <!--    Search Section    -->
             <div class="fuse-card" *ngIf="searchCollapse || !dataToShow || dataToShow.length === 0" style="margin-bottom: 10px" [@expandCollapse]>
-                <form [formGroup]="form">
+                <form [formGroup]="form" (submit)="submitForm()">
                     <div class="contract-form-row-4">
                         <mat-form-field appearance="outline">
-                            <mat-label>
-                                تاریخ دفتر کل ابتدا
-                                <span style="color: red">*</span>
-                            </mat-label>
+                            <mat-label> تاریخ دفتر کل ابتدا <span style="color: red">*</span> </mat-label>
                             <input (click)="start3.open()" matInput formControlName="fromDate" [matDatepicker]="start3" />
                             <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
                             <mat-datepicker #start3></mat-datepicker>
@@ -30,10 +24,7 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
-                            <mat-label>
-                                تاریخ دفتر کل انتها
-                                <span style="color: red">*</span>
-                            </mat-label>
+                            <mat-label> تاریخ دفتر کل انتها <span style="color: red">*</span> </mat-label>
                             <input (click)="start1.open()" matInput formControlName="toDate" [matDatepicker]="start1" />
                             <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
                             <mat-datepicker #start1></mat-datepicker>
@@ -41,17 +32,10 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
-                            <mat-label>
-                                سطح ۰
-                                <span style="color: red">*</span>
-                            </mat-label>
+                            <mat-label> سطح ۰ <span style="color: red">*</span> </mat-label>
                             <mat-select formControlName="categoryCode" multiple>
                                 <mat-select-trigger>
-                                    <span *ngIf="form.value['categoryCode']?.length > 0">
-                                        (+
-                                        {{ form.value['categoryCode']?.length }}
-                                        مورد)
-                                    </span>
+                                    <span *ngIf="form.value['categoryCode']?.length > 0"> (+ {{ form.value['categoryCode']?.length }} مورد) </span>
                                 </mat-select-trigger>
 
                                 <mat-option style="text-align: right" *ngFor="let c of glCategories" [value]="c?.categoryLedgerCode">
@@ -68,11 +52,7 @@
                             <mat-label> سطح ۱ </mat-label>
                             <mat-select formControlName="groupCode" [disabled]="!form.value.categoryCode" multiple>
                                 <mat-select-trigger>
-                                    <span *ngIf="form.value['groupCode']?.length > 0">
-                                        (+
-                                        {{ form.value['groupCode']?.length }}
-                                        مورد)
-                                    </span>
+                                    <span *ngIf="form.value['groupCode']?.length > 0"> (+ {{ form.value['groupCode']?.length }} مورد) </span>
                                 </mat-select-trigger>
 
                                 <mat-option style="text-align: right" *ngFor="let gr of glGroups" [value]="gr?.groupLedgerCode">
@@ -87,16 +67,10 @@
                     <div class="tow-column">
                         <mat-form-field appearance="outline" fxFlex="21">
                             <mat-label> سطح ۲ </mat-label>
-
                             <mat-select formControlName="generalCode" [disabled]="!form.value.groupCode" multiple>
                                 <mat-select-trigger>
-                                    <span *ngIf="form.value['generalCode']?.length > 0">
-                                        (+
-                                        {{ form.value['generalCode']?.length }}
-                                        مورد)
-                                    </span>
+                                    <span *ngIf="form.value['generalCode']?.length > 0"> (+ {{ form.value['generalCode']?.length }} مورد) </span>
                                 </mat-select-trigger>
-
                                 <mat-option style="text-align: right" *ngFor="let ge of glGeneral" [value]="ge?.generalLedgerCode">
                                     {{ ge?.generalLedgerCode }}
                                     <span style="color: #9ea1a9; font-size: 12px">{{ ge?.generalLedgerName }}</span>
@@ -111,23 +85,20 @@
                                 <span style="color: red">*</span>
                             </mat-label>
                             <mat-chip-list #chipList>
-                                <mat-chip *ngFor="let st of showTypes" [selectable]="selectable" [removable]="removable" (removed)="remove(st)">
+                                <mat-chip *ngFor="let st of showTypes" (removed)="removeItemFromAutoComplete(st)">
                                     {{ st }}
-                                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                    <mat-icon matChipRemove>cancel</mat-icon>
                                 </mat-chip>
                                 <input
                                     #showTypeInput
                                     [formControl]="showTypeCtl"
                                     [matAutocomplete]="auto"
                                     [matChipInputFor]="chipList"
-                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                    (matChipInputTokenEnd)="add($event)"
+                                    (matChipInputTokenEnd)="addItemFromAutoComplete($event)"
                                 />
                             </mat-chip-list>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                                <mat-option *ngFor="let f of filteredShowTypes | async" [value]="f">
-                                    {{ f }}
-                                </mat-option>
+                                <mat-option *ngFor="let f of filteredShowTypes | async" [value]="f"> {{ f }} </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
@@ -151,7 +122,7 @@
                         </mat-form-field>
                     </div>
                     <div class="m-12">
-                        <button (click)="submitData()" [disabled]="form.invalid" color="accent" mat-raised-button>
+                        <button type="submit" [disabled]="form.invalid" color="accent" mat-raised-button>
                             <mat-icon>trending_up</mat-icon>
                             نمایش
                         </button>
@@ -160,7 +131,6 @@
             </div>
 
             <div class="fuse-card" *ngIf="dataToShow && dataToShow.length !== 0">
-                <!--    Table    -->
                 <app-table [data]="dataToShow" [columns]="columns"> </app-table>
             </div>
         </div>

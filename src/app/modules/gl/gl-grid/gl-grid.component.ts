@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { GlGridService } from './gl-grid.service';
+import { formatDate } from '@angular/common';
+import { GlListItem, GlListServerResponse } from '../gl.model';
+import { GlService } from '../gl.service';
 
 @Component({
     selector: 'app-gl-grid',
@@ -11,20 +12,9 @@ import { GlGridService } from './gl-grid.service';
     animations: [fuseAnimations],
 })
 export class GlGridComponent implements OnInit {
-    data = [];
-    public dataSource = new MatTableDataSource<any>();
-    public displayedColumns = [
-        'categoryLedgerName',
-        'groupLedgerName',
-        'generalLedgerName',
-        'subsidiaryLedgerName',
-        'detailLedgerName',
-        'aggregatedCreditAmount',
-        'aggregatedDebitAmount',
-        'aggregatedRemainedAmount',
-    ];
-    today = new Date();
-    dateForm = new FormControl(this.today);
+    data: Array<GlListItem> = [];
+    today: Date = new Date();
+    form: FormControl = new FormControl(this.today);
     columns = [
         { id: 'categoryLedgerName', name: 'دسته بندی', type: 'string' },
         { id: 'groupLedgerName', name: 'گروه', type: 'string' },
@@ -35,21 +25,16 @@ export class GlGridComponent implements OnInit {
         { id: 'aggregatedDebitAmount', name: 'گردش بستانکار', type: 'price' },
         { id: 'aggregatedRemainedAmount', name: 'مانده', type: 'string' },
     ];
-    isWorking: any;
 
-    constructor(private glGridService: GlGridService) {}
+    constructor(private glService: GlService) {}
 
     ngOnInit(): void {
         this.getGridData();
-        this.dateForm.valueChanges.subscribe(() => this.getGridData());
+        this.form.valueChanges.subscribe(() => this.getGridData());
     }
 
     getGridData(): void {
-        const search = { date: this.dateForm.value, limit: 1000, skip: 0 };
-        this.glGridService.getGlGridData(search).subscribe((res: any) => (this.data = res.items));
-    }
-
-    handleError(): boolean {
-        return false;
+        const search = { date: formatDate(this.form.value, 'yyyy-MM-dd', 'en_US'), limit: 1000, skip: 0 };
+        this.glService.getGlGridData(search).subscribe((res: GlListServerResponse) => (this.data = res.items));
     }
 }
