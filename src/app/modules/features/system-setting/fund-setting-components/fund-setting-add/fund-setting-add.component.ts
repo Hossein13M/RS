@@ -6,7 +6,7 @@ import { BankService } from 'app/services/feature-services/bank.service';
 import { FrequenceService } from 'app/services/feature-services/frequence.service';
 import { FundRoleService } from 'app/services/feature-services/system-setting-services/fund-role.service';
 import { FundSettingService } from 'app/services/feature-services/system-setting-services/fund-setting.service';
-import { FundTypeService } from 'app/services/feature-services/system-setting-services/fund-type.service';
+import { FundTypeService } from 'app/modules/features/system-setting/fund-setting-components/fund-type.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -43,7 +43,7 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
     }
 
     getFundTypes() {
-        this.fundTypeService.getAllFundTypes(this).subscribe((res: any) => (this.fundTypes = res));
+        this.fundTypeService.getAllFundTypes().subscribe((res: any) => (this.fundTypes = res));
     }
 
     getFundRoles() {
@@ -146,8 +146,6 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
     handleError(): boolean {
         return false;
     }
-
-    isWorking: any;
 
     ngOnDestroy(): void {
         this._onDestroy.next();

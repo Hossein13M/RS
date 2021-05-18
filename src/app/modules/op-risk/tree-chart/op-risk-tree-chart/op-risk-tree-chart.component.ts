@@ -109,7 +109,7 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
 
     get(): void {
         this.state = stateType.LOADING;
-        this.ortcs.getTree(this.selected, this).subscribe(
+        this.ortcs.getTree(this.selected).subscribe(
             (tree) => {
                 this.state = stateType.PRESENT;
 
@@ -160,8 +160,7 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
     // ---------------------------------------- Tree
 
     transformer = (node: TreeChartNode, level: number) => {
-        const flatNode =
-            this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
+        const flatNode = this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
 
         flatNode.id = node.id;
         flatNode.level = level;
@@ -204,9 +203,7 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
         } else {
             this.checklistSelection.toggle(node);
             const descendants = this.treeControl.getDescendants(node);
-            this.checklistSelection.isSelected(node)
-                ? this.checklistSelection.select(...descendants)
-                : this.checklistSelection.deselect(...descendants);
+            this.checklistSelection.isSelected(node) ? this.checklistSelection.select(...descendants) : this.checklistSelection.deselect(...descendants);
         }
         if (this.checklistSelection.isEmpty()) {
             this.deleteMode = false;

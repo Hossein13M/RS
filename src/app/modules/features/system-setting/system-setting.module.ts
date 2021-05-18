@@ -36,6 +36,7 @@ import { OrganizationTypeSettingListComponent } from './organization-type-settin
 import { SystemSettingRoutingModule } from './system-setting-routing.module';
 import { PipesModule } from '#shared/pipes/pipes.module';
 import { GlSettingService } from './gl-setting-components/gl-setting.service';
+import { FundTypeService } from './fund-setting-components/fund-type.service';
 
 @NgModule({
     declarations: [
@@ -87,6 +88,6 @@ import { GlSettingService } from './gl-setting-components/gl-setting.service';
         InstrumentTypeSettingAddComponent,
         MarketSettingAddComponent,
     ],
-    providers: [GlSettingService],
+    providers: [GlSettingService, FundTypeService],
 })
 export class SystemSettingModule {}
