@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
-import { GlSettingService } from 'app/services/feature-services/system-setting-services/gl-setting.service';
+import { GlSettingService } from 'app/modules/features/system-setting/gl-setting-components/gl-setting.service';
 
 @Component({
     selector: 'app-gl-setting-add',

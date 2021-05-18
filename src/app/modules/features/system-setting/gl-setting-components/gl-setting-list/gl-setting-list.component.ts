@@ -3,7 +3,7 @@ import { AfterViewInit, Component, TemplateRef, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { GlSettingService } from 'app/services/feature-services/system-setting-services/gl-setting.service';
+import { GlSettingService } from 'app/modules/features/system-setting/gl-setting-components/gl-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import * as _ from 'lodash';
 import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.component';
