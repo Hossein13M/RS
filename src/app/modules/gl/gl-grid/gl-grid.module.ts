@@ -6,19 +6,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutModule } from '../../../layout/layout.module';
 import { GlGridComponent } from './gl-grid.component';
-import { GlGridService } from './gl-grid.service';
 
-const routes: Routes = [
-    {
-        path: '',
-        pathMatch: 'full',
-        component: GlGridComponent,
-    },
-];
+const routes: Routes = [{ path: '', pathMatch: 'full', component: GlGridComponent }];
 
 @NgModule({
     declarations: [GlGridComponent],
     imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes)],
-    providers: [GlGridService],
+    providers: [],
 })
 export class GlGridModule {}

@@ -5,7 +5,6 @@ import { take } from 'rxjs/operators';
 import { FuseNavigationService } from '../../../@fuse/components/navigation/navigation.service';
 import { GlService } from './gl.service';
 
-// Edit This Section To Change Route Prefix
 export const GLRoutePrefix = 'gl';
 // ----------------------------------------
 
@@ -31,52 +30,28 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [],
-    imports: [
-        CommonModule,
-
-        // ADD Routes to Root Of Router
-        RouterModule.forRoot(routes),
-    ],
+    imports: [CommonModule, RouterModule.forRoot(routes)],
     providers: [GlService],
 })
 export class GlModule {
     constructor(private fns: FuseNavigationService) {
-        this.fns.onNavigationRegistered.pipe(take(1)).subscribe((s) => {
-            // ------------------------------------ General Menu
+        this.fns.onNavigationRegistered.pipe(take(1)).subscribe(() => {
             const customFunctionNavItem = {
                 id: 'glBrief',
                 title: 'خلاصه دفتر کل',
                 type: 'collapsable',
                 icon: 'aspect_ratio',
                 children: [
-                    {
-                        id: 'tree',
-                        type: 'item',
-                        url: '/gl/tree',
-                        title: 'درختواره خلاصه دفتر',
-                        icon: 'subject',
-                    },
+                    { id: 'tree', type: 'item', url: '/gl/tree', title: 'درختواره خلاصه دفتر', icon: 'subject' },
                     { id: 'grid', type: 'item', url: '/gl/grid', title: 'جدول خلاصه دفتر', icon: 'grid_on' },
-                    {
-                        id: 'changes',
-                        type: 'item',
-                        url: 'gl/changes',
-                        title: 'تغییرات خلاصه دفتر',
-                        icon: 'published_with_changes',
-                    },
+                    { id: 'changes', type: 'item', url: 'gl/changes', title: 'تغییرات خلاصه دفتر', icon: 'published_with_changes' },
                 ],
             };
 
             if (this.fns.getNavigationItem('financialModel')) {
                 this.fns.addNavigationItem(customFunctionNavItem, 'financialModel');
             } else {
-                const financialModel = {
-                    id: 'financialModel',
-                    title: 'مدل مالی',
-                    icon: 'bar_chart',
-                    type: 'collapsable',
-                    children: [customFunctionNavItem],
-                };
+                const financialModel = { id: 'financialModel', title: 'مدل مالی', icon: 'bar_chart', type: 'collapsable', children: [customFunctionNavItem] };
                 this.fns.addNavigationItem(financialModel, 'end');
             }
         });
