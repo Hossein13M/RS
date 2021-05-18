@@ -17,8 +17,6 @@ export class PurchaseHoldingAndSellComponent extends BaseFormModel implements On
     bankBranches = [];
     banks = [];
 
-    isWorking: any;
-
     @Input() formId: string;
     @Input() flowId: string;
     @Input() flowInstanceId: string;
@@ -46,13 +44,13 @@ export class PurchaseHoldingAndSellComponent extends BaseFormModel implements On
             overCashDelinquencyConsiderationRate: '',
             overCashDelinquencyGracePeriod: '',
             securityHoldingFeesFreq: '',
-            contractBaseInfo: '', //form
-            collateralInfo: '', //form
-            invoiceInfo: '', //form
+            contractBaseInfo: '', // form
+            collateralInfo: '', // form
+            invoiceInfo: '', // form
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.getAllBankBranch();
         this.getAllBanks();
 
@@ -82,19 +80,15 @@ export class PurchaseHoldingAndSellComponent extends BaseFormModel implements On
         this.createFormDocument(this.api, this.form.value).subscribe(() => {});
     }
 
-    getAllBankBranch() {
-        this.bankBranchService.getBankBranch(this).subscribe((res: any) => {
+    getAllBankBranch(): void {
+        this.bankBranchService.getBankBranch().subscribe((res: any) => {
             this.bankBranches = res.items;
         });
     }
 
-    getAllBanks() {
-        this.bankService.getBankSettings(this).subscribe((res: any) => {
+    getAllBanks(): void {
+        this.bankService.getBankSettings().subscribe((res: any) => {
             this.banks = res.items;
         });
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }

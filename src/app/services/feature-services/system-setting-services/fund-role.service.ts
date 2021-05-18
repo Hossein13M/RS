@@ -1,37 +1,28 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FundRoleService extends Specification {
-    private static fundRoleApi = '/api/v1/fund-role';
+export class FundRoleService {
+    constructor(private http: HttpClient) {}
 
-    get(fc?: FormContainer) {
-        return this.apiClientService.get(FundRoleService.fundRoleApi, fc);
+    getFundRoles(paginationParams?, searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get('/api/v1/fund-role', { params });
     }
 
-    getWithPaging(fc?: FormContainer) {
-        const api = FundRoleService.fundRoleApi + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
+    deleteFundRole(id): Observable<any> {
+        return this.http.delete('/api/v1/fund-role/' + id);
     }
 
-    delete(id, fc?: FormContainer) {
-        const api = FundRoleService.fundRoleApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
+    updateFundRole(model): Observable<any> {
+        return this.http.put('/api/v1/fund-role', model);
     }
 
-    update(model, fc?: FormContainer) {
-        return this.apiClientService.put(FundRoleService.fundRoleApi, fc, model);
-    }
-
-    create(model, fc?: FormContainer) {
-        return this.apiClientService.post(FundRoleService.fundRoleApi, model, fc);
-    }
-
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    createFundRole(model): Observable<any> {
+        return this.http.post('/api/v1/fund-role', model);
     }
 }

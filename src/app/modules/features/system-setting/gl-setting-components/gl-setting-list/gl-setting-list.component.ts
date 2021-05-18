@@ -63,18 +63,18 @@ export class GlSettingListComponent implements AfterViewInit {
         this.get(this.searchFormGroup.value);
     }
 
-    get(search?: any): void {
-        this.glSettingService.getGlSettings(this.pagination, search).subscribe((res: any) => {
-            this.data = [...res.items];
-            this.pagination.total = res.total;
-            this.pagination.limit = res.limit;
-        });
-    }
-
     paginationControl(pageEvent: PaginationChangeType): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.get();
+    }
+
+    get(search?: any): void {
+        this.glSettingService.getGlSettings(this.pagination, search).subscribe((response: any) => {
+            this.data = [...response.items];
+            this.pagination.total = response.total;
+            this.pagination.limit = response.limit;
+        });
     }
 
     create(): void {

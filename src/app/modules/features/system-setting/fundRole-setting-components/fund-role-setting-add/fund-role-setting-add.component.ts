@@ -20,7 +20,7 @@ export class FundRoleSettingAddComponent implements OnInit {
         private fundRoleService: FundRoleService,
         private organizationTypeService: OrganizationTypeService,
         private organizationSupervisorService: OrganizationSupervisorService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
@@ -78,16 +78,16 @@ export class FundRoleSettingAddComponent implements OnInit {
     }
 
     onCreateBranch(): void {
-        this.fundRoleService.create(this.form.value, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+        this.fundRoleService.createFundRole(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
     onEditBranch(): void {
         const obj = { id: this.data['id'], name: this.form.get('name').value };
-        this.fundRoleService.update(obj, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.fundRoleService.updateFundRole(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
     }

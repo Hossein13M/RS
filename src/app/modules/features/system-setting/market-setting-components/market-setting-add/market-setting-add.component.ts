@@ -25,7 +25,7 @@ export class MarketSettingAddComponent implements OnInit {
 
     constructor(
         public dialogRef: MatDialogRef<MarketSettingAddComponent>,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private bankService: BankService,
         private borckerService: BrokerSettingService,
         private bourseBonds: BourseInstrumentDetailService,
@@ -35,25 +35,25 @@ export class MarketSettingAddComponent implements OnInit {
         private fb: FormBuilder
     ) {}
 
-    getBourse(searchKeyword?: string) {
-        this.bourseBonds.getBonds(searchKeyword, this).subscribe((res: any) => {
+    getBourse(searchKeyword?: string): void {
+        this.bourseBonds.getBonds(searchKeyword).subscribe((res: any) => {
             this.bonds = res.items;
         });
     }
 
-    getFunds() {
-        this.fundSettingService.getAllNoPaging(this).subscribe((res: any) => {
+    getFunds(): void {
+        this.fundSettingService.getAllNoPaging().subscribe((res: any) => {
             this.funds = res.items;
         });
     }
 
-    getBrokers() {
-        this.borckerService.getBrokerSettings(this).subscribe((res: any) => {
+    getBrokers(): void {
+        this.borckerService.getBrokerSettings().subscribe((res: any) => {
             this.brokers = res;
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.data ? (this.title = 'ویرایش ') : (this.title = 'ایجاد ');
 
         this.createForm();
@@ -64,7 +64,7 @@ export class MarketSettingAddComponent implements OnInit {
         this.symbolORFundTitleSearchKeyword.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => this.getBourse(res));
     }
 
-    createForm() {
+    createForm(): void {
         this.form = this.fb.group({
             organizationType: [this.data ? this.data.organizationType : 'M', Validators.required],
             brokerId: [this.data ? this.data.brokerId : ''],
@@ -79,29 +79,23 @@ export class MarketSettingAddComponent implements OnInit {
         });
     }
 
-    onCreateBranch() {
-        this.marketSettingService.createMarket(this.form.value, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.marketSettingService.createMarket(this.form.value, this).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
-        let obj = this.form.value;
+    onEditBranch(): void {
+        const obj = this.form.value;
         obj['id'] = this.data.id;
-        this.marketSettingService.updateMarket(obj, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.marketSettingService.updateMarket(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

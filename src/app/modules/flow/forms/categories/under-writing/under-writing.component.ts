@@ -81,15 +81,15 @@ export class UnderWritingComponent extends BaseFormModel implements OnInit {
             maximumPurchasePrice: '',
             pettyCashDelinquencyConsiderationFreq: '',
             pettyCashDelinquencyConsiderationRate: '',
-            contractBaseInfo: '', //form
-            syndicateMembersNames: '', //form
-            collateralInfo: '', //form
-            invoiceInfo: '', //form
+            contractBaseInfo: '', // form
+            syndicateMembersNames: '', // form
+            collateralInfo: '', // form
+            invoiceInfo: '', // form
             guarantorInfo: '', // form
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.getAllBroker();
         this.getAllBankBranch();
         this.getAllBanks();
@@ -122,19 +122,15 @@ export class UnderWritingComponent extends BaseFormModel implements OnInit {
         this.createFormDocument(this.api, this.form.value).subscribe(() => {});
     }
 
-    getAllBroker() {
-        this.brokerService.getAllBrokers(this).subscribe((res: any[]) => (this.brokers = res));
+    getAllBroker(): void {
+        this.brokerService.getAllBrokers().subscribe((res: any[]) => (this.brokers = res));
     }
 
-    getAllBankBranch() {
-        this.bankBranchService.getBankBranch(this).subscribe((res: any) => (this.bankBranches = res.items));
+    getAllBankBranch(): void {
+        this.bankBranchService.getBankBranch().subscribe((res: any) => (this.bankBranches = res.items));
     }
 
-    getAllBanks() {
-        this.bankService.getBankSettings(this).subscribe((res: any) => (this.banks = res.items));
-    }
-
-    handleError(): boolean {
-        return false;
+    getAllBanks(): void {
+        this.bankService.getBankSettings().subscribe((res: any) => (this.banks = res.items));
     }
 }
