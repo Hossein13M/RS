@@ -136,24 +136,20 @@ export class MarketMakingComponent extends BaseFormModel implements OnInit {
     }
 
     getAllBroker(): void {
-        this.brokerService.getAllBrokers(this).subscribe((res: any[]) => {
+        this.brokerService.getAllBrokers().subscribe((res: any[]) => {
             this.brokers = res;
         });
     }
 
     getAllBankBranch(): void {
-        this.bankBranchService.getBankBranch(this).subscribe((res: any) => {
+        this.bankBranchService.getBankBranch().subscribe((res: any) => {
             this.bankBranches = res.items;
         });
     }
 
     getAllBanks(): void {
-        this.bankService.getBankSettings(this).subscribe((res: any) => {
+        this.bankService.getBankSettings().subscribe((res: any) => {
             this.banks = res.items;
         });
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }

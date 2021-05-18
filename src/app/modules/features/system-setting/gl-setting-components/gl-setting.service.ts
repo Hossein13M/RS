@@ -7,6 +7,11 @@ import { Injectable } from '@angular/core';
 export class GlSettingService {
     constructor(private http: HttpClient) {}
 
+    public getGlSettings(paginationParams?, searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get('/api/v1/inst-gl-mapping', { params });
+    }
+
     public createGlSetting(model): Observable<any> {
         return this.http.post('/api/v1/inst-gl-mapping', model);
     }
@@ -17,10 +22,5 @@ export class GlSettingService {
 
     public updateGlSetting(model): Observable<any> {
         return this.http.put('/api/v1/inst-gl-mapping', model);
-    }
-
-    public getGlSettings(paginationParams, searchParams?): Observable<any> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
-        return this.http.get('/api/v1/inst-gl-mapping', { params });
     }
 }

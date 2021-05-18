@@ -24,7 +24,7 @@ export class DepositSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<DepositSettingAddComponent>,
         private depositService: DepositSettingService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private bankService: BankService,
         private bankBranchService: BankBranchService,
         private bankAccountTypeService: BankAccountTypeService,
@@ -33,26 +33,26 @@ export class DepositSettingAddComponent implements OnInit {
         private fb: FormBuilder
     ) {}
 
-    getBankBranch() {
-        this.bankBranchService.getBankBranch(this).subscribe((rs: any) => (this.bankBranches = rs.items));
+    getBankBranch(): void {
+        this.bankBranchService.getBankBranch().subscribe((rs: any) => (this.bankBranches = rs.items));
     }
 
-    getBankAccountTypes() {
-        this.bankAccountTypeService.getBankAccountTypes(this).subscribe((res: any) => (this.bankAccountTypes = res));
+    getBankAccountTypes(): void {
+        this.bankAccountTypeService.getBankAccountTypes().subscribe((res: any) => (this.bankAccountTypes = res));
     }
 
-    getBank() {
-        this.bankService.getBankSettings(this).subscribe((res: any) => (this.banks = res.items));
+    getBank(): void {
+        this.bankService.getBankSettings().subscribe((res: any) => (this.banks = res.items));
     }
 
-    getFrequences() {
-        this.frequenceService.getAllFrequences(this).subscribe((res: any) => {
+    getFrequences(): void {
+        this.frequenceService.getAllFrequences().subscribe((res: any) => {
             this.frequences = res;
             this.frequences.unshift({ id: null, name: 'ندارد', paymentPeriod: 0 });
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
@@ -65,7 +65,7 @@ export class DepositSettingAddComponent implements OnInit {
         this.getFrequences();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             accountTypeId: [this.data ? this.data.accountTypeId : '', Validators.required],
             bankId: [this.data ? this.data.bankId : '', Validators.required],
@@ -88,29 +88,23 @@ export class DepositSettingAddComponent implements OnInit {
         });
     }
 
-    onCreateBranch() {
-        this.depositService.create(this.form.value, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.depositService.createDepositSetting(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
-        let obj = this.form.value;
+    onEditBranch(): void {
+        const obj = this.form.value;
         obj['id'] = this.data.id;
-        this.depositService.update(obj, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.depositService.updateDepositSetting(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(true);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

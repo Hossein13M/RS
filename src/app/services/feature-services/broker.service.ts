@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../shared/models/FromContainer';
-import { ApiClientService } from '../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BrokerService {
-    private static getBrokerApi = '/api/v1/broker';
+    constructor(private http: HttpClient) {}
 
-    constructor(private apiClientService: ApiClientService) {}
-
-    getAllBrokers(fc?: FormContainer) {
-        return this.apiClientService.get(BrokerService.getBrokerApi, fc);
+    getAllBrokers(): Observable<any> {
+        return this.http.get('/api/v1/broker');
     }
 }

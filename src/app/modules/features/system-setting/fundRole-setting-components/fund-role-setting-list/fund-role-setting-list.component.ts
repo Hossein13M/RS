@@ -62,28 +62,21 @@ export class FundRoleSettingListComponent implements OnInit {
 
     search(searchFilter: any): void {
         if (!searchFilter) return;
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
-
-        this.fundRoleService.specificationModel.searchKeyword = searchFilter;
-        this.fundRoleService.specificationModel.skip = 0;
-        this.get();
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.fundRoleService.specificationModel.limit = pageEvent.limit;
-        this.fundRoleService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.fundRoleService.getWithPaging().subscribe((res: any) => {
+    get(search?: any): void {
+        this.fundRoleService.getFundRoles(this.pagination, search).subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
-            this.fundRoleService.setPageDetailData(res);
         });
     }
 
@@ -105,7 +98,7 @@ export class FundRoleSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.fundRoleService.delete(row.id).subscribe(() => {
+                    this.fundRoleService.deleteFundRole(row.id).subscribe(() => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }

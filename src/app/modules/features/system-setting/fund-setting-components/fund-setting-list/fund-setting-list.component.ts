@@ -122,7 +122,7 @@ export class FundSettingListComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.edit(row) },
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.update(row) },
                     { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
                 ],
             },
@@ -130,21 +130,20 @@ export class FundSettingListComponent implements OnInit {
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.fundSettingService.specificationModel.limit = pageEvent.limit;
-        this.fundSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
     get(): void {
-        this.fundSettingService.getAll().subscribe((res: any) => {
-            this.data = [...res.items];
-            this.pagination.limit = res.limit;
-            this.pagination.total = res.total;
-            this.fundSettingService.setPageDetailData(res);
+        this.fundSettingService.getAll().subscribe((response: any) => {
+            this.data = [...response.items];
+            this.pagination.limit = response.limit;
+            this.pagination.total = response.total;
         });
     }
 
-    add(): void {
+    create(): void {
         this.matDialog
             .open(FundSettingAddComponent, { panelClass: 'dialog-w80', data: null })
             .afterClosed()
@@ -162,7 +161,7 @@ export class FundSettingListComponent implements OnInit {
             });
     }
 
-    edit(row): void {
+    update(row): void {
         this.matDialog
             .open(FundSettingAddComponent, { panelClass: 'dialog-w80', data: row })
             .afterClosed()
