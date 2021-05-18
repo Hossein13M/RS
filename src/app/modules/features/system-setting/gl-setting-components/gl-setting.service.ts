@@ -9,20 +9,20 @@ export class GlSettingService {
 
     constructor(private http: HttpClient) {}
 
-    public create(model): Observable<any> {
+    public createGlSetting(model): Observable<any> {
         return this.http.post(GlSettingService.glSettingApi, model);
     }
 
-    public delete(id): Observable<any> {
+    public deleteGlSetting(id): Observable<any> {
         const api = GlSettingService.glSettingApi + '/' + id;
         return this.http.delete(api);
     }
 
-    public update(model): Observable<any> {
+    public updateGlSetting(model): Observable<any> {
         return this.http.put(GlSettingService.glSettingApi, model);
     }
 
-    public get(paginationParams, searchParams?): Observable<any> {
+    public getGlSettings(paginationParams, searchParams?): Observable<any> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
         const api = GlSettingService.glSettingApi;
         return this.http.get(api, { params });
