@@ -69,7 +69,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'system-settings',
-        loadChildren: () => import('app/modules/system-setting/system-settings.module').then((m) => m.SystemSettingsModule),
+        loadChildren: () => import('app/modules/system-settings/system-settings.module').then((m) => m.SystemSettingsModule),
     },
     {
         path: 'welcome',
