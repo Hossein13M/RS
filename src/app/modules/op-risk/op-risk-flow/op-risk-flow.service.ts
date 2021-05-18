@@ -6,9 +6,7 @@ import { PageEvent, Specification, SpecificationModel } from 'app/shared/models/
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable()
 export class OpRiskFlowService {
     private static TreeMappingServiceAPI = '/api/v1/operation-risk/flow';
 
