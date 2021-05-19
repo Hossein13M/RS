@@ -138,31 +138,22 @@ export class DepositSettingListComponent implements OnInit {
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
-
-        this.depositSettingService.specificationModel.searchKeyword = searchFilter;
-        this.depositSettingService.specificationModel.skip = 0;
-        this.get();
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.depositSettingService.specificationModel.limit = pageEvent.limit;
-        this.depositSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.depositSettingService.get().subscribe((res: any) => {
+    get(search?: any): void {
+        this.depositSettingService.getDepositSettings(this.pagination, search).subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
-            this.depositSettingService.setPageDetailData(res);
         });
     }
 
@@ -189,7 +180,7 @@ export class DepositSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.depositSettingService.delete(row.id).subscribe(() => {
+                    this.depositSettingService.deleteDepositSetting(row.id).subscribe(() => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }

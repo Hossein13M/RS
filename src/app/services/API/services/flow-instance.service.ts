@@ -15,7 +15,7 @@ import { StrictHttpResponse } from '../strict-http-response';
 @Injectable({
     providedIn: 'root',
 })
-export class FlowInstanceService extends BaseService {
+export class FlowInstanceService extends BaseService {search
     constructor(config: ApiConfiguration, http: HttpClient) {
         super(config, http);
     }

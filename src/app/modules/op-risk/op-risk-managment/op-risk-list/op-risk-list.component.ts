@@ -29,9 +29,9 @@ export class OpRiskListComponent implements OnInit {
             type: 'string',
             minWidth: '130px',
             sticky: true,
-            convert: (value: any) => {
-                return value === 'risk' ? 'ریسک' : 'زیان';
-            },
+            convert: (value: any) =>
+                value === 'risk' ? 'ریسک' : 'زیان'
+            ,
         },
         {
             name: 'تاریخ ثبت',
@@ -83,7 +83,7 @@ export class OpRiskListComponent implements OnInit {
                     icon: 'check',
                     color: 'accent',
                     operation: ({ row }: any) => {
-                        if (row.type == 'risk') {
+                        if (row.type === 'risk') {
                             const data = { opRiskId: row.opRiskId };
                             this.opRiskManagementService.acceptOpRisk(data).subscribe(() => {
                                 this.alertService.onSuccess('ریسک با موفقیت تایید شد');
@@ -100,7 +100,7 @@ export class OpRiskListComponent implements OnInit {
                     icon: 'clear',
                     color: 'warn',
                     operation: ({ row }: any) => {
-                        if (row.type == 'risk') this.showRejectOpRisk(row.opRiskId, 'risk');
+                        if (row.type === 'risk') this.showRejectOpRisk(row.opRiskId, 'risk');
                         else this.showRejectOpRisk(row.opLossId, 'lose');
                     },
                 },
@@ -200,12 +200,12 @@ export class OpRiskListComponent implements OnInit {
         },
     ];
 
-    ngOnInit() {
+    ngOnInit():void {
         this.getActiveOPRiskWorkFlows();
         this.getHistory();
     }
 
-    private getActiveOPRiskWorkFlows() {
+    private getActiveOPRiskWorkFlows():void  {
         this.opRiskManagementService.getActiveOPRiskWorkFlows().subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;
@@ -214,7 +214,7 @@ export class OpRiskListComponent implements OnInit {
         });
     }
 
-    private getHistory() {
+    private getHistory():void  {
         this.opRiskManagementService.getOPRiskWorkFlowHistory(0, 10).subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;

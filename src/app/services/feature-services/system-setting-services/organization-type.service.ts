@@ -1,32 +1,28 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class OrganizationTypeService extends Specification {
-    private static organizationTypeApi = '/api/v1/organization-type';
+export class OrganizationTypeService {
+    constructor(private http: HttpClient) {}
 
-    getOrganizationType(fc?: FormContainer) {
-        return this.apiClientService.get(OrganizationTypeService.organizationTypeApi, fc);
+    getOrganizationType(searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...searchParams });
+        return this.http.get('/api/v1/organization-type', { params });
     }
 
-    deleteOrganizationType(id, fc?: FormContainer) {
-        const api = OrganizationTypeService.organizationTypeApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
+    deleteOrganizationType(id): Observable<any> {
+        return this.http.delete('/api/v1/organization-type' + id);
     }
 
-    updateOrganizationType(model, fc?: FormContainer) {
-        return this.apiClientService.put(OrganizationTypeService.organizationTypeApi, fc, model);
+    updateOrganizationType(model): Observable<any> {
+        return this.http.put('/api/v1/organization-type', model);
     }
 
-    createOrganizationType(model, fc?: FormContainer) {
-        return this.apiClientService.post(OrganizationTypeService.organizationTypeApi, model, fc);
-    }
-
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    createOrganizationType(model): Observable<any> {
+        return this.http.post('/api/v1/organization-type', model);
     }
 }

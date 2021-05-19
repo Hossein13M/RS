@@ -79,7 +79,7 @@ export class UnderWritingAndMarketMakingComponent extends BaseFormModel implemen
             pettyCashDelinquencyConsiderationFreq: '',
             pettyCashDelinquencyConsiderationRate: '',
             pettyCashDelinquencyGracePeriod: '',
-            pettyCashReceivingInfo: '', //form
+            pettyCashReceivingInfo: '', // form
 
             pettyCashPayingBackDate: '',
             pettyCashPayingBackFreq: '',
@@ -88,7 +88,7 @@ export class UnderWritingAndMarketMakingComponent extends BaseFormModel implemen
             pettyCashPayingBackDelinquencyConsiderationFreq: '',
             pettyCashPayingBackDelinquencyConsiderationRate: '',
             pettyCashPayingBackDelinquencyGracePeriod: '',
-            pettyCashPayingBackInfo: '', //form
+            pettyCashPayingBackInfo: '', // form
             salafPutOptionRate: '',
             salafCallOptionRate: '',
             salafMarketMakingRate: '',
@@ -117,7 +117,7 @@ export class UnderWritingAndMarketMakingComponent extends BaseFormModel implemen
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.getAllBroker();
         this.getAllBankBranch();
         this.getAllBanks();
@@ -146,19 +146,15 @@ export class UnderWritingAndMarketMakingComponent extends BaseFormModel implemen
         this.createFormDocument(this.api, this.form.value).subscribe(() => {});
     }
 
-    getAllBroker() {
-        this.brokerService.getAllBrokers(this).subscribe((res: any[]) => (this.brokers = res));
+    getAllBroker(): void {
+        this.brokerService.getAllBrokers().subscribe((res: any[]) => (this.brokers = res));
     }
 
-    getAllBankBranch() {
-        this.bankBranchService.getBankBranch(this).subscribe((res: any) => (this.bankBranches = res.items));
+    getAllBankBranch(): void {
+        this.bankBranchService.getBankBranch().subscribe((res: any) => (this.bankBranches = res.items));
     }
 
-    getAllBanks() {
-        this.bankService.get(this).subscribe((res: any) => (this.banks = res.items));
-    }
-
-    handleError(): boolean {
-        return false;
+    getAllBanks(): void {
+        this.bankService.getBankSettings().subscribe((res: any) => (this.banks = res.items));
     }
 }

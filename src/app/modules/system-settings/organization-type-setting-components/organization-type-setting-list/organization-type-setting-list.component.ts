@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -74,25 +74,13 @@ export class OrganizationTypeSettingListComponent implements OnInit {
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
-
-        this.organizationTypeService.specificationModel.searchKeyword = searchFilter;
-        this.organizationTypeService.specificationModel.skip = 0;
-        this.get();
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
     }
 
-    paginationControl(pageEvent: PaginationChangeType): void {
-        this.get();
-    }
-
-    get(): void {
-        this.organizationTypeService.getOrganizationType().subscribe((res: any) => {
+    get(search?: any): void {
+        this.organizationTypeService.getOrganizationType(search).subscribe((res: any) => {
             this.data = [...res];
         });
     }
@@ -120,7 +108,7 @@ export class OrganizationTypeSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.organizationTypeService.deleteOrganizationType(row.id).subscribe((x) => {
+                    this.organizationTypeService.deleteOrganizationType(row.id).subscribe(() => {
                         this.get();
                     });
                 }

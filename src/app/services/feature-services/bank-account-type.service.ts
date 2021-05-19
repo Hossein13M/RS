@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../shared/models/FromContainer';
-import { ApiClientService } from '../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BankAccountTypeService {
-    private static bankAccountTypeApi = '/api/v1/bank-account-type';
+    constructor(private http: HttpClient) {}
 
-    getBankAccountTypes(fc?: FormContainer) {
-        return this.apiClientService.get(BankAccountTypeService.bankAccountTypeApi, fc);
+    getBankAccountTypes(): Observable<any> {
+        return this.http.get('/api/v1/bank-account-type');
     }
-
-    constructor(private apiClientService: ApiClientService) {}
 }

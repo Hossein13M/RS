@@ -6,9 +6,9 @@ import { BankService } from 'app/services/feature-services/bank.service';
 import { FrequenceService } from 'app/services/feature-services/frequence.service';
 import { FundRoleService } from 'app/services/feature-services/system-setting-services/fund-role.service';
 import { FundSettingService } from 'app/services/feature-services/system-setting-services/fund-setting.service';
-import { FundTypeService } from 'app/services/feature-services/system-setting-services/fund-type.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { GlService } from '../../../gl/gl.service';
 
 @Component({
     selector: 'app-fund-setting-add',
@@ -24,10 +24,10 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
 
     constructor(
         public dialogRef: MatDialogRef<FundSettingAddComponent>,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private fundSettingService: FundSettingService,
         private bankService: BankService,
-        private fundTypeService: FundTypeService,
+        private glService: GlService,
         private fundRoleService: FundRoleService,
         private frequenceService: FrequenceService,
         @Inject(MAT_DIALOG_DATA) public data,
@@ -38,23 +38,23 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
     public filteredFundRoleMulti: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
     private _onDestroy = new Subject<void>();
 
-    getFrequences() {
-        this.frequenceService.getAllFrequences(this).subscribe((res: any) => (this.frequences = res));
+    getFrequences(): void {
+        this.frequenceService.getAllFrequences().subscribe((res: any) => (this.frequences = res));
     }
 
-    getFundTypes() {
-        this.fundTypeService.getAllFundTypes(this).subscribe((res: any) => (this.fundTypes = res));
+    getFundTypes(): void {
+        this.glService.getAllFundTypes().subscribe((res: any) => (this.fundTypes = res));
     }
 
-    getFundRoles() {
-        this.fundRoleService.get(this).subscribe((res: any) => {
+    getFundRoles(): void {
+        this.fundRoleService.getFundRoles().subscribe((res: any) => {
             this.fundRoles = res.items;
             this.filteredFundRoleMulti.next(this.fundRoles.slice());
             this.fundRoleMultiFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => this.filterFundRoleMulti());
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) this.title = 'ویرایش ';
         else this.title = 'ایجاد ';
 
@@ -64,7 +64,7 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
         this.getFundTypes();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             name: [this.data ? this.data.name : '', Validators.required],
             code: [this.data ? this.data.code : '', Validators.required],
@@ -109,23 +109,23 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
         });
     }
 
-    onCreateBranch() {
-        this.fundSettingService.create(this.form.value, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.fundSettingService.create(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = this.form.value;
         obj['id'] = this.data.id;
-        this.fundSettingService.update(obj, this).subscribe(() => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.fundSettingService.update(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
     }
 
-    private filterFundRoleMulti() {
+    private filterFundRoleMulti(): void {
         if (!this.fundRoles) {
             return;
         }
@@ -139,15 +139,9 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
         this.filteredFundRoleMulti.next(this.fundRoles.filter((o) => o.name.toLowerCase().indexOf(search) > -1));
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 
     ngOnDestroy(): void {
         this._onDestroy.next();

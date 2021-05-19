@@ -53,13 +53,13 @@ export class ExlcusivelyAssetManagementComponent extends BaseFormModel implement
             portfolioAssetsPayingBankName: '',
             portfolioAssetsPayingBranchName: '',
             variableFeesInfo: '',
-            feeAndPetty: '', //form
-            invoiceInfo: '', //form
-            collateralInfo: '', //form
+            feeAndPetty: '', // form
+            invoiceInfo: '', // form
+            collateralInfo: '', // form
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.getAllBankBranch();
         this.getAllBanks();
 
@@ -77,7 +77,7 @@ export class ExlcusivelyAssetManagementComponent extends BaseFormModel implement
                     this.formsWrapperService.firstTime = true;
                 }
             },
-            (err) => {
+            () => {
                 this.formsWrapperService.firstTime = true;
             }
         );
@@ -95,25 +95,18 @@ export class ExlcusivelyAssetManagementComponent extends BaseFormModel implement
     }
 
     createFormApi(): void {
-        this.createFormDocument(this.api, this.form.value).subscribe(
-            (res) => {},
-            (error) => {}
-        );
+        this.createFormDocument(this.api, this.form.value).subscribe();
     }
 
-    getAllBankBranch(bankCode = null) {
-        this.bankBranchService.getBankBranch(this, bankCode).subscribe((res: any) => {
+    getAllBankBranch(bankCode = null): void {
+        this.bankBranchService.getBankBranch(bankCode).subscribe((res: any) => {
             this.bankBranches = res.items;
         });
     }
 
-    getAllBanks() {
-        this.bankService.get(this).subscribe((res: any) => {
+    getAllBanks(): void {
+        this.bankService.getBankSettings().subscribe((res: any) => {
             this.banks = res.items;
         });
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }

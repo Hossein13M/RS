@@ -17,12 +17,12 @@ export class BankSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<BankSettingAddComponent>,
         private bankService: BankService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
@@ -31,37 +31,31 @@ export class BankSettingAddComponent implements OnInit {
         this.creatForm();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             name: [this.data ? this.data.name : '', Validators.required],
         });
     }
 
-    onCreateBranch() {
-        this.bankService.create(this.form.value, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.bankService.createBankSetting(this.form.value).subscribe((res) => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = {
             id: this.data['id'],
             name: this.form.get('name').value,
         };
-        this.bankService.update(obj, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.bankService.updateBankSetting(obj).subscribe((res) => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

@@ -6,6 +6,7 @@ import { BranchSettingService } from 'app/services/feature-services/system-setti
 import { ConfirmDialogComponent } from '#shared/components/confirm-dialog/confirm-dialog.component';
 import * as _ from 'lodash';
 import { BranchSettingAddComponent } from '../branch-setting-add/branch-setting-add.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-branch-setting-list',
@@ -16,17 +17,19 @@ import { BranchSettingAddComponent } from '../branch-setting-add/branch-setting-
 export class BranchSettingListComponent implements OnInit {
     data: any;
     column: Array<ColumnModel>;
+    searchFormGroup: FormGroup;
 
     pagination = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private matDialog: MatDialog, public branchService: BranchSettingService) {}
+    constructor(private matDialog: MatDialog, public branchService: BranchSettingService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.get();
-        this.initializeColumns();
+        this.initColumns();
+        this.initSearch();
     }
 
-    initializeColumns(): void {
+    initColumns(): void {
         this.column = [
             {
                 id: 'bankName',
@@ -75,18 +78,30 @@ export class BranchSettingListComponent implements OnInit {
         ];
     }
 
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
+    }
+
+    search(searchFilter: any): void {
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
+    }
+
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.branchService.specificationModel.limit = pageEvent.limit;
-        this.branchService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.branchService.getBankBranch().subscribe((res: any) => {
+    get(search?: any): void {
+        this.branchService.getBankBranch(this.pagination, search).subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
-            this.branchService.setPageDetailData(res);
         });
     }
 
@@ -110,7 +125,7 @@ export class BranchSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.branchService.delete(row.id).subscribe((x) => {
+                    this.branchService.delete(row.id).subscribe(() => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
