@@ -1,0 +1,13 @@
+::ng-deep {
+    .mat-header-cell {
+        justify-content: center;
+    }
+
+    .mat-column-fund {
+        flex-grow: 2;
+    }
+
+    .mat-dialog-container {
+        padding: 0 !important;
+    }
+}
