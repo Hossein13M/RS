@@ -1,17 +1,14 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { ComplianceModel } from 'app/services/API/models';
 import { CompliancesService } from 'app/modules/compliance/compliances.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ComplianceFundComponent } from '../compliance-fund/compliance-fund.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 import * as _ from 'lodash';
-import { BankSettingAddComponent } from '../../system-settings/bank-setting-components/bank-setting-add/bank-setting-add.component';
-import { ConfirmDialogComponent } from '#shared/components/confirm-dialog/confirm-dialog.component';
+import { ComplianceAddComponent } from '../compliance-add/compliance-add.component';
 
 @Component({
     selector: 'app-conmpliances',
@@ -113,16 +110,14 @@ export class CompliancesComponent implements OnInit {
         });
     }
 
-    // TODO: MAKE CREATE AND UPDATE DIALOG
-
     create(): void {
         this._matDialog
-            .open(BankSettingAddComponent, {
+            .open(ComplianceAddComponent, {
                 panelClass: 'dialog-w60',
                 data: null,
             })
             .afterClosed()
-            .subscribe((res) => {
+            .subscribe((res: ComplianceModel) => {
                 if (res) {
                     this.get();
                 }
@@ -131,14 +126,15 @@ export class CompliancesComponent implements OnInit {
 
     update(row): void {
         this._matDialog
-            .open(BankSettingAddComponent, {
+            .open(ComplianceAddComponent, {
                 panelClass: 'dialog-w60',
                 data: row,
             })
             .afterClosed()
-            .subscribe((res) => {
+            .subscribe((res: ComplianceModel) => {
                 if (res) {
-                    row.name = res.name;
+                    row.title = res.title;
+                    row.code = res.code;
                 }
             });
     }

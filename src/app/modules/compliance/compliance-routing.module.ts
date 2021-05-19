@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CalculatedComplianceComponent } from './calculated-compliance/calculated-compliance.component';
-import { CompliancesComponent } from './compliances/compliances.component';
+import { CompliancesComponent } from './compliances-list/compliances.component';
 
 const routes: Routes = [
     {

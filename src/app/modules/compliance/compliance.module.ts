@@ -4,13 +4,14 @@ import { ShareModule } from 'app/shared/share.module';
 import { CalculatedComplianceComponent } from './calculated-compliance/calculated-compliance.component';
 import { ComplianceFundComponent } from './compliance-fund/compliance-fund.component';
 import { ComplianceRoutingModule } from './compliance-routing.module';
-import { CompliancesComponent } from './compliances/compliances.component';
+import { CompliancesComponent } from './compliances-list/compliances.component';
 import { CompliancesService } from './compliances.service';
+import { ComplianceAddComponent } from './compliance-add/compliance-add.component';
 
 @NgModule({
-    declarations: [CompliancesComponent, ComplianceFundComponent, CalculatedComplianceComponent],
+    declarations: [CompliancesComponent, ComplianceAddComponent, ComplianceFundComponent, CalculatedComplianceComponent, ComplianceAddComponent],
     imports: [CommonModule, ComplianceRoutingModule, ShareModule],
-    entryComponents: [ComplianceFundComponent],
+    entryComponents: [ComplianceFundComponent, ComplianceAddComponent],
     providers: [CompliancesService],
 })
 export class ComplianceModule {}
