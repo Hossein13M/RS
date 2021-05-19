@@ -3,11 +3,10 @@ import { AfterViewInit, Component, TemplateRef, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { GlSettingService } from 'app/modules/features/system-setting/gl-setting-components/gl-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import * as _ from 'lodash';
 import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.component';
-
+import { GlService } from '../../../gl/gl.service';
 
 @Component({
     selector: 'app-gl-setting-list',
@@ -23,7 +22,7 @@ export class GlSettingListComponent implements AfterViewInit {
 
     @ViewChild('status', { static: false }) statusRef: TemplateRef<any>;
 
-    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, private glSettingService: GlSettingService) {}
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, private glService: GlService) {}
 
     ngAfterViewInit(): void {
         this.initColumns();
@@ -70,7 +69,7 @@ export class GlSettingListComponent implements AfterViewInit {
     }
 
     get(search?: any): void {
-        this.glSettingService.getGlSettings(this.pagination, search).subscribe((response: any) => {
+        this.glService.getGlSettings(this.pagination, search).subscribe((response: any) => {
             this.data = [...response.items];
             this.pagination.total = response.total;
             this.pagination.limit = response.limit;
@@ -92,7 +91,7 @@ export class GlSettingListComponent implements AfterViewInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.glSettingService.deleteGlSetting(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
+                    this.glService.deleteGlSetting(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
                 }
             });
     }
