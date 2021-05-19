@@ -4,11 +4,11 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ComplianceModel } from 'app/services/API/models';
 import { CompliancesService } from 'app/modules/compliance/compliances.service';
-import { ComplianceFundComponent } from '../compliance-fund/compliance-fund.component';
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 import * as _ from 'lodash';
 import { ComplianceAddComponent } from './compliance-add/compliance-add.component';
+import { CompliancesFundComponent } from './compliances-fund/compliances-fund.component';
 
 @Component({
     templateUrl: './compliances.component.html',
@@ -139,7 +139,7 @@ export class CompliancesComponent implements OnInit {
     }
 
     addComplianceFund(compliance): void {
-        this.dialogRef = this._matDialog.open(ComplianceFundComponent, {
+        this.dialogRef = this._matDialog.open(CompliancesFundComponent, {
             panelClass: 'compliance-form-dialog',
             data: {
                 compliance: compliance,
