@@ -5,10 +5,12 @@ import { CalculatedComplianceComponent } from './calculated-compliance/calculate
 import { ComplianceFundComponent } from './compliance-fund/compliance-fund.component';
 import { ComplianceRoutingModule } from './compliance-routing.module';
 import { CompliancesComponent } from './compliances/compliances.component';
+import { CompliancesService } from './compliances.service';
 
 @NgModule({
     declarations: [CompliancesComponent, ComplianceFundComponent, CalculatedComplianceComponent],
     imports: [CommonModule, ComplianceRoutingModule, ShareModule],
     entryComponents: [ComplianceFundComponent],
+    providers: [CompliancesService],
 })
 export class ComplianceModule {}
