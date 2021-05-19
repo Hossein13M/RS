@@ -6,7 +6,7 @@ import { ComplianceFundComponent } from './compliance-fund/compliance-fund.compo
 import { ComplianceRoutingModule } from './compliance-routing.module';
 import { CompliancesComponent } from './compliances-list/compliances.component';
 import { CompliancesService } from './compliances.service';
-import { ComplianceAddComponent } from './compliance-add/compliance-add.component';
+import { ComplianceAddComponent } from './compliances-list/compliance-add/compliance-add.component';
 
 @NgModule({
     declarations: [CompliancesComponent, ComplianceAddComponent, ComplianceFundComponent, CalculatedComplianceComponent, ComplianceAddComponent],

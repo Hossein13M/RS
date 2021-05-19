@@ -8,7 +8,7 @@ import { ComplianceFundComponent } from '../compliance-fund/compliance-fund.comp
 import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 import * as _ from 'lodash';
-import { ComplianceAddComponent } from '../compliance-add/compliance-add.component';
+import { ComplianceAddComponent } from './compliance-add/compliance-add.component';
 
 @Component({
     templateUrl: './compliances.component.html',
