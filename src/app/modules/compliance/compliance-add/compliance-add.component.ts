@@ -5,7 +5,6 @@ import { CompliancesService } from '../compliances.service';
 import { AlertService } from '../../../services/alert.service';
 
 @Component({
-    selector: 'app-compliance-add',
     templateUrl: './compliance-add.component.html',
     styleUrls: ['./compliance-add.component.scss'],
 })
