@@ -1,12 +1,17 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { ComplianceDto } from 'app/services/API/models';
-import { CompliancesService } from 'app/services/App/compliance/compliances/compliances.service';
+import { ComplianceModel } from 'app/services/API/models';
+import { CompliancesService } from 'app/modules/compliance/compliances.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { ComplianceFundComponent } from '../compliance-fund/compliance-fund.component';
+import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { PaginationModel } from '#shared/models/pagination.model';
+import * as _ from 'lodash';
+import { BankSettingAddComponent } from '../../system-settings/bank-setting-components/bank-setting-add/bank-setting-add.component';
+import { ConfirmDialogComponent } from '#shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component({
     selector: 'app-conmpliances',
@@ -14,58 +19,128 @@ import { ComplianceFundComponent } from '../compliance-fund/compliance-fund.comp
     styleUrls: ['./compliances.component.scss'],
     animations: fuseAnimations,
 })
-export class CompliancesComponent implements OnInit, AfterViewInit {
-    public compliances: ComplianceDto[] = [];
-    public ELEMENT_DATA: ComplianceDto[] = [];
-    public searchInput: FormControl;
-    public complianceForm: FormGroup;
-    private dialogRef: any;
-    public slectedCompliance = 0;
-    public loading = false;
-    public dataSource = new MatTableDataSource<ComplianceDto>(this.ELEMENT_DATA);
-    public displayedColumns = ['code', 'title', 'edit', 'addFund'];
+export class CompliancesComponent implements OnInit {
+    searchFormGroup: FormGroup;
+    data: Array<ComplianceModel> = [];
+    column: Array<ColumnModel>;
+    pagination: PaginationModel = { skip: 0, limit: 5, total: 100 };
+    dialogRef: MatDialogRef<any>;
 
-    constructor(private compliancesService: CompliancesService, private _matDialog: MatDialog) {
-        this.searchInput = new FormControl('');
-        this.complianceForm = new FormGroup({
-            code: new FormControl(),
-            title: new FormControl(''),
-        });
-    }
+    constructor(private compliancesService: CompliancesService, private formBuilder: FormBuilder, private _matDialog: MatDialog) {}
 
     ngOnInit(): void {
-        this.compliancesService.compliances.subscribe((res) => {
-            this.compliances = res;
-            this.ELEMENT_DATA = res;
-            this.dataSource = new MatTableDataSource<ComplianceDto>(this.ELEMENT_DATA);
+        this.initColumns();
+        this.initSearch();
+        this.get();
+    }
+
+    initColumns(): void {
+        this.column = [
+            {
+                name: 'کد',
+                id: 'code',
+                type: 'number',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER,
+                },
+            },
+            {
+                name: 'نام',
+                id: 'title',
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER,
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.update(row),
+                    },
+                    {
+                        name: 'صندوق',
+                        icon: 'add',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.addComplianceFund(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
         });
-
-        this.compliancesService.getComoliances(this.searchInput.value).subscribe((res) => {});
-
-        this.searchInput.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((searchText) => {
-            this.compliancesService.getComoliances(searchText).subscribe((res) => {});
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys,
         });
     }
 
-    ngAfterViewInit(): void {
-        document.getElementById('table-container').addEventListener('scroll', this.scroll.bind(this), true);
-        // document.addEventListener('scroll', this.scroll, true); //third parameter
-    }
-
-    scroll(event): void {
-        const table = document.getElementById('table-container');
-        const scrollPosition = table.scrollHeight - (table.scrollTop + table.clientHeight);
-
-        if (!this.loading) {
-            if (scrollPosition < 50) {
-                this.loading = true;
-                this.compliancesService.getComoliances(this.searchInput.value).subscribe((r) => {
-                    this.loading = false;
-                });
-            }
-        } else {
+    search(searchFilter: any): void {
+        if (!searchFilter) {
             return;
         }
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+        this.get(this.searchFormGroup.value);
+    }
+
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(search?: any): void {
+        this.compliancesService.getCompliances(this.pagination, search).subscribe((response) => {
+            this.data = [...response.items];
+            this.pagination.limit = response.limit;
+            this.pagination.total = response.total;
+        });
+    }
+
+    // TODO: MAKE CREATE AND UPDATE DIALOG
+
+    create(): void {
+        this._matDialog
+            .open(BankSettingAddComponent, {
+                panelClass: 'dialog-w60',
+                data: null,
+            })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res) {
+                    this.get();
+                }
+            });
+    }
+
+    update(row): void {
+        this._matDialog
+            .open(BankSettingAddComponent, {
+                panelClass: 'dialog-w60',
+                data: row,
+            })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res) {
+                    row.name = res.name;
+                }
+            });
     }
 
     addComplianceFund(compliance): void {
@@ -75,29 +150,5 @@ export class CompliancesComponent implements OnInit, AfterViewInit {
                 compliance: compliance,
             },
         });
-    }
-
-    addCompliance(): void {
-        this.compliancesService
-            .addCompliance(this.complianceForm.controls['title'].value, this.complianceForm.controls['code'].value)
-            .subscribe((res) => {});
-    }
-
-    editCompliance(compliance): void {
-        this.slectedCompliance = compliance.id;
-        this.complianceForm.controls['title'].setValue(compliance.title);
-        this.complianceForm.controls['code'].setValue(compliance.code);
-    }
-
-    clear(): void {
-        this.slectedCompliance = 0;
-        this.complianceForm.controls['title'].setValue('');
-        this.complianceForm.controls['code'].setValue(null);
-    }
-
-    edit(): void {
-        this.compliancesService
-            .editCompliance(this.slectedCompliance, this.complianceForm.controls['title'].value, this.complianceForm.controls['code'].value)
-            .subscribe((res) => {});
     }
 }

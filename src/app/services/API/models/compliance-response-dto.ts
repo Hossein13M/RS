@@ -1,7 +1,7 @@
 /* tslint:disable */
-import { ComplianceDto } from './compliance-dto';
+import { ComplianceModel } from '../../../modules/compliance/compliance.model';
 export interface ComplianceResponseDto {
-    items: Array<ComplianceDto>;
+    items: Array<ComplianceModel>;
     limit?: number;
     skip?: number;
     total: number;
