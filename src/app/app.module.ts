@@ -19,9 +19,9 @@ import { PortfolioManagementModule } from './modules/portfolio-management/portfo
 import { TestModule } from './modules/test/test.module';
 import { ApiModule } from './services/API/api.module';
 import { AuthGuard } from './services/auth.guard';
-import { getFarsiPaginatorIntl } from './shared/components/table/farsi-paginator-intl';
-import { MaterialModule } from './shared/material.module';
-import { ShareModule } from './shared/share.module';
+import { getFarsiPaginatorIntl } from '#shared/components/table/farsi-paginator-intl';
+import { MaterialModule } from '#shared/material.module';
+import { ShareModule } from '#shared/share.module';
 import { GlModule } from './modules/gl/gl.module';
 
 const appRoutes: Routes = [
@@ -53,7 +53,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'alarming',
-        loadChildren: () => import('app/modules/features/alarming/alarming.module').then((m) => m.AlarmingModule),
+        loadChildren: () => import('app/modules/alarming/alarming.module').then((m) => m.AlarmingModule),
     },
     {
         path: 'nav',
@@ -68,12 +68,8 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/modules/user/user.module').then((m) => m.UserModule),
     },
     {
-        path: 'settings',
-        loadChildren: () => import('app/modules/settings/settings.module').then((m) => m.SettingsModule),
-    },
-    {
-        path: 'system-setting',
-        loadChildren: () => import('app/modules/features/system-setting/system-setting.module').then((m) => m.SystemSettingModule),
+        path: 'system-settings',
+        loadChildren: () => import('app/modules/system-settings/system-settings.module').then((m) => m.SystemSettingsModule),
     },
     {
         path: 'welcome',
@@ -89,9 +85,7 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [AppComponent],
     imports: [
-        // Navigation
         FuseNavigationModule,
-
         LoginModule,
         BrowserModule,
         BrowserAnimationsModule,
@@ -106,12 +100,10 @@ const appRoutes: Routes = [
         SnotifyModule,
         LayoutModule,
         FuseThemeOptionsModule,
-
         PortfolioManagementModule,
         OpRiskModule,
         ShareModule,
         GlModule,
-
         TestModule, // --> Test Playground
     ],
     bootstrap: [AppComponent],
@@ -121,7 +113,6 @@ const appRoutes: Routes = [
         SnotifyService,
         AuthGuard,
     ],
-    exports: [],
     entryComponents: [SendMailComponent],
 })
 export class AppModule {}

@@ -25,8 +25,8 @@ import { ChangePriceDialogComponent } from './change-price-dialog/change-price-d
 })
 export class ChangePriceComponent implements OnInit {
     constructor(private dialog: MatDialog) {}
-    priceUnit = { scale: 10, unit: 'rial' };
-    priceUnitScaleString: string = 'واحد';
+    priceUnit = { scale: 0, unit: 'rial' };
+    priceUnitScaleString: string = '';
 
     ngOnInit(): void {
         this.setPriceUnitValue();
@@ -40,7 +40,7 @@ export class ChangePriceComponent implements OnInit {
 
         switch (this.priceUnit.scale) {
             case 0:
-                this.priceUnitScaleString = 'واحد';
+                this.priceUnitScaleString = '';
                 break;
             case 3:
                 this.priceUnitScaleString = 'هزار';

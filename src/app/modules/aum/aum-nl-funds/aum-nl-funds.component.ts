@@ -24,7 +24,7 @@ export class AumNlFundsComponent {
             { name: 'نام', id: 'name', type: 'string' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبد صندوق', id: 'percentageOfFunds', type: 'number' },
-            { name: 'ارزش', id: 'value', type: 'number' },
+            { name: 'ارزش', id: 'value', type: 'price' },
             {
                 id: 'rowDetail',
                 type: 'rowDetail',

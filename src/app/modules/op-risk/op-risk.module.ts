@@ -5,9 +5,7 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { LayoutModule } from 'app/layout/layout.module';
 import { take } from 'rxjs/operators';
 
-// Edit This Section To Change Route Prefix
 export const ORRoutePrefix = 'op-risk';
-// ----------------------------------------
 
 const routes: Routes = [
     {
@@ -34,13 +32,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-
-        // ADD Routes to Root Of Router
-        RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-        LayoutModule,
-    ],
+    imports: [CommonModule, LayoutModule, RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
 })
 export class OpRiskModule {
     constructor(private fns: FuseNavigationService) {
@@ -52,20 +44,8 @@ export class OpRiskModule {
                 icon: 'beach_access',
                 type: 'collapsable',
                 children: [
-                    {
-                        id: 'opRiskTreeChart',
-                        title: 'درختواره',
-                        icon: 'clear_all',
-                        type: 'item',
-                        url: `/${ORRoutePrefix}/tree-chart`,
-                    },
-                    {
-                        id: 'opRiskFlow',
-                        title: 'جریان',
-                        icon: 'clear_all',
-                        type: 'item',
-                        url: `/${ORRoutePrefix}/flow`,
-                    },
+                    { id: 'opRiskTreeChart', title: 'درختواره', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/tree-chart` },
+                    { id: 'opRiskFlow', title: 'جریان', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/flow` },
                     {
                         id: 'OpRiskManagement',
                         title: 'مدیریت ریسک',
@@ -74,13 +54,7 @@ export class OpRiskModule {
                         type: 'item',
                         url: `/${ORRoutePrefix}/management`,
                     },
-                    {
-                        id: 'OpRiskReporting',
-                        title: 'گزارشات ریسک عملیاتی',
-                        icon: 'clear_all',
-                        type: 'item',
-                        url: `/${ORRoutePrefix}/reporting`,
-                    },
+                    { id: 'OpRiskReporting', title: 'گزارش‌های ریسک عملیاتی', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/reporting` },
                     {
                         id: 'OpRiskReporting',
                         title: 'ریسک و زیان‌های ثبت شده',

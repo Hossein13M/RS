@@ -7,7 +7,7 @@ export enum TableSearchMode {
 }
 
 export interface PaginationSetting {
-    mode: 'local' | 'backend';
+    mode: 'local' | 'backend' | 'scroll';
     pageSize?: string | number;
     pageSizeOptions?: Array<number>;
 }
@@ -35,7 +35,7 @@ interface SimpleColumnModel {
             name: string | number;
         }>;
     };
-    convert?(value: unknown): any;
+    convert?(value: any): any;
 }
 
 interface OperationColumnModel extends SimpleColumnModel {

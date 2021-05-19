@@ -1,15 +1,18 @@
 import { formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AUMService } from 'app/modules/aum/aum.service';
 import { StateManager } from 'app/shared/pipes/stateManager.pipe';
+import * as _ from 'lodash';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
-import * as _ from 'lodash';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-aum',
@@ -23,6 +26,7 @@ export class AumComponent implements OnInit {
     categories: Array<Category>;
     funds: Array<Fund>;
     form: FormGroup;
+    didAll;
     searchParams: SearchParams = {
         tamadonAssets: false,
         fundNationalCodes: [],
@@ -33,6 +37,8 @@ export class AumComponent implements OnInit {
         stocksAssets: false,
         fundsAssets: false,
     };
+    @ViewChild(MatTabGroup) tabGroup: MatTabGroup;
+    fundsControlRequired: boolean = false;
 
     aumData: AumData = {
         etf: { data: {}, state: 'INIT' },
@@ -45,8 +51,15 @@ export class AumComponent implements OnInit {
         deposit: { data: {}, state: 'INIT' },
     };
     hasSubmitButtonClicked: boolean = false;
+    didAllAumDateCame: boolean = false;
 
-    constructor(private aumService: AUMService, private fb: FormBuilder, private activatedRoute: ActivatedRoute, private router: Router) {}
+    constructor(
+        private aumService: AUMService,
+        private fb: FormBuilder,
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+        private dialog: MatDialog
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -54,9 +67,21 @@ export class AumComponent implements OnInit {
             this.setFormValueFromParams();
             this.getAUMFund().subscribe(() => {
                 this.setFormValueFromParams();
-                this.form.get('baskets').valueChanges.subscribe(() => this.getAUMFund());
+                this.form.get('baskets').valueChanges.subscribe((value: Array<string>) => {
+                    value.includes('2') ? this.form.addControl('funds', new FormControl([], Validators.required)) : this.form.removeControl('funds');
+                    this.getAUMFund();
+                });
                 this.form.valueChanges.subscribe((formValue) => this.addRouterParamsOnFormValueChanges(formValue));
             });
+        });
+        this.form.controls.baskets.valueChanges.subscribe((value) => {
+            if (value.includes('2')) {
+                this.fundsControlRequired = true;
+                this.form.controls.funds.setValidators([Validators.required]);
+            } else {
+                this.fundsControlRequired = false;
+                this.form.controls.funds.setValidators([]);
+            }
         });
     }
 
@@ -102,7 +127,7 @@ export class AumComponent implements OnInit {
         });
     }
 
-    private removeEmptyOrNullValuesFromForm(formValue) {
+    private removeEmptyOrNullValuesFromForm(formValue): void {
         for (const propName in formValue)
             if (formValue[propName] === null || formValue[propName] === '' || (formValue[propName][0] === undefined && propName !== 'date'))
                 delete formValue[propName];
@@ -128,21 +153,31 @@ export class AumComponent implements OnInit {
 
     public submitForm(): void {
         Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
-        //the above line is for setting back every tab to disable by default
+        // the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();
         this.hasSubmitButtonClicked = true;
+        this.didAllAumDateCame = false;
+        const $forkAllCalls: Array<Observable<any>> = [];
 
         setTimeout(() => {
             this.form.get('categories').value.forEach((element) => {
                 this.form.get('NL').value.forEach((isBourse) => {
                     if (isBourse == 0) {
-                        if (element == 2) this.getAumStock(false);
-                        else if (element == 1) this.getAumBond(false);
-                        else if (element == 4) this.getAumFund(false);
+                        if (element == 2) {
+                            $forkAllCalls.push(this.getAumStock(false));
+                        } else if (element == 1) {
+                            $forkAllCalls.push(this.getAumBond(false));
+                        } else if (element == 4) {
+                            $forkAllCalls.push(this.getAumFund(false));
+                        }
                     } else if (isBourse == 1) {
-                        if (element == 2) this.getAumBond();
-                        else if (element == 1) this.getAumStock();
-                        else if (element == 4) this.getAumFund();
+                        if (element == 1) {
+                            $forkAllCalls.push(this.getAumBond());
+                        } else if (element == 2) {
+                            $forkAllCalls.push(this.getAumStock());
+                        } else if (element == 4) {
+                            $forkAllCalls.push(this.getAumFund());
+                        }
                     }
                 });
                 // if (element == 3) this.getAumDeposit();
@@ -150,9 +185,27 @@ export class AumComponent implements OnInit {
             });
 
             if (this.form.get('baskets').value.length > 1 || this.form.get('categories').value.length > 1 || this.form.get('NL').value.length > 1)
-                this.getAumEtf();
+                $forkAllCalls.push(this.getAumEtf());
         }, 100);
-        // 100 ms delay is beacuse angular bug: not detecting changes fast
+        // 100 ms delay is because angular bug: not detecting changes fast
+
+        setTimeout(() => {
+            forkJoin($forkAllCalls).subscribe(() => {
+                this.hasSubmitButtonClicked = false;
+                this.didAllAumDateCame = true;
+                const aumArray = _.values(this.aumData);
+                let counter = 0;
+                setTimeout(() => {
+                    for (const aumObject of aumArray) {
+                        if (aumObject.state === 'PRESENT' && this.tabGroup) {
+                            this.tabGroup.selectedIndex = counter;
+                            break;
+                        }
+                        counter++;
+                    }
+                }, 200)
+            });
+        }, 200);
     }
 
     // *** method for getting data on formSubmit ***
@@ -164,47 +217,47 @@ export class AumComponent implements OnInit {
             .subscribe((result) => (this.aumData.deposit.data = result));
     }
 
-    private getAumStock(isNl: boolean = true) {
-        isNl
-            ? this.aumService
-                  .getAumNLStocks(this.searchParams)
-                  .pipe(StateManager(this.aumData.nlStocks))
-                  .subscribe((result) => (this.aumData.nlStocks.data = result))
-            : this.aumService
-                  .getAumStocks(this.searchParams)
-                  .pipe(StateManager(this.aumData.stocks))
-                  .subscribe((result) => (this.aumData.stocks.data = result));
+    private getAumStock(isNl: boolean = true): Observable<any> {
+        return isNl
+            ? this.aumService.getAumNLStocks(this.searchParams).pipe(
+                  StateManager(this.aumData.nlStocks),
+                  tap((result) => (this.aumData.nlStocks.data = result))
+              )
+            : this.aumService.getAumStocks(this.searchParams).pipe(
+                  StateManager(this.aumData.stocks),
+                  tap((result) => (this.aumData.stocks.data = result))
+              );
     }
 
-    private getAumBond(isNl: boolean = true) {
-        isNl
-            ? this.aumService
-                  .getAumNlBond(this.searchParams)
-                  .pipe(StateManager(this.aumData.nlBond))
-                  .subscribe((result) => (this.aumData.nlBond.data = result))
-            : this.aumService
-                  .getAumBond(this.searchParams)
-                  .pipe(StateManager(this.aumData.bond))
-                  .subscribe((result) => (this.aumData.bond.data = result));
+    private getAumBond(isNl: boolean = true): Observable<any> {
+        return isNl
+            ? this.aumService.getAumNlBond(this.searchParams).pipe(
+                  StateManager(this.aumData.nlBond),
+                  tap((result) => (this.aumData.nlBond.data = result))
+              )
+            : this.aumService.getAumBond(this.searchParams).pipe(
+                  StateManager(this.aumData.bond),
+                  tap((result) => (this.aumData.bond.data = result))
+              );
     }
 
-    private getAumFund(isNl: boolean = true) {
-        isNl
-            ? this.aumService
-                  .getAumNlFunds(this.searchParams)
-                  .pipe(StateManager(this.aumData.nlFunds))
-                  .subscribe((result) => (this.aumData.nlFunds.data = result))
-            : this.aumService
-                  .getAumFunds(this.searchParams)
-                  .pipe(StateManager(this.aumData.funds))
-                  .subscribe((result) => (this.aumData.funds.data = result));
+    private getAumFund(isNl: boolean = true): Observable<any> {
+        return isNl
+            ? this.aumService.getAumNlFunds(this.searchParams).pipe(
+                  StateManager(this.aumData.nlFunds),
+                  tap((result) => (this.aumData.nlFunds.data = result))
+              )
+            : this.aumService.getAumFunds(this.searchParams).pipe(
+                  StateManager(this.aumData.funds),
+                  tap((result) => (this.aumData.funds.data = result))
+              );
     }
 
-    private getAumEtf(): void {
-        this.aumService
-            .getAumEtf(this.searchParams)
-            .pipe(StateManager(this.aumData.etf))
-            .subscribe((result) => (this.aumData.etf.data = result));
+    private getAumEtf(): Observable<any> {
+        return this.aumService.getAumEtf(this.searchParams).pipe(
+            StateManager(this.aumData.etf),
+            tap((result) => (this.aumData.etf.data = result))
+        );
     }
 
     private getAumDepositCertificate(): void {
@@ -242,5 +295,9 @@ export class AumComponent implements OnInit {
             categories = this.categories.filter((row) => row.id !== 3);
         }
         return categories;
+    }
+
+    public openIpsHistoryDialog(): void {
+        this.dialog.open(IpsDialogComponent, { width: '1000px', data: { basket: ['T', 'F', 'M'], withDetails: false } });
     }
 }

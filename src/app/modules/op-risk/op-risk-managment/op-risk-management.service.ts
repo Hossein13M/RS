@@ -1,99 +1,94 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiClientService } from 'app/services/Base/api-client.service';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { PageEvent, Specification, SpecificationModel } from 'app/shared/models/Specification';
+import { PageEvent, SpecificationModel } from 'app/shared/models/Specification';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { formatDate } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
-export class OpRiskManagementService extends Specification {
+export class OpRiskManagementService {
     private static TreeServiceAPI = '/api/v1/operation-risk';
+
+    constructor(private http: HttpClient) {}
 
     public pageEvent: PageEvent = {
         currentIndex: 0,
         pageSize: 10,
     };
+
     public specificationModel: SpecificationModel = {
         limit: 10,
         skip: 0,
         searchKeyword: {},
     };
-
     private latestMappingSubject = new BehaviorSubject<any>(null);
     public _latestMapping = this.latestMappingSubject.asObservable();
+
+    public convertDate(date: Date): string {
+        return formatDate(date, 'yyyy-MM-dd', 'en_US');
+    }
 
     get latestMapping(): any {
         return this.latestMappingSubject.getValue();
     }
 
-    constructor(private acs: ApiClientService, private http: HttpClient) {
-        super();
+    getTrees(name: string): Observable<any> {
+        return this.http.get(OpRiskManagementService.TreeServiceAPI + `/tree?name=${name}`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getTrees(name: string, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/tree?name=${name}`, fc)
+    getParentRisk(): Observable<any> {
+        return this.http.get(OpRiskManagementService.TreeServiceAPI + `/parent-risks`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    }
+
+    createOpRisk(data): Observable<any> {
+        return this.http.post(OpRiskManagementService.TreeServiceAPI, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    }
+
+    getOpRiskHistory(): Observable<any> {
+        return this.http.get(OpRiskManagementService.TreeServiceAPI + `/work-flow/history`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    }
+
+    getOpRiskDetail(opId: number): Observable<any> {
+        return this.http
+            .get(OpRiskManagementService.TreeServiceAPI + `/details?opRiskId=${opId}`)
             .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getParentRisk(fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/parent-risks` + this.generateSpecificationString(), fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    getActiveOpRisk(): Observable<any> {
+        return this.http.get(OpRiskManagementService.TreeServiceAPI + `/work-flow/active`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    createOpRisk(data, fc?: FormContainer): Observable<any> {
-        return this.acs.post(OpRiskManagementService.TreeServiceAPI, data, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    acceptOpRisk(data): Observable<any> {
+        return this.http.post(OpRiskManagementService.TreeServiceAPI + '/history/accept', data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getOpRiskHistory(fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/work-flow/history` + this.generateSpecificationString(), fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    rejectOpRisk(data): Observable<any> {
+        return this.http.post(OpRiskManagementService.TreeServiceAPI + `/history/reject`, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getOpRiskDetail(opId: number, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/details?opRiskId=${opId}`, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    getOpRiskSteps(opId: number): Observable<any> {
+        return this.http.get(OpRiskManagementService.TreeServiceAPI + `/history/${opId}`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getActiveOpRisk(fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/work-flow/active`, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    acceptOpRisk(data, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .post(OpRiskManagementService.TreeServiceAPI + '/history/accept', data, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    rejectOpRisk(data, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .post(OpRiskManagementService.TreeServiceAPI + `/history/reject`, data, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    getOpRiskSteps(opId: number, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(OpRiskManagementService.TreeServiceAPI + `/history/${opId}`, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
-    }
-
-    updateOpRisk(data, fc?: FormContainer): Observable<any> {
-        return this.acs.put(OpRiskManagementService.TreeServiceAPI, fc, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    updateOpRisk(data): Observable<any> {
+        return this.http.put(OpRiskManagementService.TreeServiceAPI, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
     // http implementation
 
-    getCategories(): Observable<any> {
+    public getActiveOPRiskWorkFlows() {
+        return this.http.get<any>(`/api/v1/operation-risk/work-flow/active`);
+    }
+
+    public getOPRiskWorkFlowHistory(skip: number | string, limit: number | string) {
+        return this.http.get<any>(`/api/v1/operation-risk/work-flow/history?skip=${skip}&limit=${limit}`);
+    }
+
+    public getCategories(): Observable<any> {
         return this.http.get<Array<{ icon: string; id: number; titleEN: string; titleFA: string }>>(`/api/v1/operation-risk/tree/categories`);
     }
 
-    getSubmittedRiskAndLoss(params): Observable<any> {
+    public getSubmittedRiskAndLoss(params): Observable<any> {
         return this.http.get('/api/v1/operation-risk/work-flow/finals', { params });
     }
 }

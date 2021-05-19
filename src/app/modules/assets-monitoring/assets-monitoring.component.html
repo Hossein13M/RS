@@ -2,7 +2,7 @@
     <app-header pageTitle="پایش دارایی‌ها" class="wp-100">
         <button mat-stroked-button (click)="openIpsHistoryDialog()">
             <mat-icon class="mat-18">history</mat-icon>
-            نمایش تاریخچه‌ی IPSها
+            نمایش پیشینه‌ی IPSها
         </button>
     </app-header>
     <mat-progress-bar mode="indeterminate" color="warn" *ngIf="loading"></mat-progress-bar>
@@ -12,9 +12,9 @@
                 <mat-form-field appearance="outline" style="min-width: 150px">
                     <mat-label>سبد</mat-label>
                     <mat-select formControlName="basket">
+                        <mat-option [value]="['F', 'T']">همه</mat-option>
                         <mat-option value="T">تمدن</mat-option>
                         <mat-option value="F">صندوق</mat-option>
-                        <mat-option [value]="['F', 'T']">همه</mat-option>
                     </mat-select>
                 </mat-form-field>
 
@@ -70,7 +70,7 @@
                         <mat-card-title>حجم کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number }}</p>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number:'.0-4' }}</p>
                     </mat-card-content>
                 </div>
             </mat-card>
@@ -83,6 +83,7 @@
                     <app-pie-chart
                         [data]="assetsMonitoringData.pieChart"
                         height="300px"
+                        width='500px'
                         chartName="نمودار دایره‌ای"
                         [cardLayout]="false"
                         categoryLabel="name"

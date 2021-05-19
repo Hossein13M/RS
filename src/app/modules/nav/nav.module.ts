@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LayoutModule } from 'app/layout/layout.module';
@@ -12,7 +13,7 @@ import { NavItemDetailComponent } from './nav-item-detail/nav-item-detail.compon
 import { NavMainComponent } from './nav-main/nav-main.component';
 import { NavProcessDetailDialogComponent } from './nav-process-detail-dialog/nav-process-detail-dialog.component';
 import { NavRoutingModule } from './nav-routing.module';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PipesModule } from '#shared/pipes/pipes.module';
 
 @NgModule({
     declarations: [NavMainComponent, NavItemDetailComponent, NavProcessDetailDialogComponent, NavAddChangeDialogComponent],
@@ -27,6 +28,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
         ChartModule,
         LayoutModule,
         MatProgressBarModule,
-    ],
+        PipesModule
+    ]
 })
 export class NavModule {}

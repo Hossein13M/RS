@@ -50,7 +50,7 @@ export class OpRiskMappingDialogComponent implements OnInit {
         public dialogRef: MatDialogRef<OpRiskMappingDialogComponent>,
         private ortcs: OpRiskTreeChartService,
         private tms: TreeMappingService,
-        private AlertService: AlertService
+        private alertService: AlertService
     ) {
         this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
 
@@ -68,7 +68,7 @@ export class OpRiskMappingDialogComponent implements OnInit {
 
     get(): void {
         this.state = stateType.LOADING;
-        this.ortcs.getTree(this.data.treeName, this).subscribe(
+        this.ortcs.getTree(this.data.treeName).subscribe(
             (tree) => {
                 this.state = stateType.PRESENT;
 
@@ -164,9 +164,9 @@ export class OpRiskMappingDialogComponent implements OnInit {
                     childIcon: null,
                 });
                 this.refreshData();
-                this.AlertService.onSuccess('نگاشت اضافه شد.');
+                this.alertService.onSuccess('نگاشت اضافه شد.');
             },
-            () => this.AlertService.onError('نگاشت اضافه نشد.')
+            () => this.alertService.onError('نگاشت اضافه نشد.')
         );
     }
 
@@ -182,9 +182,9 @@ export class OpRiskMappingDialogComponent implements OnInit {
                 foundedNode.mapped = false;
 
                 this.refreshData();
-                this.AlertService.onSuccess('نگاشت حذف شد.');
+                this.alertService.onSuccess('نگاشت حذف شد.');
             },
-            () => this.AlertService.onError('نگاشت حذف نشد.')
+            () => this.alertService.onError('نگاشت حذف نشد.')
         );
     }
 }

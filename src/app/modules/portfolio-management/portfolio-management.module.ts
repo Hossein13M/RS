@@ -4,9 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { LayoutModule } from 'app/layout/layout.module';
 import { take } from 'rxjs/operators';
-// Edit This Section To Change Route Prefix
-export const PMRoutePrefix = 'portfolio';
-// ----------------------------------------
+
+export const PMRoutePrefix = 'portfolio-management';
 
 const routes: Routes = [
     {
@@ -26,92 +25,35 @@ const routes: Routes = [
         path: `${PMRoutePrefix}/dashboard`,
         loadChildren: () => import('./trade-dashboard/trade-dashboard.module').then((m) => m.TradeDashboardModule),
     },
-
-    // Settings
     {
-        path: 'settings/trade-add',
+        path: `${PMRoutePrefix}/trade-add`,
         loadChildren: () => import('./trade-add/trade-add.module').then((m) => m.TradeAddModule),
     },
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-
-        // ADD Routes to Root Of Router
-        RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-        LayoutModule,
-    ],
+    imports: [CommonModule, RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }), LayoutModule],
 })
 export class PortfolioManagementModule {
-    constructor(private fns: FuseNavigationService) {
-        this.fns.onNavigationRegistered.pipe(take(1)).subscribe((s) => {
-            // ------------------------------------ General Menu
+    constructor(private fuseNavigationService: FuseNavigationService) {
+        this.fuseNavigationService.onNavigationRegistered.pipe(take(1)).subscribe(() => {
             const customFunctionNavItem = {
                 id: 'portfolio-management',
                 title: 'مدیریت سبد',
                 icon: 'shopping_basket',
                 type: 'collapsable',
                 children: [
-                    {
-                        id: 'trade-book-dashboard',
-                        title: 'پیشخوان',
-                        icon: 'view_agenda',
-                        type: 'item',
-                        url: `/${PMRoutePrefix}/dashboard`,
-                    },
-                    {
-                        id: 'trade-book',
-                        title: 'دفتر معاملاتی',
-                        icon: 'book',
-                        type: 'item',
-                        url: `/${PMRoutePrefix}/book`,
-                    },
-                    {
-                        id: 'complianceCalc',
-                        title: 'جستجوی معاملات',
-                        icon: 'find_in_page',
-                        type: 'item',
-                        url: `/${PMRoutePrefix}/search`,
-                    },
+                    { id: 'trade-book-dashboard', title: 'پیشخوان', icon: 'view_agenda', type: 'item', url: `/${PMRoutePrefix}/dashboard` },
+                    { id: 'trade-book', title: 'دفتر معاملاتی', icon: 'book', type: 'item', url: `/${PMRoutePrefix}/book` },
+                    { id: 'complianceCalc', title: 'جستجوی معاملات', icon: 'find_in_page', type: 'item', url: `/${PMRoutePrefix}/search` },
+                    { icon: 'library_add', id: 'trade-add', title: 'افزودن دستی معاملات', type: 'item', url: `/${PMRoutePrefix}/trade-add` },
                 ],
             };
-            if (this.fns.getNavigationItem('marketRisk')) {
-                this.fns.addNavigationItem(customFunctionNavItem, 'marketRisk');
+            if (this.fuseNavigationService.getNavigationItem('marketRisk')) {
+                this.fuseNavigationService.addNavigationItem(customFunctionNavItem, 'marketRisk');
             } else {
-                const marketRisk = {
-                    id: 'marketRisk',
-                    title: 'ریسک بازار',
-                    icon: 'bar_chart',
-                    type: 'collapsable',
-                    children: [customFunctionNavItem],
-                };
-                this.fns.addNavigationItem(marketRisk, 'end');
-            }
-
-            // ------------------------------------ Setting Menu
-            const portfolioManagementSettingMenu = [
-                {
-                    icon: 'library_add',
-                    id: 'trade-add',
-                    title: 'ثبت دستی معاملات',
-                    type: 'item',
-                    url: '/settings/trade-add',
-                },
-            ];
-            let newSettingsMenu = this.fns.getNavigationItem('settings');
-            if (newSettingsMenu) {
-                portfolioManagementSettingMenu.forEach((el) => newSettingsMenu.children.push(el));
-                this.fns.updateNavigationItem('settings', newSettingsMenu);
-            } else {
-                newSettingsMenu = {
-                    id: 'settings',
-                    title: 'تنظیمات سیستم',
-                    type: 'collapsable',
-                    icon: 'dashboard',
-                    children: [...portfolioManagementSettingMenu],
-                };
-                this.fns.addNavigationItem(newSettingsMenu, 'end');
+                const marketRisk = { id: 'marketRisk', title: 'ریسک بازار', icon: 'bar_chart', type: 'collapsable', children: [customFunctionNavItem] };
+                this.fuseNavigationService.addNavigationItem(marketRisk, 'end');
             }
         });
     }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
-import { TableElement } from '../trade-book.component';
 import { TradeBookService } from '../trade-book.service';
+import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
+import { formatDate } from '@angular/common';
+import { TradeBookData, TradeDateServerResponse } from '../trade-book.model';
 
 @Component({
     selector: 'app-trade-book-show',
@@ -13,116 +13,70 @@ import { TradeBookService } from '../trade-book.service';
     animations: [fuseAnimations],
 })
 export class TradeBookShowComponent implements OnInit {
-    org: string;
-    ticker: string;
-    pamCode: string;
-    dateFromParam: string;
-    dateFa: string;
-
-    columns: Array<any>;
+    data: Array<TradeDateServerResponse> = [];
+    columns: Array<ColumnModel> = [];
+    pagination = { skip: 0, limit: 5, total: 100 };
+    tradeBookData: TradeBookData = { organization: '', ticker: '', pamCode: '', date: '' };
+    persianDate: string;
     displayedColumns: Array<string>;
+    hasDataFetched: boolean = false;
 
-    dataSource: MatTableDataSource<TableElement>;
-
-    dataToShow: any;
-    data: any;
-
-    organizations: Array<any>;
-    selectedOrg: any;
-
-    isWorking: any;
-    failed = false;
-
-    constructor(private route: ActivatedRoute, public tbs: TradeBookService) {
-        this.columns = [
-            { name: 'تاریخ', id: 'dateFa', type: 'string', width: '200px' },
-            { name: 'خرید/فروش', id: 'tradeType', type: 'price', width: '200px' },
-            { name: 'حجم', id: 'volume', type: 'number', width: '10px' },
-            { name: 'تعداد موجود', id: 'inventory', type: 'number', width: '200px' },
-            { name: 'محل معامله', id: 'tradeLocation', type: 'string', width: '200px' },
-            { name: 'ارزش', id: 'value', type: 'price', width: '200px' },
-            { name: 'بهای تمام شده‌ی واحد', id: 'btu', type: 'price', width: '200px' },
-            { name: 'بهای تمام شده‌ی کل', id: 'btt', type: 'price', width: '200px' },
-            { name: 'سود و زیان واحد', id: 'plu', type: 'price', width: '200px' },
-            { name: 'سود و زیان کل', id: 'plt', type: 'price', width: '200px' },
-            { name: 'توضیحات', id: 'comments', type: 'price', width: '200px' },
-        ];
-        this.displayedColumns = ['position'];
-        this.displayedColumns = this.displayedColumns.concat(this.columns.map((r) => r.id));
-    }
+    constructor(private route: ActivatedRoute, public tradeBookService: TradeBookService) {}
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe((map: ParamMap) => {
-            this.org = map.get('org');
-            this.ticker = map.get('ticker');
-            this.pamCode = map.get('pamCode');
+        this.getDataFromRoute();
+        this.initializeTableColumns();
+        this.getTradeBookData();
+    }
 
-            this.dateFromParam = map.get('date');
-            this.dateFa = new Date(parseInt(this.dateFromParam, 10)).toLocaleDateString('fa-Ir', {
+    private getDataFromRoute(): void {
+        this.route.paramMap.subscribe((map: ParamMap) => {
+            this.tradeBookData.organization = map.get('org');
+            this.tradeBookData.ticker = map.get('ticker');
+            this.tradeBookData.pamCode = map.get('pamCode');
+            this.tradeBookData.date = map.get('date');
+            this.persianDate = new Date(parseInt(this.tradeBookData.date, 10)).toLocaleDateString('fa-Ir', {
                 year: 'numeric',
                 month: 'numeric',
                 day: 'numeric',
             });
-
-            if (!this.tbs.searchForm.value.date) {
-                this.tbs.searchForm.controls['date'].setValue(new Date(parseInt(this.dateFromParam, 10)));
-            }
-
-            this.tbs.specificationModel.limit = 10;
-            this.tbs.specificationModel.skip = 0;
-
-            this.get();
         });
     }
 
-    get(): void {
-        this.failed = false;
+    private initializeTableColumns(): void {
+        this.columns = [
+            { name: 'تاریخ', id: 'persianDate', type: 'string', minWidth: '200px' },
+            { name: 'خرید/فروش', id: 'tradeType', type: 'string', minWidth: '200px' },
+            { name: 'حجم', id: 'volume', type: 'number', minWidth: '10px' },
+            { name: 'تعداد موجود', id: 'inventory', type: 'number', minWidth: '200px' },
+            { name: 'محل معامله', id: 'tradeLocation', type: 'string', minWidth: '200px' },
+            { name: 'ارزش', id: 'value', type: 'price', minWidth: '200px' },
+            { name: 'بهای تمام شده‌ی واحد', id: 'btu', type: 'price', minWidth: '200px' },
+            { name: 'بهای تمام شده‌ی کل', id: 'btt', type: 'price', minWidth: '200px' },
+            { name: 'سود و زیان واحد', id: 'plu', type: 'price', minWidth: '200px' },
+            { name: 'سود و زیان کل', id: 'plt', type: 'price', minWidth: '200px' },
+            { name: 'توضیحات', id: 'comments', type: 'string', minWidth: '400px' },
+        ];
+    }
 
-        let date;
+    public paginationControl(pageEvent: PaginationChangeType): void {
+        this.getTradeBookData();
+    }
 
-        if (this.dateFromParam) {
-            date = this.tbs.convertDate(new Date(parseInt(this.dateFromParam, 10)));
-        }
-
-        this.tbs.specificationModel.searchKeyword = {
-            organization: this.org,
-            ticker: this.ticker,
-            pamCode: this.pamCode,
-            date,
-        };
-
-        this.tbs.getTradeData(this).subscribe((r) => {
-            this.tbs.setPageDetailData(r);
-            this.patchData(this.parseData(r));
+    public getTradeBookData(): void {
+        this.hasDataFetched = false;
+        this.tradeBookData.date = formatDate(this.tradeBookData.date, 'yyyy-MM-dd', 'en_US');
+        this.tradeBookService.getTradeDataByDate({ ...this.tradeBookData, ...this.pagination }).subscribe((response) => {
+            this.pagination.total = response.total;
+            this.data = this.parseData(response);
         });
     }
 
-    parseData(r: any): any {
-        if (!r || !r.items) {
-            return;
-        }
-
-        r.items.forEach(
-            (el) => (el.dateFa = new Date(el.transactionDate).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' }))
+    private parseData(serverResponse: any): Array<TradeDateServerResponse> {
+        if (!serverResponse || !serverResponse.items) return;
+        serverResponse.items.forEach(
+            (el) => (el.persianDate = new Date(el.transactionDate).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' }))
         );
-
-        return r.items;
-    }
-
-    patchData(data: any): void {
-        this.dataToShow = data;
-        this.dataSource = new MatTableDataSource<TableElement>(this.dataToShow);
-        // this.dataSource.sort = this.sort;
-    }
-
-    handleError(): boolean {
-        this.failed = true;
-        return false;
-    }
-
-    pageHandler(e: PagingEvent): void {
-        this.tbs.specificationModel.limit = e.pageSize;
-        this.tbs.specificationModel.skip = e.currentIndex * e.pageSize;
-        this.get();
+        return serverResponse.items;
     }
 }

@@ -1,22 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { PMRoutePrefix } from '../portfolio-management.module';
 import { TradeBookHistoryComponent } from './trade-book-history/trade-book-history.component';
 import { TradeBookService } from './trade-book.service';
-
-export interface TableElement {
-    bourseAccount: string;
-    volume: number;
-    vwap: number;
-    asset: string;
-    brokerName: string;
-    vwapUpdateDate: string;
-}
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { formatDate } from '@angular/common';
+import { StateType } from '#shared/state-type.enum';
+import { ColumnModel } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
+import { TradeBook } from './trade-book.model';
 
 @Component({
     selector: 'app-trade-book',
@@ -25,112 +19,104 @@ export interface TableElement {
     animations: [fuseAnimations],
 })
 export class TradeBookComponent implements OnInit {
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    pageUrl = `/${PMRoutePrefix}/book`;
-    displayedColumns: string[] = ['position', 'bourseAccount', 'volume', 'vwap', 'asset', 'brokerName', 'btt', 'vwapUpdateDate', 'operations'];
-    dataSource: MatTableDataSource<TableElement>;
-    dataToShow: any;
-    data: any;
-    organizations: Array<any>;
-    selectedOrg: any;
-    isWorking: any;
-    failed = false;
-    selectedOrgName: any;
+    stateType: StateType = StateType.INIT;
+    column: Array<ColumnModel>;
+    form: FormGroup = this.fb.group({ date: [new Date()], tradingBook: [[]] });
+    tradeBooksList: Array<{ id: number; name: string }> = [];
+    tradeBookData: Array<TradeBook> = [];
+    selectedTradingBook: TradeBook;
+    displayedColumns: Array<string> = ['position', 'bourseAccount', 'volume', 'vwap', 'asset', 'brokerName', 'btt', 'vwapUpdateDate', 'operations'];
+    dataSource: Array<any> = [];
 
-    constructor(private router: Router, private dialog: MatDialog, public tbs: TradeBookService) {}
+    constructor(private router: Router, private dialog: MatDialog, public tradingBookService: TradeBookService, private fb: FormBuilder) {}
 
     ngOnInit(): void {
-        this.tbs.searchForm.valueChanges.subscribe((r) => {
-            this.tbs.specificationModel.searchKeyword = r;
-            this.tbs.specificationModel.skip = undefined;
-            this.get();
-        });
-
-        // Get Last Query From Session Storage Or Get New
-        const lastSearchData = sessionStorage.getItem('lastTradeBookData');
-        if (lastSearchData) {
-            const lastBookParsed = JSON.parse(lastSearchData);
-            this.patchData(this.parseData(lastBookParsed.data));
-        } else this.get();
+        this.getAllTradingBooks();
+        this.initializeTableColumns();
     }
 
-    get(date?: string): void {
-        if (!date) date = this.tbs.convertDate(this.tbs.searchForm.value.date);
-
-        this.failed = false;
-        this.organizations = null;
-        this.selectedOrgName = null;
-
-        this.patchData(null);
-
-        this.tbs.specificationModel.limit = undefined;
-        this.tbs.specificationModel.skip = undefined;
-
-        this.tbs.specificationModel.searchKeyword = { date: date };
-        this.tbs.getAllTradeBooks(this).subscribe((data) => {
-            // Save Last Query to session
-            sessionStorage.setItem('lastTradeBookData', JSON.stringify({ data }));
-
-            this.patchData(this.parseData(data));
-        });
+    private initializeTableColumns(): void {
+        this.column = [
+            { id: 'row', name: '#', type: 'string' },
+            { id: 'bourseAccount', name: 'نماد', type: 'string' },
+            { id: 'volume', name: 'حجم', type: 'number' },
+            { id: 'vwap', name: 'قیمت روز', type: 'price' },
+            { id: 'asset', name: 'ارزش بازار', type: 'price' },
+            { id: 'brokerName', name: 'کارگزار', type: 'string' },
+            { id: 'btt', name: 'بهای تمام شده‌ی کل', type: 'price' },
+            { id: 'btt', name: 'آخرین تاریخ بروزرسانی قیمت', type: 'date', convert: (value: unknown) => (value ? value : '-') },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'visibility',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.showBook(row.organizationType, row.ticker, row.pamCode),
+                    },
+                ],
+            },
+        ];
     }
 
-    parseData(newData: any) {
-        if (!newData) return;
+    public showBook(organizationType: string, ticker: any, pamCode: string): void {
+        const date = new Date(this.form.value.date).getTime();
+        this.router.navigate([`/${PMRoutePrefix}/book`, date, organizationType, ticker, pamCode]);
+    }
 
-        this.organizations = [];
+    private getAllTradingBooks(): void {
+        this.stateType = StateType.LOADING;
+        let date = formatDate(this.form.value.date, 'yyyy-MM-dd', 'en_US');
+        this.tradeBooksList = [];
+        this.form.get('tradingBook').reset();
+        if (this.dataSource) this.dataSource = _.take(this.dataSource, 0);
 
-        newData.forEach((el, i) => {
-            this.organizations.push({ id: i, name: el.organization });
+        this.tradingBookService.getTradingBooks(date).subscribe(
+            (result: Array<{ details: Array<any>; organization: string; totalAssets: string }>) => {
+                this.stateType = StateType.PRESENT;
+                this.tradeBookData = result;
+                this.handleTradingBooksDate();
+                result.map((element, index: number) => this.tradeBooksList.push({ id: index, name: element.organization }));
+            },
+            () => (this.stateType = StateType.FAIL)
+        );
+    }
 
-            // Localize Date
-            if (el && el.details) {
-                el.details.forEach((detail) => {
+    public OnDateChange(): void {
+        this.selectedTradingBook = null;
+        this.getAllTradingBooks();
+    }
+
+    private handleTradingBooksDate(): void {
+        this.tradeBookData.map((element) => {
+            if (element && element.details) {
+                element.details.forEach((detail) => {
                     let date;
                     if (detail.vwapAdjusted !== null) date = detail.vwapAdjustedUpdateDate;
-
                     if (detail.vwap !== null) date = detail.vwapUpdateDate;
-
                     if (detail.vwapAdjusted !== null && detail.vwap !== null) date = detail.vwapAdjustedUpdateDate;
-
                     if (!date) return;
-
                     detail.dateFa = new Date(date).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' });
                 });
             }
         });
-        this.data = newData;
-
-        if (this.tbs.selectedOrgName) {
-            this.selectedOrg = this.data[this.tbs.selectedOrgName];
-            return this.data[this.tbs.selectedOrgName].details;
-        }
-        return;
     }
 
-    patchData(data: any): void {
+    public onTradeBookChange(event: number): void {
+        this.selectedTradingBook = this.tradeBookData[event];
+        this.createTableData(this.tradeBookData[event].details);
+    }
+
+    private createTableData(data): void {
         if (!data) return;
-
-        this.dataToShow = data;
-        this.dataSource = new MatTableDataSource<TableElement>(this.dataToShow);
-        this.dataSource.sort = this.sort;
-    }
-    handleError(): boolean {
-        this.failed = true;
-        return false;
+        this.dataSource = [...data];
     }
 
-    changeForm(event: MatSelectChange): void {
-        this.selectedOrg = this.data[event.value];
-        this.patchData(this.data[event.value].details);
-    }
-
-    showBook(organizationType: any, ticker: any, pamCode: string): void {
-        const date = new Date(this.tbs.searchForm.value.date).getTime();
-        this.router.navigate([this.pageUrl, date, organizationType, ticker, pamCode]);
-    }
-
-    showHistory(): void {
-        this.dialog.open(TradeBookHistoryComponent, { panelClass: 'dialog-w50', data: { date: this.tbs.searchForm.value.date } });
+    public showHistory(): void {
+        this.dialog.open(TradeBookHistoryComponent, { panelClass: 'dialog-w50', data: { date: this.form.value.date } });
     }
 }

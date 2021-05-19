@@ -1,12 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { GlChangesComponent } from './gl-changes.component';
 import { MaterialModule } from '#shared/material.module';
 import { ShareModule } from '#shared/share.module';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule, Routes } from '@angular/router';
 import { LayoutModule } from '../../../layout/layout.module';
-import { GlChangesService } from './gl-changes.service';
+import { GlChangesComponent } from './gl-changes.component';
 
 const routes: Routes = [
     {
@@ -19,6 +18,5 @@ const routes: Routes = [
 @NgModule({
     declarations: [GlChangesComponent],
     imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes)],
-    providers: [GlChangesService],
 })
 export class GlChangesModule {}

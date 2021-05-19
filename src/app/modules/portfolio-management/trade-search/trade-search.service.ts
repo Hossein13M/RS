@@ -5,18 +5,20 @@ import { Injectable } from '@angular/core';
 export class TradeSearchService {
     constructor(private http: HttpClient) {}
 
-    getOrganizations(paginationInfo: any = { skip: 0, limit: 10 }) {
+    public getOrganizations(paginationInfo: any = { skip: 0, limit: 10 }) {
         return this.http.get<any>(`/api/v1/portfolio-management-service/organizations`, { params: paginationInfo });
     }
 
-    searchTrade(paginationInfo: any, searchParams: any) {
+    public searchTrade(paginationInfo: any, searchParams: any) {
         let params = this.prepareParams(searchParams);
         return this.http.get<any>(
             `/api/v1/portfolio-management-service/search-trade-data?skip=${paginationInfo.skip}&limit=${paginationInfo.limit}`,
-            {
-                params: params,
-            }
+            { params }
         );
+    }
+
+    public getBourseInstrumentDetailControllerBondsList(searchKeyword: string) {
+        return this.http.get<any>(`/api/v1/bourse-instrument-detail/bonds`, { params: { searchKeyword } });
     }
 
     private prepareParams(searchParams: any): HttpParams {

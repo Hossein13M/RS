@@ -39,7 +39,6 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
     @Input() chartName = 'نام چارت';
     @Input() showLabel = false;
     @Input() state = stateType.INIT;
-
     stateType = stateType;
     selectedSlice;
     button;
@@ -57,6 +56,7 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
 
     ngAfterViewInit(): void {
         this.makeChart(this.data);
+        this.chart.legend.valueLabels.template.text = "{value.percent.formatNumber('#.00')}%";
 
         if (this.data == null) this.state = stateType.PRESENT;
         else if (this.data !== undefined && this.data.length > 0) this.state = stateType.PRESENT;
@@ -78,12 +78,12 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
         this.drillLevels = [];
         this.zone.runOutsideAngular(() => {
             this.chart = am4core.create(this.id, am4charts.PieChart);
+            this.chart.numberFormatter.numberFormat = { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 };
             this.chart.rtl = true;
             this.chart.data = data;
             this.pieSeries = this.chart.series.push(new am4charts.PieSeries());
             this.pieSeries.dataFields.value = this.valueLabel;
             this.pieSeries.dataFields.category = this.categoryLabel;
-
             this.pieSeries.hiddenState.properties.opacity = 1;
             this.pieSeries.hiddenState.properties.endAngle = -90;
             this.pieSeries.hiddenState.properties.startAngle = -90;
@@ -113,9 +113,6 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
             this.button.hide();
 
             this.button.events.on('hit', (event) => this.drillUpNL(), this);
-
-            // this.nlbutton.htmlContainer="بازگشت"
-            // this.nlbutton.hidden = true;
         });
     }
 

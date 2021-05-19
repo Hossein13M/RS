@@ -1,28 +1,26 @@
 <div *ngIf="data && data.length > 0" class="fuse-card">
     <span class="header">
-        <span>
-            {{chartName}}
-        </span>
+        <span> {{ chartName }} </span>
 
-        <button mat-icon-button
-                (click)="backToFirstStep()"
-                color="accent">
+        <button mat-icon-button (click)="backToFirstStep()" color="accent">
             <mat-icon class="mat-18">arrow_back</mat-icon>
         </button>
     </span>
     <mat-divider></mat-divider>
     <div class="chart">
-        <canvas baseChart
-                id="pieChartJs"
-                height="{{height}}"
-                [chartType]="chartType"
-                [datasets]="chartDatasets"
-                [labels]="chartLabels"
-                [colors]="chartColors"
-                [options]="chartOptions"
-                [legend]="true"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)">
+        <canvas
+            baseChart
+            id="pieChartJs"
+            height="{{ height }}"
+            [chartType]="chartType"
+            [datasets]="chartDatasets"
+            [labels]="chartLabels"
+            [colors]="chartColors"
+            [options]="chartOptions"
+            [legend]="true"
+            (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)"
+        >
         </canvas>
     </div>
 </div>

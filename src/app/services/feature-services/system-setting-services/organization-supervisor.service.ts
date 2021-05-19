@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
 })
-export class OrganizationSupervisorService extends Specification {
+export class OrganizationSupervisorService {
     private static organizationSupervisorApi = '/api/v1/organization-supervisor';
 
-    get(fc?: FormContainer) {
-        const api = OrganizationSupervisorService.organizationSupervisorApi + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
+    constructor(private http: HttpClient) {}
+
+    get(): Observable<any> {
+        const api = OrganizationSupervisorService.organizationSupervisorApi;
+        return this.http.get(api);
     }
 
-    delete(id, fc?: FormContainer) {
+    delete(id): Observable<any> {
         const api = OrganizationSupervisorService.organizationSupervisorApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
+        return this.http.delete(api);
     }
 
-    update(model, fc?: FormContainer) {
-        return this.apiClientService.put(OrganizationSupervisorService.organizationSupervisorApi, fc, model);
+    update(model): Observable<any> {
+        return this.http.put(OrganizationSupervisorService.organizationSupervisorApi, model);
     }
 
-    create(model, fc?: FormContainer) {
-        return this.apiClientService.post(OrganizationSupervisorService.organizationSupervisorApi, model, fc);
-    }
-
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    create(model): Observable<any> {
+        return this.http.post(OrganizationSupervisorService.organizationSupervisorApi, model);
     }
 }

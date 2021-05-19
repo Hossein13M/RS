@@ -10,6 +10,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MailListItemComponent } from './mail-list-item/mail-list-item.component';
 import { MailComponent } from './mail/mail.component';
 import { SendMailComponent } from './send-mail/send-mail.component';
+import { PipesModule } from '#shared/pipes/pipes.module';
 
 const routes: Routes = [
     {
@@ -33,6 +34,7 @@ const routes: Routes = [
         FuseDirectivesModule,
         MatRippleModule,
         NgxMatSelectSearchModule,
+        PipesModule
     ],
     exports: [SendMailComponent],
     entryComponents: [SendMailComponent],

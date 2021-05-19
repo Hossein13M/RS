@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { BourseInstrumentDetailService } from 'app/services/API/services/bourse-instrument-detail.service';
 import { StateType } from 'app/shared/state-type.enum';
+import * as _ from 'lodash';
 import { debounceTime } from 'rxjs/operators';
-import { TableElement } from '../trade-book/trade-book.component';
 import { TradeSearchService } from './trade-search.service';
-import {MatCheckbox} from "@angular/material/checkbox";
-import * as _ from "lodash";
+import { TableElement } from '../trade-book/trade-book.model';
 
 interface Ticker {
     id: number;
@@ -26,29 +25,27 @@ interface Ticker {
 })
 export class TradeSearchComponent implements OnInit {
     form: FormGroup = this.formBuilder.group({
-        transactionDateStart: ['', []],
-        transactionDateEnd: ['', []],
-        valueStart: ['', []],
-        valueEnd: ['', []],
-        pltStart: ['', []],
-        pltEnd: ['', []],
-        volumeStart: ['', []],
-        volumeEnd: ['', []],
-        tradeType: ['', []],
-        tradeLocation: ['', []],
-        organization: ['', { disabled: true }, []],
+        transactionDateStart: ['', [Validators.required]],
+        transactionDateEnd: ['', [Validators.required]],
+        valueStart: ['', [Validators.required]],
+        valueEnd: ['', [Validators.required]],
+        pltStart: ['', [Validators.required]],
+        pltEnd: ['', [Validators.required]],
+        volumeStart: ['', [Validators.required]],
+        volumeEnd: ['', [Validators.required]],
+        tradeType: ['', [Validators.required]],
+        tradeLocation: ['', [Validators.required]],
+        organization: ['', { disabled: true }, [Validators.required]],
     });
     searchCollapse: boolean = true;
     pagination = { skip: 0, limit: 5, total: 100 };
     organizations: Array<{ organizationName: string; organizationType: string }> = [];
     today: Date = new Date();
-
     tradeLocations = [
         { name: 'بورسی', value: 1 },
         { name: 'غیر بورسی', value: 2 },
         { name: 'همه', value: 3 },
     ];
-
     tradeTypes = [
         { name: 'خرید', value: 1 },
         { name: 'فروش', value: 2 },
@@ -57,8 +54,6 @@ export class TradeSearchComponent implements OnInit {
         { name: 'تفاوت کارمزد خرید', value: 5 },
         { name: 'تفاوت کارمزد فروش', value: 6 },
     ];
-
-    // Show Data Table
     columns: Array<any>;
     displayedColumns: Array<string>;
     dataSource: MatTableDataSource<TableElement>;
@@ -68,17 +63,15 @@ export class TradeSearchComponent implements OnInit {
     stateType: StateType;
     isWorking: any;
     model: any;
-    // Ticker Select Control
     addTicker: FormControl;
     tickersCtrl: FormControl;
     tickers: any;
     selectedTickersList = [];
 
-    constructor(private formBuilder: FormBuilder, private bidService: BourseInstrumentDetailService, private tsService: TradeSearchService) {
-        this.createColumns();
-    }
+    constructor(private formBuilder: FormBuilder, private tradeSearchService: TradeSearchService) {}
 
     ngOnInit(): void {
+        this.createColumns();
         this.getOrganizations();
         this.tickersCtrl = this.formBuilder.control('');
         this.addTicker = this.formBuilder.control('');
@@ -87,14 +80,14 @@ export class TradeSearchComponent implements OnInit {
         this.addTicker.valueChanges.pipe(debounceTime(200)).subscribe((newTicker) => newTicker && this.addTicker.reset());
     }
 
-    private paginationControl(pageEvent?: any): void {
+    public paginationControl(pageEvent?: any): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.submitForm();
     }
 
     private getOrganizations() {
-        this.tsService.getOrganizations().subscribe((response) => {
+        this.tradeSearchService.getOrganizations().subscribe((response) => {
             this.organizations = response;
             this.form.controls['organization'].enable(); // need to ask why it is disabled as default
         });
@@ -129,7 +122,7 @@ export class TradeSearchComponent implements OnInit {
     }
 
     private getTickers(searchKeyword: string): void {
-        this.bidService.getBourseInstrumentDetailControllerGetBondsList(searchKeyword).subscribe((list) => {
+        this.tradeSearchService.getBourseInstrumentDetailControllerBondsList(searchKeyword).subscribe((list) => {
             if (!list.items) return;
 
             list.items.forEach((el: Ticker) => {
@@ -141,7 +134,7 @@ export class TradeSearchComponent implements OnInit {
         });
     }
 
-    private submitForm(): void {
+    public submitForm(): void {
         this.stateType = StateType.LOADING;
         this.searchCollapse = false;
 
@@ -152,7 +145,7 @@ export class TradeSearchComponent implements OnInit {
             this.form.get('transactionDateEnd').setValue(this.form.value.transactionDateEnd.toISOString());
         // the reason for the above two if codes are that we do not change them if they are iso string
 
-        this.tsService.searchTrade(this.pagination, this.form.value).subscribe(
+        this.tradeSearchService.searchTrade(this.pagination, this.form.value).subscribe(
             (r) => {
                 this.pagination.total = r.total;
                 this.parseData(r);
@@ -162,7 +155,7 @@ export class TradeSearchComponent implements OnInit {
         );
     }
 
-    private clearFilters(): void {
+    public clearFilters(): void {
         this.form.reset();
         this.selectedTickersList = [];
     }
@@ -182,11 +175,11 @@ export class TradeSearchComponent implements OnInit {
         this.dataSource = new MatTableDataSource<TableElement>(this.dataToShow);
     }
 
-    private removeTicker(ticker: any): void {
+    public removeTicker(ticker: any): void {
         this.selectedTickersList = this.selectedTickersList.filter((el) => el.id !== ticker.id);
     }
 
-    private selectTicker(ticker: any): void {
+    public selectTicker(ticker: any): void {
         const existTicker = this.selectedTickersList.find((el) => el.id === ticker.id);
         if (!existTicker) this.selectedTickersList.push(ticker);
     }
@@ -194,9 +187,7 @@ export class TradeSearchComponent implements OnInit {
     public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
         if (checkbox.checked) {
             this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
-        } else {
-            this.form.controls[controlName].patchValue([]);
-        }
+        } else this.form.controls[controlName].patchValue([]);
     }
 
     public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
