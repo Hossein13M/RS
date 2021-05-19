@@ -38,7 +38,7 @@ export class BankSettingAddComponent implements OnInit {
     }
 
     onCreateBranch(): void {
-        this.bankService.createBankSetting(this.form.value).subscribe((res) => {
+        this.bankService.createBankSetting(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -49,7 +49,7 @@ export class BankSettingAddComponent implements OnInit {
             id: this.data['id'],
             name: this.form.get('name').value,
         };
-        this.bankService.updateBankSetting(obj).subscribe((res) => {
+        this.bankService.updateBankSetting(obj).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
