@@ -26,7 +26,7 @@ export class OpLossManagementService extends Specification {
     private latestMappingSubject = new BehaviorSubject<any>(null);
     public _latestMapping = this.latestMappingSubject.asObservable();
 
-    get latestMapping() {
+    get latestMapping(): BehaviorSubject<any> {
         return this.latestMappingSubject.getValue();
     }
 

@@ -15,13 +15,13 @@ export class OrganizationTypeSettingAddComponent implements OnInit {
 
     constructor(
         public dialogRef: MatDialogRef<OrganizationTypeSettingAddComponent>,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private organizationTypeService: OrganizationTypeService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
@@ -30,35 +30,29 @@ export class OrganizationTypeSettingAddComponent implements OnInit {
         this.creatForm();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             name: [this.data ? this.data.name : '', Validators.required],
         });
     }
 
-    onCreateBranch() {
-        this.organizationTypeService.createOrganizationType(this.form.value, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.organizationTypeService.createOrganizationType(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = this.form.value;
         obj['id'] = this.data.id;
-        this.organizationTypeService.updateOrganizationType(obj, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.organizationTypeService.updateOrganizationType(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

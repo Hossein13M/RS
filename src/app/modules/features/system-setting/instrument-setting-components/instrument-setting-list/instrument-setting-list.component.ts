@@ -169,32 +169,22 @@ export class InstrumentSettingListComponent implements OnInit {
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
-
-        this.newInstrumentService.specificationModel.searchKeyword = searchFilter;
-        this.newInstrumentService.specificationModel.skip = 0;
-        this.get();
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.newInstrumentService.specificationModel.limit = pageEvent.limit;
-        this.newInstrumentService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.newInstrumentService.get().subscribe((res: any) => {
-            this.data = [...res.items];
+    get(search?: any): void {
+        this.newInstrumentService.getInstruments(this.pagination, search).subscribe((res: any) => {
             this.pagination.limit = res.limit;
             this.pagination.total = res.total;
-            this.pagination.limit = res.limit;
-            this.newInstrumentService.setPageDetailData(res);
+            this.data = [...res.items];
         });
     }
 
@@ -221,7 +211,7 @@ export class InstrumentSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.newInstrumentService.delete(row.id, row.isInBourse).subscribe(() => {
+                    this.newInstrumentService.deleteInstrument(row.id, row.isInBourse).subscribe(() => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }
