@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PageEvent, SpecificationModel } from 'app/shared/models/Specification';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable()
 export class OpRiskFlowService {
@@ -27,12 +28,9 @@ export class OpRiskFlowService {
         return this.latestMappingSubject.getValue();
     }
 
-    getOpFlows(): Observable<any> {
-        let pagingParam = '';
-        if (this.specificationModel.skip !== undefined && this.specificationModel.limit !== undefined) {
-            pagingParam = '?skip=' + this.specificationModel.skip + '&limit=' + this.specificationModel.limit;
-        }
-        return this.http.get(OpRiskFlowService.TreeMappingServiceAPI + pagingParam).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    getOpFlows(paginationParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams });
+        return this.http.get(OpRiskFlowService.TreeMappingServiceAPI, {params}).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
     getOpFlow(id): Observable<any> {
@@ -67,11 +65,11 @@ export class OpRiskFlowService {
         return this.http.put<any>(`/api/v1/operation-risk/flow/inactive/${flowId}`, {});
     }
 
-    public createOPRiskFlow(data: any) {
+    public createOPRiskFlow(data: any): Observable<any> {
         return this.http.post<any>(`/api/v1/operation-risk/flow`, data);
     }
 
-    public updateOPRiskFlow(data: any) {
+    public updateOPRiskFlow(data: any): Observable<any> {
         return this.http.put<any>(`/api/v1/operation-risk/flow`, data);
     }
 }

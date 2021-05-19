@@ -55,7 +55,7 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
     }
 
     private getOpRiskFlows(): void {
-        this.opRiskFlowService.getOPRiskFlows(this.pagination).subscribe(
+        this.opRiskFlowService.getOpFlows(this.pagination).subscribe(
             (response) => {
                 this.pagination.total = response.total;
                 this.pagination.limit = response.limit;
@@ -68,7 +68,7 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
 
     public toggleStatus(row: any): void {
         row.isActiveState = StateType.LOADING;
-        this.opRiskFlowService.toggleOPRiskFlowStatus(row.id).subscribe(
+        this.opRiskFlowService.toggleOpFlowStatus(row.id).subscribe(
             () => {
                 row.isActive = !row.isActive;
                 this.alertService.onSuccess('وضعیت با موفقیت تغییر کرد');
@@ -90,7 +90,7 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
     }
 
     public editFlow(flowId: number | string): void {
-        this.opRiskFlowService.getSingleOpRiskFlow(flowId).subscribe((response) => {
+        this.opRiskFlowService.getOpFlow(flowId).subscribe((response) => {
             this.matDialog
                 .open(FlowAddComponent, { panelClass: 'dialog-w60', data: response })
                 .afterClosed()
@@ -99,7 +99,7 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
     }
 
     private viewFlow(flowId: string | number): void {
-        this.opRiskFlowService.getSingleOpRiskFlow(flowId).subscribe((response) => {
+        this.opRiskFlowService.getOpFlow(flowId).subscribe((response) => {
             this.matDialog
                 .open(OpRiskViewComponent, { panelClass: 'dialog-w60', data: response })
                 .afterClosed()
