@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiClientService } from 'app/services/Base/api-client.service';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { PageEvent, Specification, SpecificationModel } from 'app/shared/models/Specification';
+import { PageEvent, SpecificationModel } from 'app/shared/models/Specification';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { formatDate } from '@angular/common';

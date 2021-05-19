@@ -1,35 +1,29 @@
 import { Injectable } from '@angular/core';
-import { ApiClientService } from 'app/services/Base/api-client.service';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { Specification } from 'app/shared/models/Specification';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class TreeMappingService extends Specification {
+export class TreeMappingService {
     private static TreeMappingServiceAPI = '/api/v1/operation-risk/tree-mapping';
     private latestMappingSubject = new BehaviorSubject<any>(null);
     public _latestMapping = this.latestMappingSubject.asObservable();
 
-    get latestMapping() {
+    constructor(private http: HttpClient) {}
+
+    get latestMapping(): any {
         return this.latestMappingSubject.getValue();
     }
 
-    constructor(private acs: ApiClientService) {
-        super();
+    getMappingCategory(): Observable<any> {
+        return this.http.get(TreeMappingService.TreeMappingServiceAPI + `/categories`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    getMappingCategory(fc?: FormContainer): Observable<any> {
-        return this.acs
-            .get(TreeMappingService.TreeMappingServiceAPI + `/categories`, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+    deleteMapping(id): Observable<any> {
+        return this.http.delete(TreeMappingService.TreeMappingServiceAPI + `/${id}`);
     }
 
-    deleteMapping(id, fc?: FormContainer): Observable<any> {
-        return this.acs.delete(TreeMappingService.TreeMappingServiceAPI + `/${id}`, fc);
-    }
-
-    addMapping(fromId: number, toId: number, fc?: FormContainer): Observable<any> {
-        return this.acs.post(TreeMappingService.TreeMappingServiceAPI, { mapParent: fromId + '', mapChild: toId + '' }, fc);
+    addMapping(fromId: number, toId: number): Observable<any> {
+        return this.http.post(TreeMappingService.TreeMappingServiceAPI, { mapParent: fromId + '', mapChild: toId + '' });
     }
 }

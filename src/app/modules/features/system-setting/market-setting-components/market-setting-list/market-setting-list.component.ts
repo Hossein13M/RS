@@ -5,7 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { MarketSettingService } from 'app/services/feature-services/system-setting-services/market-setting.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
 import * as _ from 'lodash';
 import { MarketSettingAddComponent } from '../market-setting-add/market-setting-add.component';
 
@@ -98,29 +97,24 @@ export class MarketSettingListComponent implements OnInit {
         this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
+    search(searchFilter: any): void {
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
+    }
+
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.marketSettingService.specificationModel.limit = pageEvent.limit;
-        this.marketSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.marketSettingService.getAllMarkets(this).subscribe((res: any) => {
+    get(search?: any): void {
+        this.marketSettingService.getAllMarkets(this.pagination, search).subscribe((res: any) => {
             this.data = [...res.items];
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
-            this.marketSettingService.setPageDetailData(res);
         });
-    }
-
-    search(searchFilter: any): void {
-        if (!searchFilter) return;
-
-        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
-
-        this.marketSettingService.specificationModel.searchKeyword = searchFilter;
-        this.marketSettingService.specificationModel.skip = 0;
-        this.get();
     }
 
     add(): void {
@@ -137,7 +131,7 @@ export class MarketSettingListComponent implements OnInit {
             .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
             .afterClosed()
             .subscribe((res) => {
-                if (res) this.marketSettingService.deleteMarket(element.ticker, this).subscribe(() => this.get());
+                if (res) this.marketSettingService.deleteMarket(element.ticker).subscribe(() => this.get());
             });
     }
 
@@ -148,15 +142,5 @@ export class MarketSettingListComponent implements OnInit {
             .subscribe((res) => {
                 if (res) this.get();
             });
-    }
-
-    pageHandler(e: PagingEvent): void {
-        this.marketSettingService.specificationModel.limit = e.pageSize;
-        this.marketSettingService.specificationModel.skip = e.currentIndex * e.pageSize;
-        this.get();
-    }
-
-    handleError(): boolean {
-        return false;
     }
 }

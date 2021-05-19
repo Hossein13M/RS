@@ -80,7 +80,7 @@ export class MarketSettingAddComponent implements OnInit {
     }
 
     onCreateBranch(): void {
-        this.marketSettingService.createMarket(this.form.value, this).subscribe(() => {
+        this.marketSettingService.createMarket(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });

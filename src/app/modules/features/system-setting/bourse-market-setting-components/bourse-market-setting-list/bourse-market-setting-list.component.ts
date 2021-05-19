@@ -23,7 +23,7 @@ export class BourseMarketSettingListComponent implements OnInit {
 
     ngOnInit(): void {
         this.initColumn();
-        this.initColumn();
+        this.initSearch();
         this.get();
     }
 
@@ -70,30 +70,18 @@ export class BourseMarketSettingListComponent implements OnInit {
     initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.column, 'id'));
         const objectFromKeys = {};
-        mapKeys.forEach((id) => {
-            objectFromKeys[id] = '';
-        });
-        this.searchFormGroup = this.formBuilder.group({
-            ...objectFromKeys,
-        });
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
-
-        this.bourseMarketService.specificationModel.searchKeyword = searchFilter;
-        this.bourseMarketService.specificationModel.skip = 0;
-        this.get();
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
     }
 
-    get(): void {
-        this.bourseMarketService.get().subscribe((res: any) => {
+    get(search?): void {
+        this.bourseMarketService.getBourses(search).subscribe((res: any) => {
             this.data = [...res];
         });
     }
@@ -121,7 +109,7 @@ export class BourseMarketSettingListComponent implements OnInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.bourseMarketService.delete(row.id).subscribe(() => {
+                    this.bourseMarketService.deleteBourse(row.id).subscribe(() => {
                         this.data = this.data.filter((el) => el.id !== row.id);
                     });
                 }

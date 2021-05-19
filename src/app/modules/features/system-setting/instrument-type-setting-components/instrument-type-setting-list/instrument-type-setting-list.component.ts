@@ -115,31 +115,22 @@ export class InstrumentTypeSettingListComponent implements OnInit {
     }
 
     search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
-
-        this.instrumentTypeService.specificationModel.searchKeyword = searchFilter;
-        this.instrumentTypeService.specificationModel.skip = 0;
-        this.get();
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.instrumentTypeService.specificationModel.limit = pageEvent.limit;
-        this.instrumentTypeService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.instrumentTypeService.getInstrumentType().subscribe((res: any) => {
-            this.data = [...res.items];
+    get(search?: any): void {
+        this.instrumentTypeService.getInstrumentType(this.pagination, search).subscribe((res: any) => {
             this.pagination.total = res.total;
             this.pagination.limit = res.limit;
-            this.instrumentTypeService.setPageDetailData(res);
+            this.data = [...res.items];
         });
     }
 

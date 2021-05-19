@@ -1,34 +1,28 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '#shared/models/FromContainer';
-import { Specification } from '#shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BourseMarketService extends Specification {
-    private static bourseMarketApi = '/api/v1/bourse-market';
+export class BourseMarketService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    getBourses(searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...searchParams });
+        return this.http.get('/api/v1/bourse-market', { params });
     }
 
-    get(fc?: FormContainer): Observable<any> {
-        const api = BourseMarketService.bourseMarketApi + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
+    createBourse(model): Observable<any> {
+        return this.http.post('/api/v1/bourse-market', model);
     }
 
-    create(model, fc?: FormContainer): Observable<any> {
-        return this.apiClientService.post(BourseMarketService.bourseMarketApi, model, fc);
+    updateBourse(model): Observable<any> {
+        return this.http.put('/api/v1/bourse-market', model);
     }
 
-    update(model, fc?: FormContainer): Observable<any> {
-        return this.apiClientService.put(BourseMarketService.bourseMarketApi, fc, model);
-    }
-
-    delete(id, fc?: FormContainer): Observable<any> {
-        const api = BourseMarketService.bourseMarketApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
+    deleteBourse(id): Observable<any> {
+        return this.http.delete('/api/v1/bourse-market/' + id);
     }
 }
