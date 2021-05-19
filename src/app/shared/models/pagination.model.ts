@@ -4,6 +4,6 @@ export interface PaginationModel {
     total: number;
 }
 
-export interface PaginationResponse<T> extends PaginationModel {
+export interface ResponseWithPagination<T> extends PaginationModel {
     items: Array<T>;
 }
