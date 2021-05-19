@@ -1,3 +1,5 @@
+// noinspection SpellCheckingInspection
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'app/services/alert.service';
@@ -33,10 +35,6 @@ export class OpRiskReportingComponent implements OnInit {
     levelPieChartData = [];
     losePieChartData = [];
 
-    // the two bellow variables are for heatmap
-    // heatMapData: any;
-    // heatMapSearchForm: FormGroup;
-
     constructor(
         private opRiskReportingService: OpRiskReportingService,
         private opRiskManagementService: OpRiskManagementService,
@@ -51,27 +49,27 @@ export class OpRiskReportingComponent implements OnInit {
         this.getCategories();
     }
 
-    getTops(): void {
+    private getTops(): void {
         this.opRiskReportingService.getTops(this.isSelectedTabRisk).subscribe((response) => (this.tops = response));
     }
 
-    getAxis(): void {
+    private getAxis(): void {
         this.opRiskReportingService.getAxis('xAxis').subscribe((response) => (this.xAxis = response));
         this.opRiskReportingService.getAxis('yAxis').subscribe((response) => (this.yAxis = response));
     }
 
-    getBarChart(barchartType: string): void {
+    public getBarChart(barchartType: string): void {
         this.opRiskReportingService
             .getBarChart(this.barChartSearchForm.value.xAxis, this.barChartSearchForm.value.yAxis, this.isSelectedTabRisk)
             .subscribe((response) => (this[barchartType] = response.chart.data));
     }
 
-    changeTab(): void {
+    public changeTab(): void {
         this.isSelectedTabRisk = !this.isSelectedTabRisk;
         this.ngOnInit();
     }
 
-    getCategories(): void {
+    private getCategories(): void {
         Object.keys(this.categories).map((key) => (this.categories[key] = []));
         this.opRiskManagementService.getCategories().subscribe((response) => {
             response.map((el) => {
@@ -95,7 +93,7 @@ export class OpRiskReportingComponent implements OnInit {
         });
     }
 
-    getPieCharts(): void {
+    private getPieCharts(): void {
         Object.keys(this.categories).forEach((tableName) => {
             if (tableName == 'losse') {
                 forkJoin([
@@ -126,23 +124,11 @@ export class OpRiskReportingComponent implements OnInit {
         });
     }
 
-    getChildPie(data, tableName): void {
-        let treeNodeId = 0;
+    public getChildPie(data, tableName): void {
+        let treeNodeId;
         data == false ? (treeNodeId = this.categories[tableName][0]) : (treeNodeId = data.treeNodeId);
         this.opRiskReportingService.getPieChart(treeNodeId, this.isSelectedTabRisk, tableName).subscribe((response) => {
             response.chart.data.length == 0 ? this.AlertService.onError('داده ای یافت نشد') : (this.diversPieChartData = response.chart.data);
         });
     }
-
-    // the bellow is for heatmap which needs to be changed
-    // getHeatMap() {
-    //     this.opRiskReportingService.getHeatMap(this.isRisk).subscribe((response) => {
-    //         Math.max.apply(
-    //             Math,
-    //             response.map((o) => {
-    //                 this.heatMapSearchForm.get('criticalX').setValue(o.xAxis);
-    //             })
-    //         );
-    //     });
-    // }
 }

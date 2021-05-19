@@ -24,6 +24,7 @@ export class AumFundsComponent {
             { name: 'نام', id: 'name', type: 'string' },
             { name: 'ارزش روز', id: 'dayValue', type: 'price' },
             { name: 'قیمت روز', id: 'dayPrice', type: 'price' },
+            { name: 'حجم کل', id: 'volume', type: 'number' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبد صندوق', id: 'percentageOfFunds', type: 'number' },
             {

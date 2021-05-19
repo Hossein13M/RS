@@ -22,7 +22,6 @@ export class OpRiskManagementService {
         searchKeyword: {},
     };
     private latestMappingSubject = new BehaviorSubject<any>(null);
-
     public _latestMapping = this.latestMappingSubject.asObservable();
 
     public convertDate(date: Date): string {
@@ -77,11 +76,19 @@ export class OpRiskManagementService {
 
     // http implementation
 
-    getCategories(): Observable<any> {
+    public getActiveOPRiskWorkFlows() {
+        return this.http.get<any>(`/api/v1/operation-risk/work-flow/active`);
+    }
+
+    public getOPRiskWorkFlowHistory(skip: number | string, limit: number | string) {
+        return this.http.get<any>(`/api/v1/operation-risk/work-flow/history?skip=${skip}&limit=${limit}`);
+    }
+
+    public getCategories(): Observable<any> {
         return this.http.get<Array<{ icon: string; id: number; titleEN: string; titleFA: string }>>(`/api/v1/operation-risk/tree/categories`);
     }
 
-    getSubmittedRiskAndLoss(params): Observable<any> {
+    public getSubmittedRiskAndLoss(params): Observable<any> {
         return this.http.get('/api/v1/operation-risk/work-flow/finals', { params });
     }
 }

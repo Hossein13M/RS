@@ -53,7 +53,7 @@ const appRoutes: Routes = [
     },
     {
         path: 'alarming',
-        loadChildren: () => import('app/modules/features/alarming/alarming.module').then((m) => m.AlarmingModule),
+        loadChildren: () => import('app/modules/alarming/alarming.module').then((m) => m.AlarmingModule),
     },
     {
         path: 'nav',
@@ -68,12 +68,8 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/modules/user/user.module').then((m) => m.UserModule),
     },
     {
-        path: 'settings',
-        loadChildren: () => import('app/modules/settings/settings.module').then((m) => m.SettingsModule),
-    },
-    {
-        path: 'system-setting',
-        loadChildren: () => import('app/modules/features/system-setting/system-setting.module').then((m) => m.SystemSettingModule),
+        path: 'system-settings',
+        loadChildren: () => import('app/modules/system-settings/system-settings.module').then((m) => m.SystemSettingsModule),
     },
     {
         path: 'welcome',
@@ -117,7 +113,6 @@ const appRoutes: Routes = [
         SnotifyService,
         AuthGuard,
     ],
-    exports: [],
     entryComponents: [SendMailComponent],
 })
 export class AppModule {}

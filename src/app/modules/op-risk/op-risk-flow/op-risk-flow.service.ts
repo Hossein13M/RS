@@ -66,4 +66,12 @@ export class OpRiskFlowService {
     toggleOpFlowStatus(flowId: number | string): Observable<any> {
         return this.http.put<any>(`/api/v1/operation-risk/flow/inactive/${flowId}`, {});
     }
+
+    public createOPRiskFlow(data: any) {
+        return this.http.post<any>(`/api/v1/operation-risk/flow`, data);
+    }
+
+    public updateOPRiskFlow(data: any) {
+        return this.http.put<any>(`/api/v1/operation-risk/flow`, data);
+    }
 }

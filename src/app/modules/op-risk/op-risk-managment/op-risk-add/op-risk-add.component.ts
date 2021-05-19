@@ -127,7 +127,7 @@ export class OpRiskAddComponent implements OnInit {
 
         const data = this.createObject(this.form.value, false);
         this.opManagementService.createOpRisk(data).subscribe(
-            (response) => {
+            () => {
                 this.alertService.onSuccess('با موفقیت ایجاد شد');
                 this.router.navigate(['/op-risk/management']);
             },
@@ -144,7 +144,7 @@ export class OpRiskAddComponent implements OnInit {
     onEdit(): void {
         const data = this.createObject(this.form.value, false);
         this.opManagementService.updateOpRisk(data).subscribe(
-            (response) => {
+            () => {
                 this.alertService.onSuccess('با موفقیت به روز رسانی شد');
                 this.router.navigate(['/op-risk/management']);
             },
@@ -158,7 +158,7 @@ export class OpRiskAddComponent implements OnInit {
 
     onDraft(): void {
         const data = this.createObject(this.form.value, true);
-        this.opManagementService.createOpRisk(data).subscribe((response) => this.alertService.onSuccess('با موفقیت ایجاد شد'));
+        this.opManagementService.createOpRisk(data).subscribe(() => this.alertService.onSuccess('با موفقیت ایجاد شد'));
     }
 
     createObject(formData, isDraft): OpRiskModel {
