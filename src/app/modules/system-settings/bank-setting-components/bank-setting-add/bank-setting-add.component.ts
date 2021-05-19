@@ -11,7 +11,6 @@ import { BankService } from 'app/services/feature-services/bank.service';
 })
 export class BankSettingAddComponent implements OnInit {
     form: FormGroup;
-    banks = [];
     title = '';
 
     constructor(
@@ -31,20 +30,20 @@ export class BankSettingAddComponent implements OnInit {
         this.creatForm();
     }
 
-    creatForm(): void {
+    private creatForm(): void {
         this.form = this.fb.group({
             name: [this.data ? this.data.name : '', Validators.required],
         });
     }
 
-    onCreateBranch(): void {
+    public onCreateBranch(): void {
         this.bankService.createBankSetting(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch(): void {
+    public onEditBranch(): void {
         const obj = {
             id: this.data['id'],
             name: this.form.get('name').value,
@@ -55,7 +54,7 @@ export class BankSettingAddComponent implements OnInit {
         });
     }
 
-    close(): void {
+    public close(): void {
         this.dialogRef.close(false);
     }
 }
