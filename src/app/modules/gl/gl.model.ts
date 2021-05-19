@@ -48,3 +48,23 @@ export interface GlDetailModel extends DefaultGlModel {
     readonly detailLedgerCode: string;
     readonly detailLedgerName: string;
 }
+
+export interface GlListServerResponse {
+    items: Array<GlListItem>;
+    date: string;
+    total: number;
+    limit: number;
+    skip: number;
+}
+
+export interface GlListItem {
+    id: number;
+    categoryLedgerName: string;
+    groupLedgerName: string;
+    generalLedgerName: string;
+    subsidiaryLedgerName: string;
+    detailLedgerName: string;
+    aggregatedCreditAmount: number;
+    aggregatedDebitAmount: number;
+    aggregatedRemainedAmount: number;
+}

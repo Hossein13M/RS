@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 import { UserInfoService } from './App/userInfo/user-info.service';
@@ -39,7 +39,7 @@ export class AuthGuard implements CanActivate {
         );
     }
 
-    canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    canActivateChild(): boolean {
         if (localStorage.getItem('accessToken')) {
             this.userInfoService.getUserInfo();
             return true;
