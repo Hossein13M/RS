@@ -1,30 +1,26 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { ApiClientService } from '../../Base/api-client.service';
-import { PageEvent } from '#shared/models/Specification';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BourseBoardService {
-    private static bourseBoardApi = '/api/v1/bourse-board';
+    constructor(private http: HttpClient) {}
 
-    constructor(private apiClientService: ApiClientService) {}
-
-    get(fc?: FormContainer) {
-        return this.apiClientService.get(BourseBoardService.bourseBoardApi, fc);
+    get(): Observable<any> {
+        return this.http.get('/api/v1/bourse-board');
     }
 
-    create(model, fc?: FormContainer) {
-        return this.apiClientService.post(BourseBoardService.bourseBoardApi, model, fc);
+    create(model): Observable<any> {
+        return this.http.post('/api/v1/bourse-board', model);
     }
 
-    update(model, fc?: FormContainer) {
-        return this.apiClientService.put(BourseBoardService.bourseBoardApi, fc, model);
+    update(model): Observable<any> {
+        return this.http.put('/api/v1/bourse-board', model);
     }
 
-    delete(id, fc?: FormContainer) {
-        const api = BourseBoardService.bourseBoardApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
+    delete(id): Observable<any> {
+        return this.http.delete('/api/v1/bourse-board/' + id);
     }
 }

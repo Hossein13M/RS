@@ -1,38 +1,31 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FundSettingService extends Specification {
-    private static getFundApi = '/api/v1/fund';
+export class FundSettingService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    getAll(): Observable<any> {
+        return this.http.get('/api/v1/fund');
     }
 
-    getAll(fc?: FormContainer) {
-        const api = FundSettingService.getFundApi + this.generateSpecificationString() + '&details=true';
-        return this.apiClientService.get(api, fc);
+    getAllNoPaging(): Observable<any> {
+        return this.http.get('/api/v1/fund');
     }
 
-    getAllNoPaging(fc?: FormContainer) {
-        const api = FundSettingService.getFundApi + '?limit=1000&skip=0' + '&details=false';
-        return this.apiClientService.get(api, fc);
+    create(model): Observable<any> {
+        return this.http.post('/api/v1/fund', model);
     }
 
-    create(model, fc?: FormContainer) {
-        return this.apiClientService.post(FundSettingService.getFundApi, model, fc);
+    delete(id): Observable<any> {
+        const api = '/api/v1/fund' + '/' + id;
+        return this.http.delete(api);
     }
 
-    delete(id, fc?: FormContainer) {
-        const api = FundSettingService.getFundApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
-    }
-
-    update(model, fc?: FormContainer) {
-        return this.apiClientService.put(FundSettingService.getFundApi, fc, model);
+    update(model): Observable<any> {
+        return this.http.put('/api/v1/fund', model);
     }
 }

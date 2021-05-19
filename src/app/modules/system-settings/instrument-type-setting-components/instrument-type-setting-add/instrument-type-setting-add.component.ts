@@ -21,26 +21,26 @@ export class InstrumentTypeSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<InstrumentTypeSettingAddComponent>,
         private bourseMarketService: BourseMarketService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private instrumentTypeService: InstrumentTypeService,
         private bourseBoardService: BourseBoardService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    getBoard() {
-        this.bourseBoardService.get(this).subscribe((res: any) => {
+    getBoard(): void {
+        this.bourseBoardService.get().subscribe((res: any) => {
             this.boards = res;
         });
     }
 
-    getMarket() {
-        this.bourseMarketService.get(this).subscribe((res: any) => {
+    getMarket(): void {
+        this.bourseMarketService.getBourses(this).subscribe((res: any) => {
             this.markets = res;
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
@@ -51,7 +51,7 @@ export class InstrumentTypeSettingAddComponent implements OnInit {
         this.getMarket();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             type: new FormControl({ value: this.data ? this.data.type : '', disabled: false }),
             ticker: new FormControl({ value: this.data ? this.data.ticker : '', disabled: true }),
@@ -62,31 +62,25 @@ export class InstrumentTypeSettingAddComponent implements OnInit {
         });
     }
 
-    onCreateBranch() {
-        this.instrumentTypeService.updateInstrumentType(this.form.value, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.instrumentTypeService.updateInstrumentType(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = this.form.value;
         obj['ticker'] = this.data.ticker;
         obj['type'] = this.form.get('type').value;
         obj['isInBourse'] = this.data.isInBourse;
-        this.instrumentTypeService.updateInstrumentType(obj, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.instrumentTypeService.updateInstrumentType(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

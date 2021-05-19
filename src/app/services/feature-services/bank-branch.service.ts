@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../shared/models/FromContainer';
-import { ApiClientService } from '../Base/api-client.service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -8,13 +8,13 @@ import { ApiClientService } from '../Base/api-client.service';
 export class BankBranchService {
     private static getBankBranchApi = '/api/v1/bank-branch';
 
-    constructor(private apiClientService: ApiClientService) {}
+    constructor(private http: HttpClient) {}
 
-    getBankBranch(fc?: FormContainer, bankCode: any = null) {
+    getBankBranch(bankCode: any = null): Observable<any> {
         let url = BankBranchService.getBankBranchApi;
         if (bankCode) {
             url += `?bankId=${bankCode}`;
         }
-        return this.apiClientService.get(url, fc);
+        return this.http.get(url);
     }
 }

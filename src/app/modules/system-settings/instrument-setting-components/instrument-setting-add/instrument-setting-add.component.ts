@@ -21,26 +21,26 @@ export class InstrumentSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<InstrumentSettingAddComponent>,
         private bourseMarketService: BourseMarketService,
-        private AlertService: AlertService,
+        private alertService: AlertService,
         private bourseBoardService: BourseBoardService,
         private newInstrumentService: NewInstrumentService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
 
-    getBoard() {
-        this.bourseBoardService.get(this).subscribe((res: any) => {
+    getBoard(): void {
+        this.bourseBoardService.get().subscribe((res: any) => {
             this.boards = res;
         });
     }
 
-    getMarket() {
-        this.bourseMarketService.get(this).subscribe((res: any) => {
+    getMarket(): void {
+        this.bourseMarketService.getBourses(this).subscribe((res: any) => {
             this.markets = res;
         });
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         if (this.data) {
             this.title = 'ویرایش ';
         } else {
@@ -51,7 +51,7 @@ export class InstrumentSettingAddComponent implements OnInit {
         this.getMarket();
     }
 
-    creatForm() {
+    creatForm(): void {
         this.form = this.fb.group({
             ticker: [this.data ? this.data.ticker : '', Validators.required],
             type: [this.data ? this.data.type : '', Validators.required],
@@ -66,29 +66,23 @@ export class InstrumentSettingAddComponent implements OnInit {
         });
     }
 
-    onCreateBranch() {
-        this.newInstrumentService.create(this.form.value, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ایجاد شد');
+    onCreateBranch(): void {
+        this.newInstrumentService.createInstrument(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch() {
+    onEditBranch(): void {
         const obj = this.form.value;
         obj['id'] = this.data.id;
-        this.newInstrumentService.update(obj, this).subscribe((res) => {
-            this.AlertService.onSuccess('با موفقیت ویرایش شد');
+        this.newInstrumentService.updateInstrument(obj).subscribe(() => {
+            this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
     }
 
-    close() {
+    close(): void {
         this.dialogRef.close(false);
     }
-
-    handleError(): boolean {
-        return false;
-    }
-
-    isWorking: any;
 }

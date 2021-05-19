@@ -3,10 +3,10 @@ import { AfterViewInit, Component, TemplateRef, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { GlSettingService } from 'app/services/feature-services/system-setting-services/gl-setting.service';
-import { ConfirmDialogComponent } from '#shared/components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import * as _ from 'lodash';
 import { GlSettingAddComponent } from '../gl-setting-add/gl-setting-add.component';
+import { GlService } from '../../../gl/gl.service';
 
 @Component({
     selector: 'app-gl-setting-list',
@@ -22,7 +22,7 @@ export class GlSettingListComponent implements AfterViewInit {
 
     @ViewChild('status', { static: false }) statusRef: TemplateRef<any>;
 
-    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, private glSettingService: GlSettingService) {}
+    constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, private glService: GlService) {}
 
     ngAfterViewInit(): void {
         this.initColumns();
@@ -58,26 +58,21 @@ export class GlSettingListComponent implements AfterViewInit {
 
     search(searchFilter: any): void {
         if (!searchFilter) return;
-
         Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
-
-        this.glSettingService.specificationModel.searchKeyword = searchFilter;
-        this.glSettingService.specificationModel.skip = 0;
-        this.get();
+        this.get(this.searchFormGroup.value);
     }
 
     paginationControl(pageEvent: PaginationChangeType): void {
-        this.glSettingService.specificationModel.limit = pageEvent.limit;
-        this.glSettingService.specificationModel.skip = pageEvent.skip * pageEvent.limit;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
         this.get();
     }
 
-    get(): void {
-        this.glSettingService.get().subscribe((res: any) => {
-            this.data = [...res.items];
-            this.pagination.total = res.total;
-            this.pagination.limit = res.limit;
-            this.glSettingService.setPageDetailData(res);
+    get(search?: any): void {
+        this.glService.getGlSettings(this.pagination, search).subscribe((response: any) => {
+            this.data = [...response.items];
+            this.pagination.total = response.total;
+            this.pagination.limit = response.limit;
         });
     }
 
@@ -96,7 +91,7 @@ export class GlSettingListComponent implements AfterViewInit {
             .afterClosed()
             .subscribe((res) => {
                 if (res) {
-                    this.glSettingService.delete(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
+                    this.glService.deleteGlSetting(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
                 }
             });
     }
