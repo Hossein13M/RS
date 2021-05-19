@@ -6,9 +6,9 @@ import { BankService } from 'app/services/feature-services/bank.service';
 import { FrequenceService } from 'app/services/feature-services/frequence.service';
 import { FundRoleService } from 'app/services/feature-services/system-setting-services/fund-role.service';
 import { FundSettingService } from 'app/services/feature-services/system-setting-services/fund-setting.service';
-import { FundTypeService } from 'app/modules/features/system-setting/fund-setting-components/fund-type.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { GlService } from '../../../gl/gl.service';
 
 @Component({
     selector: 'app-fund-setting-add',
@@ -27,7 +27,7 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
         private alertService: AlertService,
         private fundSettingService: FundSettingService,
         private bankService: BankService,
-        private fundTypeService: FundTypeService,
+        private glService: GlService,
         private fundRoleService: FundRoleService,
         private frequenceService: FrequenceService,
         @Inject(MAT_DIALOG_DATA) public data,
@@ -43,7 +43,7 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
     }
 
     getFundTypes(): void {
-        this.fundTypeService.getAllFundTypes().subscribe((res: any) => (this.fundTypes = res));
+        this.glService.getAllFundTypes().subscribe((res: any) => (this.fundTypes = res));
     }
 
     getFundRoles(): void {
