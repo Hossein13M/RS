@@ -11,7 +11,6 @@ import * as _ from 'lodash';
 import { ComplianceAddComponent } from '../compliance-add/compliance-add.component';
 
 @Component({
-    selector: 'app-conmpliances',
     templateUrl: './compliances.component.html',
     styleUrls: ['./compliances.component.scss'],
     animations: fuseAnimations,
