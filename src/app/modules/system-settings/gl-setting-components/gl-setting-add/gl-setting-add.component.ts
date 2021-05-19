@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
-import { GlSettingService } from 'app/modules/features/system-setting/gl-setting-components/gl-setting.service';
+import { GlService } from '../../../gl/gl.service';
 
 @Component({
     selector: 'app-gl-setting-add',
@@ -17,7 +17,7 @@ export class GlSettingAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<GlSettingAddComponent>,
         private alertService: AlertService,
-        private glSettingService: GlSettingService,
+        private glService: GlService,
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
@@ -37,7 +37,7 @@ export class GlSettingAddComponent implements OnInit {
     }
 
     onCreateBranch(): void {
-        this.glSettingService.createGlSetting(this.form.value).subscribe(() => {
+        this.glService.createGlSetting(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
@@ -51,7 +51,7 @@ export class GlSettingAddComponent implements OnInit {
             status: this.form.get('status').value,
             symbol: this.form.get('symbol').value,
         };
-        this.glSettingService.updateGlSetting(obj).subscribe(() => {
+        this.glService.updateGlSetting(obj).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
