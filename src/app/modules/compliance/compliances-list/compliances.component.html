@@ -2,11 +2,15 @@
     <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
         <!-- APP TITLE -->
-        <div fxLayout="row wrap" fxLayoutAlign="start center">
+        <div fxLayout="row wrap" fxLayoutAlign="between center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
                 <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> تعریف حدود صندوق‌ها </span>
             </div>
         </div>
+        <button mat-raised-button color="primary" (click)="create()">
+            <mat-icon>add</mat-icon>
+            ایجاد
+        </button>
         <!-- / APP TITLE -->
     </div>
     <!-- / HEADER -->

@@ -28,7 +28,7 @@ export class CompliancesService {
     }
 
     // compliances fund entity
-    public getCompliancesFunds(complianceId: string): Observable<Array<ComplianceFundModel>> {
+    public getCompliancesFunds(complianceId: string | number): Observable<Array<ComplianceFundModel>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ complianceId });
         return this.http.get<Array<ComplianceFundModel>>('/api/v1/compliance-fund', { params });
     }

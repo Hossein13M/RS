@@ -20,7 +20,6 @@ export class CompliancesComponent implements OnInit {
     data: Array<ComplianceModel> = [];
     column: Array<ColumnModel>;
     pagination: PaginationModel = { skip: 0, limit: 5, total: 100 };
-    dialogRef: MatDialogRef<any>;
 
     constructor(private compliancesService: CompliancesService, private formBuilder: FormBuilder, private _matDialog: MatDialog) {}
 
@@ -126,7 +125,7 @@ export class CompliancesComponent implements OnInit {
     update(row): void {
         this._matDialog
             .open(ComplianceAddComponent, {
-                panelClass: 'dialog-w60',
+                    panelClass: 'dialog-w60',
                 data: row,
             })
             .afterClosed()
@@ -139,8 +138,9 @@ export class CompliancesComponent implements OnInit {
     }
 
     addComplianceFund(compliance): void {
-        this.dialogRef = this._matDialog.open(CompliancesFundComponent, {
-            panelClass: 'compliance-form-dialog',
+        this._matDialog.open(CompliancesFundComponent, {
+            width: '100vw',
+            panelClass: 'full-screen-modal',
             data: {
                 compliance: compliance,
             },
