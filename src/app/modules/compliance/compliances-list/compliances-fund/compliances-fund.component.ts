@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CompliancesService } from '../../compliances.service';
 import { ComplianceFundModel, ComplianceModel } from '../../compliance.model';
 import { ColumnModel } from '#shared/components/table/table.model';
+import { CompliancesFundAddComponent } from './compliances-fund-add/compliances-fund-add.component';
 
 @Component({
     selector: 'app-compliances-fund',
@@ -15,17 +16,17 @@ export class CompliancesFundComponent implements OnInit {
 
     constructor(
         public dialogRef: MatDialogRef<CompliancesFundComponent>,
+        private matDialog: MatDialog,
         private compliancesService: CompliancesService,
         @Inject(MAT_DIALOG_DATA) public dialogData: { compliance: ComplianceModel }
     ) {}
 
     ngOnInit(): void {
-        console.log(this.dialogData);
         this.initColumn();
         this.getComplianceFunds();
     }
 
-    initColumn(): void {
+    private initColumn(): void {
         this.column = [
             {
                 id: 'fundName',
@@ -56,13 +57,40 @@ export class CompliancesFundComponent implements OnInit {
         ];
     }
 
-    getComplianceFunds(): void {
-        this.compliancesService.getCompliancesFunds('1').subscribe((response) => {
+    private getComplianceFunds(): void {
+        if (!this.dialogData.compliance.id) return;
+        this.compliancesService.getCompliancesFunds(this.dialogData.compliance.id).subscribe((response) => {
             this.data = [...response];
         });
     }
 
-    private update(row: any): void {}
+    public create(): void {
+        this.matDialog
+            .open(CompliancesFundAddComponent, {
+                panelClass: 'dialog-w60',
+                data: { fund: null },
+            })
+            .afterClosed()
+            .subscribe((response: ComplianceFundModel) => {
+                if (response) {
+                    this.getComplianceFunds();
+                }
+            });
+    }
 
-    private delete(row: any): void {}
+    public update(row: any): void {
+        this.matDialog
+            .open(CompliancesFundAddComponent, {
+                panelClass: 'dialog-w60',
+                data: { fund: row },
+            })
+            .afterClosed()
+            .subscribe((response: ComplianceFundModel) => {
+                if (response) {
+                    this.getComplianceFunds();
+                }
+            });
+    }
+
+    public delete(row: any): void {}
 }

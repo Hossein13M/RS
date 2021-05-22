@@ -8,11 +8,12 @@ import { CompliancesComponent } from './compliances-list/compliances.component';
 import { CompliancesService } from './compliances.service';
 import { ComplianceAddComponent } from './compliances-list/compliance-add/compliance-add.component';
 import { CompliancesFundComponent } from './compliances-list/compliances-fund/compliances-fund.component';
+import { CompliancesFundAddComponent } from './compliances-list/compliances-fund/compliances-fund-add/compliances-fund-add.component';
 
 @NgModule({
-    declarations: [CompliancesComponent, ComplianceAddComponent, ComplianceFundComponent, CalculatedComplianceComponent, ComplianceAddComponent, CompliancesFundComponent],
+    declarations: [CompliancesComponent, ComplianceAddComponent, ComplianceFundComponent, CalculatedComplianceComponent, ComplianceAddComponent, CompliancesFundComponent, CompliancesFundAddComponent],
     imports: [CommonModule, ComplianceRoutingModule, ShareModule],
-    entryComponents: [ComplianceFundComponent, ComplianceAddComponent, CompliancesFundComponent],
+    entryComponents: [ComplianceFundComponent, ComplianceAddComponent, CompliancesFundComponent, CompliancesFundAddComponent],
     providers: [CompliancesService],
 })
 export class ComplianceModule {}

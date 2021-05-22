@@ -12,6 +12,12 @@
         </mat-toolbar-row>
     </mat-toolbar>
 
+    <div class="button">
+        <button mat-raised-button color="primary" (click)="create()">
+            <mat-icon>add</mat-icon>
+            ایجاد
+        </button>
+    </div>
     <div style="width: 100%">
         <app-table
             [data]="data"
