@@ -29,18 +29,14 @@ export class OpRiskListComponent implements OnInit {
             type: 'string',
             minWidth: '130px',
             sticky: true,
-            convert: (value: any) =>
-                value === 'risk' ? 'ریسک' : 'زیان'
-            ,
+            convert: (value: any) => (value === 'risk' ? 'ریسک' : 'زیان'),
         },
         {
             name: 'تاریخ ثبت',
             id: 'createdAt',
             type: 'string',
             minWidth: '150px',
-            convert: (value: any) => {
-                return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-            },
+            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
         },
         { name: 'کاربر ثبت کننده', id: 'submittedBy', type: 'string', minWidth: '130px', sticky: true },
         {
@@ -68,13 +64,13 @@ export class OpRiskListComponent implements OnInit {
                     color: 'primary',
                     operation: ({ row }: any) => {
                         if (row.type === 'risk') {
-                            this.router.navigate(['/op-risk/management/add'], {
-                                queryParams: { opRiskId: row.opRiskId },
-                            });
+                            this.router.navigate(['/op-risk/management/add'], { queryParams: { opRiskId: row.opRiskId } }).finally();
                         } else {
-                            this.router.navigate(['/op-risk/management/loss/detail'], {
-                                queryParams: { lastLossEventId: row.lastLossEventId, opId: row.opLossId, view: true },
-                            });
+                            this.router
+                                .navigate(['/op-risk/management/loss/detail'], {
+                                    queryParams: { lastLossEventId: row.lastLossEventId, opId: row.opLossId, view: true },
+                                })
+                                .finally();
                         }
                     },
                 },
@@ -99,10 +95,8 @@ export class OpRiskListComponent implements OnInit {
                     name: 'رد',
                     icon: 'clear',
                     color: 'warn',
-                    operation: ({ row }: any) => {
-                        if (row.type === 'risk') this.showRejectOpRisk(row.opRiskId, 'risk');
-                        else this.showRejectOpRisk(row.opLossId, 'lose');
-                    },
+                    operation: ({ row }: any) =>
+                        row.type === 'risk' ? this.showRejectOpRisk(row.opRiskId, 'risk') : this.showRejectOpRisk(row.opLossId, 'lose'),
                 },
                 {
                     name: 'ویرایش',
@@ -110,10 +104,12 @@ export class OpRiskListComponent implements OnInit {
                     color: 'primary',
                     operation: ({ row }: any) => {
                         if (row.type === 'risk') {
-                            this.router.navigate(['/op-risk/management/add'], {
-                                queryParams: { opRiskId: row.opRiskId, edit: true },
-                            });
-                        } else this.router.navigate([`/op-risk/management/loss/edit/${row.opLossId}`]);
+                            this.router
+                                .navigate(['/op-risk/management/add'], {
+                                    queryParams: { opRiskId: row.opRiskId, edit: true },
+                                })
+                                .finally();
+                        } else this.router.navigate([`/op-risk/management/loss/edit/${row.opLossId}`]).finally();
                     },
                 },
             ],
@@ -128,9 +124,7 @@ export class OpRiskListComponent implements OnInit {
             id: 'createdAt',
             type: 'string',
             minWidth: '150px',
-            convert: (value: any) => {
-                return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-            },
+            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
             search: { type: 'date_range', mode: TableSearchMode.SERVER },
         },
         { name: 'سازنده', id: 'submittedBy', type: 'string', minWidth: '130px', sticky: true },
@@ -186,13 +180,17 @@ export class OpRiskListComponent implements OnInit {
                     color: 'primary',
                     operation: ({ row }: any) => {
                         if (row.type === 'risk') {
-                            this.router.navigate(['/op-risk/management/add'], {
-                                queryParams: { opRiskId: row.id },
-                            });
+                            this.router
+                                .navigate(['/op-risk/management/add'], {
+                                    queryParams: { opRiskId: row.id },
+                                })
+                                .finally();
                         } else {
-                            this.router.navigate(['/op-risk/management/loss/detail'], {
-                                queryParams: { lastLossEventId: row.lastLossEventId, opId: row.id, view: true },
-                            });
+                            this.router
+                                .navigate(['/op-risk/management/loss/detail'], {
+                                    queryParams: { lastLossEventId: row.lastLossEventId, opId: row.id, view: true },
+                                })
+                                .finally();
                         }
                     },
                 },
@@ -200,12 +198,12 @@ export class OpRiskListComponent implements OnInit {
         },
     ];
 
-    ngOnInit():void {
+    ngOnInit(): void {
         this.getActiveOPRiskWorkFlows();
         this.getHistory();
     }
 
-    private getActiveOPRiskWorkFlows():void  {
+    private getActiveOPRiskWorkFlows(): void {
         this.opRiskManagementService.getActiveOPRiskWorkFlows().subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;
@@ -214,7 +212,7 @@ export class OpRiskListComponent implements OnInit {
         });
     }
 
-    private getHistory():void  {
+    private getHistory(): void {
         this.opRiskManagementService.getOPRiskWorkFlowHistory(0, 10).subscribe((response) => {
             response.map((el) => {
                 if (el.profileName) el.title = el.profileName;
