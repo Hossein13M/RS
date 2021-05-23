@@ -36,7 +36,6 @@ export class OperatorComponent implements OnInit, AfterViewInit {
         })).subscribe((res) => {
             this.operators = res;
             this.dataSource = res;
-            console.log(res);
         });
 
         this.operatorService.getOperators(this.searchInput.value).subscribe(() => {
