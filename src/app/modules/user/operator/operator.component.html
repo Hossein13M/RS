@@ -27,79 +27,25 @@
     <!-- / HEADER -->
 
     <div id="table-container">
-        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" id="operators" class="fuse-card">
-            <!-- lastName Column -->
-            <ng-container matColumnDef="lastName">
-                <mat-header-cell *matHeaderCellDef>نام خانوادگی</mat-header-cell>
-                <mat-cell *matCellDef="let operator">
-                    <p class="text-truncate">{{ operator.lastName }}</p>
-                </mat-cell>
-            </ng-container>
-
-            <!-- firstName Column -->
-            <ng-container matColumnDef="firstName">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نام</mat-header-cell>
-                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
-                    <p class="email text-truncate">
-                        {{ operator.firstName }}
-                    </p>
-                </mat-cell>
-            </ng-container>
-
-            <!-- email Column -->
-            <ng-container matColumnDef="email">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>پست الکترونیک</mat-header-cell>
-                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
-                    <p class="email text-truncate">
-                        {{ operator.email }}
-                    </p>
-                </mat-cell>
-            </ng-container>
-            <!-- mobileNumber Column -->
-            <ng-container matColumnDef="mobileNumber">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>تلفن همراه</mat-header-cell>
-                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
-                    <p class="email text-truncate">
-                        {{ operator.mobileNumber }}
-                    </p>
-                </mat-cell>
-            </ng-container>
-
-            <!-- userName Column -->
-            <ng-container matColumnDef="userName">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نام کاربری</mat-header-cell>
-                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
-                    <p class="email text-truncate">
-                        {{ operator.userName }}
-                    </p>
-                </mat-cell>
-            </ng-container>
-
-            <!-- Status Column -->
-            <ng-container matColumnDef="status">
-                <mat-header-cell *matHeaderCellDef>وضعیت کاربر</mat-header-cell>
-                <mat-cell *matCellDef="let operator">
-                    <button mat-icon-button class="email text-truncate" *ngIf="operator.mobileNumber">
+        <div class="setting-panel fuse-card">
+            <div style="width: 100%">
+                <app-table *ngIf="dataSource && dataSource.length" [data]="dataSource" [columns]="column" [paginationSettings]="{ mode: 'local' }"></app-table>
+                <ng-template let-row="row" #status>
+                    <button mat-icon-button *ngIf="row.status">
                         <mat-icon class="mat-18" color="primary">check_circle_outline</mat-icon>
                     </button>
-                    <button *ngIf="!operator.mobileNumber" mat-icon-button class="email text-truncate" color="warn" (click)="editOperator(operator)">
-                        <mat-icon class="mat-18" color="primary">highlight_off</mat-icon>
+                    <button *ngIf="!row.status" mat-icon-button (click)="editOperator(row)">
+                        <mat-icon class="mat-18" color="warn">highlight_off</mat-icon>
                     </button>
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="edit">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm> عملیات </mat-header-cell>
-
-                <mat-cell *matCellDef="let operator" fxHide fxShow.gt-sm>
-                    <button mat-icon-button color="warn" (click)="editOperator(operator)">
-                        <mat-icon class="mat-18">create</mat-icon>
-                    </button>
-                </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
-        </mat-table>
+                </ng-template>
+                <ng-container *ngIf="dataSource?.length === 0">
+                    <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                        <img width="140px" height="140px" src="../../../../assets/images/no-data.svg" alt="not found" />
+                        <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
     </div>
 </div>
+cc
