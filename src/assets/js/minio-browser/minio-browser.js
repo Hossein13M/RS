@@ -51274,7 +51274,7 @@ function copyFromBufferString(n, list) {
         if (p.next) list.head = p.next;else list.head = list.tail = null;
       } else {
         list.head = p;
-        p.data = str.slice(nb);
+        p.dialogData = str.slice(nb);
       }
       break;
     }
@@ -51304,7 +51304,7 @@ function copyFromBuffer(n, list) {
         if (p.next) list.head = p.next;else list.head = list.tail = null;
       } else {
         list.head = p;
-        p.data = buf.slice(nb);
+        p.dialogData = buf.slice(nb);
       }
       break;
     }

@@ -10,33 +10,23 @@ import { AlertService } from '../../../../services/alert.service';
 })
 export class ComplianceAddComponent implements OnInit {
     public form: FormGroup;
-    title = '';
 
     constructor(
         public dialogRef: MatDialogRef<ComplianceAddComponent>,
         private compliancesService: CompliancesService,
         private alertService: AlertService,
-        @Inject(MAT_DIALOG_DATA) public data,
+        @Inject(MAT_DIALOG_DATA) public dialogData,
         private formBuilder: FormBuilder
     ) {}
 
     ngOnInit(): void {
         this.initForm();
-        this.initTitle();
-    }
-
-    private initTitle(): void {
-        if (this.data) {
-            this.title = 'ویرایش ';
-        } else {
-            this.title = 'ایجاد ';
-        }
     }
 
     private initForm(): void {
         this.form = this.formBuilder.group({
-            code: [this.data ? this.data.code : '', Validators.required],
-            title: [this.data ? this.data.title : '', Validators.required],
+            code: [this.dialogData ? this.dialogData.code : '', Validators.required],
+            title: [this.dialogData ? this.dialogData.title : '', Validators.required],
         });
     }
 
@@ -50,7 +40,7 @@ export class ComplianceAddComponent implements OnInit {
     public onEditCompliance(): void {
         const obj = {
             ...this.form.value,
-            id: this.data['id'],
+            id: this.dialogData['id'],
         };
         this.compliancesService.updateCompliance(obj).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ویرایش شد');

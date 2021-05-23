@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ export class MarketSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     pagination = { skip: 0, limit: 5, total: 100 };
     data = [];
-    columns: Array<ColumnModel>;
+    columns: Array<Column>;
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public marketSettingService: MarketSettingService) {}
 

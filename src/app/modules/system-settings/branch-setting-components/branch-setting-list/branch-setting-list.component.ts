@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -16,7 +16,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class BranchSettingListComponent implements OnInit {
     data: any;
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     searchFormGroup: FormGroup;
 
     pagination = { skip: 0, limit: 5, total: 100 };

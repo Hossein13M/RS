@@ -1,10 +1,10 @@
-export interface ComplianceModel {
+export interface Compliance {
     id: number;
     code: number;
     title: string;
 }
 
-export interface ComplianceFundModel {
+export interface ComplianceFund {
     id: number;
     up: number;
     down: number;

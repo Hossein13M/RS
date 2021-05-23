@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ApiConfiguration } from '../api-configuration';
 import { BaseService } from '../base-service';
-import { ComplianceModel } from '../../../modules/compliance/compliance.model';
+import { Compliance } from '../../../modules/compliance/compliance';
 import { ComplianceResponseDto } from '../models/compliance-response-dto';
 import { CreateComplianceDto } from '../models/create-compliance-dto';
 import { RequestBuilder } from '../request-builder';
@@ -30,7 +30,7 @@ export class ComplianceService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    complianceControllerGetCompliance$Response(params: { id: number }): Observable<StrictHttpResponse<ComplianceModel>> {
+    complianceControllerGetCompliance$Response(params: { id: number }): Observable<StrictHttpResponse<Compliance>> {
         const rb = new RequestBuilder(this.rootUrl, ComplianceService.ComplianceControllerGetCompliancePath, 'get');
         if (params) {
             rb.path('id', params.id, {});
@@ -45,7 +45,7 @@ export class ComplianceService extends BaseService {
             .pipe(
                 filter((r: any) => r instanceof HttpResponse),
                 map((r: HttpResponse<any>) => {
-                    return r as StrictHttpResponse<ComplianceModel>;
+                    return r as StrictHttpResponse<Compliance>;
                 })
             );
     }
@@ -56,8 +56,8 @@ export class ComplianceService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    complianceControllerGetCompliance(params: { id: number }): Observable<ComplianceModel> {
-        return this.complianceControllerGetCompliance$Response(params).pipe(map((r: StrictHttpResponse<ComplianceModel>) => r.body as ComplianceModel));
+    complianceControllerGetCompliance(params: { id: number }): Observable<Compliance> {
+        return this.complianceControllerGetCompliance$Response(params).pipe(map((r: StrictHttpResponse<Compliance>) => r.body as Compliance));
     }
 
     /**
@@ -161,7 +161,7 @@ export class ComplianceService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerUpdateCompliance$Response(params: { body: ComplianceModel }): Observable<StrictHttpResponse<ComplianceModel>> {
+    complianceControllerUpdateCompliance$Response(params: { body: Compliance }): Observable<StrictHttpResponse<Compliance>> {
         const rb = new RequestBuilder(this.rootUrl, ComplianceService.ComplianceControllerUpdateCompliancePath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -176,7 +176,7 @@ export class ComplianceService extends BaseService {
             .pipe(
                 filter((r: any) => r instanceof HttpResponse),
                 map((r: HttpResponse<any>) => {
-                    return r as StrictHttpResponse<ComplianceModel>;
+                    return r as StrictHttpResponse<Compliance>;
                 })
             );
     }
@@ -187,9 +187,9 @@ export class ComplianceService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerUpdateCompliance(params: { body: ComplianceModel }): Observable<ComplianceModel> {
+    complianceControllerUpdateCompliance(params: { body: Compliance }): Observable<Compliance> {
         return this.complianceControllerUpdateCompliance$Response(params).pipe(
-            map((r: StrictHttpResponse<ComplianceModel>) => r.body as ComplianceModel)
+            map((r: StrictHttpResponse<Compliance>) => r.body as Compliance)
         );
     }
 
@@ -204,7 +204,7 @@ export class ComplianceService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerCreateCompliance$Response(params: { body: CreateComplianceDto }): Observable<StrictHttpResponse<ComplianceModel>> {
+    complianceControllerCreateCompliance$Response(params: { body: CreateComplianceDto }): Observable<StrictHttpResponse<Compliance>> {
         const rb = new RequestBuilder(this.rootUrl, ComplianceService.ComplianceControllerCreateCompliancePath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -219,7 +219,7 @@ export class ComplianceService extends BaseService {
             .pipe(
                 filter((r: any) => r instanceof HttpResponse),
                 map((r: HttpResponse<any>) => {
-                    return r as StrictHttpResponse<ComplianceModel>;
+                    return r as StrictHttpResponse<Compliance>;
                 })
             );
     }
@@ -230,9 +230,9 @@ export class ComplianceService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerCreateCompliance(params: { body: CreateComplianceDto }): Observable<ComplianceModel> {
+    complianceControllerCreateCompliance(params: { body: CreateComplianceDto }): Observable<Compliance> {
         return this.complianceControllerCreateCompliance$Response(params).pipe(
-            map((r: StrictHttpResponse<ComplianceModel>) => r.body as ComplianceModel)
+            map((r: StrictHttpResponse<Compliance>) => r.body as Compliance)
         );
     }
 }

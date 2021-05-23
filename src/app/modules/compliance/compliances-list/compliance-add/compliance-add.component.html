@@ -1,6 +1,6 @@
 <div class="dialog-container">
-    <div title="{{ title }}" appDialogHeader>
-        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+    <div title="{{ dialogData ? 'ویرایش' : 'ایجاد' }}" appDialogHeader>
+        <mat-icon (click)="close()" class="icon-header">close</mat-icon>
     </div>
     <form [formGroup]="form" class="setting-form-container" dir="rtl">
         <div class="setting-form-row">
@@ -20,11 +20,11 @@
                 <mat-icon>close</mat-icon>
                 انصراف
             </button>
-            <button *ngIf="!data" (click)="onCreateCompliance()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button *ngIf="!dialogData" (click)="onCreateCompliance()" [disabled]="form.invalid" color="accent" mat-raised-button>
                 <mat-icon>done</mat-icon>
                 ثبت
             </button>
-            <button *ngIf="data" (click)="onEditCompliance()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button *ngIf="dialogData" (click)="onEditCompliance()" [disabled]="form.invalid" color="accent" mat-raised-button>
                 <mat-icon>edit</mat-icon>
                 ویرایش
             </button>
