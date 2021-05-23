@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { ComplianceModel } from 'app/services/API/models';
+import { Compliance } from 'app/services/API/models';
 import { CompliancesService } from 'app/modules/compliance/compliances.service';
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 import * as _ from 'lodash';
 import { ComplianceAddComponent } from './compliance-add/compliance-add.component';
@@ -17,8 +17,8 @@ import { CompliancesFundComponent } from './compliances-fund/compliances-fund.co
 })
 export class CompliancesComponent implements OnInit {
     searchFormGroup: FormGroup;
-    data: Array<ComplianceModel> = [];
-    column: Array<ColumnModel>;
+    data: Array<Compliance> = [];
+    column: Array<Column>;
     pagination: PaginationModel = { skip: 0, limit: 5, total: 100 };
 
     constructor(private compliancesService: CompliancesService, private formBuilder: FormBuilder, private _matDialog: MatDialog) {}
@@ -115,7 +115,7 @@ export class CompliancesComponent implements OnInit {
                 data: null,
             })
             .afterClosed()
-            .subscribe((res: ComplianceModel) => {
+            .subscribe((res: Compliance) => {
                 if (res) {
                     this.get();
                 }
@@ -129,7 +129,7 @@ export class CompliancesComponent implements OnInit {
                 data: row,
             })
             .afterClosed()
-            .subscribe((res: ComplianceModel) => {
+            .subscribe((res: Compliance) => {
                 if (res) {
                     row.title = res.title;
                     row.code = res.code;

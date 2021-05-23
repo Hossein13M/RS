@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { TradeBookService } from '../trade-book.service';
-import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType } from '#shared/components/table/table.model';
 import { formatDate } from '@angular/common';
 import { TradeBookData, TradeDateServerResponse } from '../trade-book.model';
 
@@ -14,7 +14,7 @@ import { TradeBookData, TradeDateServerResponse } from '../trade-book.model';
 })
 export class TradeBookShowComponent implements OnInit {
     data: Array<TradeDateServerResponse> = [];
-    columns: Array<ColumnModel> = [];
+    columns: Array<Column> = [];
     pagination = { skip: 0, limit: 5, total: 100 };
     tradeBookData: TradeBookData = { organization: '', ticker: '', pamCode: '', date: '' };
     persianDate: string;

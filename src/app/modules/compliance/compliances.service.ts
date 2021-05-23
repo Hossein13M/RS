@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ComplianceFundModel, ComplianceModel } from './compliance.model';
+import { ComplianceFund, Compliance } from './compliance';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UtilityFunctions } from '#shared/utilityFunctions';
@@ -10,26 +10,38 @@ export class CompliancesService {
     constructor(private http: HttpClient) {}
 
     // compliances entity
-    public getCompliances(paginationParams?, searchParams?): Observable<ResponseWithPagination<ComplianceModel>> {
+    public getCompliances(paginationParams?, searchParams?): Observable<ResponseWithPagination<Compliance>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
-        return this.http.get<ResponseWithPagination<ComplianceModel>>('/api/v1/compliance', { params });
+        return this.http.get<ResponseWithPagination<Compliance>>('/api/v1/compliance', { params });
     }
 
-    public createCompliance(model: ComplianceModel): Observable<ResponseWithPagination<ComplianceModel>> {
-        return this.http.post<ResponseWithPagination<ComplianceModel>>('/api/v1/compliance', model);
+    public createCompliance(model: Compliance): Observable<Compliance> {
+        return this.http.post<Compliance>('/api/v1/compliance', model);
     }
 
-    public deleteCompliance(id: string): Observable<ResponseWithPagination<ComplianceModel>> {
-        return this.http.delete<ResponseWithPagination<ComplianceModel>>('/api/v1/compliance' + id);
+    public updateCompliance(model: Compliance): Observable<Compliance> {
+        return this.http.put<Compliance>('/api/v1/compliance', model);
     }
 
-    public updateCompliance(model: ComplianceModel): Observable<ResponseWithPagination<ComplianceModel>> {
-        return this.http.put<ResponseWithPagination<ComplianceModel>>('/api/v1/compliance', model);
+    public deleteCompliance(id: string): Observable<null> {
+        return this.http.delete<null>('/api/v1/compliance' + id);
     }
 
-    // compliances fund entity
-    public getCompliancesFunds(complianceId: string | number): Observable<Array<ComplianceFundModel>> {
+    // compliances-fund entity
+    public getCompliancesFunds(complianceId: string | number): Observable<Array<ComplianceFund>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ complianceId });
-        return this.http.get<Array<ComplianceFundModel>>('/api/v1/compliance-fund', { params });
+        return this.http.get<Array<ComplianceFund>>('/api/v1/compliance-fund', { params });
+    }
+
+    public createComplianceFund(model: ComplianceFund): Observable<ComplianceFund> {
+        return this.http.post<ComplianceFund>('/api/v1/compliance-fund', model);
+    }
+
+    public updateComplianceFund(model: ComplianceFund): Observable<ComplianceFund> {
+        return this.http.put<ComplianceFund>('/api/v1/compliance-fund', model);
+    }
+
+    public deleteComplianceFund(id: string): Observable<null> {
+        return this.http.delete<null>('/api/v1/compliance-fund' + id);
     }
 }

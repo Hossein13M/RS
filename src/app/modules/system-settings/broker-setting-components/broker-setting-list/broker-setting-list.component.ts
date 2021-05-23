@@ -1,4 +1,4 @@
-import { ColumnModel } from '#shared/components/table/table.model';
+import { Column } from '#shared/components/table/table.model';
 import { StateManager } from '#shared/pipes/stateManager.pipe';
 import { StateType } from '#shared/state-type.enum';
 import { Component, OnInit } from '@angular/core';
@@ -19,7 +19,7 @@ export class BrokerSettingListComponent implements OnInit {
     constructor(private matDialog: MatDialog, public brokerService: BrokerSettingService) {}
 
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     state = StateType.LOADING;
 
     ngOnInit(): void {

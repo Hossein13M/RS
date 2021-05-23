@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CompliancesService } from '../../compliances.service';
-import { ComplianceFundModel, ComplianceModel } from '../../compliance.model';
-import { ColumnModel } from '#shared/components/table/table.model';
+import { ComplianceFund, Compliance } from '../../compliance';
+import { Column } from '#shared/components/table/table.model';
 import { CompliancesFundAddComponent } from './compliances-fund-add/compliances-fund-add.component';
 
 @Component({
@@ -11,17 +11,18 @@ import { CompliancesFundAddComponent } from './compliances-fund-add/compliances-
     styleUrls: ['./compliances-fund.component.scss'],
 })
 export class CompliancesFundComponent implements OnInit {
-    data: Array<ComplianceFundModel> = [];
-    column: Array<ColumnModel>;
+    data: Array<ComplianceFund> = [];
+    column: Array<Column>;
 
     constructor(
         public dialogRef: MatDialogRef<CompliancesFundComponent>,
         private matDialog: MatDialog,
         private compliancesService: CompliancesService,
-        @Inject(MAT_DIALOG_DATA) public dialogData: { compliance: ComplianceModel }
+        @Inject(MAT_DIALOG_DATA) public dialogData: { compliance: Compliance }
     ) {}
 
     ngOnInit(): void {
+        console.log(this.dialogData);
         this.initColumn();
         this.getComplianceFunds();
     }
@@ -68,10 +69,10 @@ export class CompliancesFundComponent implements OnInit {
         this.matDialog
             .open(CompliancesFundAddComponent, {
                 panelClass: 'dialog-w60',
-                data: { fund: null },
+                data: { fund: null, complianceId: this.dialogData.compliance.id },
             })
             .afterClosed()
-            .subscribe((response: ComplianceFundModel) => {
+            .subscribe((response: ComplianceFund) => {
                 if (response) {
                     this.getComplianceFunds();
                 }
@@ -82,10 +83,10 @@ export class CompliancesFundComponent implements OnInit {
         this.matDialog
             .open(CompliancesFundAddComponent, {
                 panelClass: 'dialog-w60',
-                data: { fund: row },
+                data: { fund: row, complianceId: this.dialogData.compliance.id },
             })
             .afterClosed()
-            .subscribe((response: ComplianceFundModel) => {
+            .subscribe((response: ComplianceFund) => {
                 if (response) {
                     this.getComplianceFunds();
                 }
