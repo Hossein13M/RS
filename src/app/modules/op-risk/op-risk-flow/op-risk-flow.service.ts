@@ -1,61 +1,36 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PageEvent, SpecificationModel } from 'app/shared/models/Specification';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class OpRiskFlowService {
-    private static TreeMappingServiceAPI = '/api/v1/operation-risk/flow';
-
     constructor(private http: HttpClient) {}
-
-    public pageEvent: PageEvent = {
-        currentIndex: 0,
-        pageSize: 10,
-    };
-    public specificationModel: SpecificationModel = {
-        limit: 10,
-        skip: 0,
-        searchKeyword: {},
-    };
-
-    private latestMappingSubject = new BehaviorSubject<any>(null);
-    public _latestMapping = this.latestMappingSubject.asObservable();
-
-    get latestMapping(): any {
-        return this.latestMappingSubject.getValue();
-    }
 
     getOpFlows(paginationParams?): Observable<any> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams });
-        return this.http.get(OpRiskFlowService.TreeMappingServiceAPI, {params}).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.http.get(`/api/v1/operation-risk/flow`, { params });
     }
 
     getOpFlow(id): Observable<any> {
-        return this.http.get(OpRiskFlowService.TreeMappingServiceAPI + `/${id}`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.http.get(`/api/v1/operation-risk/flow` + `/${id}`);
     }
 
     createOpFlow(data): Observable<any> {
-        return this.http.post(OpRiskFlowService.TreeMappingServiceAPI, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.http.post(`/api/v1/operation-risk/flow`, data);
     }
 
     updateOpFlow(data): Observable<any> {
-        return this.http.put(OpRiskFlowService.TreeMappingServiceAPI, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.http.put(`/api/v1/operation-risk/flow`, data);
     }
 
     inActiveOpFlow(flowId): Observable<any> {
-        return this.http
-            .put(OpRiskFlowService.TreeMappingServiceAPI + `/inactive/${flowId}`, {})
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.http.put(`/api/v1/operation-risk/flow` + `/inactive/${flowId}`, {});
     }
 
     getFlowUsers(): Observable<any> {
-        return this.http.get(OpRiskFlowService.TreeMappingServiceAPI + `/user`).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.http.get(`/api/v1/operation-risk/flow` + `/user`);
     }
-
-    // from here, we implement API calls this way:
 
     getOPRiskFlow(pagination: any): Observable<any> {
         return this.http.get<any>(`/api/v1/operation-risk/flow?skip=${pagination.skip * pagination.limit}&limit=${pagination.limit}`);
