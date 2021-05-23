@@ -11,25 +11,13 @@ export class OpRiskManagementService {
 
     constructor(private http: HttpClient) {}
 
-    public pageEvent: PageEvent = {
-        currentIndex: 0,
-        pageSize: 10,
-    };
+    public pageEvent: PageEvent = { currentIndex: 0, pageSize: 10 };
 
-    public specificationModel: SpecificationModel = {
-        limit: 10,
-        skip: 0,
-        searchKeyword: {},
-    };
+    public specificationModel: SpecificationModel = { limit: 10, skip: 0, searchKeyword: {} };
     private latestMappingSubject = new BehaviorSubject<any>(null);
-    public _latestMapping = this.latestMappingSubject.asObservable();
 
     public convertDate(date: Date): string {
         return formatDate(date, 'yyyy-MM-dd', 'en_US');
-    }
-
-    get latestMapping(): any {
-        return this.latestMappingSubject.getValue();
     }
 
     getTrees(name: string): Observable<any> {
@@ -74,13 +62,11 @@ export class OpRiskManagementService {
         return this.http.put(OpRiskManagementService.TreeServiceAPI, data).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
-    // http implementation
-
-    public getActiveOPRiskWorkFlows() {
+    public getActiveOPRiskWorkFlows(): Observable<any> {
         return this.http.get<any>(`/api/v1/operation-risk/work-flow/active`);
     }
 
-    public getOPRiskWorkFlowHistory(skip: number | string, limit: number | string) {
+    public getOPRiskWorkFlowHistory(skip: number | string, limit: number | string): Observable<any> {
         return this.http.get<any>(`/api/v1/operation-risk/work-flow/history?skip=${skip}&limit=${limit}`);
     }
 

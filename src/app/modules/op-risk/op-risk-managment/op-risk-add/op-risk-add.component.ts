@@ -4,8 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
-import { StateType } from '../../../../shared/state-type.enum';
+import { StateManager } from '#shared/pipes/stateManager.pipe';
+import { StateType } from '#shared/state-type.enum';
 import { OpRiskFlowService } from '../../op-risk-flow/op-risk-flow.service';
 import { OpRiskManagementService } from '../op-risk-management.service';
 import { OpRiskModel } from '../op-risk-model';
@@ -18,7 +18,7 @@ import { OpRiskModel } from '../op-risk-model';
 export class OpRiskAddComponent implements OnInit {
     flows = { data: [], state: StateType.PRESENT };
     parents = [];
-    trees = [
+    trees: Array<{ name: string; id: string; show: boolean; data?: any }> = [
         { name: 'ساختار سازمانی', id: 'os', show: false },
         { name: 'مالک ریسک', id: 'op', show: false },
         { name: 'فرایند', id: 'pr', show: false },
@@ -33,13 +33,12 @@ export class OpRiskAddComponent implements OnInit {
         { name: 'رویداد مولد', id: 'il', show: false },
     ];
     form: FormGroup;
-    object: OpRiskModel;
     selectedNodes: any;
     showParent = false;
 
     inAdd = true;
     data: any;
-    show = false;
+    show: boolean = false;
 
     stepIndex = 0;
     steps = [];
@@ -49,8 +48,8 @@ export class OpRiskAddComponent implements OnInit {
     back: any;
 
     constructor(
-        private readonly opFlowService: OpRiskFlowService,
-        private readonly opManagementService: OpRiskManagementService,
+        private opRiskFlowService: OpRiskFlowService,
+        private opManagementService: OpRiskManagementService,
         private alertService: AlertService,
         private activatedRoute: ActivatedRoute,
         private fb: FormBuilder,
@@ -61,7 +60,7 @@ export class OpRiskAddComponent implements OnInit {
                 this.getHistoryInEdit(this.activatedRoute.snapshot.queryParamMap.get('opRiskId')).subscribe((response) => {
                     this.show = true;
                     this.data = response;
-                    this.creatForm();
+                    this.createForm();
                     if (response.controlDetails) {
                         if (response.controlDetails && response.controlDetails.length > 0) {
                             this.form.controls['controlDescription'].setValue(response.controlDetails[0].description, { onlySelf: true });
@@ -82,7 +81,7 @@ export class OpRiskAddComponent implements OnInit {
                 this.title = 'مشاهده جزئیات ریسک';
             }
         } else {
-            this.creatForm();
+            this.createForm();
             this.show = true;
             this.title = 'ایجاد ریسک';
         }
@@ -94,16 +93,14 @@ export class OpRiskAddComponent implements OnInit {
     }
 
     getFlows(): void {
-        this.opFlowService
-            .getFlowUsers()
+        this.opRiskFlowService
+            .getOPRiskFlow({ skip: 0, limit: 100 })
             .pipe(StateManager(this.flows))
-            .subscribe((response: any) => (this.flows.data = response));
+            .subscribe((response: any) => (this.flows.data = response.items));
     }
 
     getTrees(name, index): void {
-        this.opManagementService.getTrees(name).subscribe((response) => {
-            this.trees[index]['data'] = response;
-        });
+        this.opManagementService.getTrees(name).subscribe((response) => (this.trees[index]['data'] = response));
     }
 
     getParents(): void {
@@ -118,18 +115,11 @@ export class OpRiskAddComponent implements OnInit {
     }
 
     onCreate(): void {
-        // TODO: implement form invalid
-        // if (this.form.invalid) {
-        //     this.form.markAsDirty();
-        //     this.alertService.onError('اطلاعات ورودی را بررسی کنید.');
-        //     return;
-        // }
-
         const data = this.createObject(this.form.value, false);
         this.opManagementService.createOpRisk(data).subscribe(
             () => {
                 this.alertService.onSuccess('با موفقیت ایجاد شد');
-                this.router.navigate(['/op-risk/management']);
+                this.router.navigate(['/op-risk/management']).finally();
             },
             (error) => {
                 if (error.statusCode === 403) {
@@ -146,7 +136,7 @@ export class OpRiskAddComponent implements OnInit {
         this.opManagementService.updateOpRisk(data).subscribe(
             () => {
                 this.alertService.onSuccess('با موفقیت به روز رسانی شد');
-                this.router.navigate(['/op-risk/management']);
+                this.router.navigate(['/op-risk/management']).finally();
             },
             (error) => {
                 if (error.statusCode === 403) {
@@ -223,7 +213,7 @@ export class OpRiskAddComponent implements OnInit {
         return finalData;
     }
 
-    creatForm(): void {
+    createForm(): void {
         this.form = this.fb.group({
             flow: [this.data?.flow?.id ?? ''],
             title: [this.data ? this.data.title : ''],
@@ -255,10 +245,7 @@ export class OpRiskAddComponent implements OnInit {
             id: [this.data ? this.data.id : ''],
         });
         this.form.valueChanges.pipe(debounceTime(200)).subscribe((newValue) => {
-            if (newValue.organizationCharts && newValue.owners && newValue.processes) {
-                this.showParent = true;
-                // this.getParents();
-            }
+            if (newValue.organizationCharts && newValue.owners && newValue.processes) this.showParent = true;
         });
     }
 
@@ -267,7 +254,7 @@ export class OpRiskAddComponent implements OnInit {
         this.opManagementService.getOpRiskDetail(opRiskId).subscribe((response) => {
             this.show = true;
             this.data = response;
-            this.creatForm();
+            this.createForm();
             this.inAdd = false;
             this.form.disable();
             if (response.controlDetails && response.controlDetails.length > 0) {
@@ -288,15 +275,7 @@ export class OpRiskAddComponent implements OnInit {
     getSteps(opRiskId): void {
         this.opManagementService.getOpRiskSteps(opRiskId).subscribe((response) => {
             for (let i = 0; i < 3; i++) {
-                this.steps.push({
-                    action: 'در انتظار تایید',
-                    createdAt: null,
-                    fromStep: null,
-                    id: null,
-                    rejectReason: null,
-                    userId: null,
-                    username: null,
-                });
+                this.steps.push({ action: 'در انتظار تایید', createdAt: null, fromStep: null, id: null, rejectReason: null, userId: null, username: null });
             }
             for (let i = 0; i < response.length; i++) {
                 if (response[i].action === 'submit') {
@@ -309,11 +288,7 @@ export class OpRiskAddComponent implements OnInit {
                     response[i].action = 'رد شده';
                 }
                 this.stepIndex = response[i].toStep;
-                response[i].createdAt = new Date(response[i].createdAt).toLocaleDateString('fa-Ir', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                });
+                response[i].createdAt = new Date(response[i].createdAt).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
                 this.steps[i] = response[i];
             }
         });

@@ -25,13 +25,7 @@
         </div>
     </app-header>
 
-    <div
-        fxLayout="column wrap"
-        class="page-content"
-        dir="rtl"
-        *ngIf="show && flows?.data?.length > 0 && flows.state === 'PRESENT'"
-        style="overflow: auto"
-    >
+    <div fxLayout="column wrap" class="page-content" dir="rtl" *ngIf="show && flows?.data?.length > 0 && flows.state === 'PRESENT'" style="overflow: auto">
         <div class="form" [formGroup]="form">
             <div fxLayout="row" fxLayoutAlign="space-evenly center" *ngIf="!inAdd">
                 <div fxLayout="column" fxFlex="95" fxLayoutAlign="space-evenly none">
@@ -230,21 +224,14 @@
                             {{ trees[7].name }}
                         </button>
 
-                        <app-tree-select required [data]="trees[7].data" formControlName="controlClassification" class="tree-select">
-                        </app-tree-select>
+                        <app-tree-select required [data]="trees[7].data" formControlName="controlClassification" class="tree-select"> </app-tree-select>
                     </div>
                 </div>
             </div>
 
             <div class="fuse-card" style="margin: 20px 0; padding: 20px">
                 <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-                    <div
-                        style="z-index: 6; margin-bottom: 20px"
-                        fxFlex="33"
-                        fxLayout="column"
-                        fxLayoutAlign="space-evenly none"
-                        class="tree-select-container"
-                    >
+                    <div style="z-index: 6; margin-bottom: 20px" fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none" class="tree-select-container">
                         <button (click)="getTrees(trees[8].id, 8)" style="margin-left: 10px" mat-raised-button>
                             {{ trees[8].name }}
                         </button>
@@ -266,13 +253,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div
-                        style="z-index: 5; margin-bottom: 20px"
-                        fxFlex="33"
-                        fxLayout="column"
-                        fxLayoutAlign="space-evenly none"
-                        class="tree-select-container"
-                    >
+                    <div style="z-index: 5; margin-bottom: 20px" fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none" class="tree-select-container">
                         <button (click)="getTrees(trees[9].id, 9)" style="margin-left: 10px" mat-raised-button>
                             {{ trees[9].name }}
                         </button>
@@ -294,13 +275,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div
-                        style="z-index: 4; margin-bottom: 20px"
-                        fxFlex="33"
-                        fxLayout="column"
-                        fxLayoutAlign="space-evenly none"
-                        class="tree-select-container"
-                    >
+                    <div style="z-index: 4; margin-bottom: 20px" fxFlex="33" fxLayout="column" fxLayoutAlign="space-evenly none" class="tree-select-container">
                         <button (click)="getTrees(trees[10].id, 10)" style="margin-left: 10px" mat-raised-button>
                             {{ trees[10].name }}
                         </button>
