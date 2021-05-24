@@ -91,6 +91,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
     @Input() data: Array<any>;
     @Input() columns: Array<any>;
     @Input() height: string = '100%';
+    @Input() status: StateType;
 
     // -----------------------------------------------------------------------------------------------------
     // @ Pagination Input
@@ -124,16 +125,12 @@ export class TableComponent implements OnChanges, AfterViewInit {
     doubleClickAble = true;
 
     scroll(): void {
-        if (this.paginationSettings.mode !== 'scroll') {
-            return;
-        }
+        if (this.paginationSettings.mode !== 'scroll') return;
+        if (this.status === StateType.LOADING) return;
         const scrollPosition =
             this.container?.nativeElement.scrollHeight - (this.container?.nativeElement.scrollTop + this.container?.nativeElement.clientHeight);
         if (scrollPosition > 90) {
-            if (this.paginationObj.skip > this.paginationObj.total) {
-                return;
-            }
-            this.paginationControl({pageSize: this.paginationObj.limit, pageIndex: this.paginationObj.skip + this.paginationObj.limit});
+            this.paginationControl({ pageSize: this.paginationObj.limit, pageIndex: this.paginationObj.skip + this.paginationObj.limit });
         }
     }
 

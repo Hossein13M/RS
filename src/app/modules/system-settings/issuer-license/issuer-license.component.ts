@@ -117,9 +117,7 @@ export class IssuerLicenseComponent implements OnInit {
     }
 
     addIssuer(): void {
-        this.issuerLicenceService.addIssuer(this.issuerName.value).subscribe(() => {
-            this.get();
-        });
+        this.issuerLicenceService.addIssuer(this.issuerName.value).subscribe();
         this.issuerName.reset();
     }
 
@@ -134,14 +132,10 @@ export class IssuerLicenseComponent implements OnInit {
     }
 
     edit(): void {
-        this.issuerLicenceService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe((res) => {
-            this.get();
-        });
+        this.issuerLicenceService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe();
     }
 
     remove(issuer): void {
-        this.issuerLicenceService.deleteIssuer(issuer.id).subscribe(() => {
-            this.get();
-        });
+        this.issuerLicenceService.deleteIssuer(issuer.id).subscribe();
     }
 }
