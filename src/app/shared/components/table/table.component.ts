@@ -129,7 +129,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         if (this.status === StateType.LOADING) return;
         const scrollPosition =
             this.container?.nativeElement.scrollHeight - (this.container?.nativeElement.scrollTop + this.container?.nativeElement.clientHeight);
-        if (scrollPosition > 90) {
+        if (scrollPosition < 90) {
             this.paginationControl({ pageSize: this.paginationObj.limit, pageIndex: this.paginationObj.skip + this.paginationObj.limit });
         }
     }
