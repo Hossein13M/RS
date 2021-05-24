@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CompliancesService } from '../../../compliances.service';
-import { ComplianceFund } from '../../../compliance';
+import { ComplianceFund } from '../../../compliance.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from '../../../../../services/alert.service';
 

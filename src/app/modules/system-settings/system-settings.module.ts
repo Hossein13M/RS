@@ -49,6 +49,7 @@ import { MarketMakerComponent } from './bource-instrument-detail/market-maker/ma
 import { BourceInstrumentDetailComponent } from './bource-instrument-detail/bource-instrument-detail.component';
 import { FuseSharedModule } from '../../../@fuse/shared.module';
 import { GlService } from '../gl/gl.service';
+import { $IssuerLicenseService } from './issuer-license/issuer-license.service';
 
 @NgModule({
     declarations: [
@@ -117,5 +118,6 @@ import { GlService } from '../gl/gl.service';
         UnderWriterComponent,
         MarketMakerComponent,
     ],
+    providers: [$IssuerLicenseService]
 })
 export class SystemSettingsModule {}
