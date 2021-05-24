@@ -101,10 +101,8 @@ export class IssuerComponent implements OnInit {
 
     paginationControl(pageEvent?: PaginationChangeType): void {
         if (this.status === StateType.LOADING) {
-            console.log('return')
             return;
         }
-        console.log('happened')
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.get();
