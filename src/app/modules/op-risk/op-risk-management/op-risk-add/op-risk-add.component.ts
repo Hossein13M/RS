@@ -130,13 +130,26 @@ export class OpRiskAddComponent implements OnInit {
     }
 
     private getParents(): void {
-        const data = {
-            organizationCharts: this.form.value.organizationCharts,
-            owners: this.form.value.owners,
-            processes: this.form.value.processes,
-            businessLines: this.form.value.businessLines,
-            products: this.form.value.products,
-        };
+        console.log(this.form.value);
+        let data;
+        if (this.riskComponentState === RiskComponentState.Show || this.riskComponentState === RiskComponentState.Edit) {
+            data = {
+                organizationCharts: UtilityFunctions.returnIdsFromAnArray(this.form.value.organizationCharts),
+                owners: UtilityFunctions.returnIdsFromAnArray(this.form.value.owners),
+                processes: UtilityFunctions.returnIdsFromAnArray(this.form.value.processes),
+                businessLines: UtilityFunctions.returnIdsFromAnArray(this.form.value.businessLines),
+                products: UtilityFunctions.returnIdsFromAnArray(this.form.value.products),
+            };
+        } else {
+            data = {
+                organizationCharts: this.form.value.organizationCharts,
+                owners: this.form.value.owners,
+                processes: this.form.value.processes,
+                businessLines: this.form.value.businessLines,
+                products: this.form.value.products,
+            };
+        }
+
         this.opManagementService.getParentRisk(data).subscribe((response: Array<{ id: number; title: string }>) => (this.parents = response));
     }
 

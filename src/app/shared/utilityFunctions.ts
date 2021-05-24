@@ -24,4 +24,10 @@ export class UtilityFunctions {
     static checkValueForNotBeingAnEmptyArray(value: undefined | Array<any>): boolean {
         return Array.isArray(value) && !!value.length;
     }
+
+    static returnIdsFromAnArray(array): Array<number> | Array<string> {
+        const newArr: Array<number> = [];
+        array.map((item: any) => newArr.push(item.id));
+        return newArr;
+    }
 }
