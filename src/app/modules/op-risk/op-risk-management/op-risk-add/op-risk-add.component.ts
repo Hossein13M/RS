@@ -130,7 +130,6 @@ export class OpRiskAddComponent implements OnInit {
     }
 
     private getParents(): void {
-        console.log(this.form.value);
         let data;
         if (this.riskComponentState === RiskComponentState.Show || this.riskComponentState === RiskComponentState.Edit) {
             data = {
