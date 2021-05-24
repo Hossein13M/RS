@@ -30,7 +30,7 @@ export class IssuerLicenceService {
     constructor(private issuerLicenseService: IssueLicenseService, private http: HttpClient) {}
 
     getIssuerLicenses(searchKeyword?: string): Observable<Array<IssuerDto>> {
-        let param = {
+        const param = {
             searchKeyword: searchKeyword,
         };
 
@@ -43,7 +43,7 @@ export class IssuerLicenceService {
 
     getIssuers(searchKeyword?: string): Observable<any> {
         let param = {};
-        if (this.searchKeyword == searchKeyword) {
+        if (this.searchKeyword === searchKeyword) {
             param = {
                 limit: this.limit,
                 skip: this.skip,
@@ -65,7 +65,6 @@ export class IssuerLicenceService {
         return this.issuerLicenseService.issueLicenseControllerGetIssueLicenses(param).pipe(
             map(
                 (res) => {
-                    // update the oprators list
                     const issuerLicenseList = this.issuerLicenseList.getValue();
                     for (const issuerLicense of res.items) {
                         issuerLicenseList.push(issuerLicense);
@@ -82,7 +81,7 @@ export class IssuerLicenceService {
         );
     }
 
-    clearSavedData() {
+    clearSavedData(): void {
         this.skip = 0;
         this.issuerLicenseList.next([]);
     }
@@ -97,7 +96,7 @@ export class IssuerLicenceService {
         return this.issuerLicenseService.issueLicenseControllerCreateIssueLicense(param).pipe(
             map((res) => {
                 // update the oprators list
-                let issuerLicenseList = this.issuerLicenseList.getValue();
+                const issuerLicenseList = this.issuerLicenseList.getValue();
                 issuerLicenseList.push(res);
                 this.issuerLicenseList.next(issuerLicenseList);
             })
@@ -114,8 +113,8 @@ export class IssuerLicenceService {
         return this.issuerLicenseService.issueLicenseControllerUpdateIssueLicense(param).pipe(
             map((res) => {
                 // update the operators list
-                let issuerLicenseList = this.issuerLicenseList.getValue();
-                let editedIssuer = issuerLicenseList.find((issuerLicense) => issuerLicense.id == id);
+                const issuerLicenseList = this.issuerLicenseList.getValue();
+                const editedIssuer = issuerLicenseList.find((issuerLicense) => issuerLicense.id === id);
                 editedIssuer.name = name;
 
                 this.issuerLicenseList.next(issuerLicenseList);
@@ -124,19 +123,19 @@ export class IssuerLicenceService {
     }
 
     deleteIssuer(id: number): Observable<void> {
-        let param = {
+        const param = {
             issueLicenseId: id,
         };
 
         return this.issuerLicenseService.issueLicenseControllerDeleteIssueLicense(param).pipe(
             map((res) => {
-                let issuerLicenseList = this.issuerLicenseList.getValue();
-                const deleteThisItem = issuerLicenseList.find((issuerLicense) => issuerLicense.id == id);
+                const issuerLicenseList = this.issuerLicenseList.getValue();
+                const deleteThisItem = issuerLicenseList.find((issuerLicense) => issuerLicense.id === id);
                 const index = issuerLicenseList.indexOf(deleteThisItem);
                 if (index > -1) {
                     issuerLicenseList.splice(index, 1);
                 } else {
-                    //if u are here there is bug and we cant find id to delete localy
+                    // if u are here there is bug and we cant find id to delete localy
                 }
                 this.issuerLicenseList.next(issuerLicenseList);
             })
