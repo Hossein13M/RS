@@ -1,4 +1,4 @@
-<div class="fuse-card border--red">
+<div class="fuse-card">
     <div dir="rtl">
         <app-table
             [data]="data"
@@ -12,27 +12,27 @@
     </div>
 
     <div class="container" dir="rtl">
-<!--        <div class="issuer">-->
-<!--            <mat-form-field appearance="outline" style="flex-grow: 1">-->
-<!--                <input matInput class="form-field" [formControl]="issuerName" placeholder="مجوز سازمان" required />-->
-<!--            </mat-form-field>-->
+        <div class="issuer">
+            <mat-form-field appearance="outline" style="flex-grow: 1">
+                <input matInput class="form-field" [formControl]="issuerName" placeholder="مجوز سازمان" required />
+            </mat-form-field>
 
-<!--            <div fxLayout="column wrap" fxLayoutGap="5px" fxLayoutAlign="center center" class="setting-btn-container">-->
-<!--                <button *ngIf="!slectedIssuer" [disabled]="issuerName.invalid" (click)="addIssuer()" color="accent" mat-raised-button>-->
-<!--                    <mat-icon>done</mat-icon>-->
-<!--                    ثبت-->
-<!--                </button>-->
+            <div fxLayout="column wrap" fxLayoutGap="5px" fxLayoutAlign="center center" class="setting-btn-container">
+                <button *ngIf="!selectedIssuer" [disabled]="issuerName.invalid" (click)="addIssuer()" color="accent" mat-raised-button>
+                    <mat-icon>done</mat-icon>
+                    ثبت
+                </button>
 
-<!--                <button *ngIf="slectedIssuer" [disabled]="issuerName.invalid" (click)="edit()" color="accent" mat-raised-button>-->
-<!--                    <mat-icon>edit</mat-icon>-->
-<!--                    ویرایش-->
-<!--                </button>-->
+                <button *ngIf="selectedIssuer" [disabled]="issuerName.invalid" (click)="edit()" color="accent" mat-raised-button>
+                    <mat-icon>edit</mat-icon>
+                    ویرایش
+                </button>
 
-<!--                <button *ngIf="slectedIssuer" (click)="clear()" style="margin-left: 10px" color="warn" mat-raised-button>-->
-<!--                    <mat-icon>close</mat-icon>-->
-<!--                    انصراف-->
-<!--                </button>-->
-<!--            </div>-->
-<!--        </div>-->
+                <button *ngIf="selectedIssuer" (click)="clear()" style="margin-left: 10px" color="warn" mat-raised-button>
+                    <mat-icon>close</mat-icon>
+                    انصراف
+                </button>
+            </div>
+        </div>
     </div>
 </div>
