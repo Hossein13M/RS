@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ComplianceFund, Compliance } from './compliance';
+import { ComplianceFund, Compliance } from './compliance.model';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UtilityFunctions } from '#shared/utilityFunctions';

@@ -1,7 +1,7 @@
 <!--<div class="table-container" #container (scroll)='scroll($event)'>-->
 <div *ngIf="dataSource">
     <form [formGroup]="searchForm">
-        <div class="table-container" #container>
+        <div class="table-container" [ngStyle]="{'height': height}" (scroll)='scroll()' #container>
             <table mat-table #table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
                 <!-- Position Column -->
                 <ng-container matColumnDef="position">

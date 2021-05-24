@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { Compliance } from 'app/services/API/models';
+import { Compliance } from '../compliance.model';
 import { CompliancesService } from 'app/modules/compliance/compliances.service';
 import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';

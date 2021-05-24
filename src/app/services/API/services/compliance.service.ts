@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ApiConfiguration } from '../api-configuration';
 import { BaseService } from '../base-service';
-import { Compliance } from '../../../modules/compliance/compliance';
+import { Compliance } from '../../../modules/compliance/compliance.model';
 import { ComplianceResponseDto } from '../models/compliance-response-dto';
 import { CreateComplianceDto } from '../models/create-compliance-dto';
 import { RequestBuilder } from '../request-builder';
