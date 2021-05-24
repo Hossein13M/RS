@@ -3,6 +3,10 @@ import { IssuerDto } from 'app/services/API/models';
 import { IssueLicenseService } from 'app/services/API/services';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
+import { IssuerLicense } from '../../../modules/system-settings/issuer-license/issuer-license.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +27,7 @@ export class IssuerLicenceService {
      **  end inital paging
      */
 
-    constructor(private issuerLicenseService: IssueLicenseService) {}
+    constructor(private issuerLicenseService: IssueLicenseService, private http: HttpClient) {}
 
     getIssuerLicenses(searchKeyword?: string): Observable<Array<IssuerDto>> {
         let param = {
@@ -137,5 +141,10 @@ export class IssuerLicenceService {
                 this.issuerLicenseList.next(issuerLicenseList);
             })
         );
+    }
+
+    public getIssuerLicense(paginationParams?, searchParams?): Observable<ResponseWithPagination<IssuerLicense>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get<ResponseWithPagination<IssuerLicense>>('/api/v1/issue-license', {params});
     }
 }

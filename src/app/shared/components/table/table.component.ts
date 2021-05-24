@@ -6,6 +6,12 @@ import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
 import { PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 
+enum StateType {
+    'LOADING',
+    'PRESENT',
+    'FAILED',
+}
+
 /**
  * Hoshman Risk's General Table Generator Document
  *

@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { $IssuerLicenseService } from './issuer-license.service';
 import { IssuerLicense } from './issuer-license.model';
 import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 import * as _ from 'lodash';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { IssuerLicenceService } from '../../../services/App/IssuerLicence/issuer-licence.service';
 
 enum StateType {
     'LOADING',
@@ -26,8 +26,10 @@ export class IssuerLicenseComponent implements OnInit {
     column: Array<Column>;
     pagination: PaginationModel = { skip: 0, limit: 15, total: 100 };
     status: StateType = StateType.LOADING;
+    public issuerName: FormControl = new FormControl('');
+    selectedIssuer = 0;
 
-    constructor(private _issuerLicenseService: $IssuerLicenseService, private formBuilder: FormBuilder) {}
+    constructor(private issuerLicenceService: IssuerLicenceService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -57,15 +59,13 @@ export class IssuerLicenseComponent implements OnInit {
                         name: 'ویرایش',
                         icon: 'create',
                         color: 'accent',
-                        operation: () => {},
-                        // operation: ({ row }: any) => this.update(row),
+                        operation: ({ row }: any) => this.editIssuer(row),
                     },
                     {
                         name: 'حذف',
                         icon: 'delete',
                         color: 'warn',
-                        operation: () => {},
-                        // operation: ({ row }: any) => this.delete(row),
+                        operation: ({ row }: any) => this.remove(row),
                     },
                 ],
             },
@@ -105,75 +105,43 @@ export class IssuerLicenseComponent implements OnInit {
 
     get(search?: any): void {
         this.status = StateType.LOADING;
-        this._issuerLicenseService.getIssuerLicense(this.pagination, search).pipe(debounceTime(500), distinctUntilChanged()).subscribe(
-            (response) => {
+        this.issuerLicenceService
+            .getIssuerLicense(this.pagination, search)
+            .pipe(debounceTime(500), distinctUntilChanged())
+            .subscribe((response) => {
                 this.data = [...this.data, ...response.items];
                 this.pagination.limit = response.limit;
                 this.pagination.total = response.total;
                 this.status = StateType.PRESENT;
-            },
-            () => {
-                this.status = StateType.FAILED;
-            }
-        );
+            });
     }
 
-    // ngOnInit(): void {
-    //     this.issuerLicenceService.issuerLicenseList.subscribe((res) => {
-    //         this.issuerList = res;
-    //         this.ELEMENT_DATA = res;
-    //         this.dataSource = new MatTableDataSource<IssuerDto>(this.ELEMENT_DATA);
-    //     });
-    //
-    //     this.issuerLicenceService.getIssuers(this.searchInput.value).subscribe(() => {});
-    //
-    //     this.searchInput.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((searchText) => {
-    //         this.issuerLicenceService.getIssuers(searchText).subscribe(() => {});
-    //     });
-    // }
-    //
-    // ngAfterViewInit(): void {
-    //     document.getElementById('issuerLicence').addEventListener('scroll', this.scroll.bind(this), true);
-    // }
-    //
-    // scroll(): void {
-    //     const table = document.getElementById('issuerLicence');
-    //     const scrollPosition = table.scrollHeight - (table.scrollTop + table.clientHeight);
-    //
-    //     if (!this.loading) {
-    //         if (scrollPosition < 80) {
-    //             if (this.issuerLicenceService.skip <= this.issuerLicenceService.total) {
-    //                 this.loading = true;
-    //                 this.issuerLicenceService.getIssuers(this.searchInput.value).subscribe(() => {
-    //                     this.loading = false;
-    //                 });
-    //             }
-    //         }
-    //     } else {
-    //         return;
-    //     }
-    // }
-    //
-    // addIssuer(): void {
-    //     this.issuerLicenceService.addIssuer(this.issuerName.value).subscribe(() => {});
-    //     this.issuerName.reset();
-    // }
-    //
-    // editIssuer(issuer): void {
-    //     this.slectedIssuer = issuer.id;
-    //     this.issuerName.setValue(issuer.name);
-    // }
-    //
-    // clear(): void {
-    //     this.slectedIssuer = 0;
-    //     this.issuerName.setValue('');
-    // }
-    //
-    // edit(): void {
-    //     this.issuerLicenceService.editIssuer(this.slectedIssuer, this.issuerName.value).subscribe((res) => {});
-    // }
-    //
-    // remove(issuer): void {
-    //     this.issuerLicenceService.deleteIssuer(issuer.id).subscribe(() => {});
-    // }
+    addIssuer(): void {
+        this.issuerLicenceService.addIssuer(this.issuerName.value).subscribe(() => {
+            this.get();
+        });
+        this.issuerName.reset();
+    }
+
+    editIssuer(issuer): void {
+        this.selectedIssuer = issuer.id;
+        this.issuerName.setValue(issuer.name);
+    }
+
+    clear(): void {
+        this.selectedIssuer = 0;
+        this.issuerName.setValue('');
+    }
+
+    edit(): void {
+        this.issuerLicenceService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe((res) => {
+            this.get();
+        });
+    }
+
+    remove(issuer): void {
+        this.issuerLicenceService.deleteIssuer(issuer.id).subscribe(() => {
+            this.get();
+        });
+    }
 }
