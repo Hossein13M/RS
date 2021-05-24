@@ -6,6 +6,7 @@ import { AlertService } from 'app/services/alert.service';
 import { OpLossManagementService } from '../op-loss-management.service';
 import { OpRiskManagementService } from '../op-risk-management.service';
 import { RejectOpRiskComponent } from '../reject-op-risk/reject-op-risk.component';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-op-risk-list',
@@ -63,9 +64,8 @@ export class OpRiskListComponent implements OnInit {
                     icon: 'visibility',
                     color: 'primary',
                     operation: ({ row }: any) => {
-                        if (row.type === 'risk') {
-                            this.router.navigate(['/op-risk/management/add'], { queryParams: { opRiskId: row.opRiskId } }).finally();
-                        } else {
+                        if (row.type === 'risk') this.router.navigate(['/op-risk/management/add'], { queryParams: { opRiskId: row.opRiskId } }).finally();
+                        else {
                             this.router
                                 .navigate(['/op-risk/management/loss/detail'], {
                                     queryParams: { lastLossEventId: row.lastLossEventId, opId: row.opLossId, view: true },
@@ -179,13 +179,8 @@ export class OpRiskListComponent implements OnInit {
                     icon: 'visibility',
                     color: 'primary',
                     operation: ({ row }: any) => {
-                        if (row.type === 'risk') {
-                            this.router
-                                .navigate(['/op-risk/management/add'], {
-                                    queryParams: { opRiskId: row.id },
-                                })
-                                .finally();
-                        } else {
+                        if (row.type === 'risk') this.router.navigate(['/op-risk/management/add'], { queryParams: { opRiskId: row.id } }).finally();
+                        else {
                             this.router
                                 .navigate(['/op-risk/management/loss/detail'], {
                                     queryParams: { lastLossEventId: row.lastLossEventId, opId: row.id, view: true },
@@ -232,9 +227,6 @@ export class OpRiskListComponent implements OnInit {
 
     public search(filter: any): void {
         if (filter.createdAt.fromDate || filter.createdAt.toDate) {
-            const fromDate = this.opRiskManagementService.convertDate(new Date(filter.createdAt.fromDate));
-            const toDate = this.opRiskManagementService.convertDate(new Date(filter.createdAt.toDate));
-            this.opRiskManagementService.specificationModel.searchKeyword = { fromDate: fromDate, toDate: toDate };
             this.getHistory();
         }
     }
