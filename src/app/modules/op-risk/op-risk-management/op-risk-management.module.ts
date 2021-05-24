@@ -27,4 +27,4 @@ import { SubmittedRisksComponent } from './submitted-risks/submitted-risks.compo
     imports: [CommonModule, OpRiskManagementRoutingModule, LayoutModule, MatIconModule, MatButtonModule, MatGridListModule, ShareModule],
     entryComponents: [RejectOpRiskComponent],
 })
-export class OpRiskManagmentModule {}
+export class OpRiskManagementModule {}
