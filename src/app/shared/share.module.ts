@@ -61,7 +61,7 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         NgxMatSelectSearchModule,
         ClipboardModule,
         ChartsModule,
-        PipesModule
+        PipesModule,
     ],
     exports: [
         MailCardComponent,
