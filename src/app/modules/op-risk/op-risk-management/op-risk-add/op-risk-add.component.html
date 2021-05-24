@@ -81,7 +81,7 @@
 
                     <div [style.zIndex]="trees[5].zIndex" fxLayout="column" fxFlex="40" class="tree-select-container">
                         <button (click)="getTrees(trees[5].id, 5)" mat-raised-button color="primary">{{ trees[5].name }}</button>
-                        <app-tree-select [data]="trees[5].data" formControlName="levels" class="tree-select"></app-tree-select>
+                        <app-tree-select [maxSelect]="1" [data]="trees[5].data" formControlName="levels" class="tree-select"></app-tree-select>
                     </div>
 
                     <mat-divider fxLayout="column" fxFlex="100" class="my-20"></mat-divider>
