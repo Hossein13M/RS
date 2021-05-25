@@ -42,7 +42,7 @@ export class OpRiskAddComponent implements OnInit {
         { name: 'محصولات یا خدمات', id: 'ps', show: false, zIndex: 16 },
         { name: 'طبقه‌ی ریسک', id: 'rc', show: false, zIndex: 15 },
         { name: 'محرکه‌های عملیاتی', id: 'od', show: false, zIndex: 14 },
-        { name: 'طبقه‌بندی‌های عملیاتی ', id: 'oc', show: false, zIndex: 13 },
+        { name: 'کنترل‌های عملیاتی ', id: 'oc', show: false, zIndex: 13 },
         { name: 'پوشش‌های زیان عملیاتی ', id: 'olc', show: false, zIndex: 12 },
         { name: 'زیان مستقیم ', id: 'dl', show: false, zIndex: 11 },
         { name: 'زیان غیرمستقیم ', id: 'il', show: false, zIndex: 10 },
@@ -62,6 +62,7 @@ export class OpRiskAddComponent implements OnInit {
         this.checkComponentState();
         this.getFlows();
         this.onComponentStateInitialized();
+        if (this.riskComponentState !== RiskComponentState.Show) this.disableFormControllersOfInputs();
     }
 
     private checkComponentState(): void {
@@ -92,6 +93,22 @@ export class OpRiskAddComponent implements OnInit {
         this.loading = true;
     }
 
+    private disableFormControllersOfInputs(): void {
+        const disablingFormControlArrayName: Array<{ formControlName: string; childrenFormControllers: Array<string> }> = [
+            { formControlName: 'recoveries', childrenFormControllers: ['recoveriesDescription', 'recoveriesAvg'] },
+            { formControlName: 'directLosses', childrenFormControllers: ['directLossesDescription', 'directLossesAvg'] },
+            { formControlName: 'inDirectLosses', childrenFormControllers: ['inDirectLossesDescription', 'inDirectLossesAvg'] },
+        ];
+
+        disablingFormControlArrayName.map((item) => {
+            item.childrenFormControllers.map((fc) => {
+                this.form.get(item.formControlName).valueChanges.subscribe((value) => {
+                    UtilityFunctions.checkValueForNotBeingAnEmptyArray(value) ? this.form.get(fc).enable() : this.form.get(fc).disable();
+                });
+            });
+        });
+    }
+
     private initialComponentOnEditState(): void {
         // TODO: this needs to be fixed after adding has been completed
         this.loading = false;
@@ -107,7 +124,6 @@ export class OpRiskAddComponent implements OnInit {
                     this.form.controls['controlValue'].setValue(response.controlDetails[0].value, { onlySelf: true });
                 }
             }
-            this.form.enable();
             this.form.controls['flow'].disable();
             this.isEditMode = true;
         });
@@ -115,7 +131,7 @@ export class OpRiskAddComponent implements OnInit {
 
     private chooseProperNameForTitle(): void {
         const riskComponentTranslator = { Add: 'افزودن ریسک', Edit: 'ویرایش ریسک', Show: 'نمایش جزئیات ریسک' };
-        this.headerTitle = riskComponentTranslator[this.riskComponentState];
+        this.headerTitle = riskComponentTranslator[RiskComponentState[this.riskComponentState]];
     }
 
     private getFlows(): void {
@@ -267,14 +283,14 @@ export class OpRiskAddComponent implements OnInit {
             controlValue: [],
             controlClassification: [],
             recoveries: [],
-            recoveriesDescription: [],
-            recoveriesAvg: [],
+            recoveriesDescription: [{ value: '', disabled: true }],
+            recoveriesAvg: [{ value: '', disabled: true }],
             directLosses: [],
-            directLossesDescription: [],
-            directLossesAvg: [],
+            directLossesDescription: [{ value: '', disabled: true }],
+            directLossesAvg: [{ value: '', disabled: true }],
             inDirectLosses: [],
-            inDirectLossesDescription: [],
-            inDirectLossesAvg: [],
+            inDirectLossesDescription: [{ value: '', disabled: true }],
+            inDirectLossesAvg: [{ value: '', disabled: true }],
             id: [],
         });
 

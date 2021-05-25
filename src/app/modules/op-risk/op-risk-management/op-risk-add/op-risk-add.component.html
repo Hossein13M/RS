@@ -120,13 +120,13 @@
             </div>
 
             <div class="fuse-card m-20 p-20">
-                <div fxLayout="column" fxLayoutAlign="space-around stretch">
-                    <div [style.zIndex]="trees[6].zIndex" fxLayout="column" fxFlex="50" class="tree-select-container">
+                <div fxLayout="row wrap" fxLayoutAlign="space-around center">
+                    <div fxFlex="30" fxLayout="column" fxFlexAlign="center center" [style.zIndex]="trees[6].zIndex" class="tree-select-container">
                         <button (click)="getTrees(trees[6].id, 6)" mat-raised-button color="primary">{{ trees[6].name }}</button>
                         <app-tree-select required [data]="trees[6].data" formControlName="drivers" class="tree-select"></app-tree-select>
                     </div>
 
-                    <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none" class="mt-20">
+                    <div class="mt-20" fxFlex="30" fxLayout="column" fxFlexAlign="center center">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح محرکه عملیاتی</mat-label>
                             <input matInput formControlName="driversDescription" />
@@ -180,8 +180,8 @@
                 </div>
             </div>
 
-            <div class="fuse-card m-20 p-20">
-                <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div class="fuse-card m-20 px-20">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center" class="my-20">
                     <div [style.zIndex]="trees[8].zIndex" fxFlex="30" fxLayout="column" fxFlexAlign="center center" class="tree-select-container">
                         <button (click)="getTrees(trees[8].id, 8)" mat-raised-button color="primary">{{ trees[8].name }}</button>
                         <app-tree-select [data]="trees[8].data" formControlName="recoveries" class="tree-select"></app-tree-select>
@@ -228,7 +228,7 @@
                     <div fxFlex="30" fxLayout="column" fxLayoutAlign="space-evenly none">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح زیان غیر مستقیم</mat-label>
-                            <input matInput formControlName="inDirectLossesDescription" />
+                            <input matInput formControlName="inDirectLossesDescription" [disabled]="true" />
                         </mat-form-field>
                     </div>
 
