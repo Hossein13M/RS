@@ -181,7 +181,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div [style.zIndex]="trees[7].zIndex" fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none" class="tree-select-container">
+                    <div [style.zIndex]="trees[7].zIndex" fxLayout="column" fxFlex="45" fxLayoutAlign="space-evenly none" class="tree-select-container">
                         <button (click)="getTrees(trees[7].id, 7)" mat-raised-button color="primary">{{ trees[7].name }}</button>
                         <app-tree-select required [data]="trees[7].data" formControlName="controlClassification" class="tree-select"> </app-tree-select>
                     </div>
