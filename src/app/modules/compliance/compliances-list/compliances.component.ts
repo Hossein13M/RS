@@ -21,7 +21,7 @@ export class CompliancesComponent implements OnInit {
     column: Array<Column>;
     pagination: PaginationModel = { skip: 0, limit: 5, total: 100 };
 
-    constructor(private compliancesService: CompliancesService, private formBuilder: FormBuilder, private _matDialog: MatDialog) {}
+    constructor(private _compliancesService: CompliancesService, private formBuilder: FormBuilder, private _matDialog: MatDialog) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -101,7 +101,7 @@ export class CompliancesComponent implements OnInit {
     }
 
     get(search?: any): void {
-        this.compliancesService.getCompliances(this.pagination, search).subscribe((response) => {
+        this._compliancesService.getCompliances(this.pagination, search).subscribe((response) => {
             this.data = [...response.items];
             this.pagination.limit = response.limit;
             this.pagination.total = response.total;
