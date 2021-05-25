@@ -121,12 +121,12 @@
 
             <div class="fuse-card m-20 p-20">
                 <div fxLayout="row wrap" fxLayoutAlign="space-around center">
-                    <div fxFlex="30" fxLayout="column" fxFlexAlign="center center" [style.zIndex]="trees[6].zIndex" class="tree-select-container">
+                    <div fxFlex="55" fxLayout="column" fxFlexAlign="center center" [style.zIndex]="trees[6].zIndex" class="tree-select-container">
                         <button (click)="getTrees(trees[6].id, 6)" mat-raised-button color="primary">{{ trees[6].name }}</button>
                         <app-tree-select required [data]="trees[6].data" formControlName="drivers" class="tree-select"></app-tree-select>
                     </div>
 
-                    <div class="mt-20" fxFlex="30" fxLayout="column" fxFlexAlign="center center">
+                    <div class="mt-20" fxFlex="40" fxLayout="column" fxFlexAlign="center center">
                         <mat-form-field appearance="outline">
                             <mat-label>شرح محرکه عملیاتی</mat-label>
                             <input matInput formControlName="driversDescription" />
