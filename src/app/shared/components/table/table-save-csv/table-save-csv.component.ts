@@ -4,14 +4,12 @@ import { Component, Input, OnInit } from '@angular/core';
     selector: 'app-table-save-csv',
     template: ` <button mat-menu-item (click)="save()">ذخیره به فرمت CSV</button> `,
 })
-export class TableSaveCSVComponent implements OnInit {
+export class TableSaveCSVComponent {
     @Input() name = 'table';
     @Input() data: Array<any>;
     @Input() columns: Array<any>;
 
     constructor() {}
-
-    ngOnInit(): void {}
 
     save(): void {
         if (!this.data || !this.columns) {
