@@ -3,6 +3,15 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BourseIssueDateDto } from '../API/models';
 import { BourseIssueDateService } from '../API/services';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+
+export interface IssueDate {
+    id: number;
+    startDate: string;
+    endDate: string;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -10,7 +19,7 @@ import { BourseIssueDateService } from '../API/services';
 export class IssueStartEndDateService {
     public Dates: BehaviorSubject<Array<BourseIssueDateDto>> = new BehaviorSubject([]);
 
-    constructor(private bourseIssueDate: BourseIssueDateService) {}
+    constructor(private bourseIssueDate: BourseIssueDateService, private http: HttpClient) {}
 
     getDates(bourseId: number): Observable<Array<BourseIssueDateDto>> {
         return this.bourseIssueDate.bourseIssueDateControllerGetBourseIssueDates({ bourseId: bourseId, limit: 100 }).pipe(
@@ -62,5 +71,10 @@ export class IssueStartEndDateService {
                 this.Dates.next(date);
             })
         );
+    }
+
+    public getDate(bourseIssueDateId: number | string, searchParams?): Observable<ResponseWithPagination<IssueDate>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ bourseId: bourseIssueDateId, ...searchParams });
+        return this.http.get<ResponseWithPagination<IssueDate>>(`/api/v1/bourse-issue-date`, { params });
     }
 }
