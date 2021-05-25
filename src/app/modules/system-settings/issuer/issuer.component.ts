@@ -1,12 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { IssuerDto } from 'app/services/API/models';
-import { IssuersService } from 'app/services/App/Issuer/issuer.service';
+import { Issuer, IssuersService } from 'app/services/App/Issuer/issuer.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { IssuerGoal } from '../../../services/App/IssuerGoal/issuer-goal.service';
 import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 import * as _ from 'lodash';
@@ -26,16 +22,14 @@ enum StateType {
 })
 export class IssuerComponent implements OnInit {
     searchFormGroup: FormGroup;
-    data: Array<IssuerGoal> = [];
+    data: Array<Issuer> = [];
     column: Array<Column>;
     pagination: PaginationModel = { skip: 0, limit: 15, total: 100 };
     status: StateType = StateType.LOADING;
     public issuerName: FormControl = new FormControl('');
     selectedIssuer = 0;
 
-    constructor(private _issuerService: IssuersService, private formBuilder: FormBuilder) {
-        this.issuerName = new FormControl('');
-    }
+    constructor(private _issuerService: IssuersService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.initColumns();
@@ -120,7 +114,6 @@ export class IssuerComponent implements OnInit {
                 this.status = StateType.PRESENT;
             });
     }
-
 
     addIssuer(): void {
         this._issuerService.addIssuer(this.issuerName.value).subscribe(() => {});
