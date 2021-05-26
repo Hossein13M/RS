@@ -1,16 +1,15 @@
 <div class="page-layout">
-
-    <app-header pageTitle="ریسک و زیان‌های ثبت شده">
-    </app-header>
+    <app-header pageTitle="ریسک و زیان‌های ثبت‌شده"> </app-header>
 
     <div class="page-content">
-
-        <div class="fuse-card">
-            <app-table [data]="data"
-                       [columns]="columns"
-                       [paginationSettings]="{ mode: 'backend' }"
-                       [paginationObj]="pagination"
-                       (paginationChange)="paginationControl($event)">
+        <div class="fuse-card m-20">
+            <app-table
+                [data]="data"
+                [columns]="columns"
+                [paginationSettings]="{ mode: 'backend' }"
+                [paginationObj]="pagination"
+                (paginationChange)="paginationControl($event)"
+            >
             </app-table>
         </div>
     </div>
