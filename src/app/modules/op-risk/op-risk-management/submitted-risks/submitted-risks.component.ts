@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { StateManager } from '../../../../shared/pipes/stateManager.pipe';
+import { StateManager } from '#shared/pipes/stateManager.pipe';
 import { OpRiskManagementService } from '../op-risk-management.service';
 
 @Component({
@@ -12,15 +12,11 @@ export class SubmittedRisksComponent implements OnInit {
     componentState = { state: '' };
     data: any;
     columns: Array<any>;
-    pagination = { skip: 0, limit: 5, total: 100 };
+    pagination = { skip: 0, limit: 25, total: 100 };
 
     constructor(private opRiskManagementService: OpRiskManagementService, private router: Router) {
         this.columns = [
-            {
-                id: 'title',
-                name: 'نام',
-                type: 'string',
-            },
+            { id: 'title', name: 'نام', type: 'string' },
             {
                 id: 'type',
                 name: 'نوع',
@@ -38,10 +34,7 @@ export class SubmittedRisksComponent implements OnInit {
                         operation: ({ row }: any) => {
                             if (row.type === 'risk') {
                                 this.router.navigate(['/op-risk/management/add'], {
-                                    queryParams: {
-                                        opRiskId: row.id,
-                                        back: '/op-risk/management/submitted-risks',
-                                    },
+                                    queryParams: { opRiskId: row.id, back: '/op-risk/management/submitted-risks' },
                                 });
                             } else {
                                 this.router.navigate(['/op-risk/management/loss/detail'], {
