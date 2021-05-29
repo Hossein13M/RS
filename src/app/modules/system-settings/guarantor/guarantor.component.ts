@@ -58,7 +58,7 @@ export class GuarantorComponent implements OnInit {
             {
                 name: 'بورسی/غیر بورسی',
                 id: 'otc',
-                type: 'number',
+                type: 'string',
                 convert: (value: number) => (value === 0 ? 'بورسی' : 'غیر بورسی'),
             },
             {
