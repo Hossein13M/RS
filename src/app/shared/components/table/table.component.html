@@ -50,13 +50,7 @@
 
                                 <!--   Header Operations   -->
                                 <ng-container *ngFor="let op of col.headerOperations">
-                                    <button
-                                        mat-icon-button
-                                        *ngIf="!op?.raised"
-                                        [color]="op.color"
-                                        [matTooltip]="op.name"
-                                        (click)="doOperationHeader(op)"
-                                    >
+                                    <button mat-icon-button *ngIf="!op?.raised" [color]="op.color" [matTooltip]="op.name" (click)="doOperationHeader(op)">
                                         <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
                                     </button>
                                     <button
@@ -89,28 +83,18 @@
 
                         <!-- Number -->
                         <div *ngIf="col.type == 'number'">
-                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number:'.0-4' }}
+                            {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number: '.0-4' }}
                         </div>
 
                         <!-- Profit -->
                         <div *ngIf="col.type == 'profit'" class="profit">
-                            <div
-                                fxLayout="row wrap"
-                                fxLayoutAlign="end center"
-                                *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] < 0"
-                                class="negative"
-                            >
-                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number:'.0-4' }}
+                            <div fxLayout="row wrap" fxLayoutAlign="end center" *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] < 0" class="negative">
+                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number: '.0-4' }}
                                 <mat-icon class="mat-18">arrow_drop_down</mat-icon>
                             </div>
 
-                            <div
-                                fxLayout="row wrap"
-                                fxLayoutAlign="end center"
-                                *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] > 0"
-                                class="positive"
-                            >
-                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number:'.0-4' }}
+                            <div fxLayout="row wrap" fxLayoutAlign="end center" *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] > 0" class="positive">
+                                {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number: '.0-4' }}
                                 <mat-icon class="mat-18">arrow_drop_up</mat-icon>
                             </div>
                         </div>
@@ -127,10 +111,7 @@
 
                         <!-- Custom -->
                         <div *ngIf="col.type == 'custom' && isTemplateRef(col.cellTemplate)">
-                            <ng-template
-                                [ngTemplateOutlet]="col.cellTemplate"
-                                [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"
-                            ></ng-template>
+                            <ng-template [ngTemplateOutlet]="col.cellTemplate" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
                         </div>
 
                         <!-- Operations -->
@@ -221,7 +202,7 @@
             dir="rtl"
             class="paginator"
             [style.display]="paginationSettings?.mode === 'local' ? '' : 'none'"
-            [pageSize]="paginationSettings?.pageSize ? paginationSettings.pageSize : 5"
+            [pageSize]="paginationSettings.pageSize ? paginationSettings.pageSize : 5"
             [pageSizeOptions]="paginationSettings?.pageSizeOptions ? paginationSettings.pageSizeOptions : [5, 10, 25, 100]"
             showFirstLastButtons
             #localPaginator
