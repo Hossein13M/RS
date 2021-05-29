@@ -37,7 +37,7 @@ export { CodTableItem } from './models/cod-table-item';
 export { CollateralsDto } from './models/collaterals-dto';
 export { ComplianceCalculatedPiechartDto } from './models/compliance-calculated-piechart-dto';
 export { ComplianceCalculatedValuesDto } from './models/compliance-calculated-values-dto';
-export { ComplianceDto } from './models/compliance-dto';
+export { Compliance } from '../../modules/compliance/compliance.model';
 export { ComplianceResponseDto } from './models/compliance-response-dto';
 export { CreateAlarmDto } from './models/create-alarm-dto';
 export { CreateAuthItemAssignmentDto } from './models/create-auth-item-assignment-dto';

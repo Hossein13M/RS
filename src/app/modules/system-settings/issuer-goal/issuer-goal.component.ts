@@ -1,10 +1,17 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { IssuerDto } from 'app/services/API/models';
-import { IssuerGoalsService } from 'app/services/App/IssuerGoal/issuer-goal.service';
+import { IssuerGoal, IssuerGoalsService } from 'app/services/App/IssuerGoal/issuer-goal.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { PaginationModel } from '#shared/models/pagination.model';
+import * as _ from 'lodash';
+
+enum StateType {
+    'LOADING',
+    'PRESENT',
+    'FAILED',
+}
 
 @Component({
     selector: 'issuer-goal',
@@ -12,74 +19,121 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
     styleUrls: ['./issuer-goal.component.scss'],
     animations: fuseAnimations,
 })
-export class IssuerGoalComponent implements OnInit, AfterViewInit {
-    issuerList: IssuerDto[] = [];
-    ELEMENT_DATA: IssuerDto[] = [];
-    searchInput: FormControl;
-    public issuerName: FormControl;
-    slectedIssuer = 0;
-    dialogRef: any;
-    loading = false;
-    dataSource = new MatTableDataSource<IssuerDto>(this.ELEMENT_DATA);
-    displayedColumns = ['name', 'operation'];
+export class IssuerGoalComponent implements OnInit {
+    searchFormGroup: FormGroup;
+    data: Array<IssuerGoal> = [];
+    column: Array<Column>;
+    pagination: PaginationModel = { skip: 0, limit: 15, total: 100 };
+    status: StateType = StateType.LOADING;
+    public issuerName: FormControl = new FormControl('');
+    selectedIssuer = 0;
 
-    constructor(private issuerGoalsService: IssuerGoalsService) {
-        this.searchInput = new FormControl('');
-        this.issuerName = new FormControl('');
-    }
+    constructor(private _issuerGoalsService: IssuerGoalsService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
-        this.issuerGoalsService.issuerGoalList.subscribe((res) => {
-            this.issuerList = res;
-            this.ELEMENT_DATA = res;
-            this.dataSource = new MatTableDataSource<IssuerDto>(this.ELEMENT_DATA);
+        this.initColumns();
+        this.initSearch();
+        this.get();
+    }
+
+    initColumns(): void {
+        this.column = [
+            {
+                name: 'هدف انتشار',
+                id: 'name',
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER,
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editIssuer(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.remove(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
         });
-
-        this.issuerGoalsService.getIssuers(this.searchInput.value).subscribe(() => {});
-
-        this.searchInput.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((searchText) => {
-            this.issuerGoalsService.getIssuers(searchText).subscribe(() => {});
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys,
         });
     }
 
-    ngAfterViewInit(): void {
-        document.getElementById('issuerGoal').addEventListener('scroll', this.scroll.bind(this), true);
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+        this.get(this.searchFormGroup.value);
     }
 
-    scroll(): void {
-        let table = document.getElementById('issuerGoal');
-        var scrollPosition = table.scrollHeight - (table.scrollTop + table.clientHeight);
-
-        if (!this.loading) {
-            if (scrollPosition < 80) {
-                if (this.issuerGoalsService.skip <= this.issuerGoalsService.total) {
-                    this.loading = true;
-                    this.issuerGoalsService.getIssuers(this.searchInput.value).subscribe(() => (this.loading = false));
-                }
-            }
-        } else return;
+    paginationControl(pageEvent?: PaginationChangeType): void {
+        if (this.status === StateType.LOADING) {
+            return;
+        }
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
     }
 
-    addIssuer() {
-        this.issuerGoalsService.addIssuer(this.issuerName.value).subscribe(() => {});
+    get(search?: any): void {
+        this.status = StateType.LOADING;
+        this._issuerGoalsService
+            .$getIssuerGoal(this.pagination, search)
+            .pipe(debounceTime(500), distinctUntilChanged())
+            .subscribe((response) => {
+                this.data = [...this.data, ...response.items];
+                this.pagination.limit = response.limit;
+                this.pagination.total = response.total;
+                this.status = StateType.PRESENT;
+            });
+    }
+
+    addIssuer(): void {
+        this._issuerGoalsService.addIssuer(this.issuerName.value).subscribe();
         this.issuerName.reset();
     }
 
-    editIssuer(issuer) {
-        this.slectedIssuer = issuer.id;
+    editIssuer(issuer): void {
+        this.selectedIssuer = issuer.id;
         this.issuerName.setValue(issuer.name);
     }
 
-    clear() {
-        this.slectedIssuer = 0;
+    clear(): void {
+        this.selectedIssuer = 0;
         this.issuerName.setValue('');
     }
 
-    edit() {
-        this.issuerGoalsService.editIssuer(this.slectedIssuer, this.issuerName.value).subscribe(() => {});
+    edit(): void {
+        this._issuerGoalsService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe(() => {});
     }
 
-    remove(issuer) {
-        this.issuerGoalsService.deleteIssuer(issuer.id).subscribe(() => {});
+    remove(issuer): void {
+        this._issuerGoalsService.deleteIssuer(issuer.id).subscribe(() => {});
     }
 }

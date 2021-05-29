@@ -6,6 +6,12 @@ import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
 import { PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 
+enum StateType {
+    'LOADING',
+    'PRESENT',
+    'FAILED',
+}
+
 /**
  * Hoshman Risk's General Table Generator Document
  *
@@ -84,6 +90,8 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
     @Input() data: Array<any>;
     @Input() columns: Array<any>;
+    @Input() height: string = '100%';
+    @Input() status: StateType;
 
     // -----------------------------------------------------------------------------------------------------
     // @ Pagination Input
@@ -116,20 +124,15 @@ export class TableComponent implements OnChanges, AfterViewInit {
     clickCount = 0;
     doubleClickAble = true;
 
-    // scroll(): void {
-    //     console.log('called');
-    //     try {
-    //         const scrollPosition =
-    //             this.container?.nativeElement.scrollHeight - (this.container?.nativeElement.scrollTop + this.container?.nativeElement.clientHeight);
-    //         if (scrollPosition > 70) {
-    //             this.paginationControl({ pageSize: 10, pageIndex: this.paginationObj.skip });
-    //         } else {
-    //             return;
-    //         }
-    //     } catch (e) {
-    //         console.error('APP-TABLE SCROLL ', e);
-    //     }
-    // }
+    scroll(): void {
+        if (this.paginationSettings.mode !== 'scroll') return;
+        if (this.status === StateType.LOADING) return;
+        const scrollPosition =
+            this.container?.nativeElement.scrollHeight - (this.container?.nativeElement.scrollTop + this.container?.nativeElement.clientHeight);
+        if (scrollPosition < 90) {
+            this.paginationControl({ pageSize: this.paginationObj.limit, pageIndex: this.paginationObj.skip + this.paginationObj.limit });
+        }
+    }
 
     constructor(private fb: FormBuilder) {
         this.searchCall = new EventEmitter<any>();
@@ -342,7 +345,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         if (index < 0 || !this.data || index > this.data.length) {
             return;
         }
-
+        if (!this.data[index]) return;
         this.data[index].tableSelect = !this.data[index].tableSelect;
     }
 

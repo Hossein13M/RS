@@ -8,7 +8,7 @@ import { TradeBookService } from './trade-book.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { formatDate } from '@angular/common';
 import { StateType } from '#shared/state-type.enum';
-import { ColumnModel } from '#shared/components/table/table.model';
+import { Column } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
 import { TradeBook } from './trade-book.model';
 
@@ -20,7 +20,7 @@ import { TradeBook } from './trade-book.model';
 })
 export class TradeBookComponent implements OnInit {
     stateType: StateType = StateType.INIT;
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     form: FormGroup = this.fb.group({ date: [new Date()], tradingBook: [[]] });
     tradeBooksList: Array<{ id: number; name: string }> = [];
     tradeBookData: Array<TradeBook> = [];

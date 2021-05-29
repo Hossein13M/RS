@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { DepositSettingAddComponent } from '../deposit-setting-add/deposit-setti
 export class DepositSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public depositSettingService: DepositSettingService) {}

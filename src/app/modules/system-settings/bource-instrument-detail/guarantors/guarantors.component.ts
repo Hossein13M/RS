@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { UpdateGuarantorsDto } from 'app/services/API/models';
 import { GuarantorsService } from 'app/services/App/Guarantor/guarantor.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Column } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-guarantors',
@@ -15,32 +15,23 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class GuarantorsComponent implements OnInit {
     public guarantors = [];
-    public searchkey: FormControl = new FormControl('');
-
-    public ELEMENT_DATA: UpdateGuarantorsDto[] = [];
-    public dataSource = new MatTableDataSource<UpdateGuarantorsDto>(this.ELEMENT_DATA);
-    public displayedColumns = ['guarantorId', 'percent', 'edit'];
-
-    public slectedGuarantorIndex: number;
+    public searchKey: FormControl = new FormControl('');
+    public selectedGuarantor: any;
     public guarantorForm: FormGroup;
+    public data: Array<any> = [];
+    public column: Array<Column> = [];
 
     constructor(
-        private guarantorServise: GuarantorsService,
+        private _guarantorsService: GuarantorsService,
         public matDialogRef: MatDialogRef<GuarantorsComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private fb: FormBuilder
+        private formBuilder: FormBuilder
     ) {
-        this.ELEMENT_DATA = this._data.Guarantors;
-        if (!this.ELEMENT_DATA) {
-            this.ELEMENT_DATA = [];
-        }
-        this.dataSource = new MatTableDataSource<UpdateGuarantorsDto>(this.ELEMENT_DATA);
-
-        this.guarantorServise.getGuarantors(this.searchkey.value).subscribe((res) => {
+        this._guarantorsService.getGuarantors(this.searchKey.value).subscribe((res) => {
             this.guarantors = res;
         });
 
-        this.guarantorForm = this.fb.group({
+        this.guarantorForm = this.formBuilder.group({
             guarantorId: ['', [Validators.required]],
             guarantorName: ['', []],
             percent: ['', [Validators.required, Validators.min(1)]],
@@ -48,63 +39,78 @@ export class GuarantorsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.searchkey.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((searchText) => {
-            this.guarantorServise.getGuarantors(this.searchkey.value).subscribe((res) => {
+        this.searchKey.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe(() => {
+            this._guarantorsService.getGuarantors(this.searchKey.value).subscribe((res) => {
                 this.guarantors = res;
             });
         });
 
-        this.matDialogRef.beforeClosed().subscribe((r) => {
-            this.matDialogRef.close(this.ELEMENT_DATA);
+        this.matDialogRef.beforeClosed().subscribe(() => {
+            this.matDialogRef.close(this.data);
         });
+
+        this.initColumns();
+        this.get();
     }
 
-    editGuarantor(Guarantor, index): void {
-        // this.guarantorForm.controls['guarantorName'].setValue(this.guarantorForm.controls['guarantorId'].value.guarantor, { emitEvent: false });
-        // this.guarantorForm.controls['guarantorId'].setValue(this.guarantorForm.controls['guarantorId'].value.id);
-
-        this.slectedGuarantorIndex = index;
-        this.guarantorForm.controls['guarantorId'].setValue({
-            guarantor: Guarantor.guarantorName,
-            id: Guarantor.guarantorId,
-        });
-        this.guarantorForm.controls['percent'].setValue(Guarantor.percent);
+    initColumns(): void {
+        this.column = [
+            {
+                id: 'guarantorName',
+                name: 'ضامن',
+                type: 'string',
+            },
+            {
+                id: 'percent',
+                name: 'ارزش',
+                type: 'number',
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editGuarantor(row) },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.deleteCollate(row) },
+                ],
+            },
+        ];
     }
 
-    clear(): void {
-        this.slectedGuarantorIndex = null;
-        this.guarantorForm.controls['guarantorId'].setValue(0);
-        this.guarantorForm.controls['percent'].setValue(0);
+    get(): void {
+        this.data = this._data.Guarantors;
+        if (!this.data) {
+            this.data = [];
+        }
+    }
+
+    editGuarantor(Guarantor): void {
+        this.selectedGuarantor = Guarantor;
+        this.guarantorForm.patchValue(Guarantor);
     }
 
     edit(): void {
-        const guarantors = this.ELEMENT_DATA;
-        const findedGuarantor = guarantors[this.slectedGuarantorIndex];
-
-        findedGuarantor.guarantorId = this.guarantorForm.controls['guarantorId'].value;
-        findedGuarantor.percent = this.guarantorForm.controls['percent'].value;
-        this.dataSource = new MatTableDataSource<UpdateGuarantorsDto>(this.ELEMENT_DATA);
-
+        _.assign(this.selectedGuarantor, this.guarantorForm.value)
         this.clear();
     }
 
-    deleteCollat(index): void {
-        const guarantors = this.ELEMENT_DATA;
-
-        if (index > -1) {
-            guarantors.splice(index, 1);
-        }
-
-        this.dataSource = new MatTableDataSource<UpdateGuarantorsDto>(this.ELEMENT_DATA);
+    deleteCollate(row): void {
+        _.remove(this.data, { ...row });
     }
 
-    addCollat(): void {
+    addCollate(): void {
         this.guarantorForm.controls['guarantorName'].setValue(this.guarantorForm.controls['guarantorId'].value.guarantor, {
             emitEvent: false,
         });
         this.guarantorForm.controls['guarantorId'].setValue(this.guarantorForm.controls['guarantorId'].value.id);
-        this.ELEMENT_DATA.push(this.guarantorForm.value);
-        this.dataSource = new MatTableDataSource<UpdateGuarantorsDto>(this.ELEMENT_DATA);
+        this.data.push({ id: Math.random(), ...this.guarantorForm.value });
         this.clear();
+    }
+
+    clear(): void {
+        this.selectedGuarantor = null;
+        this.guarantorForm.reset();
     }
 }

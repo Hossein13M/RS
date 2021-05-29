@@ -1,0 +1,33 @@
+<div class="dialog-container">
+    <div title="{{ dialogData.fund ? 'ویرایش' : 'ایجاد' }}" appDialogHeader>
+        <mat-icon (click)="close()" class="icon-header">close</mat-icon>
+    </div>
+    <form [formGroup]="form" class="setting-form-container" dir="rtl">
+        <div class="setting-form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>نام صندوق</mat-label>
+                <input formControlName="fundName" matInput /> </mat-form-field
+            ><mat-form-field appearance="outline">
+                <mat-label>حد پایین</mat-label>
+                <input formControlName="down" matInput type="number" /> </mat-form-field
+            ><mat-form-field appearance="outline">
+                <mat-label>حد بالا</mat-label>
+                <input formControlName="up" matInput type="number" />
+            </mat-form-field>
+        </div>
+        <div class="setting-btn-container">
+            <button (click)="close()" style="margin-left: 10px" color="warn" mat-raised-button>
+                <mat-icon>close</mat-icon>
+                انصراف
+            </button>
+            <button *ngIf="!dialogData.fund" (click)="createFund()" [disabled]="form.invalid" color="accent" mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button *ngIf="dialogData.fund" (click)="updateFund()" [disabled]="form.invalid" color="accent" mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

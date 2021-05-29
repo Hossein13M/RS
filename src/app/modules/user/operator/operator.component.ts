@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { ResponseOperatorItemDto } from 'app/services/API/models';
 import { OperatorManagmentService } from 'app/services/App/user/operator-managment.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, mapTo } from 'rxjs/operators';
 import { AddOperatorComponent } from './add-operator/add-operator.component';
+import { Column } from '#shared/components/table/table.model';
 
 @Component({
     selector: 'app-operator',
@@ -16,26 +16,30 @@ import { AddOperatorComponent } from './add-operator/add-operator.component';
 })
 export class OperatorComponent implements OnInit, AfterViewInit {
     operators: ResponseOperatorItemDto[] = [];
-    ELEMENT_DATA: ResponseOperatorItemDto[] = [];
     searchInput: FormControl;
     dialogRef: any;
     loading = false;
-    dataSource = new MatTableDataSource<ResponseOperatorItemDto>(this.ELEMENT_DATA);
+    dataSource: Array<ResponseOperatorItemDto>;
     displayedColumns = ['firstName', 'lastName', 'email', 'mobileNumber', 'userName', 'status', 'edit'];
+    column: Array<Column>;
+    @ViewChild('status') statusRef: TemplateRef<any>;
 
     constructor(private operatorService: OperatorManagmentService, private _matDialog: MatDialog) {
         this.searchInput = new FormControl('');
     }
 
     ngOnInit(): void {
-        this.operatorService.operators.subscribe((res) => {
+        this.operatorService.operators.pipe(map(response => {
+            return response.map((operator) => {
+                return { ...operator, status: operator.mobileNumber }
+            })
+        })).subscribe((res) => {
             this.operators = res;
-            this.ELEMENT_DATA = res;
-            this.dataSource = new MatTableDataSource<ResponseOperatorItemDto>(this.ELEMENT_DATA);
+            this.dataSource = res;
         });
 
         this.operatorService.getOperators(this.searchInput.value).subscribe(() => {
-            //loading
+            // loading
         });
 
         this.searchInput.valueChanges
@@ -43,9 +47,54 @@ export class OperatorComponent implements OnInit, AfterViewInit {
             .subscribe((searchText) => this.operatorService.getOperators(searchText).subscribe((i) => {}));
     }
 
+    initColumns(): void {
+        this.column = [
+            {
+                id: 'firstName',
+                name: 'نام',
+                type: 'string',
+            },
+            {
+                id: 'lastName',
+                name: 'نام خانوادگی',
+                type: 'string',
+            },
+            {
+                id: 'email',
+                name: 'پست الکترونیک',
+                type: 'string',
+            },
+            {
+                id: 'mobileNumber',
+                name: 'تلفن همراه',
+                type: 'string',
+            },
+            {
+                id: 'userName',
+                name: 'نام کاربری',
+                type: 'string',
+            },
+            {
+                id: 'status',
+                name: 'وضعیت',
+                type: 'custom',
+                cellTemplate: this.statusRef,
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [{ name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editOperator(row) }],
+            },
+        ];
+    }
+
     ngAfterViewInit(): void {
         document.getElementById('table-container').addEventListener('scroll', this.scroll.bind(this), true);
         // document.addEventListener('scroll', this.scroll, true); //third parameter
+        this.initColumns();
     }
 
     scroll(event): void {
@@ -82,11 +131,5 @@ export class OperatorComponent implements OnInit, AfterViewInit {
         this.dialogRef = this._matDialog.open(AddOperatorComponent, { data: { operator: operator, action: 'edit' } });
 
         // this.dialogRef.afterClosed().subscribe(response => {});
-    }
-
-    delete(partyID): void {
-        // this.operatorService.(partyID).subscribe(res => {
-        //     // loading
-        // })
     }
 }

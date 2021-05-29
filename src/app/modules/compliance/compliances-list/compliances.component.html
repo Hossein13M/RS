@@ -1,0 +1,88 @@
+<div class="page-layout" dir="rtl">
+    <!-- HEADER -->
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
+        <!-- APP TITLE -->
+        <div fxLayout="row wrap" fxLayoutAlign="between center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> تعریف حدود صندوق‌ها </span>
+            </div>
+        </div>
+        <button mat-raised-button color="primary" (click)="create()">
+            <mat-icon>add</mat-icon>
+            ایجاد
+        </button>
+        <!-- / APP TITLE -->
+    </div>
+    <!-- / HEADER -->
+
+    <div id="table-container">
+        <div style="width: 100%">
+            <app-table
+                [data]="data"
+                [columns]="column"
+                [paginationSettings]="{ mode: 'backend' }"
+                [paginationObj]="pagination"
+                (searchCall)='search($event)'
+                (paginationChange)="paginationControl($event)"
+            ></app-table>
+            <ng-container *ngIf="data?.length === 0">
+                <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                    <img width="140px" height="140px" src='../../../../assets/images/no-data.svg' />
+                    <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<!--    <div class="container" dir="rtl">
+        <form [formGroup]="complianceForm" class="complianceForm fuse-card" fxLayout="row wrap" fxLayoutAlign="center center">
+            <div fxLayout="row wrap" style="flex-grow: 1">
+                <mat-form-field appearance="outline">
+                    <input matInput class="form-field" [formControl]="complianceForm.controls['code']" placeholder="کد " required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" style="flex-grow: 1">
+                    <input matInput class="form-field" [formControl]="complianceForm.controls['title']" placeholder="عنوان" required />
+                </mat-form-field>
+            </div>
+
+<div class="actions" fxLayout="column wrap" fxLayoutGap="5px" fxLayoutAlign="center center">
+    <button
+        mat-raised-button
+        *ngIf="!slectedCompliance"
+        [disabled]="complianceForm.invalid"
+        (click)="addCompliance()"
+        class="save-button"
+        style="width: 200px; height: 40px; margin-bottom: 15px"
+    >
+        <mat-icon class="mat-18">add_circle</mat-icon>
+        افزودن
+    </button>
+
+    <button
+        mat-raised-button
+        *ngIf="slectedCompliance"
+        [disabled]="complianceForm.invalid"
+        (click)="edit()"
+        class="save-button"
+        color="primary"
+        style="width: 200px; height: 40px"
+    >
+        <mat-icon class="mat-18">create</mat-icon>
+        اصلاح
+    </button>
+    <button
+        mat-raised-button
+        *ngIf="slectedCompliance"
+        (click)="clear()"
+        class="save-button"
+        color="warn"
+        style="width: 200px; height: 40px"
+    >
+        <mat-icon>close</mat-icon>
+        انصراف
+    </button>
+</div>
+</form>
+</div>-->

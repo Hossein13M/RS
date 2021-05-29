@@ -1,4 +1,4 @@
-import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { OrganizationTypeSettingAddComponent } from '../organization-type-settin
 export class OrganizationTypeSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public organizationTypeService: OrganizationTypeService) {}
 

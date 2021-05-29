@@ -48,7 +48,6 @@ import { UnderWriterComponent } from './bource-instrument-detail/under-writer/un
 import { MarketMakerComponent } from './bource-instrument-detail/market-maker/market-maker.component';
 import { BourceInstrumentDetailComponent } from './bource-instrument-detail/bource-instrument-detail.component';
 import { FuseSharedModule } from '../../../@fuse/shared.module';
-import { GlService } from '../gl/gl.service';
 
 @NgModule({
     declarations: [
