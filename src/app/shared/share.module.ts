@@ -27,6 +27,8 @@ import { UsualButtonDirective } from './directives/usual-button.directive';
 import { MaterialModule } from './material.module';
 import { MaterialPersianDateAdapter, PERSIAN_DATE_FORMATS } from './material.persian-date.adapter';
 import { PipesModule } from '#shared/pipes/pipes.module';
+import { TableSavePdfComponent } from '#shared/components/table/table-save-pdf/table-save-pdf.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
     declarations: [
@@ -42,6 +44,7 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         TableComponent,
         TableSaveCSVComponent,
         TableSaveXLSComponent,
+        TableSavePdfComponent,
         TableDialogComponent,
         TreeSelectComponent,
         SearchSelectComponent,
@@ -62,6 +65,7 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         ClipboardModule,
         ChartsModule,
         PipesModule,
+        NgxPrintModule
     ],
     exports: [
         MailCardComponent,

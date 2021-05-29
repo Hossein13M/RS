@@ -1,4 +1,4 @@
-import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -15,7 +15,7 @@ import { OrganizationSupervisorAddComponent } from '../organization-supervisor-a
 })
 export class OrganizationSupervisorListComponent implements OnInit {
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
 
     constructor(private matDialog: MatDialog, public organizationSupervisorService: OrganizationSupervisorService) {}
 

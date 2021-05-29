@@ -8,7 +8,7 @@ import { FlowsService } from 'app/services/App/flow/flow.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AddFlowCategoryComponent } from '../flow-category/add-flow-category/add-flow-category.component';
 import { AddFlowComponent } from './add-flow/add-flow.component';
-import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, TableSearchMode } from '#shared/components/table/table.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,7 +22,7 @@ export class FlowsComponent implements OnInit {
     ELEMENT_DATA: GetFlowResponseDto[] = [];
     searchInput: FormControl;
     dialogRef: any;
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     dataSource = new MatTableDataSource<GetFlowResponseDto>(this.ELEMENT_DATA);
     data = [];
     displayedColumns = ['name', 'categoryId'];

@@ -99,5 +99,4 @@ export class GlService {
     public getAllFundTypes(): Observable<any> {
         return this.http.get('/api/v1/fund-type' + '?limit=1000&skip=0');
     }
-
 }

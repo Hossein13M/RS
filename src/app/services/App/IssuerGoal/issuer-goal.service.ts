@@ -3,6 +3,15 @@ import { IssuerDto } from 'app/services/API/models';
 import { IssuerGoalService } from 'app/services/API/services';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+import { IssuerLicense } from '../../../modules/system-settings/issuer-license/issuer-license.model';
+
+export interface IssuerGoal {
+    id: number;
+    name: string;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +32,7 @@ export class IssuerGoalsService {
      **  end inital paging
      */
 
-    constructor(private issuerGoalService: IssuerGoalService) {}
+    constructor(private issuerGoalService: IssuerGoalService, private http: HttpClient) {}
 
     getIssuerGoal(searchKeyword?: string): Observable<Array<IssuerDto>> {
         let param = {
@@ -136,5 +145,10 @@ export class IssuerGoalsService {
                 this.issuerGoalList.next(issuerGoalList);
             })
         );
+    }
+
+    public $getIssuerGoal(paginationParams?, searchParams?): Observable<ResponseWithPagination<IssuerGoal>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get<ResponseWithPagination<IssuerGoal>>('/api/v1/issuer-goal', { params });
     }
 }

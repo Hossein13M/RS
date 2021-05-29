@@ -7,7 +7,7 @@ import { FindFlowInstanceResponseDto } from 'app/services/API/models';
 import { FlowsInstanceService } from 'app/services/App/flow/flow-instance.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AddFlowInstanceComponent } from './add-flow-instance/add-flow-instance.component';
-import { ColumnModel, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, TableSearchMode } from '#shared/components/table/table.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -20,7 +20,7 @@ export class FlowInstanceComponent implements OnInit {
     public flowInstancesList: FindFlowInstanceResponseDto[] = [];
     public ELEMENT_DATA: FindFlowInstanceResponseDto[] = [];
     public SearchInput: FormGroup;
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     dialogRef: any;
     loading = false;
     dataSource = [];

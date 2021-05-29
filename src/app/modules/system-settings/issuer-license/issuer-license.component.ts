@@ -1,10 +1,18 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { IssuerDto } from 'app/services/API/models';
-import { IssuerLicenceService } from 'app/services/App/IssuerLicence/issuer-licence.service';
+import { IssuerLicense } from './issuer-license.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { PaginationModel } from '#shared/models/pagination.model';
+import * as _ from 'lodash';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { IssuerLicenceService } from '../../../services/App/IssuerLicence/issuer-licence.service';
+
+enum StateType {
+    'LOADING',
+    'PRESENT',
+    'FAILED',
+}
 
 @Component({
     selector: 'issuer-license',
@@ -12,80 +20,122 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
     styleUrls: ['./issuer-license.component.scss'],
     animations: fuseAnimations,
 })
-export class IssuerLicenseComponent implements OnInit, AfterViewInit {
-    issuerList: IssuerDto[] = [];
-    ELEMENT_DATA: IssuerDto[] = [];
+export class IssuerLicenseComponent implements OnInit {
+    searchFormGroup: FormGroup;
+    data: Array<IssuerLicense> = [];
+    column: Array<Column>;
+    pagination: PaginationModel = { skip: 0, limit: 15, total: 100 };
+    status: StateType = StateType.LOADING;
+    public issuerName: FormControl = new FormControl('');
+    selectedIssuer = 0;
 
-    searchInput: FormControl;
-    public issuerName: FormControl;
-    slectedIssuer = 0;
-
-    dialogRef: any;
-    loading = false;
-    dataSource = new MatTableDataSource<IssuerDto>(this.ELEMENT_DATA);
-    displayedColumns = ['name', 'operation'];
-
-    constructor(private issuerLicenceService: IssuerLicenceService) {
-        this.searchInput = new FormControl('');
-        this.issuerName = new FormControl('');
-    }
+    constructor(private issuerLicenceService: IssuerLicenceService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
-        this.issuerLicenceService.issuerLicenseList.subscribe((res) => {
-            this.issuerList = res;
-            this.ELEMENT_DATA = res;
-            this.dataSource = new MatTableDataSource<IssuerDto>(this.ELEMENT_DATA);
+        this.initColumns();
+        this.initSearch();
+        this.get();
+    }
+
+    initColumns(): void {
+        this.column = [
+            {
+                name: 'مجوز سازمان',
+                id: 'name',
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER,
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editIssuer(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.remove(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
         });
-
-        this.issuerLicenceService.getIssuers(this.searchInput.value).subscribe(() => {});
-
-        this.searchInput.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((searchText) => {
-            this.issuerLicenceService.getIssuers(searchText).subscribe(() => {});
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys,
         });
     }
 
-    ngAfterViewInit(): void {
-        document.getElementById('issuerLicence').addEventListener('scroll', this.scroll.bind(this), true);
-    }
-
-    scroll(): void {
-        const table = document.getElementById('issuerLicence');
-        const scrollPosition = table.scrollHeight - (table.scrollTop + table.clientHeight);
-
-        if (!this.loading) {
-            if (scrollPosition < 80) {
-                if (this.issuerLicenceService.skip <= this.issuerLicenceService.total) {
-                    this.loading = true;
-                    this.issuerLicenceService.getIssuers(this.searchInput.value).subscribe(() => {
-                        this.loading = false;
-                    });
-                }
-            }
-        } else {
+    search(searchFilter: any): void {
+        if (!searchFilter) {
             return;
         }
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+        this.get(this.searchFormGroup.value);
+    }
+
+    paginationControl(pageEvent?: PaginationChangeType): void {
+        console.log(pageEvent);
+        if (this.status === StateType.LOADING) {
+            return;
+        }
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(search?: any): void {
+        this.status = StateType.LOADING;
+        this.issuerLicenceService
+            .getIssuerLicense(this.pagination, search)
+            .pipe(debounceTime(500), distinctUntilChanged())
+            .subscribe((response) => {
+                this.data = [...this.data, ...response.items];
+                this.pagination.limit = response.limit;
+                this.pagination.total = response.total;
+                this.status = StateType.PRESENT;
+            });
     }
 
     addIssuer(): void {
-        this.issuerLicenceService.addIssuer(this.issuerName.value).subscribe(() => {});
+        this.issuerLicenceService.addIssuer(this.issuerName.value).subscribe();
         this.issuerName.reset();
     }
 
     editIssuer(issuer): void {
-        this.slectedIssuer = issuer.id;
+        this.selectedIssuer = issuer.id;
         this.issuerName.setValue(issuer.name);
     }
 
     clear(): void {
-        this.slectedIssuer = 0;
+        this.selectedIssuer = 0;
         this.issuerName.setValue('');
     }
 
     edit(): void {
-        this.issuerLicenceService.editIssuer(this.slectedIssuer, this.issuerName.value).subscribe((res) => {});
+        this.issuerLicenceService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe();
     }
 
     remove(issuer): void {
-        this.issuerLicenceService.deleteIssuer(issuer.id).subscribe(() => {});
+        this.issuerLicenceService.deleteIssuer(issuer.id).subscribe();
     }
 }

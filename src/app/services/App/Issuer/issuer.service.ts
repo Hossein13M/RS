@@ -3,6 +3,14 @@ import { IssuerDto } from 'app/services/API/models';
 import { IssuerService } from 'app/services/API/services';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+
+export interface Issuer {
+    id: number;
+    name: string;
+}
 
 @Injectable()
 export class IssuersService {
@@ -21,7 +29,7 @@ export class IssuersService {
      **  end inital paging
      */
 
-    constructor(private issuerService: IssuerService) {}
+    constructor(private issuerService: IssuerService, private http: HttpClient) {}
 
     getIssuers(searchKeyword?: string): Observable<any> {
         let param = {};
@@ -134,5 +142,10 @@ export class IssuersService {
                 this.issuerList.next(issuerList);
             })
         );
+    }
+
+    public $getIssuers(paginationParams?, searchParams?): Observable<ResponseWithPagination<Issuer>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get<ResponseWithPagination<Issuer>>('/api/v1/issuer', { params });
     }
 }
