@@ -9,42 +9,13 @@
     </mat-toolbar>
 
     <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" class="fuse-card">
-            <!-- firstName Column -->
-            <ng-container matColumnDef="underwriterName">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>پذیره نویس</mat-header-cell>
-                <mat-cell *matCellDef="let underWriter" fxHide fxShow.gt-sm>
-                    <p class="email text-truncate">
-                        {{ underWriter?.underwriterName }}
-                    </p>
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="percent">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>درصد</mat-header-cell>
-                <mat-cell *matCellDef="let underWriter" fxHide fxShow.gt-sm>
-                    <p class="email text-truncate">
-                        {{ underWriter.percent }}
-                    </p>
-                </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="edit">
-                <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
-                <mat-cell *matCellDef="let underWriter; let i = index" fxHide fxShow.gt-sm>
-                    <button mat-icon-button color="primary" (click)="editUnderWriter(underWriter, i)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-
-                    <button mat-icon-button color="warn" (click)="delete(i)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
-        </mat-table>
+        <app-table [data]="data" [columns]="column" [paginationSettings]="{ mode: 'local' }"></app-table>
+        <ng-container *ngIf="data?.length === 0">
+            <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                <img width="140px" height="140px" src="../../../../../assets/images/no-data.svg" />
+                <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
+            </div>
+        </ng-container>
 
         <form [formGroup]="underWriterForm" class="form" fxLayout="row wrap" fxLayoutAlign="space-between center">
             <div fxFlex="49">
@@ -77,17 +48,17 @@
             </div>
 
             <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
-                <button mat-button *ngIf="selectedUnderWriterIndex == null" [disabled]="underWriterForm.invalid" (click)="add()" color="primary">
+                <button mat-button *ngIf="selectedUnderWriter == null" [disabled]="underWriterForm.invalid" (click)="add()" color="primary">
                     <mat-icon class="mat-18">add_circle</mat-icon>
                     افزودن
                 </button>
 
-                <button mat-button *ngIf="selectedUnderWriterIndex != null" [disabled]="underWriterForm.invalid" (click)="edit()" color="primary">
+                <button mat-button *ngIf="selectedUnderWriter != null" [disabled]="underWriterForm.invalid" (click)="edit()" color="primary">
                     <mat-icon class="mat-18">create</mat-icon>
                     اصلاح
                 </button>
 
-                <button mat-button *ngIf="selectedUnderWriterIndex != null" (click)="clear()" color="warn">
+                <button mat-button *ngIf="selectedUnderWriter != null" (click)="clear()" color="warn">
                     <mat-icon class="mat-18">clear</mat-icon>
                     انصراف
                 </button>
