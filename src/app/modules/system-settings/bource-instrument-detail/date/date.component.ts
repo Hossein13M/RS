@@ -20,7 +20,7 @@ export class DateComponent implements OnInit {
     column: Array<Column> = [];
     pagination: PaginationModel = { skip: 0, limit: 5, total: 100 };
     public selectedDate: number;
-    public DateForm: FormGroup;
+    public dateForm: FormGroup;
 
     constructor(
         public matDialogRef: MatDialogRef<DateComponent>,
@@ -28,7 +28,7 @@ export class DateComponent implements OnInit {
         private dateService: IssueStartEndDateService,
         private formBuilder: FormBuilder
     ) {
-        this.DateForm = this.formBuilder.group({
+        this.dateForm = this.formBuilder.group({
             startDate: ['', [Validators.required]],
             endDate: ['', [Validators.required]],
         });
@@ -108,25 +108,19 @@ export class DateComponent implements OnInit {
         this.dateService
             .addDate(
                 this._data.id,
-                this.DateForm.controls['startDate'].value.locale('en').format('YYYY-MM-DD'),
-                this.DateForm.controls['endDate'].value.locale('en').format('YYYY-MM-DD')
+                this.dateForm.controls['startDate'].value.locale('en').format('YYYY-MM-DD'),
+                this.dateForm.controls['endDate'].value.locale('en').format('YYYY-MM-DD')
             )
             .subscribe(() => {});
         this.clear();
-    }
-
-    clear(): void {
-        this.selectedDate = null;
-        this.DateForm.controls['startDate'].setValue('');
-        this.DateForm.controls['endDate'].setValue('');
     }
 
     edit(): void {
         this.dateService
             .editDate(
                 this.selectedDate,
-                moment(this.DateForm.controls['startDate'].value).locale('en').format('YYYY-MM-DD'),
-                moment(this.DateForm.controls['endDate'].value).locale('en').format('YYYY-MM-DD')
+                moment(this.dateForm.controls['startDate'].value).locale('en').format('YYYY-MM-DD'),
+                moment(this.dateForm.controls['endDate'].value).locale('en').format('YYYY-MM-DD')
             )
             .subscribe(() => {});
         this.clear();
@@ -134,11 +128,16 @@ export class DateComponent implements OnInit {
 
     editDate(date): void {
         this.selectedDate = date.id;
-        this.DateForm.controls['startDate'].setValue(new Date(date.startDate));
-        this.DateForm.controls['endDate'].setValue(new Date(date.endDate));
+        this.dateForm.controls['startDate'].setValue(new Date(date.startDate));
+        this.dateForm.controls['endDate'].setValue(new Date(date.endDate));
     }
 
     deleteDate(id): void {
         this.dateService.delete(id).subscribe();
+    }
+
+    clear(): void {
+        this.selectedDate = null;
+        this.dateForm.reset();
     }
 }

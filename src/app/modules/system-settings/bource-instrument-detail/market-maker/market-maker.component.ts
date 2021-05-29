@@ -6,6 +6,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { MarketMakersDto } from 'app/services/API/models';
 import { IssuersService } from 'app/services/App/Issuer/issuer.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Column } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-market-maker',
@@ -18,11 +20,10 @@ export class MarketMakerComponent implements OnInit {
     public marketMakers = [];
     public searchKey: FormControl = new FormControl('');
 
-    public ELEMENT_DATA: MarketMakersDto[] = [];
-    public dataSource = new MatTableDataSource<MarketMakersDto>(this.ELEMENT_DATA);
-    public displayedColumns = ['markerMakerName', 'percent', 'edit'];
+    public data: Array<any> = [];
+    public column: Array<Column> = [];
 
-    public selectedMarketMakerIndex: number;
+    public selectedMarketMaker: any;
     public marketMakerForm: FormGroup;
 
     constructor(
@@ -31,12 +32,6 @@ export class MarketMakerComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private fb: FormBuilder
     ) {
-        this.ELEMENT_DATA = this._data.marketMakers;
-        if (!this.ELEMENT_DATA) {
-            this.ELEMENT_DATA = [];
-        }
-        this.dataSource = new MatTableDataSource<MarketMakersDto>(this.ELEMENT_DATA);
-
         this.marketMakerService.getIssuersList(this.searchKey.value).subscribe((res) => {
             this.marketMakers = res;
         });
@@ -55,46 +50,69 @@ export class MarketMakerComponent implements OnInit {
             });
         });
 
-        this.matDialogRef.beforeClosed().subscribe((r) => {
-            this.matDialogRef.close(this.ELEMENT_DATA);
+        this.matDialogRef.beforeClosed().subscribe(() => {
+            this.matDialogRef.close(this.data);
         });
+        this.initColumns();
+        this.get();
     }
 
-    editMarketMaker(marketMaker, index): void {
-        this.selectedMarketMakerIndex = index;
-        this.searchKey.setValue(marketMaker.markerMakerName);
-        this.marketMakerForm.controls['markerMakerName'].setValue(marketMaker.markerMakerName);
-        this.marketMakerForm.controls['markerMakerId'].setValue(marketMaker.markerMakerId);
-        this.marketMakerForm.controls['percent'].setValue(marketMaker.percent);
+    initColumns(): void {
+        this.column = [
+            {
+                id: 'markerMakerName',
+                name: 'بازارگردان',
+                type: 'string',
+            },
+            {
+                id: 'percent',
+                name: 'درصد',
+                type: 'string',
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editMarketMaker(row) },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
+                ],
+            },
+        ];
     }
 
-    clear(): void {
-        this.selectedMarketMakerIndex = null;
-        this.searchKey.setValue('');
-        this.marketMakerForm.controls['markerMakerName'].setValue('');
-        this.marketMakerForm.controls['markerMakerId'].setValue(0);
-        this.marketMakerForm.controls['percent'].setValue(0);
-    }
-
-    edit(): void {
-        const toEditMarketMaker = this.ELEMENT_DATA[this.selectedMarketMakerIndex];
-        toEditMarketMaker.markerMakerId = this.marketMakerForm.controls['markerMakerId'].value;
-        toEditMarketMaker.markerMakerName = this.marketMakerForm.controls['markerMakerName'].value;
-        toEditMarketMaker.percent = this.marketMakerForm.controls['percent'].value;
-        this.dataSource = new MatTableDataSource<MarketMakersDto>(this.ELEMENT_DATA);
-        this.clear();
-    }
-
-    delete(index): void {
-        if (index > -1) {
-            this.ELEMENT_DATA.splice(index, 1);
-            this.dataSource = new MatTableDataSource<MarketMakersDto>(this.ELEMENT_DATA);
+    get(): void {
+        this.data = this._data.marketMakers;
+        if (!this.data) {
+            this.data = [];
         }
     }
 
-    add(): void {
-        this.ELEMENT_DATA.push(this.marketMakerForm.value);
-        this.dataSource = new MatTableDataSource<MarketMakersDto>(this.ELEMENT_DATA);
+    editMarketMaker(marketMaker): void {
+        this.selectedMarketMaker = marketMaker;
+        this.searchKey.setValue(marketMaker.markerMakerName);
+        this.marketMakerForm.patchValue(marketMaker);
+    }
+
+    edit(): void {
+        _.assign(this.selectedMarketMaker, this.marketMakerForm.value);
         this.clear();
+    }
+
+    delete(row): void {
+        _.remove(this.data, { ...row });
+    }
+
+    add(): void {
+        this.data.push({ id: Math.random(), ...this.marketMakerForm.value });
+        this.clear();
+    }
+
+    clear(): void {
+        this.selectedMarketMaker = null;
+        this.searchKey.setValue('');
+        this.marketMakerForm.reset();
     }
 }

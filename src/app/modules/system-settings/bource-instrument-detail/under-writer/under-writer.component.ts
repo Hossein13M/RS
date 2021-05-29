@@ -6,6 +6,8 @@ import { fuseAnimations } from '@fuse/animations';
 import { UnderwritersDto } from 'app/services/API/models';
 import { IssuersService } from 'app/services/App/Issuer/issuer.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Column } from '#shared/components/table/table.model';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-under-writer',
@@ -18,25 +20,21 @@ export class UnderWriterComponent implements OnInit {
     public underWriters = [];
     public searchKey: FormControl = new FormControl('');
 
-    public ELEMENT_DATA: UnderwritersDto[] = [];
-    public dataSource = new MatTableDataSource<UnderwritersDto>(this.ELEMENT_DATA);
-    public displayedColumns = ['underwriterName', 'percent', 'edit'];
+    public data: Array<any> = [];
+    public column: Array<Column> = [];
 
-    public selectedUnderWriterIndex: number;
+    public selectedUnderWriter: any;
     public underWriterForm: FormGroup;
 
     constructor(
-        private underWriterService: IssuersService,
+        private _underWriterService: IssuersService,
         public matDialogRef: MatDialogRef<UnderWriterComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
-        private fb: FormBuilder
+        private formBuilder: FormBuilder
     ) {
-        this.ELEMENT_DATA = this._data.underwriters;
-        if (!this.ELEMENT_DATA) this.ELEMENT_DATA = [];
-        this.dataSource = new MatTableDataSource<UnderwritersDto>(this.ELEMENT_DATA);
-        this.underWriterService.getIssuersList(this.searchKey.value).subscribe((res) => (this.underWriters = res));
+        this._underWriterService.getIssuersList(this.searchKey.value).subscribe((res) => (this.underWriters = res));
 
-        this.underWriterForm = this.fb.group({
+        this.underWriterForm = this.formBuilder.group({
             underwriterId: ['', [Validators.required]],
             underwriterName: ['', [Validators.required]],
             percent: ['', [Validators.required, Validators.min(1), Validators.max(100)]],
@@ -46,46 +44,70 @@ export class UnderWriterComponent implements OnInit {
     ngOnInit(): void {
         this.searchKey.valueChanges
             .pipe(debounceTime(300), distinctUntilChanged())
-            .subscribe(() => this.underWriterService.getIssuersList(this.searchKey.value).subscribe((res) => (this.underWriters = res)));
+            .subscribe(() => this._underWriterService.getIssuersList(this.searchKey.value).subscribe((res) => (this.underWriters = res)));
 
-        this.matDialogRef.beforeClosed().subscribe((r) => this.matDialogRef.close(this.ELEMENT_DATA));
+        this.matDialogRef.beforeClosed().subscribe(() => this.matDialogRef.close(this.data));
+
+        this.initColumns();
+        this.get();
     }
 
-    editUnderWriter(underWriter, index): void {
-        this.selectedUnderWriterIndex = index;
-        this.searchKey.setValue(underWriter.underwriterName);
-        this.underWriterForm.controls['underwriterName'].setValue(underWriter.underwriterName);
-        this.underWriterForm.controls['underwriterId'].setValue(underWriter.underwriterId);
-        this.underWriterForm.controls['percent'].setValue(underWriter.percent);
+    initColumns(): void {
+        this.column = [
+            {
+                id: 'underwriterName',
+                name: 'پذیره نویس',
+                type: 'string',
+            },
+            {
+                id: 'percent',
+                name: 'درصد',
+                type: 'number',
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUnderWriter(row) },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
+                ],
+            },
+        ];
     }
 
-    clear(): void {
-        this.selectedUnderWriterIndex = null;
-        this.searchKey.setValue('');
-        this.underWriterForm.controls['underwriterName'].setValue('');
-        this.underWriterForm.controls['underwriterId'].setValue(0);
-        this.underWriterForm.controls['percent'].setValue(0);
-    }
-
-    edit(): void {
-        const toEditUnderWriter = this.ELEMENT_DATA[this.selectedUnderWriterIndex];
-        toEditUnderWriter.underwriterId = this.underWriterForm.controls['underwriterId'].value;
-        toEditUnderWriter.underwriterName = this.underWriterForm.controls['underwriterName'].value;
-        toEditUnderWriter.percent = this.underWriterForm.controls['percent'].value;
-        this.dataSource = new MatTableDataSource<UnderwritersDto>(this.ELEMENT_DATA);
-        this.clear();
-    }
-
-    delete(index): void {
-        if (index > -1) {
-            this.ELEMENT_DATA.splice(index, 1);
-            this.dataSource = new MatTableDataSource<UnderwritersDto>(this.ELEMENT_DATA);
+    get(): void {
+        this.data = this._data.underwriters;
+        if (!this.data) {
+            this.data = [];
         }
     }
 
-    add(): void {
-        this.ELEMENT_DATA.push(this.underWriterForm.value);
-        this.dataSource = new MatTableDataSource<UnderwritersDto>(this.ELEMENT_DATA);
+    editUnderWriter(underWriter): void {
+        this.selectedUnderWriter = underWriter;
+        this.searchKey.setValue(underWriter.underwriterName);
+        this.underWriterForm.patchValue(underWriter);
+    }
+
+    edit(): void {
+        _.assign(this.selectedUnderWriter, this.underWriterForm.value)
         this.clear();
+    }
+
+    delete(row): void {
+        _.remove(this.data, { ...row });
+    }
+
+    add(): void {
+        this.data.push({ id: Math.random(), ...this.underWriterForm.value });
+        this.clear();
+    }
+
+    clear(): void {
+        this.selectedUnderWriter = null;
+        this.searchKey.setValue('');
+        this.underWriterForm.reset();
     }
 }

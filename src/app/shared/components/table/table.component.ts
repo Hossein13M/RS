@@ -345,7 +345,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         if (index < 0 || !this.data || index > this.data.length) {
             return;
         }
-
+        if (!this.data[index]) return;
         this.data[index].tableSelect = !this.data[index].tableSelect;
     }
 

@@ -13,7 +13,8 @@
             <app-table
                 [data]="data"
                 [columns]="column"
-                [paginationSettings]="{ mode: 'local' }"
+                [paginationSettings]="{ mode: 'backend' }"
+                [paginationObj]="pagination"
                 (searchCall)='search($event)'
             ></app-table>
             <ng-container *ngIf="data?.length === 0">
@@ -24,7 +25,7 @@
             </ng-container>
         </div>
 
-        <form [formGroup]="DateForm" class="form" fxLayout="row wrap" fxLayoutAlign="space-between center">
+        <form [formGroup]="dateForm" class="form" fxLayout="row wrap" fxLayoutAlign="space-between center">
             <div fxFlex="49">
                 <mat-form-field class="full-wid" appearance="outline">
                     <mat-label>تاریخ شروع پذیره نویسی</mat-label>
@@ -42,7 +43,7 @@
                         (click)="start2.open()"
                         matInput
                         formControlName="endDate"
-                        [min]="DateForm.get('startDate').value"
+                        [min]="dateForm.get('startDate').value"
                         [matDatepicker]="start2"
                     />
                     <mat-datepicker-toggle matSuffix [for]="start2"></mat-datepicker-toggle>
@@ -52,12 +53,12 @@
             </div>
 
             <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
-                <button mat-button *ngIf="selectedDate == null" [disabled]="DateForm.invalid" (click)="add()">
+                <button mat-button *ngIf="selectedDate == null" [disabled]="dateForm.invalid" (click)="add()">
                     <mat-icon class="mat-18">add_circle</mat-icon>
                     افزودن
                 </button>
 
-                <button mat-button *ngIf="selectedDate != null" [disabled]="DateForm.invalid" (click)="edit()">
+                <button mat-button *ngIf="selectedDate != null" [disabled]="dateForm.invalid" (click)="edit()">
                     <mat-icon class="mat-18">create</mat-icon>
                     اصلاح
                 </button>
