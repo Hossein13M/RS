@@ -23,7 +23,7 @@ const routes: Routes = [
     },
     {
         path: `${ORRoutePrefix}/management`,
-        loadChildren: () => import('./op-risk-managment/op-risk-managment.module').then((m) => m.OpRiskManagmentModule),
+        loadChildren: () => import('./op-risk-management/op-risk-management.module').then((m) => m.OpRiskManagementModule),
     },
     {
         path: `${ORRoutePrefix}/reporting`,

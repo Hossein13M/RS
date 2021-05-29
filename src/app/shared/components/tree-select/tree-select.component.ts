@@ -27,6 +27,7 @@ import { Tree, TreeFlatNode, TreeNode } from './tree-select.types';
 })
 export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Validator {
     @Input() data;
+    @Input() maxSelect = -1;
     @Input() selectedValueFieldName = 'titleFA';
     tree: Tree;
     show = false;
