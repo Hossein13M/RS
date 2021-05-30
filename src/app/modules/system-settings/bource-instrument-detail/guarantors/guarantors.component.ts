@@ -92,7 +92,8 @@ export class GuarantorsComponent implements OnInit {
     }
 
     edit(): void {
-        _.assign(this.selectedGuarantor, this.guarantorForm.value)
+        _.assign(this.selectedGuarantor, this.guarantorForm.value);
+        this.initColumns();
         this.clear();
     }
 
