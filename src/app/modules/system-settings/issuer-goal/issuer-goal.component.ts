@@ -112,10 +112,14 @@ export class IssuerGoalComponent implements OnInit {
                 this.pagination.total = response.total;
                 this.status = StateType.PRESENT;
             });
+        this.initColumns();
     }
 
     addIssuer(): void {
-        this._issuerGoalsService.addIssuer(this.issuerName.value).subscribe();
+        this._issuerGoalsService.addIssuer(this.issuerName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
         this.issuerName.reset();
     }
 
@@ -130,10 +134,16 @@ export class IssuerGoalComponent implements OnInit {
     }
 
     edit(): void {
-        this._issuerGoalsService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe(() => {});
+        this._issuerGoalsService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 
     remove(issuer): void {
-        this._issuerGoalsService.deleteIssuer(issuer.id).subscribe(() => {});
+        this._issuerGoalsService.deleteIssuer(issuer.id).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 }
