@@ -102,6 +102,7 @@ export class DateComponent implements OnInit {
             this.pagination.limit = response.limit;
             this.pagination.total = response.total;
         });
+        this.initColumns();
     }
 
     add(): void {
@@ -111,7 +112,9 @@ export class DateComponent implements OnInit {
                 this.dateForm.controls['startDate'].value.locale('en').format('YYYY-MM-DD'),
                 this.dateForm.controls['endDate'].value.locale('en').format('YYYY-MM-DD')
             )
-            .subscribe(() => {});
+            .subscribe(() => {
+                this.get();
+            });
         this.clear();
     }
 
@@ -122,18 +125,22 @@ export class DateComponent implements OnInit {
                 moment(this.dateForm.controls['startDate'].value).locale('en').format('YYYY-MM-DD'),
                 moment(this.dateForm.controls['endDate'].value).locale('en').format('YYYY-MM-DD')
             )
-            .subscribe(() => {});
+            .subscribe(() => {
+                this.get();
+            });
         this.clear();
+    }
+
+    deleteDate(id): void {
+        this.dateService.delete(id).subscribe(() => {
+            this.get();
+        });
     }
 
     editDate(date): void {
         this.selectedDate = date.id;
         this.dateForm.controls['startDate'].setValue(new Date(date.startDate));
         this.dateForm.controls['endDate'].setValue(new Date(date.endDate));
-    }
-
-    deleteDate(id): void {
-        this.dateService.delete(id).subscribe();
     }
 
     clear(): void {

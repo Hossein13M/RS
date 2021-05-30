@@ -126,12 +126,16 @@ export class GuarantorComponent implements OnInit {
                 this.pagination.total = response.total;
                 this.status = StateType.PRESENT;
             });
+        this.initColumns();
     }
 
     addIssuer(): void {
         this._guarantorService
             .addGuarantor(this.guarantorForm.controls['guarantor'].value, this.guarantorForm.controls['type'].value, this.guarantorForm.controls['otc'].value)
-            .subscribe(() => {});
+            .subscribe(() => {
+                this.data = [];
+                this.get();
+            });
         this.guarantorForm.reset();
     }
 
@@ -157,10 +161,16 @@ export class GuarantorComponent implements OnInit {
                 this.guarantorForm.controls['type'].value,
                 this.guarantorForm.controls['otc'].value
             )
-            .subscribe(() => {});
+            .subscribe(() => {
+                this.data = [];
+                this.get();
+            });
     }
 
     remove(guarantor): void {
-        this._guarantorService.deleteGuarantor(guarantor.id).subscribe(() => {});
+        this._guarantorService.deleteGuarantor(guarantor.id).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 }

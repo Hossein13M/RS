@@ -113,10 +113,14 @@ export class IssuerComponent implements OnInit {
                 this.pagination.total = response.total;
                 this.status = StateType.PRESENT;
             });
+        this.initColumns();
     }
 
     addIssuer(): void {
-        this._issuerService.addIssuer(this.issuerName.value).subscribe(() => {});
+        this._issuerService.addIssuer(this.issuerName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
         this.issuerName.reset();
     }
 
@@ -131,10 +135,16 @@ export class IssuerComponent implements OnInit {
     }
 
     edit(): void {
-        this._issuerService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe(() => {});
+        this._issuerService.editIssuer(this.selectedIssuer, this.issuerName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 
     remove(issuer): void {
-        this._issuerService.deleteIssuer(issuer.id).subscribe(() => {});
+        this._issuerService.deleteIssuer(issuer.id).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 }

@@ -103,10 +103,14 @@ export class FundTypeComponent implements OnInit {
                 this.data = [...response];
                 this.status = StateType.PRESENT;
             });
+        this.initColumns();
     }
 
     addIssuer(): void {
-        this._fundTypeService.addFundType(this.fundTypeName.value).subscribe(() => {});
+        this._fundTypeService.addFundType(this.fundTypeName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
         this.fundTypeName.reset();
     }
 
@@ -121,10 +125,16 @@ export class FundTypeComponent implements OnInit {
     }
 
     edit(): void {
-        this._fundTypeService.editFundType(this.selectedIssuer, this.fundTypeName.value).subscribe(() => {});
+        this._fundTypeService.editFundType(this.selectedIssuer, this.fundTypeName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 
     remove(fundType): void {
-        this._fundTypeService.deleteFundType(fundType.id).subscribe(() => {});
+        this._fundTypeService.deleteFundType(fundType.id).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 }
