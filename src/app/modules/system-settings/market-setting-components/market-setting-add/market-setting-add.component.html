@@ -32,6 +32,13 @@
             <mat-form-field *ngIf="form.get('organizationType').value === 'F'" appearance="outline">
                 <mat-label>عنوان <span style="color: red">*</span> </mat-label>
                 <mat-select formControlName="symbolORFundTitle">
+                    <ngx-mat-select-search
+                        [clearSearchInput]="false"
+                        style="text-align: right"
+                        [noEntriesFoundLabel]="'یافت نشد'"
+                        [placeholderLabel]="'جستجو'"
+                        [formControl]="fundsSearchKeyword"
+                    ></ngx-mat-select-search>
                     <mat-option style="text-align: right" *ngFor="let c of funds" [value]="c?.id"> {{ c?.name }} </mat-option>
                 </mat-select>
                 <mat-error> وارد کردن این فیلد الزامی است. </mat-error>

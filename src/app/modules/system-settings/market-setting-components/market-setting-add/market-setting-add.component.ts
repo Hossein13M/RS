@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
@@ -8,20 +8,24 @@ import { BrokerSettingService } from 'app/services/feature-services/system-setti
 import { FundSettingService } from 'app/services/feature-services/system-setting-services/fund-setting.service';
 import { MarketSettingService } from 'app/services/feature-services/system-setting-services/market-setting.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-market-setting-add',
     templateUrl: './market-setting-add.component.html',
     styleUrls: ['./market-setting-add.component.scss'],
 })
-export class MarketSettingAddComponent implements OnInit {
+export class MarketSettingAddComponent implements OnInit, OnDestroy {
     form: FormGroup;
     public symbolORFundTitleSearchKeyword: FormControl = new FormControl('');
+    public fundsSearchKeyword: FormControl = new FormControl('');
     title = '';
     banks = [];
     funds = [];
     bonds = [];
     brokers = [];
+
+    private _unsubscribeAll: Subscription = new Subscription();
 
     constructor(
         public dialogRef: MatDialogRef<MarketSettingAddComponent>,
@@ -41,8 +45,8 @@ export class MarketSettingAddComponent implements OnInit {
         });
     }
 
-    getFunds(): void {
-        this.fundSettingService.getAllNoPaging().subscribe((res: any) => {
+    getFunds(searchKeyword?: string): void {
+        this.fundSettingService.get({ searchKeyword: searchKeyword ? searchKeyword : '' }).subscribe((res: any) => {
             this.funds = res.items;
         });
     }
@@ -60,8 +64,14 @@ export class MarketSettingAddComponent implements OnInit {
         this.getBrokers();
         this.getFunds();
         this.getBourse();
+        this.initSelectSearch();
+    }
 
-        this.symbolORFundTitleSearchKeyword.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => this.getBourse(res));
+    initSelectSearch(): void {
+        this._unsubscribeAll.add(this.fundsSearchKeyword.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => this.getFunds(res)));
+        this._unsubscribeAll.add(
+            this.symbolORFundTitleSearchKeyword.valueChanges.pipe(debounceTime(300), distinctUntilChanged()).subscribe((res) => this.getBourse(res))
+        );
     }
 
     createForm(): void {
@@ -97,5 +107,11 @@ export class MarketSettingAddComponent implements OnInit {
 
     close(): void {
         this.dialogRef.close(false);
+    }
+
+    ngOnDestroy(): void {
+        if (this._unsubscribeAll as Subscription) {
+            this._unsubscribeAll.unsubscribe();
+        }
     }
 }
