@@ -74,7 +74,6 @@ export class FlowAddComponent implements OnInit {
         data.steps.push({ users: step1 });
         data.steps.push({ users: step2 });
         data.steps.push({ users: step3 });
-        console.log(data);
         this.opRiskFlowService.createOPRiskFlow(data).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);

@@ -40,6 +40,7 @@ interface SimpleColumn {
 
 interface OperationColumn extends SimpleColumn {
     type: 'operation';
+    showSearchButtons: boolean;
     operations: Array<{
         name: string;
         icon: string;
