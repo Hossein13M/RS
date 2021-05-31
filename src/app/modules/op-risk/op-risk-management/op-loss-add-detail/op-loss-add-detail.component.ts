@@ -1,17 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/services/alert.service';
 import { OpRiskFlowService } from '../../op-risk-flow/op-risk-flow.service';
 import { OpLossManagementService } from '../op-loss-management.service';
 import { OpRiskManagementService } from '../op-risk-management.service';
+import { Subscription } from 'rxjs';
+
+interface DateLimit {
+    min: Date | null;
+    max: Date | null;
+}
 
 @Component({
     selector: 'app-op-loss-add-detail',
     templateUrl: './op-loss-add-detail.component.html',
     styleUrls: ['./op-loss-add-detail.component.scss'],
 })
-export class OpLossAddDetailComponent implements OnInit {
+export class OpLossAddDetailComponent implements OnInit, OnDestroy {
     view: any;
 
     stepIndex = 0;
@@ -34,6 +40,19 @@ export class OpLossAddDetailComponent implements OnInit {
     title = 'جزئیات زیان';
     selected: number;
 
+    public dateLimit: { lossEventDate: DateLimit; profileFinishingDate: DateLimit } = {
+        lossEventDate: {
+            max: null,
+            min: null,
+        },
+        profileFinishingDate: {
+            max: null,
+            min: null,
+        },
+    };
+
+    _unsubscribeAll: Subscription = new Subscription();
+
     constructor(
         private readonly opFlowService: OpRiskFlowService,
         private readonly opRiskManagementService: OpRiskManagementService,
@@ -53,7 +72,7 @@ export class OpLossAddDetailComponent implements OnInit {
     ngOnInit(): void {
         if (!this.opLossManagementService.lastLossStep1Data) {
             this.alertService.onError('داده‌ی زیانی موجود نیست.');
-            this.router.navigate(['/op-risk/management/loss']);
+            this.router.navigate(['/op-risk/management/loss']).then();
             return;
         }
 
@@ -66,6 +85,8 @@ export class OpLossAddDetailComponent implements OnInit {
             this.getDriverDetail();
             this.getRelatedRisk();
         }
+
+        this.dateValidation();
     }
 
     creatForm(): void {
@@ -170,7 +191,7 @@ export class OpLossAddDetailComponent implements OnInit {
             this.alertService.onError('ریسک اصلی را ذخیره نکرده اید. ابتدا ریسک اصلی را ذخیره کنید');
         } else {
             const createDetail = (stepOne: any) =>
-                this.opLossManagementService.createOpRiskLoseDetail(stepOne).subscribe((response) => {
+                this.opLossManagementService.createOpRiskLoseDetail(stepOne).subscribe(() => {
                     this.created = true;
                     this.alertService.onSuccess('جزئیات با موفقیت ذخیره شد');
                     this.form.disable();
@@ -196,8 +217,7 @@ export class OpLossAddDetailComponent implements OnInit {
     }
 
     calculateDate(): void {
-        const data =
-            (new Date(this.form.value.profileFinishingDate).getTime() - new Date(this.form.value.lossEventDate).getTime()) / (1000 * 3600 * 24);
+        const data = (new Date(this.form.value.profileFinishingDate).getTime() - new Date(this.form.value.lossEventDate).getTime()) / (1000 * 3600 * 24);
         this.form.get('life').setValue(data);
     }
 
@@ -221,25 +241,25 @@ export class OpLossAddDetailComponent implements OnInit {
         this.calculateDate();
 
         if (data.drivers) {
-            this.form.get('drivers').setValue(data.drivers.map((data) => data.treeNode.id));
+            this.form.get('drivers').setValue(data.drivers.map((_data) => _data.treeNode.id));
         } else {
             this.form.get('drivers').setValue([]);
         }
 
         if (data.recoveries) {
-            this.form.get('recoveries').setValue(data.recoveries.map((data) => data.treeNode.id));
+            this.form.get('recoveries').setValue(data.recoveries.map((_data) => _data.treeNode.id));
         } else {
             this.form.get('recoveries').setValue([]);
         }
 
         if (data.directLosses) {
-            this.form.get('directLosses').setValue(data.directLosses.map((data) => data.treeNode.id));
+            this.form.get('directLosses').setValue(data.directLosses.map((_data) => _data.treeNode.id));
         } else {
             this.form.get('directLosses').setValue([]);
         }
 
         if (data.inDirectLossesArray) {
-            this.form.get('inDirectLosses').setValue(data.inDirectLossesArray.map((data) => data.treeNode.id));
+            this.form.get('inDirectLosses').setValue(data.inDirectLossesArray.map((_data) => _data.treeNode.id));
         } else {
             this.form.get('inDirectLosses').setValue([]);
         }
@@ -264,13 +284,13 @@ export class OpLossAddDetailComponent implements OnInit {
                 });
             }
             for (let i = 0; i < response.length; i++) {
-                if (response[i].action == 'submit') {
+                if (response[i].action === 'submit') {
                     response[i].action = 'ثبت شده';
                 }
-                if (response[i].action == 'accept') {
+                if (response[i].action === 'accept') {
                     response[i].action = 'تایید شده';
                 }
-                if (response[i].action == 'reject') {
+                if (response[i].action === 'reject') {
                     response[i].action = 'رد شده';
                 }
                 this.stepIndex = response[i].toStep;
@@ -299,34 +319,55 @@ export class OpLossAddDetailComponent implements OnInit {
                 this.form.patchValue(el);
                 this.driverArray = el.drivers;
                 if (el.drivers) {
-                    this.form.get('drivers').setValue(el.drivers?.map((el) => el.treeNode.id));
+                    this.form.get('drivers').setValue(el.drivers?.map((_el) => _el.treeNode.id));
                 } else {
                     this.form.get('drivers').setValue([]);
                 }
 
                 this.recoveriesArray = el.recoveries;
                 if (el.recoveries) {
-                    this.form.get('recoveries').setValue(el.recoveries?.map((el) => el.treeNode.id));
+                    this.form.get('recoveries').setValue(el.recoveries?.map((_el) => _el.treeNode.id));
                 } else {
                     this.form.get('recoveries').setValue([]);
                 }
 
                 this.directLossesArray = el.directLosses;
                 if (el.directLosses) {
-                    this.form.get('directLosses').setValue(el.directLosses?.map((el) => el.treeNode.id));
+                    this.form.get('directLosses').setValue(el.directLosses?.map((_el) => _el.treeNode.id));
                 } else {
                     this.form.get('directLosses').setValue([]);
                 }
 
                 this.inDirectLossesArray = el.inDirectLosses;
-                this.form.get('inDirectLosses').setValue(el.inDirectLossesArray?.map((el) => el.treeNode.id));
+                this.form.get('inDirectLosses').setValue(el.inDirectLossesArray?.map((_el) => _el.treeNode.id));
                 if (el.inDirectLossesArray) {
-                    this.form.get('inDirectLosses').setValue(el.inDirectLossesArray?.map((el) => el.treeNode.id));
+                    this.form.get('inDirectLosses').setValue(el.inDirectLossesArray?.map((_el) => _el.treeNode.id));
                 } else {
                     this.form.get('inDirectLosses').setValue([]);
                 }
                 this.calculateDate();
             });
         });
+    }
+
+    private dateValidation(): void {
+        this._unsubscribeAll.add(
+            this.form.controls['profileFinishingDate'].valueChanges.subscribe((_date) => {
+                this.dateLimit.lossEventDate.max = new Date(_date._d);
+                console.log(this.dateLimit);
+            })
+        );
+        this._unsubscribeAll.add(
+            this.form.controls['lossEventDate'].valueChanges.subscribe((_date) => {
+                this.dateLimit.profileFinishingDate.min = new Date(_date._d);
+                console.log(this.dateLimit);
+            })
+        );
+    }
+
+    ngOnDestroy(): void {
+        if (this._unsubscribeAll as Subscription) {
+            this._unsubscribeAll.unsubscribe();
+        }
     }
 }
