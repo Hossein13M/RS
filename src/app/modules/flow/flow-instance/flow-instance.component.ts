@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { FindFlowInstanceResponseDto } from 'app/services/API/models';
 import { FlowsInstanceService } from 'app/services/App/flow/flow-instance.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { AddFlowInstanceComponent } from './add-flow-instance/add-flow-instance.component';
 import { Column, TableSearchMode } from '#shared/components/table/table.model';
 import { ActivatedRoute, Router } from '@angular/router';

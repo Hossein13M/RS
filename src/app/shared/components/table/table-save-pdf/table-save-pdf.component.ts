@@ -47,7 +47,6 @@ export class TableSavePdfComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         if (this._columns) {
             if (_.last(this._columns).type === 'operation') {
-                console.log('CALLED');
                 this._columns.pop();
             }
         }
