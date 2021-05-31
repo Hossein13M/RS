@@ -111,8 +111,8 @@
                 class="mx-auto"
             >
                 <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none" class="pb-20 mb-20">
-                    <app-table dir="ltr" [data]="showingData" [columns]="showingDataColumns"> </app-table>
-                    <app-table dir="ltr" [data]="showingData2" [columns]="showingDataColumns2"> </app-table>
+                    <app-table dir="ltr" [data]="showingData" [columns]="showingDataColumns" [paginationSettings]="{ mode: 'scroll' }"> </app-table>
+                    <app-table dir="ltr" [data]="showingData2" [columns]="showingDataColumns2" [paginationSettings]="{ mode: 'scroll' }"> </app-table>
                 </div>
             </div>
         </ng-container>
