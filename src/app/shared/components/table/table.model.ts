@@ -19,9 +19,9 @@ export interface PaginationChangeType {
 }
 
 // Column types
-export type Column = BaseColumn | OperationColumn | CustomCol | DetailColumn;
+export type Column = SimpleColumn | OperationColumn | CustomCol | DetailColumn;
 
-interface BaseColumn {
+interface SimpleColumn {
     id: string;
     name: string;
     type: 'string' | 'date' | 'price' | 'number' | 'custom' | 'operation' | 'rowDetail';
@@ -38,12 +38,12 @@ interface BaseColumn {
     convert?(value: any): any;
 }
 
-interface DetailColumn extends BaseColumn {
+interface DetailColumn extends SimpleColumn {
     type: 'rowDetail';
     doubleClickable: boolean;
 }
 
-interface OperationColumn extends BaseColumn {
+interface OperationColumn extends SimpleColumn {
     type: 'operation';
     operations: Array<{
         name: string;
@@ -54,7 +54,7 @@ interface OperationColumn extends BaseColumn {
     }>;
 }
 
-interface CustomCol extends BaseColumn {
+interface CustomCol extends SimpleColumn {
     type: 'custom';
     cellTemplate: TemplateRef<any>;
 }
