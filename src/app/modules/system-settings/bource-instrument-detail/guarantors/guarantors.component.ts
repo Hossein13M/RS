@@ -92,12 +92,14 @@ export class GuarantorsComponent implements OnInit {
     }
 
     edit(): void {
-        _.assign(this.selectedGuarantor, this.guarantorForm.value)
+        _.assign(this.selectedGuarantor, this.guarantorForm.value);
+        this.initColumns();
         this.clear();
     }
 
     deleteCollate(row): void {
         _.remove(this.data, { ...row });
+        this.initColumns();
     }
 
     addCollate(): void {
@@ -105,7 +107,8 @@ export class GuarantorsComponent implements OnInit {
             emitEvent: false,
         });
         this.guarantorForm.controls['guarantorId'].setValue(this.guarantorForm.controls['guarantorId'].value.id);
-        this.data.push({ id: Math.random(), ...this.guarantorForm.value });
+        this.data.unshift({ id: Math.random(), ...this.guarantorForm.value });
+        this.initColumns();
         this.clear();
     }
 

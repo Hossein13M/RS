@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { CollateralsDto } from 'app/services/API/models';
 import { Column } from '#shared/components/table/table.model';
@@ -90,16 +89,19 @@ export class CollaterallsComponent implements OnInit {
     }
 
     edit(): void {
-        _.assign(this.selectedCollateral, this.collateralForm.value)
+        _.assign(this.selectedCollateral, this.collateralForm.value);
+        this.initColumns();
         this.clear();
     }
 
     deleteCollate(row): void {
         _.remove(this.data, { ...row });
+        this.initColumns();
     }
 
     addCollate(): void {
         this.data.push({ id: Math.random(), ...this.collateralForm.value });
+        this.initColumns();
         this.clear();
     }
 

@@ -16,6 +16,7 @@
                 <div style='width: 100%;'>
 
                     <app-table
+                        *ngIf='data && data.length > 0'
                         [data]='data'
                         [columns]='column'
                         [paginationSettings]="{ mode: 'local'}">
