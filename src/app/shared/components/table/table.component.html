@@ -1,7 +1,7 @@
 <!--<div class="table-container" #container (scroll)='scroll($event)'>-->
 <div *ngIf="dataSource">
     <form [formGroup]="searchForm">
-        <div class="table-container" [ngStyle]="{'height': height}" (scroll)='scroll()' #container>
+        <div class="table-container" [ngStyle]="{ height: height }" (scroll)="scroll()" #container>
             <table mat-table #table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
                 <!-- Position Column -->
                 <ng-container matColumnDef="position">
@@ -106,7 +106,7 @@
 
                         <!-- Date -->
                         <div *ngIf="col.type == 'date'">
-                            {{ col.convert ? col.convert(el[col.id]) : el[col.id] | convertDate }}
+                            {{ col.convert ? col.convert(el[col.id]) : (el[col.id] | convertDate) }}
                         </div>
 
                         <!-- Custom -->
@@ -195,7 +195,6 @@
                     [ngClass]="{ 'table-selected': row.tableSelect }"
                     [@animate]="{ value: '*', params: { y: '100%' } }"
                 ></tr>
-
             </table>
         </div>
         <mat-paginator
