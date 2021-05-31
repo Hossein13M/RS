@@ -13,7 +13,7 @@
             </div>
 
             <div class="fuse-card data-show" dir="rtl">
-                <app-table [data]="data" [columns]="columns"> </app-table>
+                <app-table [data]="data" [columns]="columns" [paginationSettings]="{ mode: 'local', pageSize: 25 }"> </app-table>
             </div>
         </div>
 
@@ -23,7 +23,8 @@
             </div>
 
             <div class="fuse-card data-show" dir="rtl">
-                <app-table [data]="dataHistory" [columns]="columnsHistory" (searchCall)="search($event)"> </app-table>
+                <app-table [data]="dataHistory" [columns]="columnsHistory" [paginationSettings]="{ mode: 'local', pageSize: 25 }" (searchCall)="search($event)">
+                </app-table>
             </div>
         </div>
     </div>
