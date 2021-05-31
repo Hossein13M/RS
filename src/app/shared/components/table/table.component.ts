@@ -1,10 +1,20 @@
-import { AfterViewInit, Component, DoCheck, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+    TemplateRef,
+    ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import { PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import { Column, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 
 enum StateType {
     'LOADING',
@@ -134,7 +144,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
     }
 
-    constructor(private fb: FormBuilder) {
+    constructor(private formBuilder: FormBuilder) {
         this.searchCall = new EventEmitter<any>();
         this.operationCall = new EventEmitter<any>();
         this.paginationChange = new EventEmitter<PaginationChangeType>();
@@ -151,7 +161,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
 
         // Check For Row Detail
-        const rowDetailIndex = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
+        const rowDetailIndex: number = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
         if (rowDetailIndex !== -1) {
             this.rowDetail = this.columns[rowDetailIndex];
             this.doubleClickAble = !!this.columns[rowDetailIndex].doubleClickable;
@@ -160,11 +170,11 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
         // Create Search FormGroup
         const formItems = {};
-        this.columns.forEach((col, i) => {
+        this.columns.forEach((col) => {
             if (col.search) {
                 this.hasSearch = true;
                 if (col.search.type === 'date_range') {
-                    formItems[col.id] = this.fb.group({
+                    formItems[col.id] = this.formBuilder.group({
                         fromDate: [],
                         toDate: [],
                     });
@@ -173,7 +183,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
                 formItems[col.id] = [''];
             }
         });
-        this.searchForm = this.fb.group(formItems);
+        this.searchForm = this.formBuilder.group(formItems);
 
         this.displayedColumns = [];
         this.displayedColumns = this.displayedColumns.concat(this.columns.map((r) => r.id));
