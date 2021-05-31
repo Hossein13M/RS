@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrganizationStructureService } from '../organization-structure.service';
 import { OrganizationStructureModel } from '../organization-structure.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Column } from '#shared/components/table/table.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OrganizationComponent } from '../organization/organization.component';
@@ -14,7 +13,6 @@ import { AlertService } from '../../../services/alert.service';
 })
 export class OrganizationsListComponent implements OnInit {
     organizations: Array<OrganizationStructureModel>;
-    form: FormGroup = this.fb.group({ name: ['', Validators.required] });
     pagination = { skip: 0, limit: 5, total: 100 };
     tableColumn: Array<Column> = [
         { id: 'positionNumber', name: 'ردیف', type: 'number', minWidth: '60px' },
@@ -35,12 +33,7 @@ export class OrganizationsListComponent implements OnInit {
             ],
         },
     ];
-    constructor(
-        private organizationOrderService: OrganizationStructureService,
-        private fb: FormBuilder,
-        public dialog: MatDialog,
-        private alertService: AlertService
-    ) {}
+    constructor(private organizationOrderService: OrganizationStructureService, public dialog: MatDialog, private alertService: AlertService) {}
 
     ngOnInit(): void {
         this.getOrganizations();
@@ -61,6 +54,7 @@ export class OrganizationsListComponent implements OnInit {
     }
 
     private copyOrganization(organization: OrganizationStructureModel): void {
+        // TODO: this needs to be implemented after the backend has been prepared
         console.log(organization);
         window.alert(organization.name);
     }
