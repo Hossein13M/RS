@@ -15,7 +15,8 @@
 
         <div class="fuse-card" fxFlex="99">
             <div style="width: 100%">
-                <app-table [data]="data" [columns]="column" [paginationSettings]="{ mode: 'local' }" (searchCall)="search($event)"></app-table>
+                <app-table [data]="data" [columns]="column" [paginationSettings]="{ mode: 'local' }"
+                           (searchEvent)='search($event)'></app-table>
             </div>
         </div>
     </div>

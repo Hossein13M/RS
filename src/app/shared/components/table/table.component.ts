@@ -85,8 +85,8 @@ enum StateType {
     animations: [fuseAnimations],
 })
 export class TableComponent implements OnChanges, AfterViewInit {
-    @ViewChild('localPaginator', { static: false }) paginator: MatPaginator;
-    @ViewChild('container', { static: false }) container;
+    @ViewChild('localPaginator', { static: false }) localPaginator: MatPaginator;
+    @ViewChild('container', { static: false }) tableContainer;
 
     @Input() data: Array<any>;
     @Input() columns: Array<Column>;
@@ -97,13 +97,13 @@ export class TableComponent implements OnChanges, AfterViewInit {
     // @ Pagination Input
     // -----------------------------------------------------------------------------------------------------
     @Input() paginationSettings: PaginationSetting;
-    @Input() paginationObj: PaginationChangeType;
-    private _paginationObj: PaginationChangeType = { skip: 0, limit: 5, total: 100 };
-    @Output() paginationChange: EventEmitter<PaginationChangeType>;
+    @Input() paginationObject: PaginationChangeType;
+    private _paginationObject: PaginationChangeType = { skip: 0, limit: 5, total: 100 };
+    @Output() paginationEvent: EventEmitter<PaginationChangeType>;
     // -----------------------------------------------------------------------------------------------------
 
-    @Output() searchCall: EventEmitter<any>;
-    @Output() operationCall: EventEmitter<any>;
+    @Output() searchEvent: EventEmitter<any>;
+    @Output() operationEvent: EventEmitter<any>;
 
     hasSearch = false;
 
@@ -111,32 +111,27 @@ export class TableComponent implements OnChanges, AfterViewInit {
     displayedColumns: Array<string>;
     searchColumns: Array<string>;
     dataSource: MatTableDataSource<any>;
-    dataToShow: Array<any>;
     lastServerSearch: string;
-
     showSearchBar = false;
-
     searchForm: FormGroup;
-    filter: any;
-
     rowDetail: DetailColumn;
     clickCoolDown = false;
     clickCount = 0;
     doubleClickAble = true;
 
     constructor(private formBuilder: FormBuilder) {
-        this.searchCall = new EventEmitter<any>();
-        this.operationCall = new EventEmitter<any>();
-        this.paginationChange = new EventEmitter<PaginationChangeType>();
+        this.searchEvent = new EventEmitter<any>();
+        this.operationEvent = new EventEmitter<any>();
+        this.paginationEvent = new EventEmitter<PaginationChangeType>();
     }
 
     scroll(): void {
         if (this.paginationSettings.mode !== 'scroll') return;
         if (this.status === StateType.LOADING) return;
         const scrollPosition =
-            this.container?.nativeElement.scrollHeight - (this.container?.nativeElement.scrollTop + this.container?.nativeElement.clientHeight);
+            this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
         if (scrollPosition < 90) {
-            this.paginationControl({ pageSize: this.paginationObj.limit, pageIndex: this.paginationObj.skip + this.paginationObj.limit });
+            this.paginationControl({ pageSize: this.paginationObject.limit, pageIndex: this.paginationObject.skip + this.paginationObject.limit });
         }
     }
 
@@ -204,7 +199,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
     ngAfterViewInit(): void {
         if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
-            this.dataSource.paginator = this.paginator;
+            this.dataSource.paginator = this.localPaginator;
         }
     }
 
@@ -248,20 +243,20 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
                 if (Object.keys(serverSearch).length !== 0 && JSON.stringify(serverSearch) !== this.lastServerSearch) {
                     this.lastServerSearch = JSON.stringify(serverSearch);
-                    this.searchCall.emit(serverSearch);
+                    this.searchEvent.emit(serverSearch);
                 }
             });
         }
 
         if (this.paginationSettings?.mode === 'local') {
-            this.dataSource.paginator = this.paginator;
+            this.dataSource.paginator = this.localPaginator;
         }
     }
 
     paginationControl(pageEvent?: any): void {
-        this._paginationObj.limit = pageEvent.pageSize;
-        this._paginationObj.skip = pageEvent.pageIndex;
-        this.paginationChange.emit(this._paginationObj);
+        this._paginationObject.limit = pageEvent.pageSize;
+        this._paginationObject.skip = pageEvent.pageIndex;
+        this.paginationEvent.emit(this._paginationObject);
     }
 
     isTemplateRef(obj: any): any {
@@ -313,7 +308,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
 
         if (typeof operationItem.operation === 'string') {
-            this.operationCall.emit({ row, operation: operationItem.operation });
+            this.operationEvent.emit({ row, operation: operationItem.operation });
         }
 
         if (typeof operationItem.operation === 'function') {
@@ -327,7 +322,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
 
         if (typeof operationItem.operation === 'string') {
-            this.operationCall.emit({ operationHeader: operationItem.operation });
+            this.operationEvent.emit({ operationHeader: operationItem.operation });
         }
 
         if (typeof operationItem.operation === 'function') {
