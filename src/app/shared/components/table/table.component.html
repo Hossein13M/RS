@@ -213,9 +213,9 @@
             dir="rtl"
             class="paginator"
             [style.display]="paginationSettings?.mode === 'backend' ? '' : 'none'"
-            [length]="paginationObj?.total"
-            [pageIndex]="paginationObj?.skip"
-            [pageSize]="paginationObj?.limit"
+            [length]="paginationObject?.total"
+            [pageIndex]="paginationObject?.skip"
+            [pageSize]="paginationObject?.limit"
             [pageSizeOptions]="paginationSettings?.pageSizeOptions ? paginationSettings.pageSizeOptions : [5, 10, 25, 100]"
             (page)="paginationControl($event)"
             #backendPaginator

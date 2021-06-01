@@ -23,7 +23,7 @@
             </div>
 
             <div class="fuse-card data-show" dir="rtl">
-                <app-table [data]="dataHistory" [columns]="columnsHistory" (searchCall)="search($event)"> </app-table>
+                <app-table [data]="dataHistory" [columns]="columnsHistory" (searchEvent)='search($event)'> </app-table>
             </div>
         </div>
     </div>
