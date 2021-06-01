@@ -175,10 +175,7 @@ export class SentAlarmService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    sentAlarmControllerRecordReminderDate$Response(params: {
-        inboxId: number;
-        body: ReminderDateDto;
-    }): Observable<StrictHttpResponse<SentSuccessDto>> {
+    sentAlarmControllerRecordReminderDate$Response(params: { inboxId: number; body: ReminderDateDto }): Observable<StrictHttpResponse<SentSuccessDto>> {
         const rb = new RequestBuilder(this.rootUrl, SentAlarmService.SentAlarmControllerRecordReminderDatePath, 'put');
         if (params) {
             rb.path('inboxId', params.inboxId, {});
@@ -207,8 +204,6 @@ export class SentAlarmService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     sentAlarmControllerRecordReminderDate(params: { inboxId: number; body: ReminderDateDto }): Observable<SentSuccessDto> {
-        return this.sentAlarmControllerRecordReminderDate$Response(params).pipe(
-            map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto)
-        );
+        return this.sentAlarmControllerRecordReminderDate$Response(params).pipe(map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto));
     }
 }
