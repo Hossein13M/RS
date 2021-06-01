@@ -92,21 +92,13 @@ export class TableComponent implements OnChanges, AfterViewInit {
     @Input() columns: Array<Column>;
     @Input() height: string = '100%';
     @Input() status: StateType;
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Pagination Input
-    // -----------------------------------------------------------------------------------------------------
     @Input() paginationSettings: PaginationSetting;
     @Input() paginationObject: PaginationChangeType;
     private _paginationObject: PaginationChangeType = { skip: 0, limit: 5, total: 100 };
     @Output() paginationEvent: EventEmitter<PaginationChangeType>;
-    // -----------------------------------------------------------------------------------------------------
-
     @Output() searchEvent: EventEmitter<any>;
     @Output() operationEvent: EventEmitter<any>;
-
     hasSearch = false;
-
     // Show Data Table
     displayedColumns: Array<string>;
     searchColumns: Array<string>;
@@ -125,7 +117,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.paginationEvent = new EventEmitter<PaginationChangeType>();
     }
 
-    scroll(): void {
+    public scroll(): void {
         if (this.paginationSettings.mode !== 'scroll') return;
         if (this.status === StateType.LOADING) return;
         const scrollPosition =
