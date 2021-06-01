@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
 import { Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import { PaginationModel } from '#shared/models/pagination.model';
 
 enum StateType {
     'LOADING',
@@ -87,19 +88,16 @@ enum StateType {
 export class TableComponent implements OnChanges, AfterViewInit {
     @ViewChild('localPaginator', { static: false }) localPaginator: MatPaginator;
     @ViewChild('container', { static: false }) tableContainer;
-
     @Input() data: Array<any>;
     @Input() columns: Array<Column>;
     @Input() height: string = '100%';
     @Input() status: StateType;
     @Input() paginationSettings: PaginationSetting;
     @Input() paginationObject: PaginationChangeType;
-    private _paginationObject: PaginationChangeType = { skip: 0, limit: 5, total: 100 };
     @Output() paginationEvent: EventEmitter<PaginationChangeType>;
     @Output() searchEvent: EventEmitter<any>;
     @Output() operationEvent: EventEmitter<any>;
     hasSearch = false;
-    // Show Data Table
     displayedColumns: Array<string>;
     searchColumns: Array<string>;
     dataSource: MatTableDataSource<any>;
@@ -280,14 +278,15 @@ export class TableComponent implements OnChanges, AfterViewInit {
         const scrollPosition =
             this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
         if (scrollPosition < 90) {
-            this.paginationControl({ pageSize: this.paginationObject.limit, pageIndex: this.paginationObject.skip + this.paginationObject.limit });
+            this.paginationControl({ length: 0, pageSize: this.paginationObject.limit, pageIndex: this.paginationObject.skip + this.paginationObject.limit });
         }
     }
 
-    public paginationControl(pageEvent?: any): void {
-        this._paginationObject.limit = pageEvent.pageSize;
-        this._paginationObject.skip = pageEvent.pageIndex;
-        this.paginationEvent.emit(this._paginationObject);
+    public paginationControl(pageEvent?: PageEvent): void {
+        const _paginationObject: PaginationModel = { skip: 0, limit: 5, total: 100 };
+        _paginationObject.limit = pageEvent.pageSize;
+        _paginationObject.skip = pageEvent.pageIndex;
+        this.paginationEvent.emit(_paginationObject);
     }
 
     public isTemplateRef(obj: any): any {
