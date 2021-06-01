@@ -117,16 +117,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.paginationEvent = new EventEmitter<PaginationChangeType>();
     }
 
-    public scroll(): void {
-        if (this.paginationSettings.mode !== 'scroll') return;
-        if (this.status === StateType.LOADING) return;
-        const scrollPosition =
-            this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
-        if (scrollPosition < 90) {
-            this.paginationControl({ pageSize: this.paginationObject.limit, pageIndex: this.paginationObject.skip + this.paginationObject.limit });
-        }
-    }
-
     ngOnChanges(changes: SimpleChanges): void {
         let data = this.data;
         if (changes.hasOwnProperty('data')) {
@@ -181,7 +171,13 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.handleSetLastSearch();
     }
 
-    handleSetLastSearch(): void {
+    ngAfterViewInit(): void {
+        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
+            this.dataSource.paginator = this.localPaginator;
+        }
+    }
+
+    private handleSetLastSearch(): void {
         try {
             this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
         } catch (e) {
@@ -189,13 +185,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
     }
 
-    ngAfterViewInit(): void {
-        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
-            this.dataSource.paginator = this.localPaginator;
-        }
-    }
-
-    patchData(data: Array<any>): void {
+    private patchData(data: Array<any>): void {
         this.dataSource = new MatTableDataSource<any>(data);
         this.columns.forEach((col) => {
             if (col.search && col.search.type === 'select' && !col.search.options) {
@@ -245,17 +235,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
     }
 
-    paginationControl(pageEvent?: any): void {
-        this._paginationObject.limit = pageEvent.pageSize;
-        this._paginationObject.skip = pageEvent.pageIndex;
-        this.paginationEvent.emit(this._paginationObject);
-    }
-
-    isTemplateRef(obj: any): any {
-        return obj instanceof TemplateRef;
-    }
-
-    createSearchFilter(): any {
+    private createSearchFilter(): any {
         return (data: any, filter: string): boolean => {
             let result = true;
             const filterParsed = JSON.parse(filter);
@@ -290,11 +270,31 @@ export class TableComponent implements OnChanges, AfterViewInit {
         };
     }
 
-    numberToEn(inputStr: string): string {
+    private numberToEn(inputStr: string): string {
         return inputStr.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
     }
 
-    doOperation(row: any, operationItem: any): void {
+    public scroll(): void {
+        if (this.paginationSettings.mode !== 'scroll') return;
+        if (this.status === StateType.LOADING) return;
+        const scrollPosition =
+            this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
+        if (scrollPosition < 90) {
+            this.paginationControl({ pageSize: this.paginationObject.limit, pageIndex: this.paginationObject.skip + this.paginationObject.limit });
+        }
+    }
+
+    public paginationControl(pageEvent?: any): void {
+        this._paginationObject.limit = pageEvent.pageSize;
+        this._paginationObject.skip = pageEvent.pageIndex;
+        this.paginationEvent.emit(this._paginationObject);
+    }
+
+    public isTemplateRef(obj: any): any {
+        return obj instanceof TemplateRef;
+    }
+
+    public doOperation(row: any, operationItem: any): void {
         if (!operationItem.operation) {
             return;
         }
@@ -308,7 +308,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
     }
 
-    doOperationHeader(operationItem: any): void {
+    public doOperationHeader(operationItem: any): void {
         if (!operationItem.operation) {
             return;
         }
@@ -322,13 +322,11 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
     }
 
-    openSaveMenu(): void {}
-
-    openSearchBar(): void {
+    public openSearchBar(): void {
         this.showSearchBar = !this.showSearchBar;
     }
 
-    selectRow(index: number): void {
+    public selectRow(index: number): void {
         if (index < 0 || !this.data || index > this.data.length) {
             return;
         }
@@ -336,7 +334,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.data[index].tableSelect = !this.data[index].tableSelect;
     }
 
-    onClick(row: any): void {
+    public onClick(row: any): void {
         if (!this.rowDetail || !this.rowDetail.click) {
             return;
         }
@@ -361,7 +359,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }, 200);
     }
 
-    onDoubleClick(row: any): void {
+    private onDoubleClick(row: any): void {
         if (!this.rowDetail || !this.rowDetail.doubleClick) {
             return;
         }
