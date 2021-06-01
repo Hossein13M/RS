@@ -171,12 +171,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.handleSetLastSearch();
     }
 
-    ngAfterViewInit(): void {
-        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
-            this.dataSource.paginator = this.localPaginator;
-        }
-    }
-
     private handleSetLastSearch(): void {
         try {
             this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
@@ -272,6 +266,12 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
     private numberToEn(inputStr: string): string {
         return inputStr.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+    }
+
+    ngAfterViewInit(): void {
+        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
+            this.dataSource.paginator = this.localPaginator;
+        }
     }
 
     public scroll(): void {
