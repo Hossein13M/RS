@@ -1,20 +1,10 @@
-import {
-    AfterViewInit,
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
-    TemplateRef,
-    ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import { Column, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import { Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 
 enum StateType {
     'LOADING',
@@ -99,7 +89,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
     @ViewChild('container', { static: false }) container;
 
     @Input() data: Array<any>;
-    @Input() columns: Array<any>;
+    @Input() columns: Array<Column>;
     @Input() height: string = '100%';
     @Input() status: StateType;
 
@@ -129,10 +119,16 @@ export class TableComponent implements OnChanges, AfterViewInit {
     searchForm: FormGroup;
     filter: any;
 
-    rowDetail: any;
+    rowDetail: DetailColumn;
     clickCoolDown = false;
     clickCount = 0;
     doubleClickAble = true;
+
+    constructor(private formBuilder: FormBuilder) {
+        this.searchCall = new EventEmitter<any>();
+        this.operationCall = new EventEmitter<any>();
+        this.paginationChange = new EventEmitter<PaginationChangeType>();
+    }
 
     scroll(): void {
         if (this.paginationSettings.mode !== 'scroll') return;
@@ -142,12 +138,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
         if (scrollPosition < 90) {
             this.paginationControl({ pageSize: this.paginationObj.limit, pageIndex: this.paginationObj.skip + this.paginationObj.limit });
         }
-    }
-
-    constructor(private formBuilder: FormBuilder) {
-        this.searchCall = new EventEmitter<any>();
-        this.operationCall = new EventEmitter<any>();
-        this.paginationChange = new EventEmitter<PaginationChangeType>();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -163,8 +153,8 @@ export class TableComponent implements OnChanges, AfterViewInit {
         // Check For Row Detail
         const rowDetailIndex: number = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
         if (rowDetailIndex !== -1) {
-            this.rowDetail = this.columns[rowDetailIndex];
-            this.doubleClickAble = !!this.columns[rowDetailIndex].doubleClickable;
+            this.rowDetail = this.columns[rowDetailIndex] as DetailColumn;
+            this.doubleClickAble = !!this.rowDetail.doubleClickable;
             this.columns.splice(rowDetailIndex, 1);
         }
 
@@ -193,7 +183,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
 
         // add operation to each row
-        const tableOperation = this.columns.find((element) => element.type === 'operation');
+        const tableOperation = this.columns.find((element) => element.type === 'operation') as OperationColumn;
         if (tableOperation && tableOperation?.operations) {
             data?.forEach((element) => (element.tableOperation = [...tableOperation.operations.map((el: any) => ({ ...el }))]));
         }

@@ -3,6 +3,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
+import { Column } from '#shared/components/table/table.model';
 
 am4core.useTheme(am4themes_animated);
 
@@ -13,13 +14,13 @@ am4core.useTheme(am4themes_animated);
 })
 export class AumNlFundsComponent {
     @Input() aumNlFunds: any;
-    columns: any;
+    columns: Array<Column>;
 
     constructor(public dialog: MatDialog) {
         this.createColumns();
     }
 
-    private createColumns() {
+    private createColumns(): void {
         this.columns = [
             { name: 'نام', id: 'name', type: 'string' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },

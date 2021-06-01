@@ -21,14 +21,14 @@ export interface PaginationChangeType {
 // Column types
 export type Column = SimpleColumn | OperationColumn | CustomCol | DetailColumn;
 
-interface SimpleColumn {
+export interface SimpleColumn {
     id: string;
-    name: string;
-    type: 'string' | 'date' | 'price' | 'number' | 'custom' | 'operation' | 'rowDetail';
+    name?: string;
+    type: 'string' | 'date' | 'price' | 'date_range' | 'number' | 'custom' | 'operation' | 'rowDetail';
     minWidth?: string;
     sticky?: boolean;
     search?: {
-        type: 'select' | 'text' | 'date';
+        type: 'select' | 'text' | 'date' | 'date_range';
         mode: TableSearchMode;
         options?: Array<{
             value: string | number | boolean;
@@ -38,12 +38,14 @@ interface SimpleColumn {
     convert?(value: any): any;
 }
 
-interface DetailColumn extends SimpleColumn {
+export interface DetailColumn extends SimpleColumn {
     type: 'rowDetail';
     doubleClickable: boolean;
+    click(row): any;
+    doubleClick(row): any;
 }
 
-interface OperationColumn extends SimpleColumn {
+export interface OperationColumn extends SimpleColumn {
     type: 'operation';
     operations: Array<{
         name: string;
@@ -54,7 +56,7 @@ interface OperationColumn extends SimpleColumn {
     }>;
 }
 
-interface CustomCol extends SimpleColumn {
+export interface CustomCol extends SimpleColumn {
     type: 'custom';
     cellTemplate: TemplateRef<any>;
 }
