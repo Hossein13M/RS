@@ -1,0 +1,40 @@
+//.risk-chart {
+//    margin-top: 1.2rem;
+//
+//    * {
+//        height: 100%;
+//        width: 100%;
+//    }
+//}
+//
+//.fuse-card {
+//    height: auto !important;
+//    display: flex;
+//    flex-direction: row;
+//    justify-content: flex-start !important;
+//    align-items: flex-start;
+//}
+//
+//.page-content {
+//    overflow: auto !important;
+//}
+
+.tree-header-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.tree {
+    margin: 20px 10px;
+}
+
+.first-node-actions {
+    display: flex;
+    margin: 0 auto 0 5px;
+}
+
+mat-chip > p {
+    position: relative;
+    bottom: -2px;
+    padding: 5px;
+}

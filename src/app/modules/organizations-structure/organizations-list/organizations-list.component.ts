@@ -5,6 +5,7 @@ import { Column } from '#shared/components/table/table.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OrganizationComponent } from '../organization/organization.component';
 import { AlertService } from '../../../services/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-organizations',
@@ -33,7 +34,12 @@ export class OrganizationsListComponent implements OnInit {
             ],
         },
     ];
-    constructor(private organizationOrderService: OrganizationStructureService, public dialog: MatDialog, private alertService: AlertService) {}
+    constructor(
+        private organizationOrderService: OrganizationStructureService,
+        public dialog: MatDialog,
+        private alertService: AlertService,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.getOrganizations();
@@ -77,5 +83,7 @@ export class OrganizationsListComponent implements OnInit {
         );
     }
 
-    private dastan(organization: OrganizationStructureModel): void {}
+    private dastan(organization: any): void {
+        this.router.navigate(['/organizations-structure/roles-list/' + organization.row.id]).finally();
+    }
 }
