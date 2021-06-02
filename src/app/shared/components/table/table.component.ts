@@ -286,6 +286,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         const _paginationObject: PaginationModel = { skip: 0, limit: 5, total: 100 };
         _paginationObject.limit = pageEvent.pageSize;
         _paginationObject.skip = pageEvent.pageIndex;
+        console.log(_paginationObject);
         this.paginationEvent.emit(_paginationObject);
     }
 
@@ -372,5 +373,16 @@ export class TableComponent implements OnChanges, AfterViewInit {
         } else {
             return input(row);
         }
+    }
+
+    public setIndexAccordingToPagination(index: number): number | null {
+        if (!this.localPaginator) return null;
+        if (this.paginationSettings.mode === 'local') {
+            return index + 1 + (this.localPaginator.pageIndex * this.localPaginator.pageSize);
+        }
+        if (this.paginationSettings.mode === 'backend') {
+            return index + 1 + (this.paginationObject.limit * this.paginationObject.skip)
+        }
+        return null;
     }
 }

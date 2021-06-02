@@ -52,6 +52,7 @@ export class OperatorComponent implements OnInit, AfterViewInit {
 
     initColumns(): void {
         this.column = [
+            {id: 'index', type: 'index'},
             {
                 id: 'firstName',
                 name: 'نام',

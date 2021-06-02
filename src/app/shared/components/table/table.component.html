@@ -22,6 +22,8 @@
                         [ngClass]="{ 'text-center': col.headerAlign === 'center' }"
                         *matHeaderCellDef
                     >
+                        <ng-container *ngIf="col && col.type === 'index'"> ردیف </ng-container>
+
                         <!-- Normal Col Header -->
                         <ng-container *ngIf="col && col.type != 'operation'">
                             {{ col.name }}
@@ -74,8 +76,13 @@
                         [style.minWidth]="col.minWidth"
                         [ngClass]="{ 'text-center': col.dataAlign === 'center', clickable: doubleClickAble }"
                         (click)="onClick(el)"
-                        *matCellDef="let el"
+                        *matCellDef="let el; let i = index"
                     >
+                        <!-- Index -->
+                        <div *ngIf="col.type === 'index'">
+                            {{ setIndexAccordingToPagination(i) }}
+                        </div>
+
                         <!-- Price -->
                         <div *ngIf="col.type == 'price'">
                             {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | price }}
