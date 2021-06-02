@@ -1,1 +1,27 @@
-<p>role works!</p>
+<div class="page-layout">
+    <app-header [pageTitle]="'مدیریت ساختار و نقش‌های نهاد ' + organizationTitle" class="wp-100"> </app-header>
+
+    <div class="page-content">
+        <app-tree-header-selector
+            [headerList]="headerList"
+            [organizationId]="organizationId"
+            (changedSection)="detectSectionChanges($event)"
+            [selected]="'org-info'"
+        ></app-tree-header-selector>
+
+        <app-tree-simple-selector selected="org-role" [selectedOrg]="kir" [organizationCode]="organizationInfo.code" *ngIf="dastan"></app-tree-simple-selector>
+    </div>
+
+    <!--    <div class="page-content fuse-card m-40 p-40">-->
+    <!--        <h1 class="text-center mb-20">بخش‌ها و نقش‌ها</h1>-->
+    <!--        <hr />-->
+    <!--        <div fxLayout="row wrap" fxLayoutAlign="space-around center" class="mt-20">-->
+    <!--            <div [style.zIndex]="trees[0].zIndex" fxLayout="column" fxFlex="40" class="tree-select-container">-->
+    <!--                <app-tree-select selectedValueFieldName="name" [data]="this.trees[0].data" class="tree-select"></app-tree-select>-->
+    <!--            </div>-->
+    <!--            <div [style.zIndex]="trees[1].zIndex" fxLayout="column" fxFlex="40" class="tree-select-container">-->
+    <!--                <app-tree-select selectedValueFieldName="name" [data]="this.trees[1].data" class="tree-select"></app-tree-select>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+</div>

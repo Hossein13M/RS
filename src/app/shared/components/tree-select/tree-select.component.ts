@@ -12,16 +12,8 @@ import { Tree, TreeFlatNode, TreeNode } from './tree-select.types';
     templateUrl: './tree-select.component.html',
     styleUrls: ['./tree-select.component.scss'],
     providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => TreeSelectComponent),
-            multi: true,
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => TreeSelectComponent),
-            multi: true,
-        },
+        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TreeSelectComponent), multi: true },
+        { provide: NG_VALIDATORS, useExisting: forwardRef(() => TreeSelectComponent), multi: true },
     ],
     animations: fuseAnimations,
 })
@@ -31,13 +23,10 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
     @Input() selectedValueFieldName = 'titleFA';
     tree: Tree;
     show = false;
-
     disable = false;
     values: any;
-
     mouseIn: any;
     expandAll = true;
-
     showSelected = false;
     public onTouched: () => void = () => {};
 
@@ -70,7 +59,7 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
                 flatNode = new TreeFlatNode();
             }
             flatNode.id = node.id;
-            flatNode.titleFA = node.titleFA;
+            flatNode.titleFA = node[this.selectedValueFieldName];
             flatNode.level = level;
             flatNode.expandable = !!node.children && node.children.length > 0;
             flatNodeMap.set(flatNode, node);
