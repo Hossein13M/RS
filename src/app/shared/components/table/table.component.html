@@ -1,7 +1,7 @@
 <!--<div class="table-container" #container (scroll)='scroll($event)'>-->
 <div *ngIf="dataSource">
     <form [formGroup]="searchForm">
-        <div class="table-container" [ngStyle]="{'height': height}" (scroll)='scroll()' #container>
+        <div class="table-container" [ngStyle]="{ height: height }" (scroll)="scroll()" #container>
             <table mat-table #table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
                 <!-- Position Column -->
                 <ng-container matColumnDef="position">
@@ -106,7 +106,7 @@
 
                         <!-- Date -->
                         <div *ngIf="col.type == 'date'">
-                            {{ col.convert ? col.convert(el[col.id]) : el[col.id] | convertDate }}
+                            {{ col.convert ? col.convert(el[col.id]) : (el[col.id] | convertDate) }}
                         </div>
 
                         <!-- Custom -->
@@ -116,16 +116,15 @@
 
                         <!-- Operations -->
                         <div *ngIf="col.type == 'operation'">
-                            <div>
-                                <button
-                                    mat-icon-button
-                                    *ngFor="let op of el.tableOperation"
-                                    [color]="op.color"
-                                    [matTooltip]="op.name"
-                                    (click)="doOperation(el, op)"
-                                >
-                                    <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
-                                </button>
+                            <div class='cell--operation'>
+                                <ng-container *ngFor="let op of el.tableOperation" [ngSwitch]='op.icon'>
+                                    <button *ngSwitchDefault mat-icon-button [color]="op.color" [matTooltip]="op.name" (click)="doOperation(el, op)">
+                                        <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
+                                    </button>
+                                    <div *ngSwitchCase="'template'">
+                                        <ng-template [ngTemplateOutlet]="op.content" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
+                                    </div>
+                                </ng-container>
                             </div>
                         </div>
                     </td>
@@ -189,14 +188,13 @@
 
                 <!--    Data Row    -->
                 <tr
-                    class='data-row'
+                    class="data-row"
                     mat-row
                     *matRowDef="let row; columns: displayedColumns; let i = index"
                     (click)="selectRow(i)"
                     [ngClass]="{ 'table-selected': row.tableSelect }"
                     [@animate]="{ value: '*', params: { y: '100%' } }"
                 ></tr>
-
             </table>
         </div>
         <mat-paginator

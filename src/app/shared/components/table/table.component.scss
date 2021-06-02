@@ -89,6 +89,10 @@ form {
     }
 }
 
+.cell--operation {
+    display: flex;
+}
+
 .data-row {
     &:nth-child(odd) {
         // Todo: make it work for darkmode

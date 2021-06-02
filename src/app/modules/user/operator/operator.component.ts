@@ -20,7 +20,6 @@ export class OperatorComponent implements OnInit, AfterViewInit {
     dialogRef: any;
     loading = false;
     dataSource: Array<ResponseOperatorItemDto>;
-    displayedColumns = ['firstName', 'lastName', 'email', 'mobileNumber', 'userName', 'status', 'edit'];
     column: Array<Column>;
     @ViewChild('status') statusRef: TemplateRef<any>;
 
@@ -29,14 +28,18 @@ export class OperatorComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit(): void {
-        this.operatorService.operators.pipe(map(response => {
-            return response.map((operator) => {
-                return { ...operator, status: operator.mobileNumber }
-            })
-        })).subscribe((res) => {
-            this.operators = res;
-            this.dataSource = res;
-        });
+        this.operatorService.operators
+            .pipe(
+                map((response) => {
+                    return response.map((operator) => {
+                        return { ...operator, status: operator.mobileNumber };
+                    });
+                })
+            )
+            .subscribe((res) => {
+                this.operators = res;
+                this.dataSource = res;
+            });
 
         this.operatorService.getOperators(this.searchInput.value).subscribe(() => {
             // loading
@@ -75,18 +78,15 @@ export class OperatorComponent implements OnInit, AfterViewInit {
                 type: 'string',
             },
             {
-                id: 'status',
-                name: 'وضعیت',
-                type: 'custom',
-                cellTemplate: this.statusRef,
-            },
-            {
                 name: 'عملیات',
                 id: 'operation',
                 type: 'operation',
                 minWidth: '130px',
                 sticky: true,
-                operations: [{ name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editOperator(row) }],
+                operations: [
+                    { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editOperator(row) },
+                ],
             },
         ];
     }
@@ -97,7 +97,7 @@ export class OperatorComponent implements OnInit, AfterViewInit {
         this.initColumns();
     }
 
-    scroll(event): void {
+    scroll(): void {
         const table = document.getElementById('table-container');
         const scrollPosition = table.scrollHeight - (table.scrollTop + table.clientHeight);
 

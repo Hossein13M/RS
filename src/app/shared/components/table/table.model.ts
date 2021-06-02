@@ -1,4 +1,4 @@
-import { TemplateRef } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 
 export enum TableSearchMode {
     'NONE',
@@ -45,18 +45,26 @@ export interface DetailColumn extends SimpleColumn {
     doubleClick(row): any;
 }
 
-export interface OperationColumn extends SimpleColumn {
-    type: 'operation';
-    operations: Array<{
-        name: string;
-        icon: string;
-        color: 'primary' | 'warn' | 'accent';
-        // tslint:disable-next-line:variable-name
-        operation({ row }): void;
-    }>;
-}
-
 export interface CustomCol extends SimpleColumn {
     type: 'custom';
     cellTemplate: TemplateRef<any>;
+}
+
+export interface OperationColumn extends SimpleColumn {
+    type: 'operation';
+    operations: Array<Operation | OperationWithTemplate>;
+}
+
+interface Operation {
+    name: string;
+    icon: string | (() => string) | 'template' | 'component';
+    color: 'primary' | 'warn' | 'accent';
+    // tslint:disable-next-line:variable-name
+    operation?({ row }): void;
+}
+
+interface OperationWithTemplate extends Operation {
+    icon: 'template';
+    content: TemplateRef<any>;
+    operation?({row}): void;
 }
