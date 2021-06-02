@@ -1,4 +1,4 @@
-import { Component, TemplateRef } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 
 export enum TableSearchMode {
     'NONE',
@@ -61,17 +61,26 @@ interface Operation {
     name: string;
     icon: string | 'condition' | 'template' | 'component';
     color: Color | ((row: any) => Color);
-    // tslint:disable-next-line:variable-name
     operation?({ row }): void;
 }
 
+// example: { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
 interface OperationWithTemplate extends Operation {
     icon: 'template';
     content: TemplateRef<any>;
-    operation?({row}): void;
+    operation?({ row }): void;
 }
 
+/** example:
+ * {
+ *  name: 'ویرایش',
+ *  icon: 'condition',
+ *  content: (row: ResponseOperatorItemDto) => (row.mobileNumber ? 'check_circle_outline' : 'highlight_off'),
+ *  color: 'primary',
+ *  operation: ({ row }: any) => this.editOperator(row),
+ * }
+ */
 interface OperationWithCondition extends Operation {
     icon: 'condition';
-    content: ((row: any) => string);
+    content: (row: any) => string;
 }
