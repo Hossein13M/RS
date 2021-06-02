@@ -19,14 +19,14 @@ export interface PaginationChangeType {
 }
 
 // Column types
-export type Column = SimpleColumn | OperationColumn | CustomCol | DetailColumn;
+export type Column = SimpleColumn | OperationColumn | CustomColumn | DetailColumn | IndexColumn;
 
 export type Color = 'primary' | 'warn' | 'accent';
 
 export interface SimpleColumn {
     id: string;
     name?: string;
-    type: 'string' | 'date' | 'price' | 'date_range' | 'number' | 'custom' | 'operation' | 'rowDetail';
+    type: 'string' | 'index' | 'date' | 'price' | 'date_range' | 'number' | 'custom' | 'operation' | 'rowDetail';
     minWidth?: string;
     sticky?: boolean;
     search?: {
@@ -47,11 +47,17 @@ export interface DetailColumn extends SimpleColumn {
     doubleClick(row): any;
 }
 
-export interface CustomCol extends SimpleColumn {
+export interface CustomColumn extends SimpleColumn {
     type: 'custom';
     cellTemplate: TemplateRef<any>;
 }
 
+export interface IndexColumn extends SimpleColumn {
+    type: 'index';
+    id: 'index';
+}
+
+// Operation Section
 export interface OperationColumn extends SimpleColumn {
     type: 'operation';
     operations: Array<Operation | OperationWithTemplate | OperationWithCondition>;
