@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import { Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import { Color, Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 
 enum StateType {
@@ -366,7 +366,11 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.rowDetail.doubleClick(row);
     }
 
-    public isString(input: any): boolean {
-        return typeof input === 'string';
+    public checkColorsType(input: Color | ((row: any) => Color), row: any): Color {
+        if (typeof input === 'string') {
+            return input;
+        } else {
+            return input(row);
+        }
     }
 }

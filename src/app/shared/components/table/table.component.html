@@ -119,20 +119,20 @@
                             <div class="cell--operation">
                                 <ng-container *ngFor="let op of el.tableOperation" [ngSwitch]="op.icon">
                                     <button
-                                        *ngSwitchDefault
-                                        mat-icon-button
-                                        [color]="(isString(op.color) ? op.color : op.color(el))"
-                                        [matTooltip]="op.name"
                                         (click)="doOperation(el, op)"
+                                        *ngSwitchDefault
+                                        [color]="checkColorsType(op.color, el)"
+                                        [matTooltip]="op.name"
+                                        mat-icon-button
                                     >
                                         <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
                                     </button>
                                     <button
-                                        *ngSwitchCase="'condition'"
-                                        mat-icon-button
-                                        [color]="(isString(op.color) ? op.color : op.color(el))"
-                                        [matTooltip]="op.name"
                                         (click)="doOperation(el, op)"
+                                        *ngSwitchCase="'condition'"
+                                        [color]="checkColorsType(op.color, el)"
+                                        [matTooltip]="op.name"
+                                        mat-icon-button
                                     >
                                         <mat-icon class="mat-18">{{ op?.content(el) }}</mat-icon>
                                     </button>

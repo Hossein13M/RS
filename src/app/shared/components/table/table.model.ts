@@ -21,7 +21,7 @@ export interface PaginationChangeType {
 // Column types
 export type Column = SimpleColumn | OperationColumn | CustomCol | DetailColumn;
 
-type Color = 'primary' | 'warn' | 'accent';
+export type Color = 'primary' | 'warn' | 'accent';
 
 export interface SimpleColumn {
     id: string;
