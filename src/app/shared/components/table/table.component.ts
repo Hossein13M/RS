@@ -365,4 +365,8 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
         this.rowDetail.doubleClick(row);
     }
+
+    public isString(input: any): boolean {
+        return typeof input === 'string';
+    }
 }

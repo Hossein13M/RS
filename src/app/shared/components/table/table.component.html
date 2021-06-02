@@ -116,13 +116,28 @@
 
                         <!-- Operations -->
                         <div *ngIf="col.type == 'operation'">
-                            <div class='cell--operation'>
-                                <ng-container *ngFor="let op of el.tableOperation" [ngSwitch]='op.icon'>
-                                    <button *ngSwitchDefault mat-icon-button [color]="op.color" [matTooltip]="op.name" (click)="doOperation(el, op)">
+                            <div class="cell--operation">
+                                <ng-container *ngFor="let op of el.tableOperation" [ngSwitch]="op.icon">
+                                    <button
+                                        *ngSwitchDefault
+                                        mat-icon-button
+                                        [color]="(isString(op.color) ? op.color : op.color(el))"
+                                        [matTooltip]="op.name"
+                                        (click)="doOperation(el, op)"
+                                    >
                                         <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
                                     </button>
+                                    <button
+                                        *ngSwitchCase="'condition'"
+                                        mat-icon-button
+                                        [color]="(isString(op.color) ? op.color : op.color(el))"
+                                        [matTooltip]="op.name"
+                                        (click)="doOperation(el, op)"
+                                    >
+                                        <mat-icon class="mat-18">{{ op?.content(el) }}</mat-icon>
+                                    </button>
                                     <div *ngSwitchCase="'template'">
-                                        <ng-template [ngTemplateOutlet]="op.content" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
+                                        <ng-template [ngTemplateOutlet]="op?.content" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
                                     </div>
                                 </ng-container>
                             </div>

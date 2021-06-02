@@ -21,6 +21,8 @@ export interface PaginationChangeType {
 // Column types
 export type Column = SimpleColumn | OperationColumn | CustomCol | DetailColumn;
 
+type Color = 'primary' | 'warn' | 'accent';
+
 export interface SimpleColumn {
     id: string;
     name?: string;
@@ -52,13 +54,13 @@ export interface CustomCol extends SimpleColumn {
 
 export interface OperationColumn extends SimpleColumn {
     type: 'operation';
-    operations: Array<Operation | OperationWithTemplate>;
+    operations: Array<Operation | OperationWithTemplate | OperationWithCondition>;
 }
 
 interface Operation {
     name: string;
-    icon: string | (() => string) | 'template' | 'component';
-    color: 'primary' | 'warn' | 'accent';
+    icon: string | 'condition' | 'template' | 'component';
+    color: Color | ((row: any) => Color);
     // tslint:disable-next-line:variable-name
     operation?({ row }): void;
 }
@@ -67,4 +69,9 @@ interface OperationWithTemplate extends Operation {
     icon: 'template';
     content: TemplateRef<any>;
     operation?({row}): void;
+}
+
+interface OperationWithCondition extends Operation {
+    icon: 'condition';
+    content: ((row: any) => string);
 }

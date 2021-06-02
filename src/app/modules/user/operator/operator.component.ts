@@ -85,6 +85,15 @@ export class OperatorComponent implements OnInit, AfterViewInit {
                 sticky: true,
                 operations: [
                     { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
+                    {
+                        name: 'ویرایش',
+                        icon: 'condition',
+                        content: (row: ResponseOperatorItemDto) => {
+                            return row.mobileNumber ? 'check_circle_outline' : 'highlight_off';
+                        },
+                        color: (row: ResponseOperatorItemDto) => (row.mobileNumber ? 'primary' : 'warn'),
+                        operation: ({ row }: any) => this.editOperator(row),
+                    },
                     { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editOperator(row) },
                 ],
             },
