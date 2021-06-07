@@ -22,7 +22,6 @@ export class CompliancesFundAddComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log(this.dialogData);
         this.initForm();
     }
 

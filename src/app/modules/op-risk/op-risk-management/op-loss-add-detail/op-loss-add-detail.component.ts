@@ -8,8 +8,8 @@ import { OpRiskManagementService } from '../op-risk-management.service';
 import { Subscription } from 'rxjs';
 
 interface DateLimit {
-    min: Date | null;
-    max: Date | null;
+    min?: Date | null;
+    max?: Date | null;
 }
 
 @Component({
@@ -40,18 +40,23 @@ export class OpLossAddDetailComponent implements OnInit, OnDestroy {
     title = 'جزئیات زیان';
     selected: number;
 
-    public dateLimit: { lossEventDate: DateLimit; profileFinishingDate: DateLimit } = {
+    public dateLimit: Record<string, DateLimit> = {
         lossEventDate: {
             max: null,
-            min: null,
         },
         profileFinishingDate: {
+            min: null,
+        },
+        checkStartingDate: {
             max: null,
             min: null,
         },
+        checkFinishingDate: {
+            min: null,
+        }
     };
 
-    _unsubscribeAll: Subscription = new Subscription();
+    private _unsubscribeAll: Subscription = new Subscription();
 
     constructor(
         private readonly opFlowService: OpRiskFlowService,
@@ -59,7 +64,7 @@ export class OpLossAddDetailComponent implements OnInit, OnDestroy {
         private opLossManagementService: OpLossManagementService,
         private alertService: AlertService,
         private activatedRoute: ActivatedRoute,
-        private fb: FormBuilder,
+        private formBuilder: FormBuilder,
         private router: Router
     ) {
         this.lastLossEventId = Number(this.activatedRoute.snapshot.queryParamMap.get('lastLossEventId'));
@@ -86,11 +91,11 @@ export class OpLossAddDetailComponent implements OnInit, OnDestroy {
             this.getRelatedRisk();
         }
 
-        this.dateValidation();
+        this.relationalValidation();
     }
 
     creatForm(): void {
-        this.form = this.fb.group({
+        this.form = this.formBuilder.group({
             description: ['', ''],
             drivers: [[], []],
             lossEventDate: ['', ''],
@@ -350,17 +355,25 @@ export class OpLossAddDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    private dateValidation(): void {
+    private relationalValidation(): void {
         this._unsubscribeAll.add(
-            this.form.controls['profileFinishingDate'].valueChanges.subscribe((_date) => {
-                this.dateLimit.lossEventDate.max = new Date(_date._d);
-                console.log(this.dateLimit);
+            this.form.controls['profileFinishingDate'].valueChanges.subscribe((date) => {
+                this.dateLimit.lossEventDate.max = new Date(date._d);
             })
         );
         this._unsubscribeAll.add(
-            this.form.controls['lossEventDate'].valueChanges.subscribe((_date) => {
-                this.dateLimit.profileFinishingDate.min = new Date(_date._d);
-                console.log(this.dateLimit);
+            this.form.controls['lossEventDate'].valueChanges.subscribe((date) => {
+                this.dateLimit.profileFinishingDate.min = new Date(date._d);
+            })
+        );
+        this._unsubscribeAll.add(
+            this.form.controls['checkStartingDate'].valueChanges.subscribe((date) => {
+                this.dateLimit.checkFinishingDate.min = new Date(date._d);
+            })
+        );
+        this._unsubscribeAll.add(
+            this.form.controls['checkFinishingDate'].valueChanges.subscribe((date) => {
+                this.dateLimit.checkStartingDate.max = new Date(date._d);
             })
         );
     }

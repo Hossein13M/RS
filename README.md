@@ -61,6 +61,8 @@ _Other Important features:_
 
 **refactor/< scope >**: For refactoring project and then merging it into _dev_.
 
+**merge**: merging one branch to _dev_ locally.
+
 **release**: We are not using this feature of GitFlow
 
 ## State Management for Services:

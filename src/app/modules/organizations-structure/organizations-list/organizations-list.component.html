@@ -1,0 +1,23 @@
+<div class="page-layout">
+    <app-header pageTitle="مدیریت نهادها" class="wp-100">
+        <div dir="rtl">
+            <button mat-flat-button color="primary" type="submit" class="btn-bottom" (click)="openOrganizationModal()">
+                افزودن نهاد
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </app-header>
+
+    <div class="fuse-card m-40 p-40">
+        <h1 class="wp-100 text-center mb-20">فهرست نهادها</h1>
+        <div class="container fuse-card">
+            <app-table
+                [data]="organizations"
+                [columns]="tableColumn"
+                [paginationSettings]="{ mode: 'backend' }"
+                [paginationObject]="pagination"
+                (paginationEvent)="paginationControl($event)"
+            ></app-table>
+        </div>
+    </div>
+</div>
