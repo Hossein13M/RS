@@ -315,7 +315,7 @@ export class BpmnComponent implements OnInit {
     }
 
     openDialog(name, id): void {
-        const dialogRef = this.dialog.open(FormBuilderComponent, {
+        this.dialog.open(FormBuilderComponent, {
             panelClass: 'dialog-p-0',
             data: { flowId: this.flowID, stateName: name, stateId: id, operators: this.operatorsList },
         });

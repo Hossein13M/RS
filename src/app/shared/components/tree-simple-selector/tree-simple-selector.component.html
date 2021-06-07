@@ -3,6 +3,7 @@
     <mat-tree dir="rtl" class="tree" [dataSource]="dataSource" [treeControl]="treeControl">
         <!-- This is the tree node template for expandable nodes -->
         <mat-tree-node
+            class="tree-header-wrapper"
             *matTreeNodeDef="let node"
             (contextmenu)="onContextMenu($event, node, contextMenuTrigger)"
             [ngClass]="{ active: node.id === selectedChildId }"
@@ -16,7 +17,6 @@
 
             <div *ngIf="!node.expandable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 
-            <!--      TODO : ADD THIS      -->
             <mat-checkbox
                 *ngIf="!node.expandable && node.level !== 0 && false"
                 [ngClass]="{ 'd-none': !deleteMode }"
@@ -33,17 +33,17 @@
             >
             </mat-checkbox>
             <!--      ------------      -->
+            <!--      ------------      -->
 
             <div class="pointer" matTreeNodeToggle (click)="editSelect(node)">
-                {{ node.titleFA }}
+                {{ node.name }}
             </div>
 
-            <mat-chip-list>
+            <mat-chip-list class="mx-20">
                 <ng-container *ngFor="let relation of node.mappings">
                     <mat-chip>
                         <mat-icon matChipRemove (click)="removeMapping(relation, node)"> cancel </mat-icon>
-
-                        {{ relation.childTitleFa }}
+                        <p>{{ relation.name }}</p>
                     </mat-chip>
                 </ng-container>
             </mat-chip-list>
@@ -53,7 +53,7 @@
                 <div *ngIf="mappableTree">
                     <button mat-raised-button color="primary" disabled>
                         قابل نگاشت به
-                        {{ mappableTree.titleFA }}
+                        <p>{{ mappableTree.name }}</p>
                     </button>
                 </div>
 
@@ -61,7 +61,7 @@
                     <mat-icon class="mat-18">unfold_more</mat-icon>
                 </button>
 
-                <button mat-icon-button *ngIf="!expandAll" matTooltip="بستن همه" (click)="toggleExpandTable()">
+                <button mat-icon-button class="collapse-expanse-all" *ngIf="!expandAll" matTooltip="بستن همه" (click)="toggleExpandTable()">
                     <mat-icon class="mat-18">unfold_less</mat-icon>
                 </button>
             </div>
@@ -71,10 +71,10 @@
                 style="visibility: hidden; position: absolute; top: 50px; z-index: 2"
                 [style.left]="contextMenuPosition.x"
                 #contextMenuTrigger="matMenuTrigger"
-                (menuOpened)="setDefaultEdit(node.titleFA)"
+                (menuOpened)="setDefaultEdit(node.name)"
                 [matMenuTriggerFor]="contextMenu"
             ></div>
-            <!--      (menuOpened)="setDefaultEdit(node.titleFA)" is HACK to fill out edit menu data      -->
+            <!--      (menuOpened)="setDefaultEdit(node.name)" is HACK to fill out edit menu data      -->
 
             <mat-menu #contextMenu="matMenu" dir="rtl" class="operation-menu">
                 <ng-template matMenuContent>
@@ -114,10 +114,10 @@
         تغییر نام زیردرخت
     </button>
 
-    <button mat-menu-item *ngIf="node.level !== 0" (click)="deleteNode(node)">
-        <mat-icon>delete</mat-icon>
-        حذف زیر درخت
-    </button>
+    <!--    <button mat-menu-item *ngIf="node.level !== 0" (click)="deleteNode(node)">-->
+    <!--        <mat-icon>delete</mat-icon>-->
+    <!--        حذف زیر درخت-->
+    <!--    </button>-->
 </ng-template>
 
 <ng-template let-node="node" let-contextMenuTrigger="contextMenuTrigger" #addMenu>
