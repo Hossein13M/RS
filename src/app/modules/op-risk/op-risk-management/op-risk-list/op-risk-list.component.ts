@@ -6,7 +6,6 @@ import { AlertService } from 'app/services/alert.service';
 import { OpLossManagementService } from '../op-loss-management.service';
 import { OpRiskManagementService } from '../op-risk-management.service';
 import { RejectOpRiskComponent } from '../reject-op-risk/reject-op-risk.component';
-import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-op-risk-list',
@@ -220,14 +219,10 @@ export class OpRiskListComponent implements OnInit {
         this.dialog
             .open(RejectOpRiskComponent, { panelClass: 'dialog-w50', data: { id: id, type: type } })
             .afterClosed()
-            .subscribe((res) => {
-                if (res) this.getActiveOPRiskWorkFlows();
-            });
+            .subscribe((res) => res && this.getActiveOPRiskWorkFlows());
     }
 
     public search(filter: any): void {
-        if (filter.createdAt.fromDate || filter.createdAt.toDate) {
-            this.getHistory();
-        }
+        if (filter.createdAt.fromDate || filter.createdAt.toDate) this.getHistory();
     }
 }
