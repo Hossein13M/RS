@@ -1,10 +1,4 @@
 @import '../../../../@fuse/scss/fuse';
-:host ::ng-deep {
-    .mat-form-field-wrapper {
-        padding-bottom: 1.34375em;
-        margin-bottom: -1.34375em;
-    }
-}
 
 .issuer {
     padding: 10px;

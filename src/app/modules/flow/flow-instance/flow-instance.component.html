@@ -11,7 +11,7 @@
                     [data]="dataSource"
                     [columns]="column"
                     [paginationSettings]="{ mode: 'local' }"
-                    (searchCall)="search($event)"
+                    (searchEvent)='search($event)'
                 ></app-table>
             </div>
         </div>

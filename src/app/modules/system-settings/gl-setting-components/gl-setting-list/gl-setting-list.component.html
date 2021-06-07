@@ -14,9 +14,9 @@
                         [data]="data"
                         [columns]="column"
                         [paginationSettings]="{ mode: 'backend' }"
-                        [paginationObj]="pagination"
-                        (searchCall)="search($event)"
-                        (paginationChange)="paginationControl($event)"
+                        [paginationObject]='pagination'
+                        (searchEvent)='search($event)'
+                        (paginationEvent)='paginationControl($event)'
                     ></app-table>
                     <ng-template let-row="row" #status>
                         <p>{{ row.status === 'active' ? 'فعال' : 'غیر فعال' }}</p>

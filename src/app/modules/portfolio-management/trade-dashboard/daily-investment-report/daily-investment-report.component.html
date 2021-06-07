@@ -11,8 +11,8 @@
                 [data]="dailyInvestment.data"
                 [columns]="columns"
                 [paginationSettings]="{ mode: 'backend' }"
-                [paginationObj]="pagination"
-                (paginationChange)="pageHandler($event)"
+                [paginationObject]='pagination'
+                (paginationEvent)='pageHandler($event)'
             >
             </app-table>
         </div>

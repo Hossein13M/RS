@@ -10,8 +10,8 @@
                [data]="data"
                [columns]="columns"
                [paginationSettings]="{mode:'local'}"
-               (searchCall)="search($event)"
-               (operationCall)="operation($event)">
+               (searchEvent)='search($event)'
+               (operationEvent)='operation($event)'>
     </app-table>
 
     <ng-template let-row="row" let-index="index" let-col="col" #mamad>
