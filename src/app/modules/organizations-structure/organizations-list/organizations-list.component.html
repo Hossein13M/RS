@@ -15,8 +15,8 @@
                 [data]="organizations"
                 [columns]="tableColumn"
                 [paginationSettings]="{ mode: 'backend' }"
-                [paginationObj]="pagination"
-                (paginationChange)="paginationControl($event)"
+                [paginationObject]="pagination"
+                (paginationEvent)="paginationControl($event)"
             ></app-table>
         </div>
     </div>
