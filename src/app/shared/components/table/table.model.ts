@@ -19,16 +19,18 @@ export interface PaginationChangeType {
 }
 
 // Column types
-export type Column = SimpleColumn | OperationColumn | CustomCol;
+export type Column = SimpleColumn | OperationColumn | CustomColumn | DetailColumn | IndexColumn;
 
-interface SimpleColumn {
+export type Color = 'primary' | 'warn' | 'accent';
+
+export interface SimpleColumn {
     id: string;
-    name: string;
-    type: 'string' | 'date' | 'price' | 'number' | 'custom' | 'operation';
+    name?: string;
+    type: 'string' | 'index' | 'date' | 'price' | 'date_range' | 'number' | 'custom' | 'operation' | 'rowDetail';
     minWidth?: string;
     sticky?: boolean;
     search?: {
-        type: 'select' | 'text' | 'date';
+        type: 'select' | 'text' | 'date' | 'date_range';
         mode: TableSearchMode;
         options?: Array<{
             value: string | number | boolean;
@@ -38,18 +40,53 @@ interface SimpleColumn {
     convert?(value: any): any;
 }
 
-interface OperationColumn extends SimpleColumn {
-    type: 'operation';
-    operations: Array<{
-        name: string;
-        icon: string;
-        color: 'primary' | 'warn' | 'accent';
-        // tslint:disable-next-line:variable-name
-        operation({ row }): void;
-    }>;
+export interface DetailColumn extends SimpleColumn {
+    type: 'rowDetail';
+    doubleClickable: boolean;
+    click(row): any;
+    doubleClick(row): any;
 }
 
-interface CustomCol extends SimpleColumn {
+export interface CustomColumn extends SimpleColumn {
     type: 'custom';
     cellTemplate: TemplateRef<any>;
+}
+
+export interface IndexColumn extends SimpleColumn {
+    type: 'index';
+    id: 'index';
+}
+
+// Operation Section
+export interface OperationColumn extends SimpleColumn {
+    type: 'operation';
+    operations: Array<Operation | OperationWithTemplate | OperationWithCondition>;
+}
+
+interface Operation {
+    name: string;
+    icon: string | 'condition' | 'template' | 'component';
+    color: Color | ((row: any) => Color);
+    operation?({ row }): void;
+}
+
+// example: { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
+interface OperationWithTemplate extends Operation {
+    icon: 'template';
+    content: TemplateRef<any>;
+    operation?({ row }): void;
+}
+
+/** example:
+ * {
+ *  name: 'ویرایش',
+ *  icon: 'condition',
+ *  content: (row: ResponseOperatorItemDto) => (row.mobileNumber ? 'check_circle_outline' : 'highlight_off'),
+ *  color: 'primary',
+ *  operation: ({ row }: any) => this.editOperator(row),
+ * }
+ */
+interface OperationWithCondition extends Operation {
+    icon: 'condition';
+    content: (row: any) => string;
 }

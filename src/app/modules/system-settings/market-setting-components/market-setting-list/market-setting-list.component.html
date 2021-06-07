@@ -13,10 +13,10 @@
                     <app-table
                         [data]="data"
                         [columns]="columns"
-                        (searchCall)="search($event)"
+                        (searchEvent)='search($event)'
                         [paginationSettings]="{ mode: 'backend' }"
-                        [paginationObj]="pagination"
-                        (paginationChange)="paginationControl($event)"
+                        [paginationObject]='pagination'
+                        (paginationEvent)='paginationControl($event)'
                     ></app-table>
 
                     <ng-container *ngIf="data?.length === 0">

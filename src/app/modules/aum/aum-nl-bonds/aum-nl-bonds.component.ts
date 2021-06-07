@@ -3,6 +3,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
+import { Column } from '#shared/components/table/table.model';
 
 am4core.useTheme(am4themes_animated);
 
@@ -17,7 +18,7 @@ interface AumNlBond {
     styleUrls: ['./aum-nl-bonds.component.scss'],
 })
 export class AumNlBondsComponent {
-    columns: Array<any> = [];
+    columns: Array<Column> = [];
     @Input() aumNlBond: AumNlBond;
 
     constructor(public dialog: MatDialog) {

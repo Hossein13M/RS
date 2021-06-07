@@ -32,6 +32,7 @@ export class GlSettingListComponent implements AfterViewInit {
 
     initColumns(): void {
         this.column = [
+            {id: 'index', type: 'index'},
             { id: 'symbol', name: 'نماد', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             { id: 'status', name: 'وضعیت', type: 'custom', cellTemplate: this.statusRef },
             { id: 'glCode', name: 'کد دفتر کل', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },

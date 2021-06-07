@@ -19,7 +19,7 @@
                     <app-table
                         [data]="data"
                         [columns]="column"
-                        (searchCall)='search($event)'
+                        (searchEvent)='search($event)'
                         [paginationSettings]="{ mode: 'local' }"
                     ></app-table>
                     <ng-container *ngIf="data?.length === 0">

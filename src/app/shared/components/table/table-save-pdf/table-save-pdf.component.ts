@@ -41,7 +41,7 @@ export class TableSavePdfComponent implements OnInit, AfterViewInit {
     @ViewChild('exportTable', { static: true }) table: ElementRef;
 
     ngOnInit(): void {
-        this._columns = this.columns;
+        this._columns = [...this.columns];
     }
 
     ngAfterViewInit(): void {
