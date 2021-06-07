@@ -1,0 +1,237 @@
+<!-- Main Content -->
+<ng-template #main class="min-height">
+    <mat-tree dir="rtl" class="tree" [dataSource]="dataSource" [treeControl]="treeControl">
+        <!-- This is the tree node template for expandable nodes -->
+        <mat-tree-node
+            class="tree-header-wrapper"
+            *matTreeNodeDef="let node"
+            (contextmenu)="onContextMenu($event, node, contextMenuTrigger)"
+            [ngClass]="{ active: node.id === selectedChildId }"
+            matTreeNodePadding
+        >
+            <button mat-icon-button matTreeNodeToggle *ngIf="node.expandable">
+                <mat-icon class="mat-icon-rtl-mirror">
+                    {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                </mat-icon>
+            </button>
+
+            <div *ngIf="!node.expandable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+            <mat-checkbox
+                *ngIf="!node.expandable && node.level !== 0 && false"
+                [ngClass]="{ 'd-none': !deleteMode }"
+                [checked]="checklistSelection.isSelected(node)"
+                (change)="toggleNode(node)"
+            >
+            </mat-checkbox>
+            <mat-checkbox
+                *ngIf="node.expandable && node.level !== 0 && false"
+                [ngClass]="{ 'd-none': !deleteMode }"
+                [checked]="descendantsAllSelected(node)"
+                [indeterminate]="descendantsPartiallySelected(node)"
+                (change)="toggleNode(node)"
+            >
+            </mat-checkbox>
+            <!--      ------------      -->
+            <!--      ------------      -->
+
+            <div class="pointer" matTreeNodeToggle (click)="editSelect(node)">
+                {{ node.name }}
+            </div>
+
+            <mat-chip-list class="mx-20">
+                <ng-container *ngFor="let relation of node.mappings">
+                    <mat-chip>
+                        <mat-icon matChipRemove (click)="removeMapping(relation, node)"> cancel </mat-icon>
+                        <p>{{ relation.name }}</p>
+                    </mat-chip>
+                </ng-container>
+            </mat-chip-list>
+
+            <!--     First Node       -->
+            <div *ngIf="node.level === 0" class="first-node-actions" fxLayout="row wrap" fxLayoutAlign="start center">
+                <div *ngIf="mappableTree">
+                    <button mat-raised-button color="primary" disabled>
+                        قابل نگاشت به
+                        <p>{{ mappableTree.name }}</p>
+                    </button>
+                </div>
+
+                <button mat-icon-button *ngIf="expandAll" matTooltip="باز کردن همه" (click)="toggleExpandTable()">
+                    <mat-icon class="mat-18">unfold_more</mat-icon>
+                </button>
+
+                <button mat-icon-button class="collapse-expanse-all" *ngIf="!expandAll" matTooltip="بستن همه" (click)="toggleExpandTable()">
+                    <mat-icon class="mat-18">unfold_less</mat-icon>
+                </button>
+            </div>
+
+            <!-- Options Menu -->
+            <div
+                style="visibility: hidden; position: absolute; top: 50px; z-index: 2"
+                [style.left]="contextMenuPosition.x"
+                #contextMenuTrigger="matMenuTrigger"
+                (menuOpened)="setDefaultEdit(node.name)"
+                [matMenuTriggerFor]="contextMenu"
+            ></div>
+            <!--      (menuOpened)="setDefaultEdit(node.name)" is HACK to fill out edit menu data      -->
+
+            <mat-menu #contextMenu="matMenu" dir="rtl" class="operation-menu">
+                <ng-template matMenuContent>
+                    <div *ngIf="subMenu === 'main'">
+                        <ng-container *ngTemplateOutlet="mainMenu; context: { node: node, contextMenuTrigger: contextMenuTrigger }"> </ng-container>
+                    </div>
+
+                    <div *ngIf="subMenu === 'add'">
+                        <ng-container *ngTemplateOutlet="addMenu; context: { node: node, contextMenuTrigger: contextMenuTrigger }"> </ng-container>
+                    </div>
+
+                    <div *ngIf="subMenu === 'edit'">
+                        <ng-container *ngTemplateOutlet="editMenu; context: { node: node, contextMenuTrigger: contextMenuTrigger }"> </ng-container>
+                    </div>
+                </ng-template>
+            </mat-menu>
+        </mat-tree-node>
+    </mat-tree>
+</ng-template>
+
+<!----------------------- OPTIONS ----------------------->
+
+<ng-template let-node="node" let-contextMenuTrigger="contextMenuTrigger" #mainMenu>
+    <button mat-menu-item *ngIf="node.level !== 0 && mappableTree" (click)="addMapping(node)">
+        <mat-icon>swap_horizontal_circle</mat-icon>
+
+        اضافه کردن نگاشت
+    </button>
+
+    <button mat-menu-item (click)="gotoSubMenu($event, 'add')">
+        <mat-icon>add_circle_outline</mat-icon>
+        اضافه کردن زیر درخت
+    </button>
+
+    <button mat-menu-item *ngIf="node.level !== 0" (click)="gotoSubMenu($event, 'edit')">
+        <mat-icon>create</mat-icon>
+        تغییر نام زیردرخت
+    </button>
+
+    <!--    <button mat-menu-item *ngIf="node.level !== 0" (click)="deleteNode(node)">-->
+    <!--        <mat-icon>delete</mat-icon>-->
+    <!--        حذف زیر درخت-->
+    <!--    </button>-->
+</ng-template>
+
+<ng-template let-node="node" let-contextMenuTrigger="contextMenuTrigger" #addMenu>
+    <div class="header" fxLayout="row wrap" fxLayoutAlign="center center">
+        <div class="title" fxLayout="row wrap" fxLayoutAlign="center center">اضافه کردن زیر درخت</div>
+
+        <button mat-mini-fab (click)="gotoSubMenu($event, 'main')" class="go-back-fab">
+            <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+    </div>
+
+    <div class="body" (click)="$event.stopPropagation()">
+        <form *ngIf="subMenuState === stateType.PRESENT">
+            <mat-form-field class="form-full-width" appearance="outline" dir="rtl">
+                <mat-label>نام زیر درخت</mat-label>
+                <input matInput type="text" autofocus [formControl]="addChildForm" />
+            </mat-form-field>
+
+            <button
+                mat-raised-button
+                type="submit"
+                color="primary"
+                class="add-child-btn"
+                (click)="addChild($event, contextMenuTrigger, node, addChildForm.value)"
+            >
+                اضافه کردن
+            </button>
+        </form>
+
+        <div *ngIf="subMenuState === stateType.LOADING" class="loader">
+            <mat-spinner [diameter]="40"></mat-spinner>
+        </div>
+
+        <div *ngIf="subMenuState === stateType.SUCCESS" class="loader">
+            <mat-icon class="mat-18">done</mat-icon>
+            <span>با موفقیت انجام شد.</span>
+        </div>
+
+        <div *ngIf="subMenuState === stateType.FAILED" class="loader">
+            <mat-icon class="mat-18">clear</mat-icon>
+            <span>انجام نشد.</span>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template let-node="node" let-contextMenuTrigger="contextMenuTrigger" #editMenu>
+    <div class="header" fxLayout="row wrap" fxLayoutAlign="center center">
+        <div class="title" fxLayout="row wrap" fxLayoutAlign="center center">تغییر نام زیر درخت</div>
+
+        <button mat-mini-fab (click)="gotoSubMenu($event, 'main')" class="go-back-fab">
+            <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+    </div>
+
+    <div class="body" (click)="$event.stopPropagation()">
+        <form *ngIf="subMenuState === stateType.PRESENT">
+            <mat-form-field class="form-full-width" appearance="outline" dir="rtl">
+                <mat-label> نام زیر درخت </mat-label>
+                <input matInput type="text" autofocus [formControl]="editChildForm" />
+            </mat-form-field>
+
+            <span class="alert-name-change">
+                <ul>
+                    <li>در صورت تغییر نام این زیر درخت، فیلد مرتبط با آن در کلیه‌ی ریسک و زیان‌های ثبت شده نیز تغییر می‌کند.</li>
+                </ul>
+            </span>
+
+            <button
+                mat-raised-button
+                type="submit"
+                color="primary"
+                class="add-child-btn"
+                (click)="editNode($event, contextMenuTrigger, node, editChildForm.value)"
+            >
+                تغییر نام
+            </button>
+        </form>
+
+        <div *ngIf="subMenuState === stateType.LOADING" class="loader">
+            <mat-spinner [diameter]="40"></mat-spinner>
+        </div>
+
+        <div *ngIf="subMenuState === stateType.SUCCESS" class="loader">
+            <mat-icon class="mat-18">done</mat-icon>
+            <span>با موفقیت انجام شد.</span>
+        </div>
+
+        <div *ngIf="subMenuState === stateType.FAILED" class="loader">
+            <mat-icon class="mat-18">clear</mat-icon>
+            <span>انجام نشد.</span>
+        </div>
+    </div>
+</ng-template>
+
+<!---------------------------------------------------------------------------------------------------------->
+<ng-container [ngSwitch]="state">
+    <div *ngSwitchCase="stateType.PRESENT">
+        <ng-container *ngTemplateOutlet="main"> </ng-container>
+    </div>
+
+    <!-- Loading Quote -->
+    <div *ngSwitchCase="stateType.LOADING" class="loader" fxLayout="row wrap" fxLayoutAlign="center center">
+        <mat-spinner diameter="70"></mat-spinner>
+    </div>
+
+    <!-- Failed Quote-->
+    <div *ngSwitchCase="stateType.FAILED" class="loader" fxLayout="row wrap" fxLayoutAlign="center center">
+        دریافت داده ناموفق بود
+
+        <button mat-button class="againBtn" (click)="get()">دریافت دوباره</button>
+    </div>
+
+    <!-- No Selection -->
+    <div *ngSwitchCase="stateType.NO_SELECT" class="loader" fxLayout="row wrap" fxLayoutAlign="center center">
+        <span> لطفا درختواره‌ای برای نمایش انتخاب کنید. </span>
+    </div>
+</ng-container>

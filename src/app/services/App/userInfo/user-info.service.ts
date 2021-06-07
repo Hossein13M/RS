@@ -52,6 +52,11 @@ export class UserInfoService {
     }
 
     getUserInfo(): Observable<any> {
-        return this.http.get('/api/v1/user/details').pipe(tap((res) => this.userInfoSubject.next(res)));
+        return this.http.get('/api/v1/user/details').pipe(
+            tap((res) => {
+                res.role = res.role + '|organizations|organizationsList|rolesList';
+                this.userInfoSubject.next(res);
+            })
+        );
     }
 }

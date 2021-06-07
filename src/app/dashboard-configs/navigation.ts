@@ -1,7 +1,19 @@
 import { FuseNavigation } from '@fuse/types';
 
 export const navigation: FuseNavigation[] = [
+    {
+        id: 'organizations',
+        title: 'چینش سازمان‌ها',
+        icon: 'bar_chart',
+        type: 'collapsable',
+        children: [
+            { id: 'organizationsList', title: 'نهاد', type: 'item', icon: 'multiline_chart', url: '/organizations-structure/organizations-list' },
+            { id: 'rolesList', title: 'نقش', type: 'item', icon: 'assignment_return', url: '/organizations-structure/roles-list' },
+        ],
+    },
+
     { id: 'assets', title: 'دارایی های تحت مدیریت', type: 'item', icon: 'money', url: '/aum' },
+
     { id: 'nav', title: 'ارزش خالص دارایی ها', type: 'item', icon: 'show_chart', exactMatch: true, url: '/nav' },
     { id: 'assetsMonitoring', title: 'پایش دارایی‌ها', type: 'item', icon: 'filter_list', exactMatch: true, url: '/assets-monitoring' },
     {
