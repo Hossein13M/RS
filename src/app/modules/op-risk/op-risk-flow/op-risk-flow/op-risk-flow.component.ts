@@ -31,7 +31,7 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
 
     private createColumns(): void {
         this.columns = [
-            { name: 'ردیف', id: 'positionNumber', type: 'number', minWidth: '130px', search: { type: 'select', mode: TableSearchMode.LOCAL } },
+            { id: 'index', type: 'index'},
             { name: 'عنوان جریان', id: 'name', type: 'string', minWidth: '150px', search: { type: 'text', mode: TableSearchMode.SERVER } },
             { name: 'وضعیت', id: 'custom1', type: 'custom', cellTemplate: this.toggle },
             {
