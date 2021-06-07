@@ -75,10 +75,13 @@ const appRoutes: Routes = [
         path: 'welcome',
         loadChildren: () => import('app/modules/welcome/welcome.module').then((m) => m.WelcomeModule),
     },
-
     {
         path: 'assets-monitoring',
         loadChildren: () => import('app/modules/assets-monitoring/assets-monitoring.module').then((m) => m.AssetsMonitoringModule),
+    },
+    {
+        path: 'organizations-structure',
+        loadChildren: () => import('app/modules/organizations-structure/organization-structure.module').then((m) => m.OrganizationStructureModule),
     },
 ];
 
