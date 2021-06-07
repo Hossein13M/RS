@@ -16,7 +16,7 @@ export class OrganizationsListComponent implements OnInit {
     organizations: Array<OrganizationStructureModel>;
     pagination = { skip: 0, limit: 5, total: 100 };
     tableColumn: Array<Column> = [
-        { id: 'positionNumber', name: 'ردیف', type: 'number', minWidth: '60px' },
+        { id: 'index', type: 'index' },
         { id: 'name', name: 'نام نهاد', type: 'string', minWidth: '500px' },
         { id: 'isActive', name: 'وضعیت نهاد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '500px' },
         {
@@ -49,7 +49,6 @@ export class OrganizationsListComponent implements OnInit {
         this.organizationOrderService.getOrganizationsList(this.pagination).subscribe((response) => {
             this.organizations = response.items;
             this.pagination.total = response.total;
-            response.items.forEach((value, index) => (response.items[index].positionNumber = index + 1));
         });
     }
 

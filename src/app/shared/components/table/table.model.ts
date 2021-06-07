@@ -29,6 +29,7 @@ export interface SimpleColumn {
     type: 'string' | 'index' | 'date' | 'price' | 'date_range' | 'number' | 'custom' | 'operation' | 'rowDetail';
     minWidth?: string;
     sticky?: boolean;
+    showSearchButtons?: boolean;
     search?: {
         type: 'select' | 'text' | 'date' | 'date_range';
         mode: TableSearchMode;
