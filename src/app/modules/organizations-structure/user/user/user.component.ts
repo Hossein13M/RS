@@ -17,12 +17,10 @@ import * as _ from 'lodash';
     styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit, OnDestroy {
-    // organization
     public organizations: Array<Organization> = [];
     public organizationsForm: FormGroup;
     public organizationsSearchControl: FormControl = new FormControl();
 
-    // user
     public users: Array<User>;
     public columns: Array<Column> = [
         {
@@ -31,8 +29,8 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'string',
             search: {
                 type: 'text',
-                mode: TableSearchMode.SERVER
-            }
+                mode: TableSearchMode.SERVER,
+            },
         },
         {
             id: 'lastname',
@@ -40,8 +38,8 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'string',
             search: {
                 type: 'text',
-                mode: TableSearchMode.SERVER
-            }
+                mode: TableSearchMode.SERVER,
+            },
         },
         {
             id: 'email',
@@ -49,8 +47,8 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'string',
             search: {
                 type: 'text',
-                mode: TableSearchMode.SERVER
-            }
+                mode: TableSearchMode.SERVER,
+            },
         },
         {
             id: 'nationalCode',
@@ -63,8 +61,8 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'string',
             search: {
                 type: 'text',
-                mode: TableSearchMode.SERVER
-            }
+                mode: TableSearchMode.SERVER,
+            },
         },
         {
             id: 'username',
@@ -72,8 +70,8 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'string',
             search: {
                 type: 'text',
-                mode: TableSearchMode.SERVER
-            }
+                mode: TableSearchMode.SERVER,
+            },
         },
         {
             id: 'phoneNumber',
@@ -84,7 +82,7 @@ export class UserComponent implements OnInit, OnDestroy {
             id: 'status',
             name: 'وضعیت',
             type: 'string',
-            convert: (value: 'Active' | 'InActive') => value === 'Active' ? 'فعال' : 'غیر فعال'
+            convert: (value: 'Active' | 'InActive') => (value === 'Active' ? 'فعال' : 'غیر فعال'),
         },
         {
             name: 'عملیات',
@@ -96,12 +94,11 @@ export class UserComponent implements OnInit, OnDestroy {
                 // { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
                 // { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editOperator(row) },
             ],
-        }
+        },
     ];
     public usersSearchForm: FormGroup;
     public pagination: PaginationModel = { skip: 0, limit: 5, total: 100 };
 
-    // unsubscribe all
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(private userService: UserService, public dialog: MatDialog, private alertService: AlertService, private formBuilder: FormBuilder) {}
@@ -115,7 +112,6 @@ export class UserComponent implements OnInit, OnDestroy {
         this.initSearch();
     }
 
-    // organization
     private alertToFillOrganization(): void {
         this.alertService.onInfo('لطفا یک نهاد انتخاب کنید.');
     }
@@ -132,7 +128,6 @@ export class UserComponent implements OnInit, OnDestroy {
         });
     }
 
-    // user
     private getUsersAccordingToOrganization(): void {
         this.organizationsForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
             if (value) {
@@ -141,7 +136,7 @@ export class UserComponent implements OnInit, OnDestroy {
         });
     }
 
-    initSearch(): void {
+    private initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.columns, 'id'));
         const objectFromKeys = {};
         mapKeys.forEach((id) => {
@@ -152,7 +147,7 @@ export class UserComponent implements OnInit, OnDestroy {
         });
     }
 
-    search(searchFilter: any): void {
+    public search(searchFilter: any): void {
         if (!searchFilter) {
             return;
         }
@@ -163,7 +158,7 @@ export class UserComponent implements OnInit, OnDestroy {
         this.getUsers(organizationId, this.usersSearchForm.value);
     }
 
-    paginationControl(pageEvent: PaginationChangeType): void {
+    public paginationControl(pageEvent: PaginationChangeType): void {
         const organizationId: string = this.organizationsForm.controls['organization'].value;
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
@@ -172,9 +167,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
     private getUsers(organizationId: string, search?: any): void {
         this.userService.getUsers(organizationId, this.pagination, search).subscribe((response) => {
-            console.log(response.items);
             this.users = response.items;
-            this.pagination.limit = response.limit;
             this.pagination.total = response.total;
         });
     }
