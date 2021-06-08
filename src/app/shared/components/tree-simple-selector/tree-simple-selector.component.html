@@ -98,9 +98,8 @@
 <!----------------------- OPTIONS ----------------------->
 
 <ng-template let-node="node" let-contextMenuTrigger="contextMenuTrigger" #mainMenu>
-    <button mat-menu-item *ngIf="node.level !== 0 && mappableTree" (click)="addMapping(node)">
+    <button mat-menu-item *ngIf="node.level !== 0 && selectedOrg !== 'org-unit'" (click)="addMapping(node)">
         <mat-icon>swap_horizontal_circle</mat-icon>
-
         اضافه کردن نگاشت
     </button>
 
@@ -114,100 +113,104 @@
         تغییر نام زیردرخت
     </button>
 
-    <!--    <button mat-menu-item *ngIf="node.level !== 0" (click)="deleteNode(node)">-->
-    <!--        <mat-icon>delete</mat-icon>-->
-    <!--        حذف زیر درخت-->
-    <!--    </button>-->
+    <!--        <button mat-menu-item *ngIf="node.level !== 0" (click)="deleteNode(node)">-->
+    <!--            <mat-icon>delete</mat-icon>-->
+    <!--            حذف زیر درخت-->
+    <!--        </button>-->
 </ng-template>
 
 <ng-template let-node="node" let-contextMenuTrigger="contextMenuTrigger" #addMenu>
-    <div class="header" fxLayout="row wrap" fxLayoutAlign="center center">
-        <div class="title" fxLayout="row wrap" fxLayoutAlign="center center">اضافه کردن زیر درخت</div>
+    <div class="menu-modal">
+        <div class="header" fxLayout="row wrap" fxLayoutAlign="center center">
+            <div class="title" fxLayout="row wrap" fxLayoutAlign="center center">اضافه کردن زیر درخت</div>
 
-        <button mat-mini-fab (click)="gotoSubMenu($event, 'main')" class="go-back-fab">
-            <mat-icon>keyboard_backspace</mat-icon>
-        </button>
-    </div>
-
-    <div class="body" (click)="$event.stopPropagation()">
-        <form *ngIf="subMenuState === stateType.PRESENT">
-            <mat-form-field class="form-full-width" appearance="outline" dir="rtl">
-                <mat-label>نام زیر درخت</mat-label>
-                <input matInput type="text" autofocus [formControl]="addChildForm" />
-            </mat-form-field>
-
-            <button
-                mat-raised-button
-                type="submit"
-                color="primary"
-                class="add-child-btn"
-                (click)="addChild($event, contextMenuTrigger, node, addChildForm.value)"
-            >
-                اضافه کردن
+            <button mat-mini-fab (click)="gotoSubMenu($event, 'main')" class="go-back-fab">
+                <mat-icon>keyboard_backspace</mat-icon>
             </button>
-        </form>
-
-        <div *ngIf="subMenuState === stateType.LOADING" class="loader">
-            <mat-spinner [diameter]="40"></mat-spinner>
         </div>
 
-        <div *ngIf="subMenuState === stateType.SUCCESS" class="loader">
-            <mat-icon class="mat-18">done</mat-icon>
-            <span>با موفقیت انجام شد.</span>
-        </div>
+        <div class="body" (click)="$event.stopPropagation()">
+            <form *ngIf="subMenuState === stateType.PRESENT">
+                <mat-form-field class="form-full-width" appearance="outline" dir="rtl">
+                    <mat-label>نام زیر درخت</mat-label>
+                    <input matInput type="text" autofocus [formControl]="addChildForm" />
+                </mat-form-field>
 
-        <div *ngIf="subMenuState === stateType.FAILED" class="loader">
-            <mat-icon class="mat-18">clear</mat-icon>
-            <span>انجام نشد.</span>
+                <button
+                    mat-raised-button
+                    type="submit"
+                    color="primary"
+                    class="add-child-btn"
+                    (click)="addChild($event, contextMenuTrigger, node, addChildForm.value)"
+                >
+                    اضافه کردن
+                </button>
+            </form>
+
+            <div *ngIf="subMenuState === stateType.LOADING" class="loader">
+                <mat-spinner [diameter]="40"></mat-spinner>
+            </div>
+
+            <div *ngIf="subMenuState === stateType.SUCCESS" class="loader">
+                <mat-icon class="mat-18">done</mat-icon>
+                <span>با موفقیت انجام شد.</span>
+            </div>
+
+            <div *ngIf="subMenuState === stateType.FAILED" class="loader">
+                <mat-icon class="mat-18">clear</mat-icon>
+                <span>انجام نشد.</span>
+            </div>
         </div>
     </div>
 </ng-template>
 
 <ng-template let-node="node" let-contextMenuTrigger="contextMenuTrigger" #editMenu>
-    <div class="header" fxLayout="row wrap" fxLayoutAlign="center center">
-        <div class="title" fxLayout="row wrap" fxLayoutAlign="center center">تغییر نام زیر درخت</div>
+    <div class="menu-modal">
+        <div class="header" fxLayout="row wrap" fxLayoutAlign="center center">
+            <div class="title" fxLayout="row wrap" fxLayoutAlign="center center">تغییر نام زیر درخت</div>
 
-        <button mat-mini-fab (click)="gotoSubMenu($event, 'main')" class="go-back-fab">
-            <mat-icon>keyboard_backspace</mat-icon>
-        </button>
-    </div>
-
-    <div class="body" (click)="$event.stopPropagation()">
-        <form *ngIf="subMenuState === stateType.PRESENT">
-            <mat-form-field class="form-full-width" appearance="outline" dir="rtl">
-                <mat-label> نام زیر درخت </mat-label>
-                <input matInput type="text" autofocus [formControl]="editChildForm" />
-            </mat-form-field>
-
-            <span class="alert-name-change">
-                <ul>
-                    <li>در صورت تغییر نام این زیر درخت، فیلد مرتبط با آن در کلیه‌ی ریسک و زیان‌های ثبت شده نیز تغییر می‌کند.</li>
-                </ul>
-            </span>
-
-            <button
-                mat-raised-button
-                type="submit"
-                color="primary"
-                class="add-child-btn"
-                (click)="editNode($event, contextMenuTrigger, node, editChildForm.value)"
-            >
-                تغییر نام
+            <button mat-mini-fab (click)="gotoSubMenu($event, 'main')" class="go-back-fab">
+                <mat-icon>keyboard_backspace</mat-icon>
             </button>
-        </form>
-
-        <div *ngIf="subMenuState === stateType.LOADING" class="loader">
-            <mat-spinner [diameter]="40"></mat-spinner>
         </div>
 
-        <div *ngIf="subMenuState === stateType.SUCCESS" class="loader">
-            <mat-icon class="mat-18">done</mat-icon>
-            <span>با موفقیت انجام شد.</span>
-        </div>
+        <div class="body" (click)="$event.stopPropagation()">
+            <form *ngIf="subMenuState === stateType.PRESENT">
+                <mat-form-field class="form-full-width" appearance="outline" dir="rtl">
+                    <mat-label> نام زیر درخت </mat-label>
+                    <input matInput type="text" autofocus [formControl]="editChildForm" />
+                </mat-form-field>
 
-        <div *ngIf="subMenuState === stateType.FAILED" class="loader">
-            <mat-icon class="mat-18">clear</mat-icon>
-            <span>انجام نشد.</span>
+                <!--            <span class="alert-name-change">-->
+                <!--                <ul>-->
+                <!--                    <li>در صورت تغییر نام این زیر درخت، فیلد مرتبط با آن در کلیه‌ی نهادها و  تغییر می‌کند.</li>-->
+                <!--                </ul>-->
+                <!--            </span>-->
+
+                <button
+                    mat-raised-button
+                    type="submit"
+                    color="primary"
+                    class="add-child-btn"
+                    (click)="editNode($event, contextMenuTrigger, node, editChildForm.value)"
+                >
+                    تغییر نام
+                </button>
+            </form>
+
+            <div *ngIf="subMenuState === stateType.LOADING" class="loader">
+                <mat-spinner [diameter]="40"></mat-spinner>
+            </div>
+
+            <div *ngIf="subMenuState === stateType.SUCCESS" class="loader">
+                <mat-icon class="mat-18">done</mat-icon>
+                <span>با موفقیت انجام شد.</span>
+            </div>
+
+            <div *ngIf="subMenuState === stateType.FAILED" class="loader">
+                <mat-icon class="mat-18">clear</mat-icon>
+                <span>انجام نشد.</span>
+            </div>
         </div>
     </div>
 </ng-template>

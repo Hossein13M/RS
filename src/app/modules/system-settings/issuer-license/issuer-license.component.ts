@@ -94,7 +94,6 @@ export class IssuerLicenseComponent implements OnInit {
     }
 
     paginationControl(pageEvent?: PaginationChangeType): void {
-        console.log(pageEvent);
         if (this.status === StateType.LOADING) {
             return;
         }

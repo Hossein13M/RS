@@ -9,15 +9,31 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { FlexModule } from '@angular/flex-layout';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { OrganizationRoleMappingDialogModule } from '../../../modules/organizations-structure/organization-role-mapping-dialog/organization-role-mapping-dialog.module';
 
 @NgModule({
     declarations: [TreeSimpleSelectorComponent],
-    exports: [
-        TreeSimpleSelectorComponent
+    exports: [TreeSimpleSelectorComponent],
+    imports: [
+        CommonModule,
+        MatTreeModule,
+        MatIconModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        MatChipsModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FlexModule,
+        FormsModule,
+        MatTooltipModule,
+        OrganizationRoleMappingDialogModule,
     ],
-    imports: [CommonModule, MatTreeModule, MatIconModule, MatButtonModule, MatCheckboxModule, MatChipsModule, MatMenuModule, MatProgressSpinnerModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule, FlexModule]
 })
 export class TreeSimpleSelectorModule {}

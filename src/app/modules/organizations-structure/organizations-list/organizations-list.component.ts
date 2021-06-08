@@ -27,7 +27,7 @@ export class OrganizationsListComponent implements OnInit {
             sticky: true,
             showSearchButtons: false,
             operations: [
-                { name: 'مدیریت ساختار و نقش', icon: 'filter_list', color: 'accent', operation: (row: any) => this.dastan(row) },
+                { name: 'مدیریت ساختار و نقش', icon: 'filter_list', color: 'accent', operation: (row: any) => this.navigateToUnitsAndRolesPage(row) },
                 { name: 'گرفتن رونوشت', icon: 'file_copy', color: 'accent', operation: (row: OrganizationStructureModel) => this.copyOrganization(row) },
                 { name: 'ویرایش نام', icon: 'mode_edit', color: 'accent', operation: (row: any) => this.openOrganizationModal(row) },
                 { name: 'غیرفعال‌سازی', icon: 'sync_alt', color: 'accent', operation: (row: any) => this.deactivateOrganization(row) },
@@ -60,8 +60,7 @@ export class OrganizationsListComponent implements OnInit {
 
     private copyOrganization(organization: OrganizationStructureModel): void {
         // TODO: this needs to be implemented after the backend has been prepared
-        console.log(organization);
-        window.alert(organization.name);
+        window.alert('این قابلیت به زودی پیاده‌سازی می‌شود!');
     }
 
     public openOrganizationModal(organization?: { operationItem: { color: string; icon: string; operation: any }; row: OrganizationStructureModel }): void {
@@ -82,7 +81,7 @@ export class OrganizationsListComponent implements OnInit {
         );
     }
 
-    private dastan(organization: any): void {
+    private navigateToUnitsAndRolesPage(organization: any): void {
         this.router.navigate(['/organizations-structure/roles-list/' + organization.row.id]).finally();
     }
 }

@@ -7,14 +7,12 @@ import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { fuseAnimations } from '@fuse/animations';
 import { AlertService } from 'app/services/alert.service';
-import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { FormContainer } from 'app/shared/models/FromContainer';
 import { Observable, of } from 'rxjs';
 import { TreeChartFlatNode, TreeChartNode, stateType } from '../../../modules/op-risk/tree-chart/op-risk-tree-chart/op-risk-tree-chart.types';
-import { TreeMappingService } from '../../../modules/op-risk/tree-chart/tree-mapping.service';
-import { OrganizationUnitMappingDialogComponent } from '../../../modules/organizations-structure/organization-unit-mapping-dialog/organization-unit-mapping-dialog.component';
-import { OrganizationRoleMappingDialogComponent } from '../../../modules/organizations-structure/organization-role-mapping-dialog/organization-role-mapping-dialog.component';
 import { OrganizationStructureService } from '../../../modules/organizations-structure/organization-structure.service';
+import { ActivatedRoute } from '@angular/router';
+import { ConfirmDialogComponent } from '#shared/components/confirm-dialog/confirm-dialog.component';
+import { OrganizationRoleMappingDialogComponent } from '../../../modules/organizations-structure/organization-role-mapping-dialog/organization-role-mapping-dialog.component';
 
 @Component({
     selector: 'app-tree-simple-selector',
@@ -22,7 +20,7 @@ import { OrganizationStructureService } from '../../../modules/organizations-str
     styleUrls: ['./tree-simple-selector.component.scss'],
     animations: fuseAnimations,
 })
-export class TreeSimpleSelectorComponent implements OnChanges, FormContainer {
+export class TreeSimpleSelectorComponent implements OnChanges {
     @Input() selected: string;
     @Input() selectedOrg: string;
     @Input() organizationCode: string | number;
@@ -68,13 +66,16 @@ export class TreeSimpleSelectorComponent implements OnChanges, FormContainer {
     // Mapping
     allMaps: any;
     mappableTree: any;
+    private organizationId: number;
 
     constructor(
         private dialog: MatDialog,
         private alertService: AlertService,
         private organizationStructureService: OrganizationStructureService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
+        private route: ActivatedRoute
     ) {
+        this.organizationId = +this.route.snapshot.paramMap.get('id');
         this.form = fb.array([]);
 
         this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
@@ -164,7 +165,6 @@ export class TreeSimpleSelectorComponent implements OnChanges, FormContainer {
     }
 
     patchData(data): void {
-        console.log('data', data);
         this.dataSource.data = data;
     }
 
@@ -273,13 +273,12 @@ export class TreeSimpleSelectorComponent implements OnChanges, FormContainer {
     }
 
     addChild(event: any, menu: any, parent: TreeChartFlatNode, name: string): void {
-        console.log(parent);
         event.stopPropagation();
         const parentNode = this.flatNodeMap.get(parent);
 
         this.subMenuState = stateType.LOADING;
         if (this.selectedOrg === 'org-unit') {
-            this.organizationStructureService.addNewOrganizationUnit({ name, parent: parentNode.id }).subscribe(
+            this.organizationStructureService.addNewOrganizationUnit({ name, parent: parentNode.id, organization: this.organizationCode }).subscribe(
                 (newNodeData) => {
                     this.subMenuState = stateType.SUCCESS;
                     const newNode = new TreeChartNode();
@@ -304,7 +303,7 @@ export class TreeSimpleSelectorComponent implements OnChanges, FormContainer {
                 }
             );
         } else {
-            this.organizationStructureService.addNewOrganizationRole({ name, parent: parentNode.id }).subscribe(
+            this.organizationStructureService.addNewOrganizationRole({ name, parent: parentNode.id, organization: this.organizationCode }).subscribe(
                 (newNodeData) => {
                     this.subMenuState = stateType.SUCCESS;
                     const newNode = new TreeChartNode();
@@ -422,20 +421,21 @@ export class TreeSimpleSelectorComponent implements OnChanges, FormContainer {
 
         this.dialog.open(OrganizationRoleMappingDialogComponent, {
             panelClass: 'dialog-w80',
-            data: { treeName: this.mappableTree.name, mappedNode: foundedNode },
+            data: { mappedNode: foundedNode, organizationId: this.organizationId, organizationCode: this.organizationCode },
         });
     }
 
     removeMapping(relation: any, node: any): void {
         const foundedNode = this.flatNodeMap.get(node);
-        const dialogRef = this.dialog.open(OrganizationUnitMappingDialogComponent, {
+
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             panelClass: 'dialog-w40',
-            data: { title: 'حذف نگاشت', description: `آیا از حذف نگاشت «${node.name}» به «${relation.childTitleFa}» اطمینان دارید؟` },
+            data: { title: 'حذف نگاشت', description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟` },
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {
                 if (this.selectedOrg === 'org-unit') {
-                    this.organizationStructureService.deleteOrganizationUnit(relation.id).subscribe(
+                    this.organizationStructureService.deleteMappingOfRoleWithUnit(relation.id).subscribe(
                         () => {
                             const index = foundedNode.mappings.findIndex((el) => el.id === relation.id);
                             foundedNode.mappings.splice(index, 1);
@@ -445,7 +445,7 @@ export class TreeSimpleSelectorComponent implements OnChanges, FormContainer {
                         () => this.alertService.onError('نگاشت حذف نشد.')
                     );
                 } else {
-                    this.organizationStructureService.deleteOrganizationRole(relation.id).subscribe(
+                    this.organizationStructureService.deleteMappingOfRoleWithUnit(relation.id).subscribe(
                         () => {
                             const index = foundedNode.mappings.findIndex((el) => el.id === relation.id);
                             foundedNode.mappings.splice(index, 1);
