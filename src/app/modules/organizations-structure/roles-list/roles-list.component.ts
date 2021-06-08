@@ -9,9 +9,8 @@ import { OrganizationRole, OrganizationStructureModel, OrganizationUnit, Role, U
     styleUrls: ['./roles-list.component.scss'],
 })
 export class RolesListComponent implements OnInit {
-    dastan: boolean = false;
-    selectedChartName: string;
-    kir: string;
+    loading: boolean = true;
+    selectedTreeChartName: string = 'org-unit';
     headerList: Array<{ title: string; icon: string; englishTitle: string }> = [
         { title: 'ساختار سازمانی', icon: 'account_balance', englishTitle: 'org-unit' },
         { title: 'نقش سازمانی', icon: 'supervisor_account', englishTitle: 'org-role' },
@@ -19,7 +18,7 @@ export class RolesListComponent implements OnInit {
     organizationId: number;
     organizationTitle: string = '';
     organizationInfo: OrganizationStructureModel;
-    trees: Array<{ name: string; id: string; show: boolean; data?: OrganizationRole<Role> | OrganizationUnit<Unit>; zIndex: number }> = [
+    trees: Array<{ name: string; id: string; show: boolean; zIndex: number; data?: OrganizationRole<Role> | OrganizationUnit<Unit> }> = [
         { name: 'ساختار سازمانی', id: 'unit', show: false, zIndex: 20 },
         { name: 'نقش سازمانی', id: 'role', show: false, zIndex: 19 },
     ];
@@ -28,11 +27,11 @@ export class RolesListComponent implements OnInit {
     ngOnInit(): void {
         this.getOrganizationIdFromURL();
         this.getOrganizationInfo();
+        setTimeout(() => (this.loading = false), 1000);
     }
 
     public detectSectionChanges(event: { selectedSection: 'org-role' | 'org-unit' }): void {
-        this.dastan = false;
-        this.kir = event.selectedSection;
+        this.selectedTreeChartName = event.selectedSection;
         event.selectedSection === 'org-role' ? this.getOrganizationRoleByOrgCode() : this.getOrganizationUnitsByOrgCode();
     }
 
@@ -50,7 +49,6 @@ export class RolesListComponent implements OnInit {
     private getOrganizationRoleByOrgCode(): void {
         this.organizationStructureService.getOrganizationRoleByOrgCode(this.organizationInfo.code).subscribe((response) => {
             this.trees[1].data = response;
-            this.dastan = true;
             this.selectProperData();
         });
     }
@@ -59,7 +57,6 @@ export class RolesListComponent implements OnInit {
         this.organizationStructureService.getOrganizationUnitsByOrgCode(this.organizationInfo.code).subscribe((response: any) => {
             response.titleEN = 'unit';
             this.trees[0].data = response;
-            this.dastan = true;
             this.selectProperData();
         });
     }

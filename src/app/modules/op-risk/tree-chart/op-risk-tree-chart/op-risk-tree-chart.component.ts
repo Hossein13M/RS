@@ -135,7 +135,6 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
     }
 
     patchData(data): void {
-        console.log('data', data);
         this.dataSource.data = data;
     }
 
