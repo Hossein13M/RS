@@ -1,0 +1,16 @@
+.main-content {
+    padding: 0 15px 15px 15px;
+    direction: rtl;
+    max-height: 80vh;
+    overflow: auto;
+
+    .title {
+        text-align: center;
+        margin-top: 0;
+        font-weight: bold;
+    }
+
+    .mat-chip-list {
+        min-width: unset;
+    }
+}

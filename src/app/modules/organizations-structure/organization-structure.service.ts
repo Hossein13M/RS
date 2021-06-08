@@ -42,8 +42,12 @@ export class OrganizationStructureService {
         return this.http.put<any>(`/api/v1/organization-unit`, { id, name });
     }
 
-    public deleteOrganizationUnit(unitId: number): Observable<any> {
+    public deleteMappingOfRoleWithUnit(unitId: number): Observable<any> {
         return this.http.delete(`/api/v1/organization-unit/revoke-role/${unitId}`);
+    }
+
+    public assignRoleToOrganizationUnit(unitInfo): Observable<any> {
+        return this.http.post(`/api/v1/organization-unit/assign-role`, unitInfo);
     }
 
     public deleteOrganizationRole(unitId: number): Observable<any> {
