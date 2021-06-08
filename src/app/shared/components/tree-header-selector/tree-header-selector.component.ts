@@ -6,7 +6,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
     styleUrls: ['./tree-header-selector.component.scss'],
 })
 export class TreeHeaderSelectorComponent implements OnInit {
-    @Input() selected: string;
     @Input() organizationId: string | number;
     @Input() headerList: Array<{ title: string; icon: string; englishTitle: string }>;
 
