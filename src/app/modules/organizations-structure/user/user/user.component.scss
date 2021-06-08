@@ -1,0 +1,11 @@
+.header {
+    &__input {
+        direction: rtl;
+        margin: 0 auto 0 15px;
+
+        & > mat-form-field {
+            width: 250px !important;
+        }
+    }
+
+}
