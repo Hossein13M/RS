@@ -10,7 +10,6 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { AppComponent } from 'app/app.component';
 import { fuseConfig } from 'app/dashboard-configs';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
 import { LoginModule } from './modules/login/login.module';
 import { MessagingModule } from './modules/mails/messaging.module';
 import { SendMailComponent } from './modules/mails/send-mail/send-mail.component';
@@ -100,7 +99,6 @@ const appRoutes: Routes = [
         FuseModule.forRoot(fuseConfig),
         FuseProgressBarModule,
         FuseSharedModule,
-        SnotifyModule,
         LayoutModule,
         FuseThemeOptionsModule,
         PortfolioManagementModule,
@@ -110,12 +108,7 @@ const appRoutes: Routes = [
         TestModule, // --> Test Playground
     ],
     bootstrap: [AppComponent],
-    providers: [
-        { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
-        { provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() },
-        SnotifyService,
-        AuthGuard,
-    ],
+    providers: [{ provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() }, AuthGuard],
     entryComponents: [SendMailComponent],
 })
 export class AppModule {}

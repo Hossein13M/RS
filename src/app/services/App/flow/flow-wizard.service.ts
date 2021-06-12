@@ -5,7 +5,6 @@ import { MinioEnv } from 'app/services/API/api-configuration';
 import { FindFlowInstanceResponseDto, GetFlowHistoryDto, GetFlowNoteDto, GetFlowWizardResponseDto } from 'app/services/API/models';
 import { FlowFileService, FlowHistoryService, FlowInstanceDataService, FlowNoteService, FlowWizardService } from 'app/services/API/services';
 import * as Minio from 'assets/js/minio-browser/minio-browser.js';
-import { SnotifyService } from 'ng-snotify';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
@@ -36,7 +35,6 @@ export class FlowsWizardService {
         private flowFileService: FlowFileService,
         private flowWizardService: FlowWizardService,
         private flowNoteService: FlowNoteService,
-        private snotifyService: SnotifyService,
         private snackBar: MatSnackBar,
         private flowHistoryService: FlowHistoryService,
         private flowInstanceDataService: FlowInstanceDataService,
@@ -268,7 +266,6 @@ export class FlowsWizardService {
                             formData.append('file', file, objectName.objectName);
 
                             this.http.put(presignedUrl, formData, { headers: headers }).subscribe((res) => {
-                                // this.snotifyService.success("با موفقیت اپلود شد");
                                 this.snackBar.open('با موفقیت اپلود شد', '', {
                                     panelClass: 'snack-success',
                                     direction: 'rtl',

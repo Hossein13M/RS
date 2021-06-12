@@ -1,17 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GetFlowCategoryDto } from 'app/services/API/models';
 import { FlowsService } from 'app/services/App/flow/flow.service';
-import { SnotifyService } from 'ng-snotify';
 
 @Component({
     selector: 'app-add-flow-category',
     templateUrl: './add-flow-category.component.html',
     styleUrls: ['./add-flow-category.component.scss'],
 })
-export class AddFlowCategoryComponent implements OnInit {
+export class AddFlowCategoryComponent {
     action: string;
     category: GetFlowCategoryDto;
     categoryForm: FormGroup;
@@ -24,7 +23,6 @@ export class AddFlowCategoryComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
         private flowService: FlowsService,
-        private snotifyService: SnotifyService,
         private snackBar: MatSnackBar
     ) {
         // Set the defaults
@@ -40,8 +38,6 @@ export class AddFlowCategoryComponent implements OnInit {
 
         this.categoryForm = this.createCategoryForm();
     }
-
-    ngOnInit() {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -59,39 +55,34 @@ export class AddFlowCategoryComponent implements OnInit {
         });
     }
 
-    editCategory() {
+    editCategory(): void {
         this.loading = true;
 
-        this.flowService
-            .editFlowCategory(this.categoryForm.controls['name'].value, this.categoryForm.controls['keyword'].value, this.category._id)
-            .subscribe(
-                (r) => {
-                    // this.snotifyService.success("دسته بندی با موفقیت اصلاح شد");
-                    this.snackBar.open('دسته بندی با موفقیت اصلاح شد', '', {
-                        panelClass: 'snack-success',
-                        direction: 'rtl',
-                        duration: 3000,
-                    });
-                    this.matDialogRef.close();
-                },
-                (err) => {
-                    // this.snotifyService.error("اطلاعات تکراری وارد شده است");
-                    this.snackBar.open('اطلاعات تکراری وارد شده است', '', {
-                        panelClass: 'snack-error',
-                        direction: 'rtl',
-                        duration: 3000,
-                    });
-                    this.loading = false;
-                }
-            );
+        this.flowService.editFlowCategory(this.categoryForm.controls['name'].value, this.categoryForm.controls['keyword'].value, this.category._id).subscribe(
+            (r) => {
+                this.snackBar.open('دسته بندی با موفقیت اصلاح شد', '', {
+                    panelClass: 'snack-success',
+                    direction: 'rtl',
+                    duration: 3000,
+                });
+                this.matDialogRef.close();
+            },
+            (err) => {
+                this.snackBar.open('اطلاعات تکراری وارد شده است', '', {
+                    panelClass: 'snack-error',
+                    direction: 'rtl',
+                    duration: 3000,
+                });
+                this.loading = false;
+            }
+        );
     }
 
-    newCategory() {
+    newCategory(): void {
         this.loading = true;
 
         this.flowService.addFlowCategory(this.categoryForm.controls['name'].value, this.categoryForm.controls['keyword'].value).subscribe(
             (res) => {
-                // this.snotifyService.success("دسته بندی با موفقیت ثبت شد");
                 this.snackBar.open('دسته بندی با موفقیت ثبت شد', '', {
                     panelClass: 'snack-success',
                     direction: 'rtl',
@@ -101,7 +92,6 @@ export class AddFlowCategoryComponent implements OnInit {
                 this.matDialogRef.close();
             },
             (error) => {
-                // this.snotifyService.error("اطلاعات تکراری وارد شده است");
                 this.snackBar.open('اطلاعات تکراری وارد شده است', '', {
                     panelClass: 'snack-error',
                     direction: 'rtl',

@@ -1,11 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CreateFlowDto } from 'app/services/API/models';
 import { FlowsService } from 'app/services/App/flow/flow.service';
-import { SnotifyService } from 'ng-snotify';
 import { initialBpmn } from './initial-bpmn.js';
 
 @Component({
@@ -26,7 +25,6 @@ export class AddFlowComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
         private flowService: FlowsService,
-        private snotifyService: SnotifyService,
         private snackBar: MatSnackBar,
         private router: Router
     ) {
@@ -51,9 +49,8 @@ export class AddFlowComponent implements OnInit {
     newFlow() {
         this.loading = true;
 
-        this.flowService.addNewFlow(this.flowForm.controls['name'].value, this.flowForm.controls['category'].value, initialBpmn ).subscribe(
+        this.flowService.addNewFlow(this.flowForm.controls['name'].value, this.flowForm.controls['category'].value, initialBpmn).subscribe(
             (res) => {
-                // this.snotifyService.success("قرارداد با موفقیت ثبت شد");
                 this.snackBar.open('قرارداد با موفقیت ثبت شد', '', {
                     panelClass: 'snack-success',
                     direction: 'rtl',
@@ -64,7 +61,6 @@ export class AddFlowComponent implements OnInit {
                 this.matDialogRef.close();
             },
             (error) => {
-                // this.snotifyService.error("اطلاعات تکراری وارد شده است");
                 this.snackBar.open('اطلاعات تکراری وارد شده است', '', {
                     panelClass: 'snack-error',
                     direction: 'rtl',

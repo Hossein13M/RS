@@ -141,7 +141,6 @@ export class AddOperatorComponent {
                 .subscribe(
                     () => {
                         this.loading = false;
-                        // this.snotifyService.success("اپراتور با موفقیت ثبت شد")
                         this.snackBar.open('اپراتور با موفقیت ثبت شد', '', {
                             panelClass: 'snack-success',
                             direction: 'rtl',
@@ -150,7 +149,6 @@ export class AddOperatorComponent {
                         this.matDialogRef.close();
                     },
                     () =>
-                        // this.snotifyService.error("ایمیل تکراری است", "اپراتور ثبت نشد")
                         this.snackBar.open('اطلاعات تکراری وارد شده است', '', {
                             panelClass: 'snack-error',
                             direction: 'rtl',

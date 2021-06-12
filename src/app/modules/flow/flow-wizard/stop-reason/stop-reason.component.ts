@@ -3,7 +3,6 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FlowsWizardService } from 'app/services/App/flow/flow-wizard.service';
-import { SnotifyService } from 'ng-snotify';
 
 @Component({
     selector: 'app-stop-reason',
@@ -23,7 +22,6 @@ export class StopReasonComponent {
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
         private wizardService: FlowsWizardService,
-        private snotifyService: SnotifyService,
         private snackBar: MatSnackBar
     ) {
         this.action = _data.action;

@@ -84,7 +84,6 @@
         "minio": "7.0.16",
         "moment": "2.24.0",
         "moment-jalaali": "0.9.2",
-        "ng-snotify": "9.0.1",
         "ng2-charts": "2.3.0",
         "ngrx-store-freeze": "0.2.4",
         "ngx-bootstrap": "5.6.1",
