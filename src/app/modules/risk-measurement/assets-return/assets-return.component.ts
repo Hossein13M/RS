@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AlertService } from 'app/services/alert.service';
 import { AssetReturnService } from './asset-return.service';
+import { formatDate } from '@angular/common';
 
 @Component({
     selector: 'app-assets-return',
@@ -38,7 +39,8 @@ export class AssetsReturnComponent implements OnInit {
     }
 
     get(): void {
-        this.assetReturnService.getAssetReturns(this.searchFormGroup.value.endDate).subscribe(
+        const date = formatDate(this.searchFormGroup.value.endDate, 'yyyy-MM-dd', 'en_US');
+        this.assetReturnService.getAssetReturns(date).subscribe(
             (response) => {
                 this.show = true;
                 this.barChart = response.barchart;

@@ -5,7 +5,6 @@ import { ChartModule } from 'app/shared/components/chart/chart.module';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
 import { ShareModule } from 'app/shared/share.module';
 import { AumBondsComponent } from './aum-bonds/aum-bonds.component';
-import { AumCertificateDepositComponent } from './aum-certificate-deposit/aum-certificate-deposit.component';
 import { AumDepositComponent } from './aum-deposit/aum-deposit.component';
 import { AumEtfComponent } from './aum-etf/aum-etf.component';
 import { AumFundsComponent } from './aum-funds/aum-funds.component';
@@ -28,7 +27,6 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         AumStocksComponent,
         AumDepositComponent,
         AumEtfComponent,
-        AumCertificateDepositComponent,
         AumNlStocksComponent,
         AumFundsComponent,
         AumNlFundsComponent,
