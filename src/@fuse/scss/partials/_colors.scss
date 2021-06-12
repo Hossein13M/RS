@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 // -----------------------------------------------------------------------------------------------------
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
@@ -47,25 +48,25 @@
 // @ Material colors map
 // -----------------------------------------------------------------------------------------------------
 $matPalettes: (
-    'red': $mat-red,
-    'pink': $mat-pink,
-    'purple': $mat-purple,
-    'deep-purple': $mat-deep-purple,
-    'indigo': $mat-indigo,
-    'blue': $mat-blue,
-    'light-blue': $mat-light-blue,
-    'cyan': $mat-cyan,
-    'teal': $mat-teal,
-    'green': $mat-green,
-    'light-green': $mat-light-green,
-    'lime': $mat-lime,
-    'yellow': $mat-yellow,
-    'amber': $mat-amber,
-    'orange': $mat-orange,
-    'deep-orange': $mat-deep-orange,
-    'brown': $mat-brown,
-    'grey': $mat-grey,
-    'blue-grey': $mat-blue-grey
+    'red': mat.$red-palette,
+    'pink': mat.$pink-palette,
+    'purple': mat.$purple-palette,
+    'deep-purple': mat.$deep-purple-palette,
+    'indigo': mat.$indigo-palette,
+    'blue': mat.$blue-palette,
+    'light-blue': mat.$light-blue-palette,
+    'cyan': mat.$cyan-palette,
+    'teal': mat.$teal-palette,
+    'green': mat.$green-palette,
+    'light-green': mat.$light-green-palette,
+    'lime': mat.$lime-palette,
+    'yellow': mat.$yellow-palette,
+    'amber': mat.$amber-palette,
+    'orange': mat.$orange-palette,
+    'deep-orange': mat.$deep-orange-palette,
+    'brown': mat.$brown-palette,
+    'grey': mat.$grey-palette,
+    'blue-grey': mat.$blue-grey-palette
 );
 
 // Material color hues list

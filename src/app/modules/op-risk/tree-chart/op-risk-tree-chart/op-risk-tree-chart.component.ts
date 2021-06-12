@@ -13,7 +13,7 @@ import { Observable, of } from 'rxjs';
 import { OpRiskMappingDialogComponent } from '../op-risk-mapping-dialog/op-risk-mapping-dialog.component';
 import { OpRiskTreeChartService } from '../op-risk-tree-chart.service';
 import { TreeMappingService } from '../tree-mapping.service';
-import { stateType, TreeChartFlatNode, TreeChartMapping, TreeChartNode } from './op-risk-tree-chart.types.js';
+import { stateType, TreeChartFlatNode, TreeChartMapping, TreeChartNode } from './op-risk-tree-chart.types';
 
 @Component({
     selector: 'app-op-risk-tree-chart',

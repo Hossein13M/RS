@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import 'src/@fuse/scss/fuse';
 @import '../../layout/styles/variables';
 
@@ -41,7 +42,7 @@ login {
                 border-radius: $border-radius-1;
                 margin: 32px auto;
                 padding: 5px;
-                //@include mat-elevation(2);
+                //@include mat.elevation(2);
 
                 img {
                     padding: 30px;
@@ -82,7 +83,7 @@ login {
                 font-size: 14px;
                 max-width: 600px;
                 border-radius: $border-radius-1;
-                @include mat-elevation(2);
+                @include mat.elevation(2);
             }
         }
 
@@ -99,7 +100,7 @@ login {
             background: #ffffffb0;
             box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
 
-            @include mat-elevation(5);
+            @include mat.elevation(5);
 
             @include media-breakpoint('sm') {
                 width: 360px;

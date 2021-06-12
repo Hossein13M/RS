@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import "~app/layout/styles/variables";
 
 // -----------------------------------------------------------------------------------------------------
@@ -145,7 +146,7 @@ $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-h
                     flex-direction: column;
                     flex: 1 0 auto;
                     overflow: hidden;
-                    @include mat-elevation(1);
+                    @include mat.elevation(1);
 
                     > .toolbar {
                         display: flex;
@@ -271,7 +272,7 @@ $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-h
                 max-width: 240px;
                 height: auto;
                 overflow: hidden;
-                @include mat-elevation(7);
+                @include mat.elevation(7);
 
                 &.locked-open {
                     background: none;
@@ -332,7 +333,7 @@ $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-h
                     flex-direction: column;
                     flex: 1 1 auto;
                     overflow: hidden;
-                    @include mat-elevation(1);
+                    @include mat.elevation(1);
 
                     > .toolbar {
                         display: flex;
@@ -512,7 +513,7 @@ $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-h
                 min-width: 300px;
                 max-width: 300px;
                 overflow: hidden;
-                @include mat-elevation(7);
+                @include mat.elevation(7);
 
                 &.locked-open {
                     background: none;
@@ -551,7 +552,7 @@ $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-h
                 z-index: 3;
                 min-width: 0;
                 width: 100%;
-                @include mat-elevation(1);
+                @include mat.elevation(1);
 
                 > .header {
                     height: $header-height;
@@ -613,7 +614,7 @@ $carded-header-height-without-toolbar: $carded-header-height - $carded-toolbar-h
 
                         > .content {
                             border-radius: 8px;
-                            @include mat-elevation(1);
+                            @include mat.elevation(1);
                         }
                     }
                 }

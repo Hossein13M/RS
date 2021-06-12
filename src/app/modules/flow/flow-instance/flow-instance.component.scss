@@ -1,10 +1,11 @@
+@use '~@angular/material' as mat;
 @import 'src/@fuse/scss/fuse';
 
 .search-wrapper {
     width: 100%;
     max-width: 480px;
     overflow: hidden;
-    @include mat-elevation(1);
+    @include mat.elevation(1);
 
     .search {
         width: 100%;
@@ -61,7 +62,7 @@
             width: 100%;
             max-width: 480px;
             overflow: hidden;
-            @include mat-elevation(1);
+            @include mat.elevation(1);
 
             .search {
                 width: 100%;
