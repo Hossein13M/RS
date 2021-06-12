@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 // -----------------------------------------------------------------------------------------------------
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
@@ -343,7 +344,7 @@ strong {
     .entry {
         margin-bottom: 24px;
         padding: 24px 32px;
-        @include mat-elevation(2);
+        @include mat.elevation(2);
 
         > .title {
             display: flex;

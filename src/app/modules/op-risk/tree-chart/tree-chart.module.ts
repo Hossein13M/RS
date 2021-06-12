@@ -17,6 +17,6 @@ import { TreeMappingService } from './tree-mapping.service';
     imports: [CommonModule, TreeChartRoutingModule, LayoutModule, ShareModule, MatProgressSpinnerModule, MatTooltipModule],
     providers: [OpRiskTreeChartService, TreeMappingService],
     entryComponents: [OpRiskMappingDialogComponent],
-    exports: [OpRiskTreeChartComponent],
+    // exports: [OpRiskTreeChartComponent],
 })
 export class TreeChartModule {}

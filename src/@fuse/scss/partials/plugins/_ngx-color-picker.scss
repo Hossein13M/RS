@@ -1,10 +1,11 @@
+@use '~@angular/material' as mat;
 @import "src/@fuse/scss/fuse";
 
 .color-picker {
     height: auto !important;
     border: none !important;
 
-    @include mat-elevation(4);
+    @include mat.elevation(4);
 
     .preset-area {
         padding: 0 0 16px 16px !important;

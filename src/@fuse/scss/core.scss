@@ -4,6 +4,7 @@
 // ngx-datatable
 
 // Perfect scrollbar
+@use '~@angular/material' as mat;
 @import '~perfect-scrollbar/css/perfect-scrollbar';
 
 // Fuse
@@ -13,7 +14,7 @@
 @import 'theme';
 
 // Include core Angular Material styles
-@include mat-core();
+@include mat.core();
 
 // Partials
 @import 'partials/normalize';

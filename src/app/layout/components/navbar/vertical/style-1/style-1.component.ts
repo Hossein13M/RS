@@ -8,7 +8,8 @@ import { UserInfoService } from 'app/services/App/userInfo/user-info.service';
 import { Subject } from 'rxjs';
 import { delay, filter, take, takeUntil } from 'rxjs/operators';
 // @ts-ignore
-import { version } from '../../../../../../../package.json';
+import version from '../../../../../../../package.json';
+// import * as npm from '../../../../../../../package.json';
 
 @Component({
     selector: 'navbar-vertical-style-1',
@@ -21,7 +22,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     navigation: any;
     user;
 
-    version = version;
+    version = version.version;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;

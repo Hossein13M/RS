@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import 'src/@fuse/scss/fuse';
 @import '../../../layout/styles/variables';
 
@@ -17,7 +18,7 @@
     width: 100%;
     max-width: 480px;
     border-radius: 28px;
-    @include mat-elevation(1);
+    @include mat.elevation(1);
     background: white !important;
 
     .search {
@@ -69,7 +70,7 @@
             width: 100%;
             max-width: 480px;
             //border-radius: 28px;
-            @include mat-elevation(1);
+            @include mat.elevation(1);
 
             .search {
                 width: 100%;

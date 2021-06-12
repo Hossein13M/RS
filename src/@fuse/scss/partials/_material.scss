@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 // -----------------------------------------------------------------------------------------------------
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
@@ -310,7 +311,7 @@ mat-icon.status {
     flex-direction: row;
     padding: 0 8px;
     border-radius: 4px;
-    @include mat-elevation(1);
+    @include mat.elevation(1);
 
     .pagination-item {
         display: flex;

@@ -5,8 +5,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { AlertService } from 'app/services/alert.service';
 import { AuthenticationService } from 'app/services/authentication.service';
 // @ts-ignore
-// import { version } from '../../../package.json';
-import { version } from '../../../../package.json';
+import version from '../../../../package.json';
 
 @Component({
     selector: 'login',
@@ -20,7 +19,7 @@ export class LoginComponent implements OnInit {
     wrongPassWord = false;
     waiting = false;
 
-    version = version;
+    version = version.version;
 
     constructor(
         private _fuseConfigService: FuseConfigService,

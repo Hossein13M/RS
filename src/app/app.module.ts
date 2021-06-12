@@ -22,6 +22,7 @@ import { getFarsiPaginatorIntl } from '#shared/components/table/farsi-paginator-
 import { MaterialModule } from '#shared/material.module';
 import { ShareModule } from '#shared/share.module';
 import { GlModule } from './modules/gl/gl.module';
+import { AlertService } from './services/alert.service';
 
 const appRoutes: Routes = [
     {
@@ -108,7 +109,7 @@ const appRoutes: Routes = [
         TestModule, // --> Test Playground
     ],
     bootstrap: [AppComponent],
-    providers: [{ provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() }, AuthGuard],
+    providers: [{ provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() }, AuthGuard, AlertService],
     entryComponents: [SendMailComponent],
 })
 export class AppModule {}
