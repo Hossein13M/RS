@@ -2,36 +2,35 @@
 // to the core Fuse and Angular Material mixins
 
 // ngx-datatable
-@import '~@swimlane/ngx-datatable/release/themes/material';
 
 // Perfect scrollbar
 @import '~perfect-scrollbar/css/perfect-scrollbar';
 
 // Fuse
-@import "fuse";
+@import 'fuse';
 
 // Theme
-@import "theme";
+@import 'theme';
 
 // Include core Angular Material styles
 @include mat-core();
 
 // Partials
-@import "partials/normalize";
-@import "partials/scrollbars";
-@import "partials/helpers";
-@import "partials/general";
-@import "partials/icons";
-@import "partials/colors";
-@import "partials/material";
-@import "partials/angular-material-fix";
-@import "partials/typography";
-@import "partials/docs";
-@import "partials/page-layouts";
-@import "partials/cards";
-@import "partials/navigation";
-@import "partials/forms";
-@import "partials/print";
+@import 'partials/normalize';
+@import 'partials/scrollbars';
+@import 'partials/helpers';
+@import 'partials/general';
+@import 'partials/icons';
+@import 'partials/colors';
+@import 'partials/material';
+@import 'partials/angular-material-fix';
+@import 'partials/typography';
+@import 'partials/docs';
+@import 'partials/page-layouts';
+@import 'partials/cards';
+@import 'partials/navigation';
+@import 'partials/forms';
+@import 'partials/print';
 
 // Plugins
-@import "partials/plugins/plugins";
+@import 'partials/plugins/plugins';
