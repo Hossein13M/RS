@@ -16,5 +16,6 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: GlTreeComponen
 @NgModule({
     declarations: [GlTreeComponent, GlChartComponent, GlPieChartComponent],
     imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes), PipesModule, ChartModule],
+    entryComponents: [GlPieChartComponent],
 })
 export class GlTreeModule {}
