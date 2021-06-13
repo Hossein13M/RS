@@ -31,6 +31,7 @@ export interface SimpleColumn {
     sticky?: boolean;
     showSearchButtons?: boolean;
     search?: {
+        // Todo: add email search type as well
         type: 'select' | 'text' | 'date' | 'date_range';
         mode: TableSearchMode;
         options?: Array<{
