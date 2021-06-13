@@ -16,5 +16,12 @@ module.exports = {
     corePlugins: {
         preflight: false, // Todo(tailwind): unexpected behaviour in buttons
     },
-    plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/line-clamp'), require('@tailwindcss/typography')],
+    plugins: [
+        require('postcss-import'),
+        require('autoprefixer'),
+        require('tailwindcss'),
+        require('@tailwindcss/aspect-ratio'),
+        require('@tailwindcss/line-clamp'),
+        require('@tailwindcss/typography'),
+    ],
 };
