@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -13,6 +12,7 @@ import { tap } from 'rxjs/operators';
 import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
 import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-aum',
@@ -118,15 +118,18 @@ export class AumComponent implements OnInit {
     private addRouterParamsOnFormValueChanges(formValue): void {
         let newFormValue = { ...formValue };
         newFormValue = this.removeEmptyOrNullValuesFromForm(newFormValue);
-        let inputDate = new Date(newFormValue?.date);
-        !!inputDate.getDate() ? (newFormValue.date = formatDate(inputDate, 'yyyy-MM-dd', 'en_US')) : delete newFormValue.date;
-        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: newFormValue, queryParamsHandling: '' });
+        const inputDate = new Date(newFormValue?.date);
+        !!inputDate.getDate() ? (newFormValue.date = UtilityFunctions.convertDateToPersianDateString(inputDate)) : delete newFormValue.date;
+        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: newFormValue, queryParamsHandling: '' }).finally();
     }
 
-    private removeEmptyOrNullValuesFromForm(formValue): void {
+    private removeEmptyOrNullValuesFromForm(formValue): any {
         for (const propName in formValue)
-            if (formValue[propName] === null || formValue[propName] === '' || (formValue[propName][0] === undefined && propName !== 'date'))
-                delete formValue[propName];
+            if (formValue.hasOwnProperty(propName)) {
+                if (formValue[propName] === null || formValue[propName] === '' || (formValue[propName][0] === undefined && propName !== 'date'))
+                    delete formValue[propName];
+            }
+
         return formValue;
     }
 
@@ -136,7 +139,7 @@ export class AumComponent implements OnInit {
 
     private gatherDataForSearchParams(): void {
         this.searchParams.tamadonAssets = this.form.get('baskets').value.includes('1');
-        this.searchParams.date = formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US');
+        this.searchParams.date = UtilityFunctions.convertDateToPersianDateString(this.form.get('date').value);
         this.searchParams.listedAssets = this.form.value.NL.includes('0');
         this.searchParams.nonlistedAssets = this.form.value.NL.includes('1');
         this.searchParams.bondsAssets = this.form.get('categories').value.includes('1');
@@ -158,20 +161,20 @@ export class AumComponent implements OnInit {
         setTimeout(() => {
             this.form.get('categories').value.forEach((element) => {
                 this.form.get('NL').value.forEach((isBourse) => {
-                    if (isBourse == 0) {
-                        if (element == 2) {
+                    if (isBourse === 0) {
+                        if (element === 2) {
                             $forkAllCalls.push(this.getAumStock(false));
-                        } else if (element == 1) {
+                        } else if (element === 1) {
                             $forkAllCalls.push(this.getAumBond(false));
-                        } else if (element == 4) {
+                        } else if (element === 4) {
                             $forkAllCalls.push(this.getAumFund(false));
                         }
-                    } else if (isBourse == 1) {
-                        if (element == 1) {
+                    } else if (isBourse === 1) {
+                        if (element === 1) {
                             $forkAllCalls.push(this.getAumBond());
-                        } else if (element == 2) {
+                        } else if (element === 2) {
                             $forkAllCalls.push(this.getAumStock());
-                        } else if (element == 4) {
+                        } else if (element === 4) {
                             $forkAllCalls.push(this.getAumFund());
                         }
                     }
@@ -199,19 +202,19 @@ export class AumComponent implements OnInit {
                         }
                         counter++;
                     }
-                }, 200)
+                }, 200);
             });
         }, 200);
     }
 
     // *** method for getting data on formSubmit ***
     // *** these methods should be on each component's ngOnInits and each component should have its own route in the next refactor ***
-    private getAumDeposit(): void {
-        this.aumService
-            .getAumDeposit(this.searchParams.tamadonAssets, this.searchParams.date, this.form.get('funds').value)
-            .pipe(StateManager(this.aumData.deposit))
-            .subscribe((result) => (this.aumData.deposit.data = result));
-    }
+    // private getAumDeposit(): void {
+    //     this.aumService
+    //         .getAumDeposit(this.searchParams.tamadonAssets, this.searchParams.date, this.form.get('funds').value)
+    //         .pipe(StateManager(this.aumData.deposit))
+    //         .subscribe((result) => (this.aumData.deposit.data = result));
+    // }
 
     private getAumStock(isNl: boolean = true): Observable<any> {
         return isNl
@@ -256,20 +259,12 @@ export class AumComponent implements OnInit {
         );
     }
 
-    private getAumDepositCertificate(): void {
-        // FIXME: the following method has not been implemented yet!
-        // this.aumService.getAumCertificateDeposit(this.searchParams.date).subscribe((result) => (this.aumCertificateDeposit = result));
-    }
-
     public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
         const control: AbstractControl = this.form.controls[controlName];
         const mappedValues = _.map(_.map(values, key), (value) => value.toString());
         const difference = _.difference(mappedValues, control.value).length;
-        if (difference === 0) {
-            return 'all';
-        } else if (difference === values.length) {
-            return 'none';
-        }
+        if (difference === 0) return 'all';
+        else if (difference === values.length) return 'none';
         return 'indeterminate';
     }
 

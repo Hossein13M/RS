@@ -1,11 +1,11 @@
 import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
 import { AssetMonitoring, Instrument, InstrumentSearchParams } from './assets-monitoring.model';
 import { AssetsMonitoringService } from './assets-monitoring.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-assets-monitoring',
@@ -56,11 +56,11 @@ export class AssetsMonitoringComponent implements OnInit {
     }
 
     private prepareDataForAPI(): void {
-        let searchParams: InstrumentSearchParams = {
+        const searchParams: InstrumentSearchParams = {
             basket: this.form.value.basket,
-            date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
+            date: UtilityFunctions.convertDateToPersianDateString(this.form.get('date').value),
         };
-        let fixedSearchParams = this.checkDateForToday(searchParams);
+        const fixedSearchParams = this.checkDateForToday(searchParams);
         this.getInstruments(fixedSearchParams);
     }
 
@@ -68,12 +68,12 @@ export class AssetsMonitoringComponent implements OnInit {
         this.dataLoading = false;
         this.loading = true;
         this.assetsMonitoringData.trendChart = [];
-        let searchParams = {
-            date: formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US'),
+        const searchParams = {
+            date: UtilityFunctions.convertDateToPersianDateString(this.form.get('date').value),
             basket: this.form.value.basket,
             ticker: this.instrumentFormControl.value,
         };
-        let fixedSearchParams = this.checkDateForToday(searchParams);
+        const fixedSearchParams = this.checkDateForToday(searchParams);
 
         this.assetsMonitoringService.getAssetMonitoringData(fixedSearchParams).subscribe((response) => {
             this.isSectionShowing = true;
@@ -83,12 +83,12 @@ export class AssetsMonitoringComponent implements OnInit {
         });
     }
 
-    private checkDateForToday(searchParams) {
+    private checkDateForToday(searchParams: InstrumentSearchParams): InstrumentSearchParams {
         //    for some reason (Danial asked) if the user chooses today, we need to return yesterday's date to Backend
         if (this.isToday(this.form.value.date._d)) {
-            let yesterday = new Date(this.form.get('date').value._d.getTime());
+            const yesterday = new Date(this.form.get('date').value._d.getTime());
             yesterday.setDate(this.form.get('date').value._d.getDate() - 1);
-            searchParams.date = formatDate(yesterday, 'yyyy-MM-dd', 'en_US');
+            searchParams.date = UtilityFunctions.convertDateToPersianDateString(yesterday);
         }
         return searchParams;
     }

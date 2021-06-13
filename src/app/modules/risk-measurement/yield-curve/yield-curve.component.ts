@@ -1,8 +1,8 @@
 import { TableSearchMode } from '#shared/components/table/table.model';
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { YieldCurveService } from '../yield-curve.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-yield-curve',
@@ -87,7 +87,6 @@ export class YieldCurveComponent implements OnInit {
         },
         { name: 'عملیات', id: 'operation', type: 'operation', minWidth: '130px', sticky: true },
     ];
-    //TODO: fix the coupon typo but I need to check this with Danial first to avoid getting error on the server side
 
     constructor(public readonly yieldCurveService: YieldCurveService) {}
 
@@ -105,11 +104,9 @@ export class YieldCurveComponent implements OnInit {
         this.showingData = null;
         this.gapData = null;
         this.yieldCurveData = null;
-        this.yieldCurveService.getYieldCurveData(formatDate(this.form.value.date, 'yyyy-MM-dd', 'en_US')).subscribe(
+        this.yieldCurveService.getYieldCurveData(UtilityFunctions.convertDateToPersianDateString(this.form.value.date)).subscribe(
             (response) => {
                 this.yieldCurveData = response.yieldCurve;
-                // TODO: data bug!!
-                //TODO: it is better to have beckend pagination for here
                 if (this.yieldCurveData.length > 0)
                     Object.keys(this.yieldCurveData).forEach(
                         (name) => (this.yieldCurveData[name] = this.yieldCurveData[name].filter((el) => el.yearToMaturity < 10))
