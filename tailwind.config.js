@@ -1,19 +1,17 @@
-const { guessProductionMode } = require("@ngneat/tailwind");
+const { guessProductionMode } = require('@ngneat/tailwind');
 
 module.exports = {
     prefix: '',
     purge: {
-      enabled: guessProductionMode(),
-      content: [
-        './src/**/*.{html,ts}',
-      ]
+        enabled: guessProductionMode(),
+        content: ['./src/**/*.{html,ts}'],
     },
     darkMode: 'class', // or 'media' or 'class'
     theme: {
-      extend: {},
+        extend: {},
     },
     variants: {
-      extend: {},
+        extend: {},
     },
-    plugins: [require('@tailwindcss/aspect-ratio'),require('@tailwindcss/line-clamp'),require('@tailwindcss/typography')],
+    plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/line-clamp'), require('@tailwindcss/typography')],
 };
