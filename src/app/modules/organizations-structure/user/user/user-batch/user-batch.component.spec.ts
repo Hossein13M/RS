@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BubbleChartComponent } from './bubble-chart.component';
+import { UserBatchComponent } from './user-batch.component';
 
-describe('BubbleChartComponent', () => {
-  let component: BubbleChartComponent;
-  let fixture: ComponentFixture<BubbleChartComponent>;
+describe('UserBatchComponent', () => {
+  let component: UserBatchComponent;
+  let fixture: ComponentFixture<UserBatchComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BubbleChartComponent ]
+      declarations: [ UserBatchComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BubbleChartComponent);
+    fixture = TestBed.createComponent(UserBatchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

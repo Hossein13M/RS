@@ -1,8 +1,8 @@
-import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AssetsMonitoringIPSHistory } from '../../../modules/assets-monitoring/assets-monitoring.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IpsService } from '#shared/components/ips-dialog/ips.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-assets-monitoring-ips-dialog',
@@ -24,12 +24,7 @@ export class IpsDialogComponent implements OnInit {
     private initiateColumns(): void {
         this.columns = [
             { name: 'سبد', id: 'organizationType', type: 'string' },
-            {
-                name: 'کارگزاری',
-                id: 'broker',
-                type: 'string',
-                convert: (value: string | null) => (value ? value : '-'),
-            },
+            { name: 'کارگزاری', id: 'broker', type: 'string', convert: (value: string | null) => (value ? value : '-') },
             {
                 name: 'تاریخ',
                 id: 'date',
@@ -40,7 +35,11 @@ export class IpsDialogComponent implements OnInit {
     }
 
     private getAssetsMonitoringIPSHistory(): void {
-        let searchParams = { basket: this.data.basket, date: formatDate(new Date(), 'yyyy-MM-dd', 'en_US'), withDetails: this.data.withDetails };
+        const searchParams = {
+            basket: this.data.basket,
+            date: UtilityFunctions.convertDateToPersianDateString(new Date()),
+            withDetails: this.data.withDetails,
+        };
         this.ipsService.getIPSHistory(searchParams).subscribe((response) => {
             this.loading = false;
             this.tableData = response.items;

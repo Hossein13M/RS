@@ -6,11 +6,11 @@ import { PMRoutePrefix } from '../portfolio-management.module';
 import { TradeBookHistoryComponent } from './trade-book-history/trade-book-history.component';
 import { TradeBookService } from './trade-book.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { formatDate } from '@angular/common';
 import { StateType } from '#shared/state-type.enum';
 import { Column } from '#shared/components/table/table.model';
 import * as _ from 'lodash';
 import { TradeBook } from './trade-book.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-book',
@@ -65,12 +65,12 @@ export class TradeBookComponent implements OnInit {
 
     public showBook(organizationType: string, ticker: any, pamCode: string): void {
         const date = new Date(this.form.value.date).getTime();
-        this.router.navigate([`/${PMRoutePrefix}/book`, date, organizationType, ticker, pamCode]);
+        this.router.navigate([`/${PMRoutePrefix}/book`, date, organizationType, ticker, pamCode]).finally();
     }
 
     private getAllTradingBooks(): void {
         this.stateType = StateType.LOADING;
-        let date = formatDate(this.form.value.date, 'yyyy-MM-dd', 'en_US');
+        const date = UtilityFunctions.convertDateToPersianDateString(this.form.value.date);
         this.tradeBooksList = [];
         this.form.get('tradingBook').reset();
         if (this.dataSource) this.dataSource = _.take(this.dataSource, 0);

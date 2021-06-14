@@ -1,19 +1,19 @@
 version: '3'
 services:
-  frontend:
-    image: git.iirms.ir:5050/risk-shield-team/front-end-team/frontend:latest
-#    volumes:
-#      - 'node_modules:/usr/src/app'
-#    ports:
-#      - 8081:80
-    environment:
-      TZ: "Asia/Tehran"
-    external_links:
-      - infra_managementapi
-    deploy:
-      labels:
-        - "traefik.http.routers.dev-frontend.rule=Host(`dev.iirms.ir`)"
-        - "traefik.http.services.dev-frontend.loadbalancer.server.port=80"
+    frontend:
+        image: git.iirms.ir:5050/risk-shield-team/front-end-team/frontend:latest
+        #    volumes:
+        #      - 'node_modules:/usr/src/app'
+        #    ports:
+        #      - 8081:80
+        environment:
+            TZ: 'Asia/Tehran'
+        external_links:
+            - infra_managementapi
+        deploy:
+            labels:
+                - 'traefik.http.routers.dev-frontend.rule=Host(`dev.iirms.ir`)'
+                - 'traefik.http.services.dev-frontend.loadbalancer.server.port=80'
 #volumes:
 #  node_modules:
 #    driver: local
