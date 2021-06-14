@@ -97,6 +97,7 @@ form {
 .data-row {
     &:nth-child(odd) {
         // Todo: make it work for darkmode
-        background-color: #f2f2f2;
+        //background-color: #f2f2f2;
+        //@apply tw-bg-blue-500
     }
 }
