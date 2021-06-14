@@ -13,7 +13,7 @@ export class HttpResponseInterceptor implements HttpInterceptor {
             retry(1),
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401) {
-                    this.authenticationService.logout();
+                    this.authenticationService.logout().finally();
                     return of(null);
                 }
                 throw error;

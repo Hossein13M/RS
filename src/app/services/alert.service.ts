@@ -5,11 +5,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class AlertService {
     constructor(private snackBar: MatSnackBar) {}
 
-    onError(message, hasAction?): void {
+    public onError(message, hasAction?): void {
         this.snackBar.open(message, hasAction, { panelClass: 'snack-error', duration: 3000, direction: 'rtl' });
     }
 
-    onSuccess(message, hasAction?): void {
+    public onSuccess(message, hasAction?): void {
         this.snackBar.open(message, hasAction, { panelClass: 'snack-success', duration: 3000, direction: 'rtl' });
+    }
+
+    public onInfo(message: string, hasAction?): void {
+        this.snackBar.open(message, hasAction, { panelClass: 'snack-info', duration: 3000, direction: 'rtl' });
     }
 }

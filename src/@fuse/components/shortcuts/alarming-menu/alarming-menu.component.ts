@@ -13,7 +13,7 @@ export class AlarmingMenuComponent implements OnInit {
     constructor(private alarmService: AlarmService) {}
 
     ngOnInit(): void {
-        this.getUnreadAlarm();
+        // this.getUnreadAlarm();
     }
 
     getUnreadAlarm(): void {

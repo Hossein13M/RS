@@ -1,7 +1,7 @@
 import { StateType } from '#shared/state-type.enum';
-import { formatDate } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { TradeDashboardTrendChartService } from './trade-dashboard-trend-chart.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-dashboard-trend-chart',
@@ -18,13 +18,13 @@ export class TradeDashboardTrendChartComponent implements OnChanges {
 
     constructor(private tradeDashboardTrendChartService: TradeDashboardTrendChartService) {}
 
-    ngOnChanges() {
+    ngOnChanges(): void {
         this.getTradeDashboardTrendChart();
     }
 
     getTradeDashboardTrendChart(): void {
         this.stateType = StateType.LOADING;
-        this.tradeDashboardTrendChartService.getTradeTrendChart(formatDate(new Date(this.date), 'yyyy-MM-dd', 'en_US')).subscribe(
+        this.tradeDashboardTrendChartService.getTradeTrendChart(UtilityFunctions.convertDateToPersianDateString(new Date(this.date))).subscribe(
             (response) => {
                 this.stateType = StateType.PRESENT;
                 if (response) response.map((x) => (x.value = x.totalValue));

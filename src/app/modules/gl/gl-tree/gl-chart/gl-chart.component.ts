@@ -2,8 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { GlService } from 'app/modules/gl/gl.service';
-import { GlCategoryModel, GlDetailModel, GlGeneralModel, GlGroupModel, GlSubsidiaryModel, TreeOrderType } from '../../gl.model';
-import { formatDate } from '@angular/common';
+import {
+    GlCategoryModel,
+    GlDetailModel,
+    GlGeneralModel,
+    GlGroupModel,
+    GlSubsidiaryModel,
+    TreeOrderType
+} from '../../gl.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-gl-chart',
@@ -59,7 +66,7 @@ export class GlChartComponent implements OnInit {
             if (response) {
                 response.map((x) => {
                     x.value = x.remainedAmount;
-                    x.date = formatDate(x.date, 'yyyy-MM-dd', 'en_US');
+                    x.date = UtilityFunctions.convertDateToPersianDateString(x.date);
                 });
             }
             this.data = null;

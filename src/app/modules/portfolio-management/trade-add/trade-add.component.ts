@@ -1,5 +1,4 @@
 import { PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'app/services/alert.service';
@@ -7,6 +6,7 @@ import { debounceTime } from 'rxjs/operators';
 import { TradeAddService } from './trade-add.service';
 import { Ticker, TradeOrganization } from './trade-add.model';
 import { StateType } from '#shared/state-type.enum';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-add',
@@ -132,7 +132,7 @@ export class TradeAddComponent implements OnInit {
     }
 
     public addTradeRegistration(): void {
-        this.form.get('transactionDate').setValue(formatDate(this.form.get('transactionDate').value, 'yyyy-MM-dd', 'en_US'));
+        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToPersianDateString(this.form.get('transactionDate').value));
         this.tradeAddService.createTradeRegistration(this.form.value).subscribe(
             () => {
                 this.form.reset();
@@ -151,7 +151,7 @@ export class TradeAddComponent implements OnInit {
     }
 
     public updateTradeRegistration(): void {
-        this.form.get('transactionDate').setValue(formatDate(this.form.get('transactionDate').value, 'yyyy-MM-dd', 'en_US'));
+        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToPersianDateString(this.form.get('transactionDate').value));
         this.form.value['id'] = this.editTradeId;
 
         this.tradeAddService.updateTradeRegistration(this.form.value).subscribe(
@@ -172,7 +172,8 @@ export class TradeAddComponent implements OnInit {
 
     public search(searchFilter: any): void {
         if (!searchFilter) return;
-        if (searchFilter.transactionDate) searchFilter.transactionDate = formatDate(new Date(searchFilter.transactionDate), 'yyyy-MM-dd', 'en_US');
+        if (searchFilter.transactionDate)
+            searchFilter.transactionDate = UtilityFunctions.convertDateToPersianDateString(new Date(searchFilter.transactionDate));
         Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
         this.getTradeRegistration();
     }

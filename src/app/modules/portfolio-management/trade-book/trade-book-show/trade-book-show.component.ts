@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { TradeBookService } from '../trade-book.service';
-import { Column, PaginationChangeType } from '#shared/components/table/table.model';
-import { formatDate } from '@angular/common';
+import { Column } from '#shared/components/table/table.model';
 import { TradeBookData, TradeDateServerResponse } from '../trade-book.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-book-show',
@@ -59,13 +59,13 @@ export class TradeBookShowComponent implements OnInit {
         ];
     }
 
-    public paginationControl(pageEvent: PaginationChangeType): void {
+    public paginationControl(): void {
         this.getTradeBookData();
     }
 
     public getTradeBookData(): void {
         this.hasDataFetched = false;
-        this.tradeBookData.date = formatDate(this.tradeBookData.date, 'yyyy-MM-dd', 'en_US');
+        this.tradeBookData.date = UtilityFunctions.convertDateToPersianDateString(new Date(this.tradeBookData.date));
         this.tradeBookService.getTradeDataByDate({ ...this.tradeBookData, ...this.pagination }).subscribe((response) => {
             this.pagination.total = response.total;
             this.data = this.parseData(response);
