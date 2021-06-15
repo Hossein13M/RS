@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Organization, User } from '../../user.model';
+import { Organization, OrganizationRoles, OrganizationUnits, User } from '../../user.model';
 import { UserService } from '../../user.service';
 import { Subject } from 'rxjs';
-import {takeUntil} from "rxjs/operators";
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-user-batch',
@@ -35,6 +35,8 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     public organizationForm: FormGroup;
     public organizationsSearchControl: FormControl = new FormControl();
     public organizations: Array<Organization> = [];
+    public units: Array<OrganizationUnits>;
+    public roles: Array<OrganizationRoles>;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -45,6 +47,8 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.organizationFormInit();
         this.getOrganizations();
         this.organizationsSearchInit();
+        this.organizationCodeListening();
+        this.unitsListening();
     }
 
     private basicFormInit(): void {
@@ -54,7 +58,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             firstname: [this.data?.firstname ?? '', Validators.required],
             lastname: [this.data?.lastname ?? '', Validators.required],
             nationalCode: [this.data?.nationalCode ?? '', Validators.required],
-            personnelCode: [this.data?.personnelCode ?? '', Validators.required],
             phoneNumber: [this.data?.phoneNumber ?? ''],
             email: [this.data?.email ?? ''],
             birthDate: [this.data?.birthDate ?? ''],
@@ -63,8 +66,10 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     private organizationFormInit(): void {
         this.organizationForm = this.formBuilder.group({
+            personnelCode: [this.data?.personnelCode ?? '', Validators.required],
             organization: [this.data?.organization ?? null, Validators.required],
-            organizationRole: [this.data?.organizationRole ?? ''],
+            units: [[], Validators.required],
+            organizationRole: [this.data?.organizationRole ?? null, Validators.required],
         });
     }
 
@@ -78,6 +83,40 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.userService.getOrganizations(searchKeyword).subscribe((response) => {
             this.organizations = response.items;
         });
+    }
+
+    private organizationCodeListening(): void {
+        this.organizationForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((codes: Array<number>) => {
+            if (codes[0]) {
+                // Todo(backend's sake): units should accept an array instead of single value
+                this.getUnits(codes[0]);
+            }
+        });
+    }
+
+    private getUnits(organizationCodes): void {
+        this.userService.getOrganizationUnits(organizationCodes).subscribe((response) => {
+            this.units = response;
+        });
+    }
+
+    private unitsListening(): void {
+        this.organizationForm.controls['units'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((units: Array<number>) => {
+            const organizationCode = this.organizationForm.value.organization[0]; // Todo(backend's sake): roles should recive units but we are sending organizationCodes
+            if (units[0]) {
+                this.getRoles(organizationCode);
+            }
+        });
+    }
+
+    private getRoles(units): void {
+        this.userService.getOrganizationRoles(units).subscribe((response) => {
+            this.roles = response;
+        });
+    }
+
+    public onSubmit(): void {
+        console.log(this.basicForm.value, this.organizationForm.value);
     }
 
     ngOnDestroy(): void {

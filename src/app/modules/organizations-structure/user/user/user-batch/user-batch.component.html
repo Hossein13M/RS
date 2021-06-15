@@ -1,28 +1,8 @@
 <div class="tw-w-screen-60 tw-max-w-screen-xl">
-    <div title="{{ title ?? 'داستان' }}" appDialogHeader>
+    <div title="کاربر" appDialogHeader>
         <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
     </div>
     <mat-horizontal-stepper class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
-        <mat-step [stepControl]="organizationForm">
-            <ng-template matStepLabel>اطلاعات سازمانی</ng-template>
-            <form [formGroup]="organizationForm" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
-                <mat-form-field appearance="outline">
-                    <mat-label>نهاد</mat-label>
-                    <mat-select formControlName="organization" multiple required>
-                        <ngx-mat-select-search
-                            class="tw-text-right"
-                            [noEntriesFoundLabel]="'یافت نشد'"
-                            [placeholderLabel]="'جستجو'"
-                            [formControl]="organizationsSearchControl"
-                        ></ngx-mat-select-search>
-                        <mat-option class="tw-text-right" [value]="organize?.code" *ngFor="let organize of organizations">
-                            {{ organize?.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </form>
-        </mat-step>
-
         <mat-step [stepControl]="basicForm">
             <ng-template matStepLabel>اطلاعات پایه</ng-template>
             <form [formGroup]="basicForm" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
@@ -47,10 +27,6 @@
                     <input formControlName="nationalCode" matInput required />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <mat-label>کد پرسنلی</mat-label>
-                    <input formControlName="personnelCode" matInput required />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
                     <mat-label>شماره همراه</mat-label>
                     <input formControlName="phoneNumber" matInput />
                 </mat-form-field>
@@ -66,6 +42,40 @@
                 </mat-form-field>
                 <div class="tw-col-span-2">
                     <button color="primary" mat-raised-button matStepperNext>بعدی</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="organizationForm">
+            <ng-template matStepLabel>اطلاعات سازمانی</ng-template>
+            <form [formGroup]="organizationForm" (submit)="onSubmit()" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
+                <mat-form-field appearance="outline">
+                    <mat-label>کد پرسنلی</mat-label>
+                    <input formControlName="personnelCode" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>نهاد</mat-label>
+                    <mat-select formControlName="organization" multiple required>
+                        <ngx-mat-select-search
+                            class="tw-text-right"
+                            [noEntriesFoundLabel]="'یافت نشد'"
+                            [placeholderLabel]="'جستجو'"
+                            [formControl]="organizationsSearchControl"
+                        ></ngx-mat-select-search>
+                        <mat-option class="tw-text-right" [value]="organize?.code" *ngFor="let organize of organizations">
+                            {{ organize?.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="tw-flex tw-flex-col tree-select-container">
+                    <app-tree-select *ngIf="units" [data]="units" formControlName="units" selectedValueFieldName="name"></app-tree-select>
+                </div>
+                <div class="tw-flex tw-flex-col tree-select-container">
+                    <app-tree-select *ngIf="roles" [data]="roles" formControlName="organizationRole" selectedValueFieldName="name"></app-tree-select>
+                </div>
+                <div class="tw-col-span-2">
+                    <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
+                    <button color="warn" mat-raised-button type="submit">پایان</button>
                 </div>
             </form>
         </mat-step>

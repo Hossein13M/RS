@@ -25,3 +25,23 @@ export interface Organization {
     id: number;
     code: number;
 }
+
+export interface OrganizationUnits {
+    id: number;
+    name: string;
+    parent: number;
+    organization: number;
+    deletedAt: string;
+    children: Array<OrganizationUnits>;
+    mapping: Array<any>;
+}
+
+export interface OrganizationRoles {
+    id: number;
+    name: string;
+    parent: number;
+    organization: number;
+    deletedAt: string;
+    children: Array<OrganizationUnits>;
+    mapping: Array<any>;
+}
