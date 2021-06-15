@@ -14,6 +14,10 @@ export interface User {
     status: string;
 }
 
+export interface CreateUser extends User {
+    confirmPassword: string;
+}
+
 export interface Organization {
     name: string;
     dbHost: string;
