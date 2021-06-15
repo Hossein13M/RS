@@ -1,0 +1,10 @@
+@layer utilities {
+    .tw- {
+        &rtl {
+            direction: rtl !important;
+        }
+        &ltr {
+            direction: ltr !important;
+        }
+    }
+}

@@ -6,8 +6,8 @@ export interface User {
     username: string;
     password: string;
     phoneNumber: string;
-    organization: number;
-    organizationRole: number;
+    organization: Array<string>;
+    organizationRole: Array<string>;
     nationalCode: string;
     birthDate: string;
     id: number;

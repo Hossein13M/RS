@@ -1,0 +1,13 @@
+@layer components {
+    .tw- {
+        &dialog- {
+            &basic {
+                mat-dialog-container {
+                    overflow: hidden !important; // Todo: Fix this scroll bug
+                    width: min-content !important;
+                    padding: 0 !important;
+                }
+            }
+        }
+    }
+}
