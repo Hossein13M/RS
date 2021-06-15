@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Organization, OrganizationRoles, OrganizationUnits, User } from '../../user.model';
+import { CreateUser, Organization, OrganizationRoles, OrganizationUnits } from '../../user.model';
 import { UserService } from '../../user.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -27,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
   "birthDate": "2021-06-15T09:13:13.467Z"
 }*/
 export class UserBatchComponent implements OnInit, OnDestroy {
-    data: User = null;
+    data: CreateUser = null;
     public title: string;
 
     public basicForm: FormGroup;
@@ -55,6 +55,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.basicForm = this.formBuilder.group({
             username: [this.data?.username ?? '', Validators.required],
             password: [this.data?.password ?? '', Validators.required],
+            confirmPassword: [this.data?.confirmPassword ?? '', Validators.required],
             firstname: [this.data?.firstname ?? '', Validators.required],
             lastname: [this.data?.lastname ?? '', Validators.required],
             nationalCode: [this.data?.nationalCode ?? '', Validators.required],
@@ -102,7 +103,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     private unitsListening(): void {
         this.organizationForm.controls['units'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((units: Array<number>) => {
-            const organizationCode = this.organizationForm.value.organization[0]; // Todo(backend's sake): roles should recive units but we are sending organizationCodes
+            const organizationCode = this.organizationForm.value.organization[0]; // Todo(backend's sake): roles should receive units but we are sending organizationCodes
             if (units[0]) {
                 this.getRoles(organizationCode);
             }
@@ -117,6 +118,19 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     public onSubmit(): void {
         console.log(this.basicForm.value, this.organizationForm.value);
+        const value = {
+            ...this.basicForm.value,
+            userRoles: [
+                {
+                    ...this.organizationForm.value,
+                    organization: this.organizationForm.value.organization[0],
+                    roles: this.organizationForm.value.organizationRole,
+                },
+            ],
+        };
+        this.userService.createUser(value).subscribe((response) => {
+            console.log(response);
+        });
     }
 
     ngOnDestroy(): void {
