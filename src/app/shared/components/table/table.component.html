@@ -210,7 +210,8 @@
 
                 <!--    Data Row    -->
                 <tr
-                    class="data-row"
+                    id='important'
+                    class="odd:tw-bg-gray-100"
                     mat-row
                     *matRowDef="let row; columns: displayedColumns; let i = index"
                     (click)="selectRow(i)"
