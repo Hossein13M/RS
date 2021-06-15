@@ -1,1 +1,73 @@
-<p>user-batch works!</p>
+<div class="tw-w-screen-60 tw-max-w-screen-xl">
+    <div title="{{ title ?? 'داستان' }}" appDialogHeader>
+        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+    </div>
+    <mat-horizontal-stepper class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
+        <mat-step [stepControl]="organizationForm">
+            <ng-template matStepLabel>اطلاعات سازمانی</ng-template>
+            <form [formGroup]="organizationForm" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
+                <mat-form-field appearance="outline">
+                    <mat-label>نهاد</mat-label>
+                    <mat-select formControlName="organization" multiple required>
+                        <ngx-mat-select-search
+                            class="tw-text-right"
+                            [noEntriesFoundLabel]="'یافت نشد'"
+                            [placeholderLabel]="'جستجو'"
+                            [formControl]="organizationsSearchControl"
+                        ></ngx-mat-select-search>
+                        <mat-option class="tw-text-right" [value]="organize?.code" *ngFor="let organize of organizations">
+                            {{ organize?.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="basicForm">
+            <ng-template matStepLabel>اطلاعات پایه</ng-template>
+            <form [formGroup]="basicForm" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
+                <mat-form-field appearance="outline">
+                    <mat-label>نام کاربری</mat-label>
+                    <input formControlName="username" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>رمز عبور</mat-label>
+                    <input formControlName="password" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>نام</mat-label>
+                    <input formControlName="firstname" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>نام خانوادگی</mat-label>
+                    <input formControlName="lastname" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>کد ملی</mat-label>
+                    <input formControlName="nationalCode" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>کد پرسنلی</mat-label>
+                    <input formControlName="personnelCode" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>شماره همراه</mat-label>
+                    <input formControlName="phoneNumber" matInput />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>پست الکترونیکی</mat-label>
+                    <input formControlName="email" matInput />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>تاریخ تولد</mat-label>
+                    <input [matDatepicker]="picker" formControlName="birthDate" matInput />
+                    <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <div class="tw-col-span-2">
+                    <button color="primary" mat-raised-button matStepperNext>بعدی</button>
+                </div>
+            </form>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

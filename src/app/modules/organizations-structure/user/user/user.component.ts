@@ -101,7 +101,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-    constructor(private userService: UserService, public dialog: MatDialog, private alertService: AlertService, private formBuilder: FormBuilder) {}
+    constructor(private userService: UserService, public matDialog: MatDialog, private alertService: AlertService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
         this.organizationsForm = this.formBuilder.group({ organization: ['', Validators.required] });
@@ -172,14 +172,18 @@ export class UserComponent implements OnInit, OnDestroy {
         });
     }
 
-    public openUserDialog(): void {
-        const dialogRef: MatDialogRef<UserBatchComponent> = this.dialog.open(UserBatchComponent, {
-            data: { dastan: 'dastan' },
-            panelClass: 'dialog-p-0',
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(result);
-        });
+    public createUser(): void {
+        const organizationId: string = this.organizationsForm.controls['organization'].value;
+        this.matDialog
+            .open(UserBatchComponent, {
+                data: null,
+                panelClass: 'tw-dialog-basic'
+            })
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result) => {
+                if (result) this.getUsers(organizationId);
+            });
     }
 
     ngOnDestroy(): void {
