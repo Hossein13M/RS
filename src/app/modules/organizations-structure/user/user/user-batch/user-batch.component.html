@@ -5,17 +5,17 @@
     <mat-horizontal-stepper class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
         <mat-step [stepControl]="basicForm">
             <ng-template matStepLabel>اطلاعات پایه</ng-template>
-            <form [formGroup]="basicForm" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
+            <form [formGroup]="basicForm" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
                 <mat-form-field appearance="outline">
                     <mat-label>نام کاربری</mat-label>
                     <input formControlName="username" matInput required />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <mat-label>رمز عبور</mat-label>
+                    <mat-label>گذرواژه</mat-label>
                     <input formControlName="password" matInput required />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <mat-label>تکرار رمز عبور</mat-label>
+                    <mat-label>تکرار گذرواژه</mat-label>
                     <input formControlName="confirmPassword" matInput required />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
@@ -32,10 +32,10 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>شماره همراه</mat-label>
-                    <input formControlName="phoneNumber" matInput />
+                    <input formControlName="phoneNumber" matInput type="number" inputmode="tel" />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <mat-label>پست الکترونیکی</mat-label>
+                    <mat-label>ایمیل</mat-label>
                     <input formControlName="email" matInput />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
@@ -44,7 +44,7 @@
                     <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
-                <div class="tw-col-span-2">
+                <div class="tw-col-span-3">
                     <button color="primary" mat-raised-button matStepperNext>بعدی</button>
                 </div>
             </form>
@@ -77,7 +77,7 @@
                 <div class="tw-flex tw-flex-col tree-select-container">
                     <app-tree-select *ngIf="roles" [data]="roles" formControlName="organizationRole" selectedValueFieldName="name"></app-tree-select>
                 </div>
-                <div class="tw-col-span-2">
+                <div class="tw-col-span-3">
                     <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
                     <button color="warn" mat-raised-button type="submit">پایان</button>
                 </div>

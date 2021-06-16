@@ -47,8 +47,12 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.organizationFormInit();
         this.getOrganizations();
         this.organizationsSearchInit();
-        this.organizationCodeListening();
-        this.unitsListening();
+        this.onOrganizationCodeChange();
+        this.onUnitsChange();
+
+        this.basicForm.controls['phoneNumber'].valueChanges.subscribe((value) => {
+            console.log(value);
+        });
     }
 
     private basicFormInit(): void {
@@ -86,7 +90,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
     }
 
-    private organizationCodeListening(): void {
+    private onOrganizationCodeChange(): void {
         this.organizationForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((codes: Array<number>) => {
             if (codes[0]) {
                 // Todo(backend's sake): units should accept an array instead of single value
@@ -101,7 +105,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
     }
 
-    private unitsListening(): void {
+    private onUnitsChange(): void {
         this.organizationForm.controls['units'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((units: Array<number>) => {
             const organizationCode = this.organizationForm.value.organization[0]; // Todo(backend's sake): roles should receive units but we are sending organizationCodes
             if (units[0]) {
