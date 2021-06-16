@@ -107,7 +107,7 @@ export class UserComponent implements OnInit, OnDestroy {
         this.organizationsForm = this.formBuilder.group({ organization: ['', Validators.required] });
         this.getOrganizations();
         this.organizationsSearchInit();
-        this.getUsersAccordingToOrganization();
+        this.onOrganizationCodeChange();
         this.alertToFillOrganization();
         this.initSearch();
     }
@@ -128,7 +128,7 @@ export class UserComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getUsersAccordingToOrganization(): void {
+    private onOrganizationCodeChange(): void {
         this.organizationsForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
             if (value) {
                 this.getUsers(value);
