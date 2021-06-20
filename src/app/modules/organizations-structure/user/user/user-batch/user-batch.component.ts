@@ -5,7 +5,7 @@ import { CreateUser, Organization, OrganizationRoles, OrganizationUnits } from '
 import { UserService } from '../../user.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { matchValidator } from '#shared/validators/match.validator';
+import { matchValidator } from '#shared/validators/match/match.validator';
 
 @Component({
     selector: 'app-user-batch',
