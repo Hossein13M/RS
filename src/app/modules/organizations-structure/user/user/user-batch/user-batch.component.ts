@@ -53,8 +53,8 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             lastname: [this.data?.lastname ?? '', Validators.required],
             nationalCode: [this.data?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]], // Todo(validation): National ID
             phoneNumber: [this.data?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
-            email: [this.data?.email ?? '', Validators.email],
-            birthDate: [this.data?.birthDate ?? ''],
+            email: [this.data?.email ?? '', [Validators.required, Validators.email]],
+            birthDate: [this.data?.birthDate ?? '', Validators.required],
         });
     }
 
