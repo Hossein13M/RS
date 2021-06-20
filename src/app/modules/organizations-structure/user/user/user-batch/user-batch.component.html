@@ -9,14 +9,19 @@
                 <mat-form-field appearance="outline">
                     <mat-label>نام کاربری</mat-label>
                     <input formControlName="username" matInput required />
+                    <mat-hint>نام کاربری باید خاص باشد.</mat-hint>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>گذرواژه</mat-label>
                     <input formControlName="password" matInput required />
+                    <mat-hint>گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-hint>
+                    <mat-error *ngIf="this.basicForm.controls['password'].hasError('minlength')">گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>تکرار گذرواژه</mat-label>
                     <input formControlName="confirmPassword" matInput required />
+                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('minlength')">تکرار گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
+                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('match')">تکرار گذرواژه باید با گذرواژه برابر باشد.</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>نام</mat-label>
@@ -32,11 +37,15 @@
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>شماره همراه</mat-label>
-                    <input formControlName="phoneNumber" matInput type="number" inputmode="tel" />
+                    <input formControlName="phoneNumber" matInput />
+                    <mat-hint>مثال: 09XXXXXXXXX</mat-hint>
+                    <mat-error>شماره همراه باید با 09 شروع شود و 11 رقم باشد.</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>ایمیل</mat-label>
                     <input formControlName="email" matInput />
+                    <mat-hint>مثال: example@gmail.com</mat-hint>
+                    <mat-error>لطفا ایمیل درستی را وارد کنید.</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>تاریخ تولد</mat-label>
