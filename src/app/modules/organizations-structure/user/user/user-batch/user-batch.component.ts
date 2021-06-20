@@ -6,6 +6,7 @@ import { UserService } from '../../user.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { matchValidator } from '#shared/validators/match/match.validator';
+import {phoneNumberValidator} from "#shared/validators/phoneNumber/phoneNumberValidator";
 
 @Component({
     selector: 'app-user-batch',
@@ -38,6 +39,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.passwordChange();
 
         this.basicForm.controls['phoneNumber'].valueChanges.subscribe((value) => {
+            console.log(this.basicForm.controls['phoneNumber'].errors)
             console.log(value);
         });
     }
@@ -45,13 +47,13 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     private basicFormInit(): void {
         this.basicForm = this.formBuilder.group({
             username: [this.data?.username ?? '', Validators.required],
-            password: [this.data?.password ?? '', Validators.required],
-            confirmPassword: [this.data?.confirmPassword ?? '', Validators.required],
+            password: [this.data?.password ?? '', [Validators.required, Validators.minLength(7)]],
+            confirmPassword: [this.data?.confirmPassword ?? '', [Validators.required, Validators.minLength(7)]],
             firstname: [this.data?.firstname ?? '', Validators.required],
             lastname: [this.data?.lastname ?? '', Validators.required],
-            nationalCode: [this.data?.nationalCode ?? '', Validators.required],
-            phoneNumber: [this.data?.phoneNumber ?? ''],
-            email: [this.data?.email ?? ''],
+            nationalCode: [this.data?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]], // Todo(validation): National ID
+            phoneNumber: [this.data?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
+            email: [this.data?.email ?? '', Validators.email],
             birthDate: [this.data?.birthDate ?? ''],
         });
     }
@@ -128,7 +130,9 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         const confirmPasswordControl = this.basicForm.controls['confirmPassword'];
 
         passwordControl.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
-            confirmPasswordControl.setValidators([Validators.required, matchValidator(value)]);
+            confirmPasswordControl.setValidators([Validators.required, Validators.minLength(7), matchValidator(value)]);
+            console.log(passwordControl.errors);
+            console.log(passwordControl.hasError('minlength'));
         });
     }
 
