@@ -71,13 +71,13 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div class="tw-flex tw-flex-col tree-select-container">
+                <div class="tw-flex tw-flex-col tree-select-container tw-relative">
                     <app-tree-select *ngIf="units" [data]="units" formControlName="units" selectedValueFieldName="name"></app-tree-select>
                 </div>
                 <div class="tw-flex tw-flex-col tree-select-container">
                     <app-tree-select *ngIf="roles" [data]="roles" formControlName="organizationRole" selectedValueFieldName="name"></app-tree-select>
                 </div>
-                <div class="tw-col-span-3">
+                <div class="tw-col-span-2">
                     <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
                     <button color="warn" mat-raised-button type="submit">پایان</button>
                 </div>

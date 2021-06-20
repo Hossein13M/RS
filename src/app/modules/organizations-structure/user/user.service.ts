@@ -13,7 +13,6 @@ export class UserService {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organization, ...paginationParams, ...searchParams });
         return this.http.get<ResponseWithPagination<User>>('/api/v2/user', { params });
     }
-
     public createUser(model: User): Observable<User> {
         return this.http.post<User>('/api/v2/user', model);
     }
@@ -28,10 +27,12 @@ export class UserService {
     }
 
     public getOrganizationUnits(organizationCodes): Observable<Array<OrganizationUnits>> {
-        return this.http.get<Array<OrganizationUnits>>(`/api/v1/organization-unit/${organizationCodes}`); // Todo(backend's sake): organizationCodes should be an array
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes });
+        return this.http.get<Array<OrganizationUnits>>(`/api/v1/organization-unit`, { params });
     }
 
-    public getOrganizationRoles(units): Observable<Array<OrganizationRoles>> {
-        return this.http.get<Array<OrganizationUnits>>(`/api/v1/organization-role/${units}`); // Todo(backend's sake): organizationCodes should be an array
+    public getOrganizationRoles(organizationCodes: Array<number>): Observable<Array<OrganizationRoles>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes });
+        return this.http.get<Array<OrganizationUnits>>(`/api/v1/organization-role`, { params });
     }
 }

@@ -5,27 +5,13 @@ import { CreateUser, Organization, OrganizationRoles, OrganizationUnits } from '
 import { UserService } from '../../user.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { matchValidator } from '#shared/validators/match.validator';
 
 @Component({
     selector: 'app-user-batch',
     templateUrl: './user-batch.component.html',
     styleUrls: ['./user-batch.component.scss'],
 })
-
-/*
-* {
-  "firstname": "string",
-  "lastname": "string",
-  "email": "string",
-  "personnelCode": "string",
-  "username": "string",
-  "password": "string",
-  "phoneNumber": "string",
-  "organization": 0,
-  "organizationRole": 0,
-  "nationalCode": "string",
-  "birthDate": "2021-06-15T09:13:13.467Z"
-}*/
 export class UserBatchComponent implements OnInit, OnDestroy {
     data: CreateUser = null;
     public title: string;
@@ -49,6 +35,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.organizationsSearchInit();
         this.onOrganizationCodeChange();
         this.onUnitsChange();
+        this.passwordChange();
 
         this.basicForm.controls['phoneNumber'].valueChanges.subscribe((value) => {
             console.log(value);
@@ -92,9 +79,8 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     private onOrganizationCodeChange(): void {
         this.organizationForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((codes: Array<number>) => {
-            if (codes[0]) {
-                // Todo(backend's sake): units should accept an array instead of single value
-                this.getUnits(codes[0]);
+            if (codes) {
+                this.getUnits(codes);
             }
         });
     }
@@ -107,7 +93,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     private onUnitsChange(): void {
         this.organizationForm.controls['units'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((units: Array<number>) => {
-            const organizationCode = this.organizationForm.value.organization[0]; // Todo(backend's sake): roles should receive units but we are sending organizationCodes
+            const organizationCode = this.organizationForm.value.organization;
             if (units[0]) {
                 this.getRoles(organizationCode);
             }
@@ -134,6 +120,15 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         };
         this.userService.createUser(value).subscribe((response) => {
             console.log(response);
+        });
+    }
+
+    private passwordChange(): void {
+        const passwordControl = this.basicForm.controls['password'];
+        const confirmPasswordControl = this.basicForm.controls['confirmPassword'];
+
+        passwordControl.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
+            confirmPasswordControl.setValidators([Validators.required, matchValidator(value)]);
         });
     }
 
