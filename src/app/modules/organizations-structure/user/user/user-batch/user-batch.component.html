@@ -3,62 +3,6 @@
         <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
     </div>
     <mat-horizontal-stepper class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
-        <mat-step [stepControl]="basicForm">
-            <ng-template matStepLabel>اطلاعات پایه</ng-template>
-            <form [formGroup]="basicForm" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
-                <mat-form-field appearance="outline">
-                    <mat-label>نام کاربری</mat-label>
-                    <input formControlName="username" matInput required />
-                    <mat-hint>نام کاربری باید خاص باشد.</mat-hint>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>گذرواژه</mat-label>
-                    <input formControlName="password" matInput required />
-                    <mat-hint>گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-hint>
-                    <mat-error *ngIf="this.basicForm.controls['password'].hasError('minlength')">گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>تکرار گذرواژه</mat-label>
-                    <input formControlName="confirmPassword" matInput required />
-                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('minlength')">تکرار گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
-                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('match')">تکرار گذرواژه باید با گذرواژه برابر باشد.</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>نام</mat-label>
-                    <input formControlName="firstname" matInput required />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>نام خانوادگی</mat-label>
-                    <input formControlName="lastname" matInput required />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>کد ملی</mat-label>
-                    <input formControlName="nationalCode" matInput required />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>شماره همراه</mat-label>
-                    <input formControlName="phoneNumber" matInput />
-                    <mat-hint>مثال: 09XXXXXXXXX</mat-hint>
-                    <mat-error>شماره همراه باید با 09 شروع شود و 11 رقم باشد.</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>ایمیل</mat-label>
-                    <input formControlName="email" matInput />
-                    <mat-hint>مثال: example@gmail.com</mat-hint>
-                    <mat-error>لطفا ایمیل درستی را وارد کنید.</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>تاریخ تولد</mat-label>
-                    <input [matDatepicker]="picker" formControlName="birthDate" matInput />
-                    <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-                <div class="tw-col-span-3">
-                    <button color="primary" mat-raised-button matStepperNext>بعدی</button>
-                </div>
-            </form>
-        </mat-step>
-
         <mat-step [stepControl]="organizationForm">
             <ng-template matStepLabel>اطلاعات سازمانی</ng-template>
             <form [formGroup]="organizationForm" (submit)="onSubmit()" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
@@ -89,6 +33,62 @@
                 <div class="tw-col-span-2">
                     <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
                     <button color="warn" mat-raised-button type="submit">پایان</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="basicForm">
+            <ng-template matStepLabel>اطلاعات پایه</ng-template>
+            <form [formGroup]="basicForm" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
+                <mat-form-field appearance="outline">
+                    <mat-label>نام کاربری</mat-label>
+                    <input formControlName="username" matInput required />
+                    <mat-hint>نام کاربری باید غیر تکراری باشد.</mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>گذرواژه</mat-label>
+                    <input formControlName="password" matInput required />
+                    <mat-hint>گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-hint>
+                    <mat-error *ngIf="this.basicForm.controls['password'].hasError('minlength')">گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>تکرار گذرواژه</mat-label>
+                    <input formControlName="confirmPassword" matInput required />
+                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('minlength')">تکرار گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
+                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('match')">تکرار گذرواژه باید با گذرواژه برابر باشد.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>نام</mat-label>
+                    <input formControlName="firstname" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>نام خانوادگی</mat-label>
+                    <input formControlName="lastname" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>کد ملی</mat-label>
+                    <input formControlName="nationalCode" matInput required />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>شماره همراه</mat-label>
+                    <input formControlName="phoneNumber" matInput required/>
+                    <mat-hint>مثال: 09XXXXXXXXX</mat-hint>
+                    <mat-error>شماره همراه باید با 09 شروع شود و 11 رقم باشد.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>ایمیل</mat-label>
+                    <input formControlName="email" matInput required/>
+                    <mat-hint>مثال: example@gmail.com</mat-hint>
+                    <mat-error>لطفا ایمیل درستی را وارد کنید.</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>تاریخ تولد</mat-label>
+                    <input [matDatepicker]="picker" formControlName="birthDate" matInput required/>
+                    <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <div class="tw-col-span-3">
+                    <button color="primary" mat-raised-button matStepperNext>بعدی</button>
                 </div>
             </form>
         </mat-step>
