@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CreateUser, Organization, Roles, Units } from '../../user.model';
-import { UserService } from '../../user.service';
-import { Subject } from 'rxjs';
-import { first, mergeMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
-import { matchValidator } from '#shared/validators/match/match.validator';
-import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
-import { ResponseWithPagination } from '#shared/models/pagination.model';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material/dialog';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CreateUser, Organization, Roles, Units} from '../../user.model';
+import {UserService} from '../../user.service';
+import {Subject} from 'rxjs';
+import {first, mergeMap, takeUntil, tap} from 'rxjs/operators';
+import {matchValidator} from '#shared/validators/match/match.validator';
+import {phoneNumberValidator} from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
+import {AlertService} from '../../../../../services/alert.service';
 
 @Component({
     selector: 'app-user-batch',
@@ -26,7 +26,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     public userRoleControlsData: Array<{
-        organizationsSearchControl: FormControl;
         organizations: Array<Organization>;
         units: Units;
         roles: Roles;
@@ -35,7 +34,12 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     private defaultOrganizations: Array<Organization> = [];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-    constructor(public dialogRef: MatDialogRef<UserBatchComponent>, private formBuilder: FormBuilder, private userService: UserService) {}
+    constructor(
+        public dialogRef: MatDialogRef<UserBatchComponent>,
+        private formBuilder: FormBuilder,
+        private userService: UserService,
+        private alertService: AlertService
+    ) {}
 
     ngOnInit(): void {
         this.basicFormInit();
@@ -50,7 +54,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             confirmPassword: [this.data?.confirmPassword ?? '', [Validators.required, Validators.minLength(7)]],
             firstname: [this.data?.firstname ?? '', Validators.required],
             lastname: [this.data?.lastname ?? '', Validators.required],
-            nationalCode: [this.data?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]], // Todo(validation): National ID
+            nationalCode: [this.data?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]],
             phoneNumber: [this.data?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
             email: [this.data?.email ?? '', [Validators.required, Validators.email]],
             birthDate: [this.data?.birthDate ?? '', Validators.required],
@@ -69,7 +73,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
 
         this.userRoleControlsData.push({
-            organizationsSearchControl: new FormControl(),
             organizations: this.defaultOrganizations,
             units: null,
             roles: null,
@@ -78,10 +81,10 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.userRoles.push(roleForm);
 
         this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
-        // this.onUnitsChange(this.userRoleControlsData.length - 1);
     }
 
     public deleteRole(index: number): void {
+        this.userRoleControlsData.splice(index, 1);
         this.userRoles.removeAt(index);
     }
 
@@ -95,7 +98,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
                     addedFormGroup.controls['organizationId'].setValue(id);
                 }),
                 mergeMap((organizationCode: number) => this.userService.getOrganizationUnits([organizationCode])),
-                takeUntil(this._unsubscribeAll),
+                takeUntil(this._unsubscribeAll)
             )
             .subscribe((response) => {
                 addedFormGroup.controls['units'].reset([]);
@@ -121,8 +124,12 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        this.userService.createUser(this.form.value).subscribe((value) => {
-            console.log(value)
+        if (this.form.invalid) {
+            this.alertService.onError('لطفا ورودی های خود را چک کنید.');
+            return;
+        }
+        this.userService.createUser(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
         });
     }
 
@@ -132,6 +139,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             .pipe(first())
             .subscribe((response) => {
                 this.defaultOrganizations = response.items;
+                this.addRole();
             });
     }
 
