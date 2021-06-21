@@ -8,6 +8,14 @@
                     padding: 0 !important;
                 }
             }
+            &fullscreen {
+                mat-dialog-container {
+                    overflow: hidden !important; // Todo: Fix this scroll bug
+                    width: 80vw !important;
+                    height: 90vh !important;
+                    padding: 0 !important;
+                }
+            }
         }
     }
 }

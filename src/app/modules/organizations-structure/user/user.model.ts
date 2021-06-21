@@ -1,17 +1,23 @@
+interface UserRoles {
+    organizationId: number;
+    organizationCode: number;
+    personnelCode: string;
+    units: Array<number>;
+    roles: Array<number>;
+}
+
 export interface User {
     firstname: string;
     lastname: string;
     email: string;
-    personnelCode: string;
     username: string;
     password: string;
     phoneNumber: string;
-    organization: Array<string>;
-    organizationRole: Array<string>;
     nationalCode: string;
     birthDate: string;
     id: number;
     status: string;
+    userRoles: Array<UserRoles>;
 }
 
 export interface CreateUser extends User {
@@ -30,22 +36,22 @@ export interface Organization {
     code: number;
 }
 
-export interface OrganizationUnits {
+export interface Units {
     id: number;
     name: string;
     parent: number;
     organization: number;
     deletedAt: string;
-    children: Array<OrganizationUnits>;
+    children: Array<Units>;
     mapping: Array<any>;
 }
 
-export interface OrganizationRoles {
+export interface Roles {
     id: number;
     name: string;
     parent: number;
     organization: number;
     deletedAt: string;
-    children: Array<OrganizationUnits>;
+    children: Array<Units>;
     mapping: Array<any>;
 }

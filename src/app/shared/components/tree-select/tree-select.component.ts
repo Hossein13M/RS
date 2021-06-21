@@ -251,7 +251,8 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
     }
 
     validate(c: AbstractControl): ValidationErrors | null {
-        return { invalidForm: { valid: false, message: 'Address fields are invalid' } };
+        // return { invalidForm: { valid: false, message: 'Address fields are invalid' } };
+        return null;
     }
 
     mouseLeave(): void {
