@@ -177,7 +177,7 @@ export class UserComponent implements OnInit, OnDestroy {
         this.matDialog
             .open(UserBatchComponent, {
                 data: null,
-                panelClass: 'tw-dialog-basic'
+                panelClass: 'tw-dialog-fullscreen'
             })
             .afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))

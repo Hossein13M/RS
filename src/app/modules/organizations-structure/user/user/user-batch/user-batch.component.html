@@ -1,94 +1,147 @@
-<div class="tw-w-screen-60 tw-max-w-screen-xl">
+<div class="tw-w-screen-80">
     <div title="کاربر" appDialogHeader>
         <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
     </div>
     <mat-horizontal-stepper class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
-        <mat-step [stepControl]="organizationForm">
-            <ng-template matStepLabel>اطلاعات سازمانی</ng-template>
-            <form [formGroup]="organizationForm" (submit)="onSubmit()" class="tw-grid tw-grid-cols-2 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
-                <mat-form-field appearance="outline">
-                    <mat-label>کد پرسنلی</mat-label>
-                    <input formControlName="personnelCode" matInput required />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>نهاد</mat-label>
-                    <mat-select formControlName="organization" multiple required>
-                        <ngx-mat-select-search
-                            class="tw-text-right"
-                            [noEntriesFoundLabel]="'یافت نشد'"
-                            [placeholderLabel]="'جستجو'"
-                            [formControl]="organizationsSearchControl"
-                        ></ngx-mat-select-search>
-                        <mat-option class="tw-text-right" [value]="organize?.code" *ngFor="let organize of organizations">
-                            {{ organize?.name }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div class="tw-flex tw-flex-col tree-select-container tw-relative">
-                    <app-tree-select *ngIf="units" [data]="units" formControlName="units" selectedValueFieldName="name"></app-tree-select>
-                </div>
-                <div class="tw-flex tw-flex-col tree-select-container">
-                    <app-tree-select *ngIf="roles" [data]="roles" formControlName="organizationRole" selectedValueFieldName="name"></app-tree-select>
-                </div>
-                <div class="tw-col-span-2">
-                    <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
-                    <button color="warn" mat-raised-button type="submit">پایان</button>
-                </div>
-            </form>
-        </mat-step>
-
-        <mat-step [stepControl]="basicForm">
+        <mat-step>
             <ng-template matStepLabel>اطلاعات پایه</ng-template>
-            <form [formGroup]="basicForm" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
+            <form [formGroup]="form" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
                 <mat-form-field appearance="outline">
                     <mat-label>نام کاربری</mat-label>
                     <input formControlName="username" matInput required />
                     <mat-hint>نام کاربری باید غیر تکراری باشد.</mat-hint>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>گذرواژه</mat-label>
                     <input formControlName="password" matInput required />
                     <mat-hint>گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-hint>
-                    <mat-error *ngIf="this.basicForm.controls['password'].hasError('minlength')">گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
+                    <mat-error *ngIf="this.form.controls['password'].hasError('minlength')">گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>تکرار گذرواژه</mat-label>
                     <input formControlName="confirmPassword" matInput required />
-                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('minlength')">تکرار گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
-                    <mat-error *ngIf="this.basicForm.controls['confirmPassword'].hasError('match')">تکرار گذرواژه باید با گذرواژه برابر باشد.</mat-error>
+                    <mat-error *ngIf="this.form.controls['confirmPassword'].hasError('match')">تکرار گذرواژه باید با گذرواژه برابر باشد.</mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>نام</mat-label>
                     <input formControlName="firstname" matInput required />
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>نام خانوادگی</mat-label>
                     <input formControlName="lastname" matInput required />
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>کد ملی</mat-label>
                     <input formControlName="nationalCode" matInput required />
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>شماره همراه</mat-label>
-                    <input formControlName="phoneNumber" matInput required/>
+                    <input formControlName="phoneNumber" matInput required />
                     <mat-hint>مثال: 09XXXXXXXXX</mat-hint>
                     <mat-error>شماره همراه باید با 09 شروع شود و 11 رقم باشد.</mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>ایمیل</mat-label>
-                    <input formControlName="email" matInput required/>
+                    <input formControlName="email" matInput required />
                     <mat-hint>مثال: example@gmail.com</mat-hint>
                     <mat-error>لطفا ایمیل درستی را وارد کنید.</mat-error>
                 </mat-form-field>
+
                 <mat-form-field appearance="outline">
                     <mat-label>تاریخ تولد</mat-label>
-                    <input [matDatepicker]="picker" formControlName="birthDate" matInput required/>
+                    <input [matDatepicker]="picker" formControlName="birthDate" matInput required />
                     <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
+
                 <div class="tw-col-span-3">
                     <button color="primary" mat-raised-button matStepperNext>بعدی</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="form">
+            <ng-template matStepLabel>چینش سازمانی</ng-template>
+            <form [formGroup]="form" class="tw-mt-12" dir="rtl">
+                <div class="form tw-grid tw-grid-cols-1 tw-gap-7 tw-overflow-auto tw-pl-5">
+                    <div formArrayName="userRoles" *ngFor="let role of userRoles.controls; let index = index" class="tw-w-full">
+                        <div [formGroupName]="index" class="tw-grid tw-grid-cols-2 tw-gap-7">
+                            <h2 class="tw-col-span-2">چینش سازمانی: {{ index + 1 }}</h2>
+                            <mat-form-field appearance="outline">
+                                <mat-label>کد پرسنلی</mat-label>
+                                <input formControlName="personnelCode" matInput required />
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>نهاد</mat-label>
+                                <mat-select formControlName="organizationCode" required>
+                                    <mat-option
+                                        class="tw-text-right"
+                                        [value]="organize.code"
+                                        *ngFor="let organize of userRoleControlsData[index].organizations"
+                                    >
+                                        {{ organize.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <div>
+                                <app-tree-select
+                                    *ngIf="userRoleControlsData[index].units"
+                                    [data]="userRoleControlsData[index].units"
+                                    formControlName="units"
+                                    selectedValueFieldName="name"
+                                ></app-tree-select>
+                            </div>
+
+                            <div>
+                                <app-tree-select
+                                    *ngIf="userRoleControlsData[index].roles"
+                                    [data]="userRoleControlsData[index].roles"
+                                    formControlName="roles"
+                                    selectedValueFieldName="name"
+                                ></app-tree-select>
+                            </div>
+                        </div>
+                    </div>
+                    <button (click)="addRole()" class="tw-w-full" color="accent" mat-flat-button type="button">
+                        افزودن چینش سازمانی<mat-icon>add</mat-icon>
+                    </button>
+                </div>
+
+                <!--                <mat-form-field appearance="outline">-->
+                <!--                    <mat-label>نهاد</mat-label>-->
+                <!--                    <mat-select formControlName="organization" required>-->
+                <!--                        <ngx-mat-select-search-->
+                <!--                            class="tw-text-right"-->
+                <!--                            [noEntriesFoundLabel]="'یافت نشد'"-->
+                <!--                            [placeholderLabel]="'جستجو'"-->
+                <!--                            [formControl]="organizationsSearchControl"-->
+                <!--                        ></ngx-mat-select-search>-->
+                <!--                        <mat-option class="tw-text-right" [value]="organize?.code" *ngFor="let organize of organizations">-->
+                <!--                            {{ organize?.name }}-->
+                <!--                        </mat-option>-->
+                <!--                    </mat-select>-->
+                <!--                </mat-form-field>-->
+
+                <!--                <div class="tw-flex tw-flex-col tree-select-container tw-relative">-->
+                <!--                    <app-tree-select *ngIf="units" [data]="units" formControlName="units" selectedValueFieldName="name"></app-tree-select>-->
+                <!--                </div>-->
+
+                <!--                <div class="tw-flex tw-flex-col tree-select-container">-->
+                <!--                    <app-tree-select *ngIf="roles" [data]="roles" formControlName="organizationRole" selectedValueFieldName="name"></app-tree-select>-->
+                <!--                </div>-->
+
+                <div class="tw-mt-10">
+                    <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
+                    <button color="warn" mat-raised-button (click)="onSubmit()">پایان</button>
                 </div>
             </form>
         </mat-step>

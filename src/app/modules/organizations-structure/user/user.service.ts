@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { Organization, OrganizationRoles, OrganizationUnits, User } from './user.model';
+import { Organization, Roles, Units, User } from './user.model';
 
 @Injectable()
 export class UserService {
@@ -26,13 +26,13 @@ export class UserService {
         return this.http.get<ResponseWithPagination<Organization>>('/api/v1/organization', { params });
     }
 
-    public getOrganizationUnits(organizationCodes): Observable<Array<OrganizationUnits>> {
+    public getOrganizationUnits(organizationCodes): Observable<Units> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes });
-        return this.http.get<Array<OrganizationUnits>>(`/api/v1/organization-unit`, { params });
+        return this.http.get<Units>(`/api/v1/organization-unit`, { params });
     }
 
-    public getOrganizationRoles(organizationCodes: Array<number>): Observable<Array<OrganizationRoles>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes });
-        return this.http.get<Array<OrganizationUnits>>(`/api/v1/organization-role`, { params });
+    public getOrganizationRoles(organizationCode: number, organizationUnits?: Array<number>): Observable<Roles> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes: [organizationCode], organizationUnits });
+        return this.http.get<Units>(`/api/v1/organization-role`, { params });
     }
 }
