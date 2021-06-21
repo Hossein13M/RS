@@ -104,7 +104,7 @@ export class UserComponent implements OnInit, OnDestroy {
     constructor(private userService: UserService, public matDialog: MatDialog, private alertService: AlertService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
-        this.organizationsForm = this.formBuilder.group({ organization: ['', Validators.required] });
+        this.organizationsForm = this.formBuilder.group({ organization: [[], Validators.required] });
         this.getOrganizations();
         this.organizationsSearchInit();
         this.onOrganizationCodeChange();
@@ -129,7 +129,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     private onOrganizationCodeChange(): void {
-        this.organizationsForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
+        this.organizationsForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: Array<string>) => {
             if (value) {
                 this.getUsers(value);
             }
@@ -151,7 +151,7 @@ export class UserComponent implements OnInit, OnDestroy {
         if (!searchFilter) {
             return;
         }
-        const organizationId: string = this.organizationsForm.controls['organization'].value;
+        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
         Object.keys(searchFilter).forEach((key) => {
             this.usersSearchForm.controls[key].setValue(searchFilter[key]);
         });
@@ -159,21 +159,21 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     public paginationControl(pageEvent: PaginationChangeType): void {
-        const organizationId: string = this.organizationsForm.controls['organization'].value;
+        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getUsers(organizationId);
     }
 
-    private getUsers(organizationId: string, search?: any): void {
-        this.userService.getUsers(organizationId, this.pagination, search).subscribe((response) => {
+    private getUsers(organizationIds: Array<string>, search?: any): void {
+        this.userService.getUsers(organizationIds, this.pagination, search).subscribe((response) => {
             this.users = response.items;
             this.pagination.total = response.total;
         });
     }
 
     public createUser(): void {
-        const organizationId: string = this.organizationsForm.controls['organization'].value;
+        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
         this.matDialog
             .open(UserBatchComponent, {
                 data: null,

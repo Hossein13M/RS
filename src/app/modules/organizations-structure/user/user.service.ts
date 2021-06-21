@@ -9,7 +9,7 @@ import { Organization, Roles, Units, User } from './user.model';
 export class UserService {
     constructor(private http: HttpClient) {}
 
-    public getUsers(organization: string, paginationParams?, searchParams?): Observable<ResponseWithPagination<User>> {
+    public getUsers(organization: Array<string>, paginationParams?, searchParams?): Observable<ResponseWithPagination<User>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organization, ...paginationParams, ...searchParams });
         return this.http.get<ResponseWithPagination<User>>('/api/v2/user', { params });
     }
