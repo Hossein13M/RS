@@ -1,14 +1,14 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CreateUser, Organization, Roles, Units} from '../../user.model';
-import {UserService} from '../../user.service';
-import {Subject} from 'rxjs';
-import {first, mergeMap, takeUntil, tap} from 'rxjs/operators';
-import {matchValidator} from '#shared/validators/match/match.validator';
-import {phoneNumberValidator} from '#shared/validators/phoneNumber/phoneNumberValidator';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CreateUser, Organization, Roles, Units } from '../../user.model';
+import { UserService } from '../../user.service';
+import { Subject } from 'rxjs';
+import { first, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { matchValidator } from '#shared/validators/match/match.validator';
+import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
-import {AlertService} from '../../../../../services/alert.service';
+import { AlertService } from '../../../../../services/alert.service';
 
 @Component({
     selector: 'app-user-batch',
@@ -42,12 +42,12 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.basicFormInit();
+        this.formInit();
         this.defaultOrganizationsInit();
         this.passwordChange();
     }
 
-    private basicFormInit(): void {
+    private formInit(): void {
         this.form = this.formBuilder.group({
             username: [this.data?.username ?? '', Validators.required],
             password: [this.data?.password ?? '', [Validators.required, Validators.minLength(7)]],
@@ -90,37 +90,51 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     private onOrganizationCodeChange(index): void {
         const { controls } = this.form.get('userRoles') as FormArray;
-        const addedFormGroup = controls[index] as FormGroup;
-        addedFormGroup.controls['organizationCode'].valueChanges
+        const addedForm = controls[index] as FormGroup;
+
+        addedForm.controls['organizationCode'].valueChanges
             .pipe(
                 tap((organizationCode: number) => {
-                    const { id } = _.find(this.defaultOrganizations, (organization) => organization.code === organizationCode);
-                    addedFormGroup.controls['organizationId'].setValue(id);
+                    addedForm.controls['organizationId'].setValue(getOrganizationsId(organizationCode, this.defaultOrganizations));
                 }),
-                mergeMap((organizationCode: number) => this.userService.getOrganizationUnits([organizationCode])),
-                takeUntil(this._unsubscribeAll)
+                takeUntil(this._unsubscribeAll),
+                mergeMap((organizationCode: number) => this.userService.getOrganizationUnits([organizationCode]))
             )
             .subscribe((response) => {
-                addedFormGroup.controls['units'].reset([]);
-                addedFormGroup.controls['roles'].reset([]);
+                resetControls();
                 this.userRoleControlsData[index].units = response;
                 this.onUnitsChange(index);
             });
+
+        function getOrganizationsId(organizationCode: number, organizations: Array<Organization>): number {
+            const { id } = _.find(organizations, (organization) => organization.code === organizationCode);
+            return id;
+        }
+
+        function resetControls(): void {
+            addedForm.controls['units'].reset([]);
+            addedForm.controls['roles'].reset([]);
+        }
     }
 
     private onUnitsChange(index): void {
         const { controls } = this.form.get('userRoles') as FormArray;
-        const addedFormGroup = controls[index] as FormGroup;
-        const { organizationCode } = addedFormGroup.value;
-        addedFormGroup.controls['units'].valueChanges
+        const addedForm = controls[index] as FormGroup;
+        const { organizationCode } = addedForm.value;
+
+        addedForm.controls['units'].valueChanges
             .pipe(
-                mergeMap((units: Array<number>) => this.userService.getOrganizationRoles(organizationCode, units)),
-                takeUntil(this._unsubscribeAll)
+                takeUntil(this._unsubscribeAll),
+                mergeMap((units: Array<number>) => this.userService.getOrganizationRoles(organizationCode, units))
             )
             .subscribe((response) => {
-                addedFormGroup.controls['roles'].reset([]);
+                resetRoleControl();
                 this.userRoleControlsData[index].roles = response;
             });
+
+        function resetRoleControl(): void {
+            addedForm.controls['roles'].reset([]);
+        }
     }
 
     public onSubmit(): void {
@@ -128,6 +142,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             this.alertService.onError('لطفا ورودی های خود را چک کنید.');
             return;
         }
+
         this.userService.createUser(this.form.value).subscribe(() => {
             this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
         });
