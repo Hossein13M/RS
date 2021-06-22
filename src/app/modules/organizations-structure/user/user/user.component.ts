@@ -90,10 +90,7 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'operation',
             minWidth: '130px',
             sticky: true,
-            operations: [
-                // { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
-                // { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editOperator(row) },
-            ],
+            operations: [{ name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUser(row) }],
         },
     ];
     public usersSearchForm: FormGroup;
@@ -173,16 +170,30 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     public createUser(): void {
-        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
+        const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
         this.matDialog
             .open(UserBatchComponent, {
                 data: null,
-                panelClass: 'tw-dialog-fullscreen'
+                panelClass: 'tw-dialog-fullscreen',
             })
             .afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((result: boolean) => {
-                if (result) this.getUsers(organizationId);
+                if (result) this.getUsers(organizationIds);
+            });
+    }
+
+    private editUser(user: User): void {
+        const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
+        this.matDialog
+            .open(UserBatchComponent, {
+                data: user,
+                panelClass: 'tw-dialog-fullscreen',
+            })
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: boolean) => {
+                if (result) this.getUsers(organizationIds);
             });
     }
 

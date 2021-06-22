@@ -1,14 +1,16 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CreateUser, Organization, Roles, Units, User } from '../../user.model';
+import { Organization, Roles, Units, User } from '../../user.model';
 import { UserService } from '../../user.service';
 import { Subject } from 'rxjs';
-import { first, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { delay, first, mergeMap, takeUntil, tap } from 'rxjs/operators';
 import { matchValidator } from '#shared/validators/match/match.validator';
 import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
 import { AlertService } from '../../../../../services/alert.service';
+import { StateType } from '#shared/state-type.enum';
+import { StateManager, StatusManager } from '#shared/pipes/stateManager.pipe';
 
 @Component({
     selector: 'app-user-batch',
@@ -32,6 +34,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }> = [];
 
     private defaultOrganizations: Array<Organization> = [];
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -39,7 +42,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private userService: UserService,
         private alertService: AlertService,
-        @Inject(MAT_DIALOG_DATA) public data: User
+        @Inject(MAT_DIALOG_DATA) public passedData: User | null
     ) {}
 
     ngOnInit(): void {
@@ -50,17 +53,29 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     private formInit(): void {
         this.form = this.formBuilder.group({
-            username: [this.data?.username ?? '', Validators.required],
-            password: [this.data?.password ?? '', [Validators.required, Validators.minLength(7)]],
-            confirmPassword: [this.data?.password ?? '', [Validators.required, Validators.minLength(7)]],
-            firstname: [this.data?.firstname ?? '', Validators.required],
-            lastname: [this.data?.lastname ?? '', Validators.required],
-            nationalCode: [this.data?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]],
-            phoneNumber: [this.data?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
-            email: [this.data?.email ?? '', [Validators.required, Validators.email]],
-            birthDate: [this.data?.birthDate ?? '', Validators.required],
+            username: [this.passedData?.username ?? '', Validators.required],
+            password: [this.passedData?.password ?? '', [Validators.required, Validators.minLength(7)]],
+            confirmPassword: [this.passedData?.password ?? '', [Validators.required, Validators.minLength(7)]],
+            firstname: [this.passedData?.firstname ?? '', Validators.required],
+            lastname: [this.passedData?.lastname ?? '', Validators.required],
+            nationalCode: [this.passedData?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]],
+            phoneNumber: [this.passedData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
+            email: [this.passedData?.email ?? '', [Validators.required, Validators.email]],
+            birthDate: [this.passedData?.birthDate ?? '', Validators.required],
             userRoles: this.formBuilder.array([], [Validators.required]),
         });
+    }
+
+    private userRolesInit(): void {
+        if (this.isUpdate()) {
+            this.setUserRolesData();
+        } else {
+            this.addRole();
+        }
+    }
+
+    private setUserRolesData(): void {
+        console.log(this.passedData);
     }
 
     public addRole(): void {
@@ -142,6 +157,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
         this.userService.createUser(this.form.value).subscribe(() => {
             this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
+            this.dialogRef.close(true);
         });
     }
 
@@ -168,7 +184,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             .pipe(first())
             .subscribe((response) => {
                 this.defaultOrganizations = response.items;
-                this.addRole();
+                this.userRolesInit();
             });
     }
 
@@ -188,6 +204,10 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     public closeDialog(): void {
         this.dialogRef.close(false);
+    }
+
+    public isUpdate(): boolean {
+        return !!this.passedData;
     }
 
     ngOnDestroy(): void {
