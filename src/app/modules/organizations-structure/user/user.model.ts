@@ -20,10 +20,6 @@ export interface User {
     userRoles: Array<UserRoles>;
 }
 
-export interface CreateUser extends User {
-    confirmPassword: string;
-}
-
 export interface Organization {
     name: string;
     dbHost: string;
