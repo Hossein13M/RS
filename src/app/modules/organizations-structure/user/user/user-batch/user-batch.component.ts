@@ -1,16 +1,14 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Organization, Roles, Units, User } from '../../user.model';
-import { UserService } from '../../user.service';
-import { Subject } from 'rxjs';
-import { delay, first, mergeMap, takeUntil, tap } from 'rxjs/operators';
-import { matchValidator } from '#shared/validators/match/match.validator';
-import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Organization, Roles, Units, User} from '../../user.model';
+import {UserService} from '../../user.service';
+import {Subject} from 'rxjs';
+import {first, mergeMap, takeUntil, tap} from 'rxjs/operators';
+import {matchValidator} from '#shared/validators/match/match.validator';
+import {phoneNumberValidator} from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
-import { AlertService } from '../../../../../services/alert.service';
-import { StateType } from '#shared/state-type.enum';
-import { StateManager, StatusManager } from '#shared/pipes/stateManager.pipe';
+import {AlertService} from '../../../../../services/alert.service';
 
 @Component({
     selector: 'app-user-batch',
