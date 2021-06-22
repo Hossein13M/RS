@@ -13,6 +13,7 @@ export class UserService {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organization, ...paginationParams, ...searchParams });
         return this.http.get<ResponseWithPagination<User>>('/api/v2/user', { params });
     }
+
     public createUser(model: User): Observable<User> {
         return this.http.post<User>('/api/v2/user', model);
     }
@@ -26,7 +27,7 @@ export class UserService {
         return this.http.get<ResponseWithPagination<Organization>>('/api/v1/organization', { params });
     }
 
-    public getOrganizationUnits(organizationCodes): Observable<Units> {
+    public getOrganizationUnits(organizationCodes: Array<number>): Observable<Units> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes });
         return this.http.get<Units>(`/api/v1/organization-unit`, { params });
     }
