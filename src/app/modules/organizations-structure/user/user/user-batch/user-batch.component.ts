@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateUser, Organization, Roles, Units } from '../../user.model';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CreateUser, Organization, Roles, Units, User } from '../../user.model';
 import { UserService } from '../../user.service';
 import { Subject } from 'rxjs';
 import { first, mergeMap, takeUntil, tap } from 'rxjs/operators';
@@ -16,7 +16,6 @@ import { AlertService } from '../../../../../services/alert.service';
     styleUrls: ['./user-batch.component.scss'],
 })
 export class UserBatchComponent implements OnInit, OnDestroy {
-    data: CreateUser = null;
     public title: string;
 
     public form: FormGroup;
@@ -26,6 +25,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     public userRoleControlsData: Array<{
+        organizationsSearchControl: FormControl;
         organizations: Array<Organization>;
         units: Units;
         roles: Roles;
@@ -38,7 +38,8 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         public dialogRef: MatDialogRef<UserBatchComponent>,
         private formBuilder: FormBuilder,
         private userService: UserService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        @Inject(MAT_DIALOG_DATA) public data: User
     ) {}
 
     ngOnInit(): void {
@@ -51,7 +52,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.form = this.formBuilder.group({
             username: [this.data?.username ?? '', Validators.required],
             password: [this.data?.password ?? '', [Validators.required, Validators.minLength(7)]],
-            confirmPassword: [this.data?.confirmPassword ?? '', [Validators.required, Validators.minLength(7)]],
+            confirmPassword: [this.data?.password ?? '', [Validators.required, Validators.minLength(7)]],
             firstname: [this.data?.firstname ?? '', Validators.required],
             lastname: [this.data?.lastname ?? '', Validators.required],
             nationalCode: [this.data?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]],
@@ -73,6 +74,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
 
         this.userRoleControlsData.push({
+            organizationsSearchControl: new FormControl(''),
             organizations: this.defaultOrganizations,
             units: null,
             roles: null,
@@ -80,15 +82,28 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
         this.userRoles.push(roleForm);
 
+        this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
         this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
     }
 
-    public deleteRole(index: number): void {
-        this.userRoleControlsData.splice(index, 1);
-        this.userRoles.removeAt(index);
+    onSearchOrganizationSearchChange(index: number): void {
+        const { organizationsSearchControl, organizations } = this.userRoleControlsData[index];
+        organizationsSearchControl.valueChanges
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                mergeMap((value: string) => this.userService.getOrganizations(value))
+            )
+            .subscribe((response) => {
+                setOrganization(response.items);
+            });
+
+        function setOrganization(values: Array<Organization>): void {
+            organizations.splice(0, organizations.length);
+            organizations.push(...values);
+        }
     }
 
-    private onOrganizationCodeChange(index): void {
+    private onOrganizationCodeChange(index: number): void {
         const { controls } = this.form.get('userRoles') as FormArray;
         const addedForm = controls[index] as FormGroup;
 
@@ -117,7 +132,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         }
     }
 
-    private onUnitsChange(index): void {
+    private onUnitsChange(index: number): void {
         const { controls } = this.form.get('userRoles') as FormArray;
         const addedForm = controls[index] as FormGroup;
         const { organizationCode } = addedForm.value;
@@ -148,6 +163,11 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
     }
 
+    public deleteRole(index: number): void {
+        this.userRoleControlsData.splice(index, 1);
+        this.userRoles.removeAt(index);
+    }
+
     private defaultOrganizationsInit(): void {
         this.userService
             .getOrganizations()
@@ -165,6 +185,10 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         passwordControl.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
             confirmPasswordControl.setValidators([Validators.required, Validators.minLength(7), matchValidator(value)]);
         });
+    }
+
+    public closeDialog(): void {
+        this.dialogRef.close(false);
     }
 
     ngOnDestroy(): void {

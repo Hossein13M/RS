@@ -71,7 +71,7 @@
             <ng-template matStepLabel>چینش سازمانی</ng-template>
             <form [formGroup]="form" class="tw-mt-12" dir="rtl">
                 <div class="form tw-flex tw-flex-col tw-gap-7 tw-overflow-auto tw-pl-5">
-                    <div formArrayName="userRoles" *ngFor="let role of userRoles.controls; let index = index" class="tw-w-full">
+                    <div formArrayName="userRoles" *ngFor="let groupForm of userRoles.controls; let index = index" class="tw-w-full">
                         <div [formGroupName]="index" class="tw-grid tw-grid-cols-2 tw-gap-7">
                             <div class="tw-col-span-2 tw-flex tw-justify-between tw-align-center">
                                 <h2 class="tw-m-0">چینش سازمانی: {{ index + 1 }}</h2>
@@ -89,6 +89,12 @@
                             <mat-form-field appearance="outline">
                                 <mat-label>نهاد</mat-label>
                                 <mat-select formControlName="organizationCode" required>
+                                    <ngx-mat-select-search
+                                        class="tw-text-right"
+                                        [noEntriesFoundLabel]="'یافت نشد'"
+                                        [placeholderLabel]="'جستجو'"
+                                        [formControl]="userRoleControlsData[index].organizationsSearchControl"
+                                    ></ngx-mat-select-search>
                                     <mat-option
                                         class="tw-text-right"
                                         [value]="organize.code"
@@ -106,7 +112,7 @@
                                     formControlName="units"
                                     selectedValueFieldName="name"
                                 ></app-tree-select>
-                                <mat-error>واحد اجباری میباشد.</mat-error>
+                                <mat-error *ngIf="groupForm.get('units').hasError('required')">واحد اجباری میباشد.</mat-error>
                             </div>
 
                             <div *ngIf="userRoleControlsData[index].roles">
@@ -115,7 +121,7 @@
                                     formControlName="roles"
                                     selectedValueFieldName="name"
                                 ></app-tree-select>
-                                <mat-error>نقش اجباری میباشد.</mat-error>
+                                <mat-error *ngIf="groupForm.get('roles').hasError('required')">نقش اجباری میباشد.</mat-error>
                             </div>
                         </div>
                     </div>
@@ -123,6 +129,7 @@
                         افزودن چینش سازمانی<mat-icon>add</mat-icon>
                     </button>
                 </div>
+
                 <div class="tw-mt-10">
                     <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
                     <button color="warn" mat-raised-button (click)="onSubmit()">پایان</button>
