@@ -1,14 +1,14 @@
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Organization, Roles, Units, User} from '../../user.model';
-import {UserService} from '../../user.service';
-import {Subject} from 'rxjs';
-import {first, mergeMap, takeUntil, tap} from 'rxjs/operators';
-import {matchValidator} from '#shared/validators/match/match.validator';
-import {phoneNumberValidator} from '#shared/validators/phoneNumber/phoneNumberValidator';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Organization, Roles, Units, User } from '../../user.model';
+import { UserService } from '../../user.service';
+import { Subject } from 'rxjs';
+import { first, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { matchValidator } from '#shared/validators/match/match.validator';
+import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
-import {AlertService} from '../../../../../services/alert.service';
+import { AlertService } from '../../../../../services/alert.service';
 
 @Component({
     selector: 'app-user-batch',
@@ -131,6 +131,10 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         const { controls } = this.form.get('userRoles') as FormArray;
         const addedForm = controls[index] as FormGroup;
         const { organizationCode } = addedForm.value;
+
+        addedForm.controls['units'].valueChanges.subscribe((value) => {
+            console.log(value);
+        });
 
         addedForm.controls['units'].valueChanges
             .pipe(

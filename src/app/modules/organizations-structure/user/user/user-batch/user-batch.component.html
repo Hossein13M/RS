@@ -73,7 +73,6 @@
                 <div class="form tw-flex tw-flex-col tw-gap-7 tw-overflow-auto tw-pl-5">
                     <div formArrayName="userRoles" *ngFor="let groupForm of userRoles.controls; let index = index" class="tw-w-full">
                         <div [formGroupName]="index" class="tw-grid tw-grid-cols-2 tw-gap-7">
-                            <h3 *ngIf="this.userRoleControlsData[index].state === 'LOADING'">LOADING</h3>
                             <div class="tw-col-span-2 tw-flex tw-justify-between tw-align-center">
                                 <h2 class="tw-m-0">چینش سازمانی: {{ index + 1 }}</h2>
                                 <button *ngIf="this.userRoleControlsData.length > 1" (click)="deleteRole(index)" color="warn" mat-flat-button type="button">
