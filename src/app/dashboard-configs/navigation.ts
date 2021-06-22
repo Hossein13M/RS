@@ -8,7 +8,6 @@ export const navigation: FuseNavigation[] = [
         type: 'collapsable',
         children: [
             { id: 'organizationsList', title: 'نهاد', type: 'item', icon: 'multiline_chart', url: '/organizations-structure/organizations-list' },
-            { id: 'rolesList', title: 'نقش', type: 'item', icon: 'assignment_return', url: '/organizations-structure/roles-list' },
             { id: 'user', title: 'کاربر', type: 'item', icon: 'accessibility', url: '/organizations-structure/user' },
         ],
     },
