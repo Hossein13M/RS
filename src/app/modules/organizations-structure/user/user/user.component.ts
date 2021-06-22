@@ -181,7 +181,7 @@ export class UserComponent implements OnInit, OnDestroy {
             })
             .afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result) => {
+            .subscribe((result: boolean) => {
                 if (result) this.getUsers(organizationId);
             });
     }
