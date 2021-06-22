@@ -59,7 +59,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             phoneNumber: [this.data?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
             email: [this.data?.email ?? '', [Validators.required, Validators.email]],
             birthDate: [this.data?.birthDate ?? '', Validators.required],
-            // Todo: userRoles initialValue on put
             userRoles: this.formBuilder.array([], [Validators.required]),
         });
     }
@@ -84,23 +83,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
         this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
         this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
-    }
-
-    onSearchOrganizationSearchChange(index: number): void {
-        const { organizationsSearchControl, organizations } = this.userRoleControlsData[index];
-        organizationsSearchControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                mergeMap((value: string) => this.userService.getOrganizations(value))
-            )
-            .subscribe((response) => {
-                setOrganization(response.items);
-            });
-
-        function setOrganization(values: Array<Organization>): void {
-            organizations.splice(0, organizations.length);
-            organizations.push(...values);
-        }
     }
 
     private onOrganizationCodeChange(index: number): void {
@@ -163,9 +145,21 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
     }
 
-    public deleteRole(index: number): void {
-        this.userRoleControlsData.splice(index, 1);
-        this.userRoles.removeAt(index);
+    private onSearchOrganizationSearchChange(index: number): void {
+        const { organizationsSearchControl, organizations } = this.userRoleControlsData[index];
+        organizationsSearchControl.valueChanges
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                mergeMap((value: string) => this.userService.getOrganizations(value))
+            )
+            .subscribe((response) => {
+                setOrganization(response.items);
+            });
+
+        function setOrganization(values: Array<Organization>): void {
+            organizations.splice(0, organizations.length);
+            organizations.push(...values);
+        }
     }
 
     private defaultOrganizationsInit(): void {
@@ -176,6 +170,11 @@ export class UserBatchComponent implements OnInit, OnDestroy {
                 this.defaultOrganizations = response.items;
                 this.addRole();
             });
+    }
+
+    public deleteRole(index: number): void {
+        this.userRoleControlsData.splice(index, 1);
+        this.userRoles.removeAt(index);
     }
 
     private passwordChange(): void {
