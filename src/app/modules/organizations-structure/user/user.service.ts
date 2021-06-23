@@ -10,7 +10,12 @@ export class UserService {
     constructor(private http: HttpClient) {}
 
     public getUsers(organization: Array<string>, paginationParams?, searchParams?): Observable<ResponseWithPagination<User>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organization, ...paginationParams, ...searchParams });
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({
+            organization: organization.length > 0 ? organization : 0,
+            ...paginationParams,
+            ...searchParams,
+        });
+
         return this.http.get<ResponseWithPagination<User>>('/api/v2/user', { params });
     }
 
