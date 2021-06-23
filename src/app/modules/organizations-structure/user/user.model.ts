@@ -1,4 +1,4 @@
-interface UserRoles {
+export interface UserRoles {
     organizationId: number;
     organizationCode: number;
     personnelCode: string;

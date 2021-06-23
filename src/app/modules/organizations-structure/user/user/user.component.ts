@@ -107,6 +107,7 @@ export class UserComponent implements OnInit, OnDestroy {
         this.onOrganizationCodeChange();
         this.alertToFillOrganization();
         this.initSearch();
+        this.getUsers([]);
     }
 
     private alertToFillOrganization(): void {
@@ -187,7 +188,7 @@ export class UserComponent implements OnInit, OnDestroy {
         const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
         this.matDialog
             .open(UserBatchComponent, {
-                data: user,
+                data: user.id,
                 panelClass: 'tw-dialog-fullscreen',
             })
             .afterClosed()

@@ -1,14 +1,16 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Organization, Roles, Units, User } from '../../user.model';
+import { Organization, Roles, Units, User, UserRoles } from '../../user.model';
 import { UserService } from '../../user.service';
-import { Subject } from 'rxjs';
-import { first, mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { forkJoin, Observable, Subject } from 'rxjs';
+import { first, mergeMap, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { matchValidator } from '#shared/validators/match/match.validator';
 import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
 import { AlertService } from '../../../../../services/alert.service';
+import { StateType } from '#shared/state-type.enum';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
 
 @Component({
     selector: 'app-user-batch',
@@ -16,8 +18,7 @@ import { AlertService } from '../../../../../services/alert.service';
     styleUrls: ['./user-batch.component.scss'],
 })
 export class UserBatchComponent implements OnInit, OnDestroy {
-    public title: string;
-
+    public userData: User;
     public form: FormGroup;
 
     public get userRoles(): FormArray {
@@ -40,26 +41,22 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         private formBuilder: FormBuilder,
         private userService: UserService,
         private alertService: AlertService,
-        @Inject(MAT_DIALOG_DATA) public passedData: User | null
+        @Inject(MAT_DIALOG_DATA) public passedId: number | null
     ) {}
 
     ngOnInit(): void {
-        this.formInit();
         this.defaultOrganizationsInit();
-        this.passwordChange();
     }
 
     private formInit(): void {
         this.form = this.formBuilder.group({
-            username: [this.passedData?.username ?? '', Validators.required],
-            password: [this.passedData?.password ?? '', [Validators.required, Validators.minLength(7)]],
-            confirmPassword: [this.passedData?.password ?? '', [Validators.required, Validators.minLength(7)]],
-            firstname: [this.passedData?.firstname ?? '', Validators.required],
-            lastname: [this.passedData?.lastname ?? '', Validators.required],
-            nationalCode: [this.passedData?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]],
-            phoneNumber: [this.passedData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
-            email: [this.passedData?.email ?? '', [Validators.required, Validators.email]],
-            birthDate: [this.passedData?.birthDate ?? '', Validators.required],
+            username: [this.userData?.username ?? '', Validators.required],
+            firstname: [this.userData?.firstname ?? '', Validators.required],
+            lastname: [this.userData?.lastname ?? '', Validators.required],
+            nationalCode: [this.userData?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]],
+            phoneNumber: [this.userData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
+            email: [this.userData?.email ?? '', [Validators.required, Validators.email]],
+            birthDate: [this.userData?.birthDate ?? '', Validators.required],
             userRoles: this.formBuilder.array([], [Validators.required]),
         });
     }
@@ -70,10 +67,48 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         } else {
             this.addRole();
         }
+
+        this.formInit();
     }
 
     private setUserRolesData(): void {
-        console.log(this.passedData);
+        this.getUserInfo(this.passedId).subscribe((response) => {
+            this.userData = response.items[0];
+            const { userRoles } = this.userData;
+            for (const role of userRoles) {
+                this.addExistingRole(role);
+            }
+        });
+    }
+
+    private getUserInfo(id: number): Observable<ResponseWithPagination<User>> {
+        return this.userService.getUsers([], null, { id });
+    }
+
+    public addExistingRole(userRoles: UserRoles): void {
+        forkJoin({
+            units: this.userService.getOrganizationUnits([userRoles.organizationCode]),
+            roles: this.userService.getOrganizationRoles(userRoles.organizationCode, userRoles.units),
+        }).subscribe((response: { units: Units; roles: Array<Roles> }) => {
+            this.userRoleControlsData.push({
+                organizationsSearchControl: new FormControl(''),
+                organizations: this.defaultOrganizations,
+                units: response.units,
+                roles: response.roles,
+            });
+
+            const roleForm = this.formBuilder.group({
+                personnelCode: [userRoles.personnelCode, Validators.required],
+                organizationId: [userRoles.organizationId, Validators.required],
+                organizationCode: [userRoles.organizationCode, Validators.required],
+                units: [userRoles.units, Validators.required],
+                roles: [userRoles.roles, Validators.required],
+            });
+            this.userRoles.push(roleForm);
+
+            this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
+            this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
+        });
     }
 
     public addRole(): void {
@@ -195,21 +230,12 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.userRoles.removeAt(index);
     }
 
-    private passwordChange(): void {
-        const passwordControl = this.form.controls['password'];
-        const confirmPasswordControl = this.form.controls['confirmPassword'];
-
-        passwordControl.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
-            confirmPasswordControl.setValidators([Validators.required, Validators.minLength(7), matchValidator(value)]);
-        });
-    }
-
     public closeDialog(): void {
         this.dialogRef.close(false);
     }
 
     public isUpdate(): boolean {
-        return !!this.passedData;
+        return !!this.passedId;
     }
 
     ngOnDestroy(): void {

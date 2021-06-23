@@ -2,7 +2,7 @@
     <div [title]="isUpdate() ? 'تغییر' : 'ایجاد'" appDialogHeader>
         <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
     </div>
-    <mat-horizontal-stepper class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
+    <mat-horizontal-stepper *ngIf="userData" class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
         <mat-step>
             <ng-template matStepLabel>اطلاعات پایه</ng-template>
             <form [formGroup]="form" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
@@ -10,19 +10,6 @@
                     <mat-label>نام کاربری</mat-label>
                     <input formControlName="username" matInput required />
                     <mat-hint>نام کاربری باید غیر تکراری باشد.</mat-hint>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>گذرواژه</mat-label>
-                    <input formControlName="password" matInput required />
-                    <mat-hint>گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-hint>
-                    <mat-error *ngIf="this.form.controls['password'].hasError('minlength')">گذرواژه باید 8 کاراکتر ویا بزرگتر باشد.</mat-error>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <mat-label>تکرار گذرواژه</mat-label>
-                    <input formControlName="confirmPassword" matInput required />
-                    <mat-error *ngIf="this.form.controls['confirmPassword'].hasError('match')">تکرار گذرواژه باید با گذرواژه برابر باشد.</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
