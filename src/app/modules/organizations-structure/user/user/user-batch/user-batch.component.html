@@ -112,17 +112,21 @@
                                     formControlName="units"
                                     selectedValueFieldName="name"
                                 ></app-tree-select>
-                                <mat-error *ngIf="groupForm.get('units').hasError('required')">واحد اجباری میباشد.</mat-error>
                             </div>
 
-                            <div *ngIf="userRoleControlsData[index].roles">
-                                <app-tree-select
-                                    [data]="userRoleControlsData[index].roles"
-                                    formControlName="roles"
-                                    selectedValueFieldName="name"
-                                ></app-tree-select>
-                                <mat-error *ngIf="groupForm.get('roles').hasError('required')">نقش اجباری میباشد.</mat-error>
-                            </div>
+                            <mat-form-field appearance="outline" *ngIf="userRoleControlsData[index].roles.length > 0">
+                                <mat-label>نقش</mat-label>
+                                <mat-select formControlName="roles" multiple required>
+                                    <mat-option
+                                        class="tw-text=right"
+                                        *ngFor="let role of userRoleControlsData[index].roles"
+                                        [value]="role.id"
+                                    >
+                                        {{role.name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="groupForm.get('units').hasError('required')">واحد اجباری میباشد.</mat-error>
+                            </mat-form-field>
                         </div>
                     </div>
                     <button (click)="addRole()" class="tw-w-full" color="accent" mat-flat-button type="button">
@@ -132,7 +136,7 @@
 
                 <div class="tw-mt-10">
                     <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
-                    <button color="warn" mat-raised-button (click)="onSubmit()">پایان</button>
+                    <button color="warn" mat-raised-button (click)="onSubmit()">ثبت کاربر</button>
                 </div>
             </form>
         </mat-step>

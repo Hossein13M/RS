@@ -28,7 +28,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         organizationsSearchControl: FormControl;
         organizations: Array<Organization>;
         units: Units;
-        roles: Roles;
+        roles: Array<Roles>;
     }> = [];
 
     private defaultOrganizations: Array<Organization> = [];
@@ -89,7 +89,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             organizationsSearchControl: new FormControl(''),
             organizations: this.defaultOrganizations,
             units: null,
-            roles: null,
+            roles: [],
         });
 
         this.userRoles.push(roleForm);
