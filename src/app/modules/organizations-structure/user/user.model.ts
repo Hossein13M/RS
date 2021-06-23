@@ -48,6 +48,4 @@ export interface Roles {
     parent: number;
     organization: number;
     deletedAt: string;
-    children: Array<Units>;
-    mapping: Array<any>;
 }
