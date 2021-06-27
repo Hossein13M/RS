@@ -7,8 +7,8 @@ export const navigation: FuseNavigation[] = [
         icon: 'bar_chart',
         type: 'collapsable',
         children: [
-            { id: 'organizationsList', title: 'نهادها', type: 'item', icon: 'multiline_chart', url: '/organizations-structure/organizations-list' },
-            { id: 'user', title: 'کاربران', type: 'item', icon: 'accessibility', url: '/organizations-structure/user' },
+            { id: 'organizationsList', title: 'نهادها', type: 'item', icon: 'business', url: '/organizations-structure/organizations-list' },
+            { id: 'user', title: 'کاربران', type: 'item', icon: 'people', url: '/organizations-structure/user' },
         ],
     },
 
