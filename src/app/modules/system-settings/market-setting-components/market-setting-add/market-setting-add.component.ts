@@ -40,21 +40,15 @@ export class MarketSettingAddComponent implements OnInit, OnDestroy {
     ) {}
 
     getBourse(searchKeyword?: string): void {
-        this.bourseBonds.getBonds(searchKeyword).subscribe((res: any) => {
-            this.bonds = res.items;
-        });
+        this.bourseBonds.getBonds(searchKeyword).subscribe((res: any) => (this.bonds = res.items));
     }
 
     getFunds(searchKeyword?: string): void {
-        this.fundSettingService.get({ searchKeyword: searchKeyword ? searchKeyword : '' }).subscribe((res: any) => {
-            this.funds = res.items;
-        });
+        this.fundSettingService.get({ searchKeyword: searchKeyword ? searchKeyword : '' }).subscribe((res: any) => (this.funds = res.items));
     }
 
     getBrokers(): void {
-        this.borckerService.getBrokerSettings().subscribe((res: any) => {
-            this.brokers = res;
-        });
+        this.borckerService.getBrokerSettings().subscribe((res: any) => (this.brokers = res));
     }
 
     ngOnInit(): void {
