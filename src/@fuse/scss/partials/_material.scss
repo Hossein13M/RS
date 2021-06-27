@@ -3,7 +3,6 @@
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
 @mixin material-theme($theme) {
-
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
@@ -25,9 +24,7 @@
     // @ Navigation - Simple
     // -----------------------------------------------------------------------------------------------------
     .navigation-simple {
-
         .item {
-
             &.selected {
                 background-color: map-get($background, hover);
             }
@@ -61,14 +58,11 @@
     // @ Price tables
     // -----------------------------------------------------------------------------------------------------
     .price-tables {
-
         .price-table {
             background: map-get($background, card);
 
             &.style-1 {
-
                 .price {
-
                     .currency {
                         color: map-get($foreground, secondary-text);
                     }
@@ -80,13 +74,10 @@
             }
 
             &.style-2 {
-
                 .price {
-
                     .currency {
                         color: map-get($foreground, secondary-text);
                     }
-
                 }
 
                 .period {
@@ -95,9 +86,7 @@
             }
 
             &.style-3 {
-
                 .package-type {
-
                     .subtitle {
                         color: map-get($foreground, secondary-text);
                     }
@@ -122,13 +111,9 @@
     }
 
     table {
-
         &.simple {
-
             thead {
-
                 tr {
-
                     th {
                         color: map-get($foreground, secondary-text);
                         border-bottom: 1px solid map-get($foreground, divider);
@@ -137,9 +122,7 @@
             }
 
             tbody {
-
                 tr {
-
                     td {
                         border-bottom: 1px solid map-get($foreground, divider);
                     }
@@ -147,11 +130,8 @@
             }
 
             &.clickable {
-
                 tbody {
-
                     tr {
-
                         &:hover {
                             background-color: map-get($background, hover);
                         }
@@ -220,26 +200,26 @@ mat-icon.status {
     border-radius: 50%;
 
     &.online {
-        color: #4CAF50;
+        color: #4caf50;
 
         &:before {
-            content: "check_circle";
+            content: 'check_circle';
         }
     }
 
     &.do-not-disturb {
-        color: #F44336;
+        color: #f44336;
 
         &:before {
-            content: "remove_circle_outline";
+            content: 'remove_circle_outline';
         }
     }
 
     &.away {
-        color: #FFC107;
+        color: #ffc107;
 
         &:before {
-            content: "access_time";
+            content: 'access_time';
         }
     }
 
@@ -247,7 +227,7 @@ mat-icon.status {
         color: #646464;
 
         &:before {
-            content: "not_interested";
+            content: 'not_interested';
         }
     }
 }
@@ -268,7 +248,6 @@ mat-icon.status {
 // @ Navigation - Simple
 // -----------------------------------------------------------------------------------------------------
 .navigation-simple {
-
     .item {
         position: relative;
         cursor: pointer;
@@ -338,7 +317,6 @@ mat-icon.status {
 // @ Price tables
 // -----------------------------------------------------------------------------------------------------
 .price-tables {
-
     .price-table {
         position: relative;
         width: 280px;
@@ -347,7 +325,6 @@ mat-icon.status {
         overflow: hidden;
 
         &.style-1 {
-
             .package-type {
                 font-size: 17px;
                 padding: 16px 24px;
@@ -388,7 +365,6 @@ mat-icon.status {
                 font-size: 15px;
 
                 .term {
-
                 }
             }
 
@@ -399,7 +375,6 @@ mat-icon.status {
         }
 
         &.style-2 {
-
             .badge {
                 position: absolute;
                 top: 0;
@@ -460,7 +435,6 @@ mat-icon.status {
         }
 
         &.style-3 {
-
             .package-type {
                 padding: 32px;
                 text-align: center;
@@ -525,7 +499,6 @@ mat-icon.status {
 // @ Table - Simple
 // -----------------------------------------------------------------------------------------------------
 .simple-table-container {
-
     .table-title {
         font-size: 20px;
         padding: 24px;
@@ -533,7 +506,6 @@ mat-icon.status {
 }
 
 table {
-
     &.simple {
         width: 100%;
         border: none;
@@ -541,9 +513,7 @@ table {
         text-align: left;
 
         thead {
-
             tr {
-
                 th {
                     padding: 16px 8px;
                     font-weight: 600;
@@ -561,9 +531,7 @@ table {
         }
 
         tbody {
-
             tr {
-
                 td {
                     padding: 16px 8px;
 
@@ -577,7 +545,6 @@ table {
                 }
 
                 &:last-child {
-
                     td {
                         border-bottom: none;
                     }
@@ -586,9 +553,7 @@ table {
         }
 
         &.clickable {
-
             tbody {
-
                 tr {
                     cursor: pointer;
                 }

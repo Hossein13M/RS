@@ -8,13 +8,10 @@ mat-icon {
     line-height: 24px;
 
     @each $breakpoint, $materialBreakpoint in $helper-breakpoints {
-
         @include media-breakpoint($materialBreakpoint) {
-
-            $infix: if($materialBreakpoint == null, "", "-#{$breakpoint}");
+            $infix: if($materialBreakpoint == null, '', '-#{$breakpoint}');
 
             @for $size from 2 through 128 {
-
                 &.s#{$infix}-#{$size * 2} {
                     font-size: #{($size * 2) + 'px'} !important;
                     width: #{($size * 2) + 'px'} !important;

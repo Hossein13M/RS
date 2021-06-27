@@ -76,7 +76,7 @@ $typography: mat.define-typography-config(
     $title: mat.define-typography-level(20px, 32px, 600),
     $body-2: mat.define-typography-level(14px, 24px, 600),
     $button: mat.define-typography-level(14px, 14px, 600),
-    $input: mat.define-typography-level(16px, 1.125, 400) // line-height must be unitless !!!,,,,,,,
+    $input: mat.define-typography-level(16px, 1.125, 400) // line-height must be unitless !!!,,,,,,,,
 );
 
 // Setup the typography

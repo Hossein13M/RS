@@ -1,5 +1,5 @@
 @use '~@angular/material' as mat;
-@import "src/@fuse/scss/fuse";
+@import 'src/@fuse/scss/fuse';
 
 .color-picker {
     height: auto !important;
@@ -29,7 +29,7 @@
             border: none !important;
             border-radius: 0 !important;
 
-            &:nth-child(14n+1) {
+            &:nth-child(14n + 1) {
                 clear: both;
             }
         }
