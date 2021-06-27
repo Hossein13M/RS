@@ -1,5 +1,5 @@
 @import 'src/@fuse/scss/fuse';
-@import "~app/layout/styles/variables";
+@import '~app/layout/styles/variables';
 
 .actionBtn {
     min-height: 50px;
@@ -15,7 +15,6 @@ h4 {
 mat-card-title {
     display: inline-block;
 }
-
 
 form {
     height: 100%;
@@ -44,7 +43,6 @@ form {
 }
 
 :host ::ng-deep {
-
     .dialog-content-wrapper {
         display: flex;
         flex-direction: column;
@@ -129,7 +127,6 @@ form {
     flex-direction: column;
     margin: 10px;
     position: relative;
-
 
     .delete-button {
         position: absolute;

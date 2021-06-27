@@ -1,5 +1,5 @@
 @import 'src/@fuse/scss/fuse';
-@import "~app/layout/styles/variables";
+@import '~app/layout/styles/variables';
 
 .actionBtn {
     min-height: 50px;
@@ -158,7 +158,6 @@ form {
     flex-direction: column;
     margin: 10px;
     position: relative;
-
 
     .delete-button {
         position: absolute;

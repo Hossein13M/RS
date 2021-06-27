@@ -1,7 +1,6 @@
-@import "src/@fuse/scss/fuse";
+@import 'src/@fuse/scss/fuse';
 
 :host {
-
     .fuse-search-bar {
         display: flex;
         flex: 0 1 auto;
@@ -68,7 +67,6 @@
             z-index: 10;
 
             .fuse-search-bar-content {
-
                 #fuse-search-bar-input {
                     display: flex;
                 }
@@ -81,9 +79,7 @@
     }
 
     body {
-
         &.fuse-search-bar-expanded {
-
             #toolbar {
                 z-index: 999 !important;
             }

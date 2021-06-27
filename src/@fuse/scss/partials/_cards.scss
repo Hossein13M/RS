@@ -2,7 +2,6 @@
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
 @mixin cards-theme($theme) {
-
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 

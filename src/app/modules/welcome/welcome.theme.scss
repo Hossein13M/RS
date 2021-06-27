@@ -1,10 +1,9 @@
 @mixin welcome-page-theme($theme) {
     $background: map-get($theme, background);
-
     .welcome-page-box {
         // Mountain Background
         background-color: map-get($background, 500);
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cpolygon fill='%23303f9f' points='957 450 539 900 1396 900'/%3E%3Cpolygon fill='%234d4d4d' points='957 450 872.9 900 1396 900'/%3E%3Cpolygon fill='%23525eab' points='-60 900 398 662 816 900'/%3E%3Cpolygon fill='%234d4d4d' points='337 900 398 662 816 900'/%3E%3Cpolygon fill='%23747db6' points='1203 546 1552 900 876 900'/%3E%3Cpolygon fill='%234d4d4d' points='1203 546 1552 900 1162 900'/%3E%3Cpolygon fill='%23959bc2' points='641 695 886 900 367 900'/%3E%3Cpolygon fill='%234d4d4d' points='587 900 641 695 886 900'/%3E%3Cpolygon fill='%23b7bacd' points='1710 900 1401 632 1096 900'/%3E%3Cpolygon fill='%234d4d4d' points='1710 900 1401 632 1365 900'/%3E%3Cpolygon fill='%23d9d9d9' points='1210 900 971 687 725 900'/%3E%3Cpolygon fill='%234d4d4d' points='943 900 1210 900 971 687'/%3E%3C/svg%3E");
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA2IDQnPjxwYXRoIHRyYW5zZm9ybT0ndHJhbnNsYXRlKC01ODYuMTU2IC0xMDQ3LjI4KScgZmlsbD0nI2ZmZicgZD0nTTU4Ni4xNzEsMTA0OGwwLjcwOC0uNzEsMi44MjgsMi44My0wLjcwNy43MVptNC45NS0uNzEsMC43MDcsMC43MUw1ODksMTA1MC44M2wtMC43MDctLjcxWicvPjwvc3ZnPg0K');
         background-attachment: fixed;
         background-size: cover;
     }

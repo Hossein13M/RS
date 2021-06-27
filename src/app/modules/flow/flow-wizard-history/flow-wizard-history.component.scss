@@ -1,4 +1,4 @@
-@import "~app/layout/styles/variables";
+@import '~app/layout/styles/variables';
 
 .flow-wizard-history-container {
     padding: 0;
@@ -82,7 +82,6 @@
             overflow-y: auto;
 
             .note-element {
-
                 margin: 5px;
                 padding: 5px;
                 display: flex;
