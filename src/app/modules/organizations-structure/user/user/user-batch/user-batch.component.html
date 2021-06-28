@@ -2,7 +2,7 @@
     <div [title]="isUpdate() ? 'تغییر' : 'ایجاد'" appDialogHeader>
         <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
     </div>
-    <mat-horizontal-stepper *ngIf="userData" class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
+    <mat-horizontal-stepper *ngIf="isUpdate() ? userData : true" class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
         <mat-step>
             <ng-template matStepLabel>اطلاعات پایه</ng-template>
             <form [formGroup]="form" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
