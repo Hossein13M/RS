@@ -220,6 +220,7 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
         for (const child of value) {
             let foundedFlatNode = null;
             for (const [treeNode, flatNode] of this.tree.nestedNodeMap) {
+                // Todo: parseValues does not work when tree-select is on update mode
                 if (treeNode.id === child.treeNode.id) {
                     foundedFlatNode = flatNode;
                 }
