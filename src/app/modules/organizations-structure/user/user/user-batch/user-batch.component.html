@@ -58,11 +58,11 @@
             <ng-template matStepLabel>چینش سازمانی</ng-template>
             <form [formGroup]="form" class="tw-mt-12" dir="rtl">
                 <div class="form tw-flex tw-flex-col tw-gap-7 tw-overflow-auto tw-pl-5">
-                    <div formArrayName="userRoles" *ngFor="let groupForm of userRoles.controls; let index = index" class="tw-w-full">
+                    <div formArrayName="userRoles" *ngFor="let groupForm of userOrganizations.controls; let index = index" class="tw-w-full">
                         <div [formGroupName]="index" class="tw-grid tw-grid-cols-2 tw-gap-7">
                             <div class="tw-col-span-2 tw-flex tw-justify-between tw-align-center">
                                 <h2 class="tw-m-0">چینش سازمانی: {{ index + 1 }}</h2>
-                                <button *ngIf="this.userRoleControlsData.length > 1" (click)="deleteRole(index)" color="warn" mat-flat-button type="button">
+                                <button *ngIf="this.userRoleControlsData.length > 1" (click)="deleteOrganization(index)" color="warn" mat-flat-button type="button">
                                     حذف چینش سازمانی <mat-icon>delete</mat-icon>
                                 </button>
                             </div>
@@ -95,6 +95,7 @@
 
                             <div *ngIf="userRoleControlsData[index].units">
                                 <app-tree-select
+                                    [maxSelect]="userRoleControlsData[index].units.children.length === 0 ? 0 : -1"
                                     [data]="userRoleControlsData[index].units"
                                     formControlName="units"
                                     selectedValueFieldName="name"
@@ -116,7 +117,7 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <button (click)="addRole()" class="tw-w-full" color="accent" mat-flat-button type="button">
+                    <button (click)="addOrganization()" class="tw-w-full" color="accent" mat-flat-button type="button">
                         افزودن چینش سازمانی<mat-icon>add</mat-icon>
                     </button>
                 </div>

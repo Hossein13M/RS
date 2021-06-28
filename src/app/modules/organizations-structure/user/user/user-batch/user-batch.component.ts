@@ -21,7 +21,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     public userData: User;
     public form: FormGroup;
 
-    public get userRoles(): FormArray {
+    public get userOrganizations(): FormArray {
         return this.form.get('userRoles') as FormArray;
     }
 
@@ -50,7 +50,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     private formInit(): void {
-        console.log(this.userData)
         this.form = this.formBuilder.group({
             username: [this.userData?.username ?? '', Validators.required],
             firstname: [this.userData?.firstname ?? '', Validators.required],
@@ -63,56 +62,22 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
     }
 
+    private defaultOrganizationsInit(): void {
+        this.userService.getOrganizations().subscribe((response) => {
+            this.defaultOrganizations = response.items;
+            this.userRolesInit();
+        });
+    }
+
     private userRolesInit(): void {
         if (this.isUpdate()) {
             this.setUserRolesData();
         } else {
-            this.addRole();
+            this.addOrganization();
         }
     }
 
-    private setUserRolesData(): void {
-        this.getUserInfo(this.passedId).subscribe((response) => {
-            this.userData = response.items[0];
-            this.formInit();
-            const { userRoles } = this.userData;
-            for (const role of userRoles) {
-                this.addExistingRole(role);
-            }
-        });
-    }
-
-    private getUserInfo(id: number): Observable<ResponseWithPagination<User>> {
-        return this.userService.getUsers([], null, { id });
-    }
-
-    public addExistingRole(userRoles: UserRoles): void {
-        forkJoin({
-            units: this.userService.getOrganizationUnits([userRoles.organizationCode]),
-            roles: this.userService.getOrganizationRoles(userRoles.organizationCode, userRoles.units),
-        }).subscribe((response: { units: Units; roles: Array<Roles> }) => {
-            this.userRoleControlsData.push({
-                organizationsSearchControl: new FormControl(''),
-                organizations: this.defaultOrganizations,
-                units: response.units,
-                roles: response.roles,
-            });
-
-            const roleForm = this.formBuilder.group({
-                personnelCode: [userRoles.personnelCode, Validators.required],
-                organizationId: [userRoles.organizationId, Validators.required],
-                organizationCode: [userRoles.organizationCode, Validators.required],
-                units: [userRoles.units, Validators.required],
-                roles: [userRoles.roles, Validators.required],
-            });
-            this.userRoles.push(roleForm);
-
-            this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
-            this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
-        });
-    }
-
-    public addRole(): void {
+    public addOrganization(): void {
         const roleForm = this.formBuilder.group({
             personnelCode: ['', Validators.required],
             organizationId: ['', Validators.required],
@@ -128,10 +93,50 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             roles: [],
         });
 
-        this.userRoles.push(roleForm);
+        this.userOrganizations.push(roleForm);
 
         this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
         this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
+        this.onUnitsChange(this.userRoleControlsData.length - 1);
+    }
+
+    private setUserRolesData(): void {
+        this.getUserInfo(this.passedId).subscribe((response) => {
+            this.userData = response.items[0];
+            this.formInit();
+            const { userRoles } = this.userData;
+            for (const role of userRoles) {
+                this.addExistingOrganization(role);
+            }
+        });
+    }
+
+    public addExistingOrganization(userRoles: UserRoles): void {
+        forkJoin({
+            units: this.userService.getOrganizationUnits([userRoles.organizationCode]),
+            roles: this.userService.getOrganizationRoles(userRoles.organizationCode, userRoles.units),
+        }).subscribe((response: { units: Units; roles: Array<Roles> }) => {
+            this.userRoleControlsData.push({
+                organizationsSearchControl: new FormControl(''),
+                organizations: this.defaultOrganizations,
+                units: response.units,
+                roles: response.roles,
+            });
+
+            this.userOrganizations.push(
+                this.formBuilder.group({
+                    personnelCode: [userRoles.personnelCode, Validators.required],
+                    organizationId: [userRoles.organizationId, Validators.required],
+                    organizationCode: [userRoles.organizationCode, Validators.required],
+                    units: [userRoles.units, Validators.required],
+                    roles: [userRoles.roles, Validators.required],
+                })
+            );
+
+            this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
+            this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
+            this.onUnitsChange(this.userRoleControlsData.length - 1);
+        });
     }
 
     private onOrganizationCodeChange(index: number): void {
@@ -149,7 +154,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             .subscribe((response) => {
                 resetControls();
                 this.userRoleControlsData[index].units = response;
-                this.onUnitsChange(index);
             });
 
         function getOrganizationsId(organizationCode: number, organizations: Array<Organization>): number {
@@ -187,16 +191,8 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSubmit(): void {
-        if (this.form.invalid) {
-            this.alertService.onError('لطفا ورودی های خود را چک کنید.');
-            return;
-        }
-
-        this.userService.createUser(this.form.value).subscribe(() => {
-            this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
-            this.dialogRef.close(true);
-        });
+    private getUserInfo(id: number): Observable<ResponseWithPagination<User>> {
+        return this.userService.getUsers([], null, { id });
     }
 
     private onSearchOrganizationSearchChange(index: number): void {
@@ -216,19 +212,21 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         }
     }
 
-    private defaultOrganizationsInit(): void {
-        this.userService
-            .getOrganizations()
-            .pipe(first())
-            .subscribe((response) => {
-                this.defaultOrganizations = response.items;
-                this.userRolesInit();
-            });
+    public deleteOrganization(index: number): void {
+        this.userRoleControlsData.splice(index, 1);
+        this.userOrganizations.removeAt(index);
     }
 
-    public deleteRole(index: number): void {
-        this.userRoleControlsData.splice(index, 1);
-        this.userRoles.removeAt(index);
+    public onSubmit(): void {
+        if (this.form.invalid) {
+            this.alertService.onError('لطفا ورودی های خود را چک کنید.');
+            return;
+        }
+
+        this.userService.createUser(this.form.value).subscribe(() => {
+            this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
+            this.dialogRef.close(true);
+        });
     }
 
     public closeDialog(): void {
