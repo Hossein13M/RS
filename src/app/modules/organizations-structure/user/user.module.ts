@@ -14,6 +14,7 @@ import { UserService } from './user.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelectModule } from '@angular/material/select';
 import { ShareModule } from '#shared/share.module';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: UserComponent }];
 
@@ -30,7 +31,8 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: UserComponent 
         LayoutModule,
         MatSelectModule,
         NgxMatSelectSearchModule,
-        ShareModule
+        ShareModule,
+        MatProgressSpinnerModule
     ],
     exports: [RouterModule, UserComponent],
     providers: [UserService],

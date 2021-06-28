@@ -1,6 +1,10 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@import 'scss/main';
+
+// Import Fuse core library
 @import '@fuse/scss/core';
 @import 'app/app.theme';
 @import 'app/layout/styles/custom_theme';
