@@ -62,7 +62,7 @@
                         <div [formGroupName]="index" class="tw-grid tw-grid-cols-2 tw-gap-7">
                             <div class="tw-col-span-2 tw-flex tw-justify-between tw-align-center">
                                 <h2 class="tw-m-0">چینش سازمانی: {{ index + 1 }}</h2>
-                                <button *ngIf="this.userRoleControlsData.length > 1" (click)="deleteOrganization(index)" color="warn" mat-flat-button type="button">
+                                <button *ngIf="this.userOrganizationControlsData.length > 1" (click)="deleteOrganization(index)" color="warn" mat-flat-button type="button">
                                     حذف چینش سازمانی <mat-icon>delete</mat-icon>
                                 </button>
                             </div>
@@ -80,12 +80,12 @@
                                         class="tw-text-right"
                                         [noEntriesFoundLabel]="'یافت نشد'"
                                         [placeholderLabel]="'جستجو'"
-                                        [formControl]="userRoleControlsData[index].organizationsSearchControl"
+                                        [formControl]="userOrganizationControlsData[index].organizationsSearchControl"
                                     ></ngx-mat-select-search>
                                     <mat-option
                                         class="tw-text-right"
                                         [value]="organize.code"
-                                        *ngFor="let organize of userRoleControlsData[index].organizations"
+                                        *ngFor="let organize of userOrganizationControlsData[index].organizations"
                                     >
                                         {{ organize.name }}
                                     </mat-option>
@@ -93,21 +93,21 @@
                                 <mat-error>نهاد اجباری میباشد.</mat-error>
                             </mat-form-field>
 
-                            <div *ngIf="userRoleControlsData[index].units">
+                            <div *ngIf="userOrganizationControlsData[index].units">
                                 <app-tree-select
-                                    [maxSelect]="userRoleControlsData[index].units.children.length === 0 ? 0 : -1"
-                                    [data]="userRoleControlsData[index].units"
+                                    [maxSelect]="userOrganizationControlsData[index].units.children.length === 0 ? 0 : -1"
+                                    [data]="userOrganizationControlsData[index].units"
                                     formControlName="units"
                                     selectedValueFieldName="name"
                                 ></app-tree-select>
                             </div>
 
-                            <mat-form-field appearance="outline" *ngIf="userRoleControlsData[index].roles.length > 0">
+                            <mat-form-field appearance="outline" *ngIf="userOrganizationControlsData[index].roles.length > 0">
                                 <mat-label>نقش</mat-label>
                                 <mat-select formControlName="roles" multiple required>
                                     <mat-option
                                         class="tw-text=right"
-                                        *ngFor="let role of userRoleControlsData[index].roles"
+                                        *ngFor="let role of userOrganizationControlsData[index].roles"
                                         [value]="role.id"
                                     >
                                         {{role.name}}
