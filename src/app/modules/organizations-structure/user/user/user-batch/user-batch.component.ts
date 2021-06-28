@@ -45,10 +45,12 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.formInit();
         this.defaultOrganizationsInit();
     }
 
     private formInit(): void {
+        console.log(this.userData)
         this.form = this.formBuilder.group({
             username: [this.userData?.username ?? '', Validators.required],
             firstname: [this.userData?.firstname ?? '', Validators.required],
@@ -67,13 +69,12 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         } else {
             this.addRole();
         }
-
-        this.formInit();
     }
 
     private setUserRolesData(): void {
         this.getUserInfo(this.passedId).subscribe((response) => {
             this.userData = response.items[0];
+            this.formInit();
             const { userRoles } = this.userData;
             for (const role of userRoles) {
                 this.addExistingRole(role);
