@@ -215,23 +215,39 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     public onSubmit(): void {
         if (this.form.invalid) {
-            console.log(this.form.get('userRoles'));
             this.alertService.onError('لطفا ورودی های خود را چک کنید.');
             return;
         }
 
         if (this.isUpdate()) {
-            console.log(this.form.value);
-            this.userService.updateUser({ id: this.passedId, ...this.form.value }).subscribe(() => {
-                this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
-                this.dialogRef.close(true);
-            });
+            this.updateUser();
         } else {
-            this.userService.createUser(this.form.value).subscribe(() => {
+            this.createUser();
+        }
+    }
+
+    private createUser(): void {
+        this.userService.createUser(this.form.value).subscribe(
+            () => {
                 this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
                 this.dialogRef.close(true);
-            });
-        }
+            },
+            () => {
+                this.alertService.onError('لطفا ورودی های خود را چک کنید.');
+            }
+        );
+    }
+
+    private updateUser(): void {
+        this.userService.updateUser({ id: this.passedId, ...this.form.value }).subscribe(
+            () => {
+                this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
+                this.dialogRef.close(true);
+            },
+            () => {
+                this.alertService.onError('لطفا ورودی های خود را چک کنید.');
+            }
+        );
     }
 
     public closeDialog(): void {
