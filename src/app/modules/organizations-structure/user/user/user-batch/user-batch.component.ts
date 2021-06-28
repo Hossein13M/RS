@@ -25,7 +25,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         return this.form.get('userRoles') as FormArray;
     }
 
-    public userRoleControlsData: Array<{
+    public userOrganizationControlsData: Array<{
         organizationsSearchControl: FormControl;
         organizations: Array<Organization>;
         units: Units;
@@ -78,26 +78,26 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     public addOrganization(): void {
-        const roleForm = this.formBuilder.group({
-            personnelCode: ['', Validators.required],
-            organizationId: ['', Validators.required],
-            organizationCode: ['', Validators.required],
-            units: [[], Validators.required],
-            roles: [[], Validators.required],
-        });
+        this.userOrganizations.push(
+            this.formBuilder.group({
+                personnelCode: ['', Validators.required],
+                organizationId: ['', Validators.required],
+                organizationCode: ['', Validators.required],
+                units: [[], Validators.required],
+                roles: [[], Validators.required],
+            })
+        );
 
-        this.userRoleControlsData.push({
+        this.userOrganizationControlsData.push({
             organizationsSearchControl: new FormControl(''),
             organizations: this.defaultOrganizations,
             units: null,
             roles: [],
         });
 
-        this.userOrganizations.push(roleForm);
-
-        this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
-        this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
-        this.onUnitsChange(this.userRoleControlsData.length - 1);
+        this.onSearchOrganizationSearchChange(this.userOrganizationControlsData.length - 1);
+        this.onOrganizationCodeChange(this.userOrganizationControlsData.length - 1);
+        // this.onUnitsChange(this.userRoleControlsData.length - 1);
     }
 
     private setUserRolesData(): void {
@@ -116,7 +116,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             units: this.userService.getOrganizationUnits([userRoles.organizationCode]),
             roles: this.userService.getOrganizationRoles(userRoles.organizationCode, userRoles.units),
         }).subscribe((response: { units: Units; roles: Array<Roles> }) => {
-            this.userRoleControlsData.push({
+            this.userOrganizationControlsData.push({
                 organizationsSearchControl: new FormControl(''),
                 organizations: this.defaultOrganizations,
                 units: response.units,
@@ -133,14 +133,14 @@ export class UserBatchComponent implements OnInit, OnDestroy {
                 })
             );
 
-            this.onSearchOrganizationSearchChange(this.userRoleControlsData.length - 1);
-            this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
-            this.onUnitsChange(this.userRoleControlsData.length - 1);
+            this.onSearchOrganizationSearchChange(this.userOrganizationControlsData.length - 1);
+            this.onOrganizationCodeChange(this.userOrganizationControlsData.length - 1);
+            this.onUnitsChange(this.userOrganizationControlsData.length - 1);
         });
     }
 
     private onSearchOrganizationSearchChange(index: number): void {
-        const { organizationsSearchControl, organizations } = this.userRoleControlsData[index];
+        const { organizationsSearchControl, organizations } = this.userOrganizationControlsData[index];
         organizationsSearchControl.valueChanges
             .pipe(
                 takeUntil(this._unsubscribeAll),
@@ -170,7 +170,8 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             )
             .subscribe((response) => {
                 resetControls();
-                this.userRoleControlsData[index].units = response;
+                this.userOrganizationControlsData[index].units = response;
+                this.onUnitsChange(index);
             });
 
         function getOrganizationsId(organizationCode: number, organizations: Array<Organization>): number {
@@ -200,7 +201,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             )
             .subscribe((response) => {
                 resetRoleControl();
-                this.userRoleControlsData[index].roles = response;
+                this.userOrganizationControlsData[index].roles = response;
             });
 
         function resetRoleControl(): void {
@@ -209,7 +210,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     public deleteOrganization(index: number): void {
-        this.userRoleControlsData.splice(index, 1);
+        this.userOrganizationControlsData.splice(index, 1);
         this.userOrganizations.removeAt(index);
     }
 
