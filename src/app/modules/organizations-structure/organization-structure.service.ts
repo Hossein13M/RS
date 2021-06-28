@@ -27,11 +27,13 @@ export class OrganizationStructureService {
     }
 
     public getOrganizationRoleByOrgCode(organizationId: number): Observable<OrganizationRole<Role>> {
-        return this.http.get<OrganizationRole<Role>>(`/api/v1/organization-role/${organizationId}`);
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes: [organizationId] });
+        return this.http.get<OrganizationRole<Role>>(`/api/v1/organization-role/`, { params });
     }
 
     public getOrganizationUnitsByOrgCode(organizationId: number): Observable<OrganizationUnit<Unit>> {
-        return this.http.get<OrganizationUnit<Unit>>(`/api/v1/organization-unit/${organizationId}`);
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes: [organizationId] });
+        return this.http.get<OrganizationUnit<Unit>>(`/api/v1/organization-unit/`, { params });
     }
 
     public editOrganizationRoleName(id: number | string, name: string): Observable<any> {

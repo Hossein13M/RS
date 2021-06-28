@@ -90,10 +90,7 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'operation',
             minWidth: '130px',
             sticky: true,
-            operations: [
-                // { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
-                // { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editOperator(row) },
-            ],
+            operations: [{ name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUser(row) }],
         },
     ];
     public usersSearchForm: FormGroup;
@@ -101,15 +98,16 @@ export class UserComponent implements OnInit, OnDestroy {
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-    constructor(private userService: UserService, public dialog: MatDialog, private alertService: AlertService, private formBuilder: FormBuilder) {}
+    constructor(private userService: UserService, public matDialog: MatDialog, private alertService: AlertService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
-        this.organizationsForm = this.formBuilder.group({ organization: ['', Validators.required] });
+        this.organizationsForm = this.formBuilder.group({ organization: [[], Validators.required] });
         this.getOrganizations();
         this.organizationsSearchInit();
-        this.getUsersAccordingToOrganization();
+        this.onOrganizationCodeChange();
         this.alertToFillOrganization();
         this.initSearch();
+        this.getUsers([]);
     }
 
     private alertToFillOrganization(): void {
@@ -128,8 +126,8 @@ export class UserComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getUsersAccordingToOrganization(): void {
-        this.organizationsForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
+    private onOrganizationCodeChange(): void {
+        this.organizationsForm.controls['organization'].valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: Array<string>) => {
             if (value) {
                 this.getUsers(value);
             }
@@ -151,7 +149,7 @@ export class UserComponent implements OnInit, OnDestroy {
         if (!searchFilter) {
             return;
         }
-        const organizationId: string = this.organizationsForm.controls['organization'].value;
+        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
         Object.keys(searchFilter).forEach((key) => {
             this.usersSearchForm.controls[key].setValue(searchFilter[key]);
         });
@@ -159,27 +157,45 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     public paginationControl(pageEvent: PaginationChangeType): void {
-        const organizationId: string = this.organizationsForm.controls['organization'].value;
+        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getUsers(organizationId);
     }
 
-    private getUsers(organizationId: string, search?: any): void {
-        this.userService.getUsers(organizationId, this.pagination, search).subscribe((response) => {
+    private getUsers(organizationIds: Array<string>, search?: any): void {
+        this.userService.getUsers(organizationIds, this.pagination, search).subscribe((response) => {
             this.users = response.items;
             this.pagination.total = response.total;
         });
     }
 
-    public openUserDialog(): void {
-        const dialogRef: MatDialogRef<UserBatchComponent> = this.dialog.open(UserBatchComponent, {
-            data: { dastan: 'dastan' },
-            panelClass: 'dialog-p-0',
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(result);
-        });
+    public createUser(): void {
+        const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
+        this.matDialog
+            .open(UserBatchComponent, {
+                data: null,
+                panelClass: 'tw-dialog-fullscreen',
+            })
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: boolean) => {
+                if (result) this.getUsers(organizationIds);
+            });
+    }
+
+    private editUser(user: User): void {
+        const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
+        this.matDialog
+            .open(UserBatchComponent, {
+                data: user.id,
+                panelClass: 'tw-dialog-fullscreen',
+            })
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: boolean) => {
+                if (result) this.getUsers(organizationIds);
+            });
     }
 
     ngOnDestroy(): void {
