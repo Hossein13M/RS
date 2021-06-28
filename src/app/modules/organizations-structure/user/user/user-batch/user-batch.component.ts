@@ -54,7 +54,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             username: [this.userData?.username ?? '', Validators.required],
             firstname: [this.userData?.firstname ?? '', Validators.required],
             lastname: [this.userData?.lastname ?? '', Validators.required],
-            nationalCode: [this.userData?.nationalCode ?? '', [Validators.required, Validators.minLength(10)]],
+            nationalCode: [this.userData?.nationalCode ?? '', [Validators.required]],
             phoneNumber: [this.userData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
             email: [this.userData?.email ?? '', [Validators.required, Validators.email]],
             birthDate: [this.userData?.birthDate ?? '', Validators.required],
@@ -101,7 +101,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     private setUserRolesData(): void {
-        this.getUserInfo(this.passedId).subscribe((response) => {
+        this.userService.getUsers([], null, { id: this.passedId }).subscribe((response) => {
             this.userData = response.items[0];
             this.formInit();
             const { userRoles } = this.userData;
@@ -137,6 +137,23 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             this.onOrganizationCodeChange(this.userRoleControlsData.length - 1);
             this.onUnitsChange(this.userRoleControlsData.length - 1);
         });
+    }
+
+    private onSearchOrganizationSearchChange(index: number): void {
+        const { organizationsSearchControl, organizations } = this.userRoleControlsData[index];
+        organizationsSearchControl.valueChanges
+            .pipe(
+                takeUntil(this._unsubscribeAll),
+                mergeMap((value: string) => this.userService.getOrganizations(value))
+            )
+            .subscribe((response) => {
+                setOrganization(response.items);
+            });
+
+        function setOrganization(values: Array<Organization>): void {
+            organizations.splice(0, organizations.length);
+            organizations.push(...values);
+        }
     }
 
     private onOrganizationCodeChange(index: number): void {
@@ -191,27 +208,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getUserInfo(id: number): Observable<ResponseWithPagination<User>> {
-        return this.userService.getUsers([], null, { id });
-    }
-
-    private onSearchOrganizationSearchChange(index: number): void {
-        const { organizationsSearchControl, organizations } = this.userRoleControlsData[index];
-        organizationsSearchControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                mergeMap((value: string) => this.userService.getOrganizations(value))
-            )
-            .subscribe((response) => {
-                setOrganization(response.items);
-            });
-
-        function setOrganization(values: Array<Organization>): void {
-            organizations.splice(0, organizations.length);
-            organizations.push(...values);
-        }
-    }
-
     public deleteOrganization(index: number): void {
         this.userRoleControlsData.splice(index, 1);
         this.userOrganizations.removeAt(index);
@@ -219,14 +215,23 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     public onSubmit(): void {
         if (this.form.invalid) {
+            console.log(this.form.get('userRoles'));
             this.alertService.onError('لطفا ورودی های خود را چک کنید.');
             return;
         }
 
-        this.userService.createUser(this.form.value).subscribe(() => {
-            this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
-            this.dialogRef.close(true);
-        });
+        if (this.isUpdate()) {
+            console.log(this.form.value);
+            this.userService.updateUser({ id: this.passedId, ...this.form.value }).subscribe(() => {
+                this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
+                this.dialogRef.close(true);
+            });
+        } else {
+            this.userService.createUser(this.form.value).subscribe(() => {
+                this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
+                this.dialogRef.close(true);
+            });
+        }
     }
 
     public closeDialog(): void {
