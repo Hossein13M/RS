@@ -1,9 +1,6 @@
 :host {
-
     .folded:not(.unfolded) & {
-
         .nav-link {
-
             > span {
                 opacity: 0;
                 transition: opacity 200ms ease;
@@ -11,7 +8,6 @@
         }
 
         &.open {
-
             .children {
                 display: none !important;
             }
@@ -19,9 +15,8 @@
     }
 
     .nav-link {
-
         .collapsable-arrow {
-            transition: transform .3s ease-in-out, opacity .25s ease-in-out .1s;
+            transition: transform 0.3s ease-in-out, opacity 0.25s ease-in-out 0.1s;
             transform: rotate(0);
         }
     }
@@ -31,9 +26,7 @@
     }
 
     &.open {
-
         > .nav-link {
-
             .collapsable-arrow {
                 transform: rotate(90deg);
             }

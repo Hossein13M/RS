@@ -39,7 +39,7 @@
                         [placeholderLabel]="'جستجو'"
                         [formControl]="fundsSearchKeyword"
                     ></ngx-mat-select-search>
-                    <mat-option style="text-align: right" *ngFor="let c of funds" [value]="c?.id"> {{ c?.name }} </mat-option>
+                    <mat-option style="text-align: right" *ngFor="let c of funds" [value]="c?.name"> {{ c?.name }} </mat-option>
                 </mat-select>
                 <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>

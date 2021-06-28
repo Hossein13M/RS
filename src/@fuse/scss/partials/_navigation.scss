@@ -1,5 +1,4 @@
 .nav {
-
     .nav-subheader {
         display: flex;
         align-items: center;
@@ -28,7 +27,6 @@
     }
 
     .nav-item {
-
         .nav-link {
             text-decoration: none !important;
             display: flex;
@@ -72,13 +70,12 @@
             }
 
             &.active {
-
                 .nav-link-icon {
                     opacity: 1;
                 }
 
                 .nav-link-badge {
-                    background: #FFFFFF !important;
+                    background: #ffffff !important;
                     color: rgba(0, 0, 0, 0.87) !important;
                 }
             }
@@ -102,9 +99,7 @@
             display: block;
 
             > .children {
-
                 > .nav-item {
-
                     > .nav-link,
                     &.nav-group > .group-title,
                     &.nav-group > .group-items > .nav-item > .nav-link {
@@ -112,9 +107,7 @@
                     }
 
                     > .children {
-
                         > .nav-item {
-
                             > .nav-link,
                             &.nav-group > .group-title,
                             &.nav-group > .group-items > .nav-item > .nav-link {
@@ -125,11 +118,9 @@
                 }
             }
         }
-
     }
 
     > .nav-item {
-
         &.nav-collapsable {
             background: transparent;
             transition: background 200ms ease-in-out;
@@ -141,9 +132,7 @@
     }
 
     > .nav-group {
-
         > .group-items {
-
             > .nav-collapsable {
                 background: transparent;
                 transition: background 200ms ease-in-out;
@@ -156,9 +145,7 @@
     }
 
     &.vertical {
-
         .nav-group {
-
             .group-title {
                 text-transform: uppercase;
             }
@@ -170,7 +157,6 @@
         flex-direction: row;
 
         .nav-item {
-
             &.nav-collapsable {
                 position: relative;
 
@@ -181,7 +167,7 @@
                     left: 100%;
                     z-index: 999;
                     min-width: 200px;
-                    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2), 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12);
+                    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 
                     &.open {
                         display: block;
@@ -195,7 +181,6 @@
         }
 
         > .nav-item {
-
             > .nav-link {
                 height: 56px;
             }
@@ -222,19 +207,16 @@
     // Material 2 style
     &.material2,
     .material2 & {
-
         .nav-subheader {
             height: 40px;
         }
 
         .nav-group {
-
             > .group-title {
                 height: 40px;
             }
         }
         .nav-item {
-
             .nav-link {
                 height: 40px;
                 padding: 0 24px 0 12px;
