@@ -6,14 +6,7 @@
 
 // Import Fuse core library
 @import '@fuse/scss/core';
-
-// Import app.theme.scss
 @import 'app/app.theme';
-
-//$fa-font-path: "../node_modules/font-awesome/fonts";
-//@import "~font-awesome/scss/font-awesome.scss";nts";
-//@import "~font-awesome/scss/font-awesome.scss";
-
 @import 'app/layout/styles/custom_theme';
 
 @font-face {
@@ -77,17 +70,9 @@
 
 .custom-share-modalbox {
     mat-dialog-container {
-        background-color: none;
         overflow: visible;
     }
 }
-
-material-drawer material-list-item:hover,
-material-list-item:active,
-material-list-item:visited {
-    background-color: #222;
-}
-
 .dialog-w40 {
     width: 40vw !important;
 }
@@ -135,8 +120,6 @@ mat-error {
 .d-none {
     display: none !important;
 }
-
-// TODO: write utils
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

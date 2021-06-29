@@ -1,11 +1,8 @@
 @mixin fuse-material-color-picker-theme($theme) {
-
     $background: map-get($theme, background);
 
     .fuse-material-color-picker-menu {
-
         .mat-menu-content {
-
             .views {
                 background: #303030;
             }

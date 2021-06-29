@@ -1,6 +1,6 @@
 ::ng-deep .mat-step-header .mat-step-icon-selected {
     // todo make this use primary color
-    background-color: #02AD96 !important;
+    background-color: #02ad96 !important;
 }
 
 .contract-form-body {
@@ -141,10 +141,11 @@ mat-horizontal-stepper {
     margin: 20px auto 0;
 }
 
-.mat-cell, .mat-header-cell, .mat-footer-cell {
+.mat-cell,
+.mat-header-cell,
+.mat-footer-cell {
     justify-content: center !important;
 }
-
 
 .form-section {
     width: 100%;
