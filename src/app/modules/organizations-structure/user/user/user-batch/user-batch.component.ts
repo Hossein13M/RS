@@ -190,9 +190,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         const addedForm = controls[index] as FormGroup;
         const { organizationCode } = addedForm.value;
 
-        addedForm.controls['units'].valueChanges.subscribe((value) => {
-            // console.log(value);
-        });
+        addedForm.controls['units'].valueChanges.subscribe((value) => {});
 
         addedForm.controls['units'].valueChanges
             .pipe(
