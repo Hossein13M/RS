@@ -3,7 +3,6 @@
 /*----------------------------------------------------------------*/
 
 @media all {
-
     /* Never show page breaks in normal view */
     .page-break-after,
     .page-break-before {
@@ -12,9 +11,9 @@
 }
 
 @media print {
-
     /* html and body tweaks */
-    html, body {
+    html,
+    body {
         height: auto !important;
         overflow: initial !important;
     }
@@ -34,7 +33,6 @@
 
     /* General styles */
     app {
-
         fuse-sidebar,
         navbar,
         toolbar,
@@ -64,7 +62,7 @@
             .mat-drawer-content,
             .mat-sidenav-content {
                 overflow: initial !important;
-                height: auto !important
+                height: auto !important;
             }
         }
     }

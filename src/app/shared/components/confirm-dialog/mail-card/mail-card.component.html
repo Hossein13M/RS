@@ -53,7 +53,7 @@
                     <img style="border-radius: 30px" height="30px" width="30px" src="./assets/images/user.svg">
                     <div style="display: flex;flex-direction: column;margin-right: 7px">
                         <div class="sender">{{inbox?.fromUser[0]?.email}}</div>
-                        <div class="reciver">
+                        <div class='receiver'>
                             به
                             <span *ngFor="let m of inbox?.toUsers">{{m?.email}}, &nbsp;</span>
                         </div>
