@@ -54,7 +54,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             username: [this.userData?.username ?? '', Validators.required],
             firstname: [this.userData?.firstname ?? '', Validators.required],
             lastname: [this.userData?.lastname ?? '', Validators.required],
-            nationalCode: [this.userData?.nationalCode ?? '', [Validators.required]],
+            nationalCode: [this.userData?.nationalCode ?? '', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
             phoneNumber: [this.userData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
             email: [this.userData?.email ?? '', [Validators.required, Validators.email]],
             birthDate: [this.userData?.birthDate ?? '', Validators.required],
@@ -191,7 +191,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         const { organizationCode } = addedForm.value;
 
         addedForm.controls['units'].valueChanges.subscribe((value) => {
-            console.log(value);
+            // console.log(value);
         });
 
         addedForm.controls['units'].valueChanges
