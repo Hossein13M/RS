@@ -211,7 +211,6 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
     public writeValue(val: any): void {
         this.values = val;
         this.parseValues(val);
-        // console.log(this.tree.nestedNodeMap)
     }
 
     parseValues(value: any): void {
