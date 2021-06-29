@@ -6,6 +6,7 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { fuseAnimations } from '@fuse/animations';
 import { map } from 'rxjs/operators';
 import { Tree, TreeFlatNode, TreeNode } from './tree-select.types';
+import { timer } from 'rxjs';
 
 @Component({
     selector: 'app-tree-select',
@@ -220,8 +221,7 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
         for (const child of value) {
             let foundedFlatNode = null;
             for (const [treeNode, flatNode] of this.tree.nestedNodeMap) {
-                // Todo: parseValues does not work when tree-select is on update mode
-                if (treeNode.id === child.treeNode.id) {
+                if (treeNode.id === child) {
                     foundedFlatNode = flatNode;
                 }
             }
