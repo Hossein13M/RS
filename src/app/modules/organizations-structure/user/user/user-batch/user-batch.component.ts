@@ -3,14 +3,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Organization, Roles, Units, User, UserRoles } from '../../user.model';
 import { UserService } from '../../user.service';
-import { forkJoin, Observable, Subject } from 'rxjs';
-import { first, mergeMap, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { matchValidator } from '#shared/validators/match/match.validator';
+import { forkJoin, Subject } from 'rxjs';
+import { mergeMap, takeUntil, tap } from 'rxjs/operators';
 import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
 import { AlertService } from '../../../../../services/alert.service';
-import { StateType } from '#shared/state-type.enum';
-import { ResponseWithPagination } from '#shared/models/pagination.model';
 
 @Component({
     selector: 'app-user-batch',
@@ -70,11 +67,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     private userRolesInit(): void {
-        if (this.isUpdate()) {
-            this.setUserRolesData();
-        } else {
-            this.addOrganization();
-        }
+        this.isUpdate() ? this.setUserRolesData() : this.addOrganization();
     }
 
     public addOrganization(): void {
@@ -146,9 +139,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 mergeMap((value: string) => this.userService.getOrganizations(value))
             )
-            .subscribe((response) => {
-                setOrganization(response.items);
-            });
+            .subscribe((response) => setOrganization(response.items));
 
         function setOrganization(values: Array<Organization>): void {
             organizations.splice(0, organizations.length);
@@ -190,7 +181,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         const addedForm = controls[index] as FormGroup;
         const { organizationCode } = addedForm.value;
 
-        addedForm.controls['units'].valueChanges.subscribe((value) => {});
+        addedForm.controls['units'].valueChanges.subscribe();
 
         addedForm.controls['units'].valueChanges
             .pipe(
@@ -218,11 +209,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             return;
         }
 
-        if (this.isUpdate()) {
-            this.updateUser();
-        } else {
-            this.createUser();
-        }
+        this.isUpdate() ? this.updateUser() : this.createUser();
     }
 
     private createUser(): void {
@@ -231,9 +218,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
                 this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
                 this.dialogRef.close(true);
             },
-            () => {
-                this.alertService.onError('لطفا ورودی های خود را چک کنید.');
-            }
+            () => this.alertService.onError('لطفا ورودی های خود را چک کنید.')
         );
     }
 
@@ -243,9 +228,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
                 this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
                 this.dialogRef.close(true);
             },
-            () => {
-                this.alertService.onError('لطفا ورودی های خود را چک کنید.');
-            }
+            () => this.alertService.onError('لطفا ورودی های خود را چک کنید.')
         );
     }
 
