@@ -27,51 +27,31 @@ export class UserComponent implements OnInit, OnDestroy {
             id: 'firstname',
             name: 'نام',
             type: 'string',
-            search: {
-                type: 'text',
-                mode: TableSearchMode.SERVER,
-            },
+            search: { type: 'text', mode: TableSearchMode.SERVER },
         },
         {
             id: 'lastname',
             name: 'نام خانوادگی',
             type: 'string',
-            search: {
-                type: 'text',
-                mode: TableSearchMode.SERVER,
-            },
+            search: { type: 'text', mode: TableSearchMode.SERVER },
         },
         {
             id: 'email',
             name: 'پست الکترونیک',
             type: 'string',
-            search: {
-                type: 'text',
-                mode: TableSearchMode.SERVER,
-            },
+            search: { type: 'text', mode: TableSearchMode.SERVER },
         },
         {
             id: 'nationalCode',
             name: 'کد ملی',
             type: 'string',
-        },
-        {
-            id: 'personnelCode',
-            name: 'کد پرسنلی',
-            type: 'string',
-            search: {
-                type: 'text',
-                mode: TableSearchMode.SERVER,
-            },
+            search: { type: 'text', mode: TableSearchMode.SERVER },
         },
         {
             id: 'username',
             name: 'نام کاربری',
             type: 'string',
-            search: {
-                type: 'text',
-                mode: TableSearchMode.SERVER,
-            },
+            search: { type: 'text', mode: TableSearchMode.SERVER },
         },
         {
             id: 'phoneNumber',
@@ -90,7 +70,10 @@ export class UserComponent implements OnInit, OnDestroy {
             type: 'operation',
             minWidth: '130px',
             sticky: true,
-            operations: [{ name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUser(row) }],
+            operations: [
+                { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUser(row) },
+                { name: 'فعال‌سازی/غیرفعال‌سازی', icon: 'sync_alt', color: 'accent', operation: ({ row }: any) => this.changeUserStatus(row) },
+            ],
         },
     ];
     public usersSearchForm: FormGroup;
@@ -105,13 +88,8 @@ export class UserComponent implements OnInit, OnDestroy {
         this.getOrganizations();
         this.organizationsSearchInit();
         this.onOrganizationCodeChange();
-        this.alertToFillOrganization();
         this.initSearch();
         this.getUsers([]);
-    }
-
-    private alertToFillOrganization(): void {
-        this.alertService.onInfo('لطفا یک نهاد انتخاب کنید.');
     }
 
     private organizationsSearchInit(): void {
@@ -121,9 +99,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     private getOrganizations(searchKeyword?: string): void {
-        this.userService.getOrganizations(searchKeyword).subscribe((response) => {
-            this.organizations = response.items;
-        });
+        this.userService.getOrganizations(searchKeyword).subscribe((response) => (this.organizations = response.items));
     }
 
     private onOrganizationCodeChange(): void {
@@ -137,12 +113,8 @@ export class UserComponent implements OnInit, OnDestroy {
     private initSearch(): void {
         const mapKeys = _.dropRight(_.map(this.columns, 'id'));
         const objectFromKeys = {};
-        mapKeys.forEach((id) => {
-            objectFromKeys[id] = '';
-        });
-        this.usersSearchForm = this.formBuilder.group({
-            ...objectFromKeys,
-        });
+        mapKeys.forEach((id) => (objectFromKeys[id] = ''));
+        this.usersSearchForm = this.formBuilder.group({ ...objectFromKeys });
     }
 
     public search(searchFilter: any): void {
@@ -196,6 +168,10 @@ export class UserComponent implements OnInit, OnDestroy {
             .subscribe((result: boolean) => {
                 if (result) this.getUsers(organizationIds);
             });
+    }
+
+    private changeUserStatus(user: User): void {
+        this.userService.changeUserStatus(user.id).subscribe((result) => this.getUsers([]));
     }
 
     ngOnDestroy(): void {

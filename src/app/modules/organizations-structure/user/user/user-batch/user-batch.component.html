@@ -62,7 +62,13 @@
                         <div [formGroupName]="index" class="tw-grid tw-grid-cols-2 tw-gap-7">
                             <div class="tw-col-span-2 tw-flex tw-justify-between tw-align-center">
                                 <h2 class="tw-m-0">چینش سازمانی: {{ index + 1 }}</h2>
-                                <button *ngIf="this.userOrganizationControlsData.length > 1" (click)="deleteOrganization(index)" color="warn" mat-flat-button type="button">
+                                <button
+                                    *ngIf="this.userOrganizationControlsData.length > 1"
+                                    (click)="deleteOrganization(index)"
+                                    color="warn"
+                                    mat-flat-button
+                                    type="button"
+                                >
                                     حذف چینش سازمانی <mat-icon>delete</mat-icon>
                                 </button>
                             </div>
@@ -105,12 +111,8 @@
                             <mat-form-field appearance="outline" *ngIf="userOrganizationControlsData[index].roles.length > 0">
                                 <mat-label>نقش</mat-label>
                                 <mat-select formControlName="roles" multiple required>
-                                    <mat-option
-                                        class="tw-text=right"
-                                        *ngFor="let role of userOrganizationControlsData[index].roles"
-                                        [value]="role.id"
-                                    >
-                                        {{role.name}}
+                                    <mat-option class="tw-text=right" *ngFor="let role of userOrganizationControlsData[index].roles" [value]="role.id">
+                                        {{ role.name }}
                                     </mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="groupForm.get('units').hasError('required')">واحد اجباری میباشد.</mat-error>

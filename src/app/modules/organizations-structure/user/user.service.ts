@@ -41,4 +41,8 @@ export class UserService {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes: [organizationCode], organizationUnits });
         return this.http.get<Array<Roles>>(`/api/v1/organization-role`, { params });
     }
+
+    public changeUserStatus(userId: number): Observable<any> {
+        return this.http.put<any>(`/api/v2/user/inactive/${userId}`, { userId: userId });
+    }
 }
