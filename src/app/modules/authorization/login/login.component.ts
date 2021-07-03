@@ -5,7 +5,7 @@ import { FuseConfigService } from '@fuse/services/config.service';
 import { AlertService } from 'app/services/alert.service';
 import { AuthenticationService } from 'app/services/authentication.service';
 // @ts-ignore
-import version from '../../../../package.json';
+import version from '../../../../../package.json';
 
 @Component({
     selector: 'login',

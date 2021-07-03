@@ -1,7 +1,7 @@
 @use '~@angular/material' as mat;
 @import 'src/app/layout/components/chat-panel/chat-panel.theme';
 @import 'src/app/layout/components/toolbar/toolbar.theme';
-@import 'src/app/modules/login/login.theme';
+@import 'modules/authorization/login/login.theme';
 @import 'src/app/shared/components/table/table.theme';
 @import 'layout/styles/custom_bottom_sheet';
 @import 'layout/styles/custom_dialog';
