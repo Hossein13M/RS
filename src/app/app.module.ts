@@ -26,7 +26,7 @@ import { AuthorizationModule } from './modules/authorization/authorization.modul
 
 const appRoutes: Routes = [
     {
-        path: 'auth',
+        path: 'login',
         loadChildren: () => import('app/modules/authorization/authorization.module').then((m) => m.AuthorizationModule),
     },
     {
