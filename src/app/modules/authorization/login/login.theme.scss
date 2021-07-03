@@ -4,7 +4,7 @@
     $accent: map-get($theme, accent);
     $is-dark: map-get($theme, is-dark);
 
-    login {
+    login, change-password {
         #login {
             // Mountain Background
             background-color: map-get($background, 500);
