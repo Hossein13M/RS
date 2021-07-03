@@ -35,7 +35,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>نام کاربری</mat-label>
                     <label>
-                        <input matInput formControlName="userName" />
+                        <input matInput formControlName="username" />
                     </label>
                     <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
                     <mat-error> نام کاربری الزامی می باشد. </mat-error>
@@ -45,6 +45,7 @@
                     <mat-label>کلمه عبور</mat-label>
                     <input matInput type="password" formControlName="password" />
                     <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                    <mat-hint>کلمه عبور پیشفرض برابر با کد ملی کاربر می باشد.</mat-hint>
                     <mat-error> کلمه عبور الزامی می باشد. </mat-error>
                 </mat-form-field>
 

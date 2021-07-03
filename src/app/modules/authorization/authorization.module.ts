@@ -1,23 +1,49 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-
-const routePrefix = `auth`;
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { FuseSharedModule } from '../../../@fuse/shared.module';
+import { LoginComponent } from './login/login.component';
+import { LoginService } from './login/login.service';
+import { OrganizationComponent } from './organization/organization.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
     {
-        path: `${routePrefix}/login`,
-        loadChildren: () => import('./login/login.module').then((module) => module.LoginModule),
+        path: ``,
+        component: LoginComponent,
+    },
+    {
+        path: `change-password/:username`,
+        component: ChangePasswordComponent,
+    },
+    {
+        path: `organization/:username`,
+        component: OrganizationComponent,
     },
     {
         path: `**`,
-        redirectTo: `${routePrefix}/login`,
+        redirectTo: ``,
     },
 ];
 
 @NgModule({
-    declarations: [],
-    imports: [CommonModule, RouterModule.forChild(routes)],
+    declarations: [LoginComponent, OrganizationComponent, ChangePasswordComponent],
+    providers: [LoginService],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        FuseSharedModule,
+    ],
     exports: [RouterModule],
 })
 export class AuthorizationModule {}
