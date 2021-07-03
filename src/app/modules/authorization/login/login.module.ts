@@ -11,7 +11,7 @@ import { LoginComponent } from './login.component';
 
 const appRoutes: Routes = [
     {
-        path: 'login',
+        path: '',
         component: LoginComponent,
     },
 ];
