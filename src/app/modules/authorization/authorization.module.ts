@@ -19,7 +19,7 @@ const routes: Routes = [
         component: LoginComponent,
     },
     {
-        path: `change-password/:username`,
+        path: `change-password`,
         component: ChangePasswordComponent,
     },
     {
