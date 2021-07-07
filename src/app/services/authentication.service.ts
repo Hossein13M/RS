@@ -56,6 +56,7 @@ export class AuthenticationService {
     logout(): Promise<any> {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('activeOrganization');
+        localStorage.removeItem('user');
         return this.router.navigate(['/login']);
     }
 }

@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
                 this.Authentication.login(this.loginForm.value).subscribe();
                 LoginComponent.storeToken(token.accessToken);
                 const user = this.authorizationService.decodeToken(token);
+                localStorage.setItem('user', JSON.stringify(user));
                 if (LoginComponent.isUserUnauthorized(user)) {
                     this.redirectToChangePassword();
                 } else {
