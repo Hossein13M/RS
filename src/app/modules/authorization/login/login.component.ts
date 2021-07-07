@@ -19,7 +19,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
-    wrongPassWord = false;
     waiting = false;
 
     version = version.version;
@@ -27,6 +26,11 @@ export class LoginComponent implements OnInit {
     private static isUserUnauthorized(user: User): boolean {
         console.log(user.status);
         return user.status === Status.unauthorized;
+    }
+
+    private static storeToken(token: string): void {
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('accessToken', token);
     }
 
     constructor(
@@ -52,14 +56,15 @@ export class LoginComponent implements OnInit {
         this.loginForm = this._formBuilder.group({ username: ['', [Validators.required]], password: ['', Validators.required] });
     }
 
-    login(): void {
+    public login(): void {
         this.waiting = true;
         this.loginService.login(this.loginForm.value).subscribe(
             (token) => {
                 this.waiting = false;
+                LoginComponent.storeToken(token.accessToken);
                 const user = this.loginService.decodeToken(token);
                 if (LoginComponent.isUserUnauthorized(user)) {
-                    this.redirectToChangePassword(this.loginForm.value.username);
+                    this.redirectToChangePassword();
                 } else {
                     this.redirectToOrganization(this.loginForm.value.username);
                 }
@@ -71,11 +76,11 @@ export class LoginComponent implements OnInit {
         );
     }
 
-    redirectToChangePassword(username: string): void {
-        this.router.navigate([`./change-password/${username}`], { relativeTo: this.activatedRoute });
+    private redirectToChangePassword(): void {
+        this.router.navigate([`./change-password`], { relativeTo: this.activatedRoute });
     }
 
-    redirectToOrganization(username: string): void {
+    private redirectToOrganization(username: string): void {
         this.router.navigate([`./organization/${username}`], { relativeTo: this.activatedRoute });
     }
 

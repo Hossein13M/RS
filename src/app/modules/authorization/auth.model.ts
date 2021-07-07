@@ -4,11 +4,11 @@ export interface Login {
 }
 
 export interface ChangePassword {
-    userName: string;
     newPassword: string;
+    confirmNewPassword: string;
 }
 
-export interface Token {
+export interface LoginResponse {
     accessToken: string;
 }
 

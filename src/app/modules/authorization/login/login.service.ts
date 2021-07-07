@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Login, Token, User} from '../auth.model';
+import {Login, LoginResponse, User} from '../auth.model';
 import {Observable} from 'rxjs';
 import jwtDecode from "jwt-decode";
 
@@ -10,11 +10,11 @@ import jwtDecode from "jwt-decode";
 export class LoginService {
     constructor(private http: HttpClient) {}
 
-    public login(model: Login): Observable<Token> {
-        return this.http.post<Token>(`/api/v2/auth/login`, model);
+    public login(model: Login): Observable<LoginResponse> {
+        return this.http.post<LoginResponse>(`/api/v2/auth/login`, model);
     }
 
-    public decodeToken(token: Token): User {
+    public decodeToken(token: LoginResponse): User {
         return jwtDecode(token.accessToken) as User;
     }
 }
