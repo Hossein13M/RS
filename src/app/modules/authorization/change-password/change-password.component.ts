@@ -5,11 +5,11 @@ import { fuseAnimations } from '../../../../@fuse/animations';
 import version from '../../../../../package.json';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChangePasswordService } from './change-password.service';
 import { ChangePassword } from '../auth.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { matchValidator } from '#shared/validators/match/match.validator';
+import {AuthorizationService} from "../authorization.service";
 
 @Component({
     selector: 'change-password',
@@ -29,7 +29,7 @@ export class ChangePasswordComponent implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private formBuilder: FormBuilder,
         private activatedRoute: ActivatedRoute,
-        private changePasswordService: ChangePasswordService,
+        private authorizationService: AuthorizationService,
         private router: Router
     ) {
         this._fuseConfigService.config = {
@@ -55,9 +55,9 @@ export class ChangePasswordComponent implements OnInit {
         this.initConfirmPasswordValidation();
     }
 
-    public login(): void {
+    public onSubmit(): void {
         if (this.form.invalid) return;
-        this.changePasswordService.changePassword(this.form.value as ChangePassword).subscribe(() => {
+        this.authorizationService.changePassword(this.form.value as ChangePassword).subscribe(() => {
             this.redirectToLogin();
         });
     }

@@ -1,13 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FuseConfigService } from '../../../../@fuse/services/config.service';
+import { fuseAnimations } from '../../../../@fuse/animations';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+// @ts-ignore
+import version from '../../../../../package.json';
+import { AuthorizationService } from '../authorization.service';
+import { Organization, UserRole } from '../auth.model';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-organization',
+    selector: 'organization',
     templateUrl: './organization.component.html',
     styleUrls: ['./organization.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    animations: fuseAnimations,
 })
 export class OrganizationComponent implements OnInit {
-    constructor(private _fuseConfigService: FuseConfigService) {
+    public form: FormGroup;
+    public waiting = true;
+    public version = version.version;
+    public organizationData: Array<Organization>;
+
+    private static setActiveOrganization(organization: Organization): void {
+        localStorage.setItem('activeOrganization', JSON.stringify(organization));
+    }
+
+    constructor(
+        private _fuseConfigService: FuseConfigService,
+        private authorizationService: AuthorizationService,
+        private formBuilder: FormBuilder,
+        private router: Router
+    ) {
         this._fuseConfigService.config = {
             layout: {
                 navbar: { hidden: true },
@@ -18,5 +41,31 @@ export class OrganizationComponent implements OnInit {
         };
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.initForm();
+        this.initActiveOrganizationData(this.authorizationService.decodeToken().userRoles);
+    }
+
+    private initForm(): void {
+        this.form = this.formBuilder.group({
+            organization: [null, Validators.required],
+        });
+    }
+
+    private initActiveOrganizationData(userRoles: Array<UserRole>): void {
+        const codes: Array<number> = userRoles.map((userRole) => userRole.organizationCode);
+        this.authorizationService.getOrganizations(codes).subscribe((response) => {
+            this.organizationData = response.items;
+        });
+    }
+
+    public onSubmit(): void {
+        if (this.form.invalid) return;
+        OrganizationComponent.setActiveOrganization(this.form.value['organization']);
+        this.redirectToWelcome();
+    }
+
+    private redirectToWelcome(): void {
+        this.router.navigate(['welcome']);
+    }
 }

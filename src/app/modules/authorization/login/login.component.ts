@@ -6,7 +6,7 @@ import { AlertService } from 'app/services/alert.service';
 import { AuthenticationService } from 'app/services/authentication.service';
 // @ts-ignore
 import version from '../../../../../package.json';
-import { LoginService } from './login.service';
+import { AuthorizationService } from '../authorization.service';
 import { Status, User } from '../auth.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -18,10 +18,9 @@ import { ActivatedRoute, Router } from '@angular/router';
     animations: fuseAnimations,
 })
 export class LoginComponent implements OnInit {
-    loginForm: FormGroup;
-    waiting = false;
-
-    version = version.version;
+    public loginForm: FormGroup;
+    public waiting = false;
+    public version = version.version;
 
     private static isUserUnauthorized(user: User): boolean {
         console.log(user.status);
@@ -37,7 +36,7 @@ export class LoginComponent implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         private Authentication: AuthenticationService,
-        private loginService: LoginService,
+        private authorizationService: AuthorizationService,
         private sbs: AlertService,
         private router: Router,
         private activatedRoute: ActivatedRoute
@@ -58,15 +57,15 @@ export class LoginComponent implements OnInit {
 
     public login(): void {
         this.waiting = true;
-        this.loginService.login(this.loginForm.value).subscribe(
+        this.authorizationService.login(this.loginForm.value).subscribe(
             (token) => {
                 this.waiting = false;
                 LoginComponent.storeToken(token.accessToken);
-                const user = this.loginService.decodeToken(token);
+                const user = this.authorizationService.decodeToken(token);
                 if (LoginComponent.isUserUnauthorized(user)) {
                     this.redirectToChangePassword();
                 } else {
-                    this.redirectToOrganization(this.loginForm.value.username);
+                    this.redirectToOrganization();
                 }
             },
             () => {
@@ -80,8 +79,8 @@ export class LoginComponent implements OnInit {
         this.router.navigate([`./change-password`], { relativeTo: this.activatedRoute });
     }
 
-    private redirectToOrganization(username: string): void {
-        this.router.navigate([`./organization/${username}`], { relativeTo: this.activatedRoute });
+    private redirectToOrganization(): void {
+        this.router.navigate([`./organization`], { relativeTo: this.activatedRoute });
     }
 
     onSubmit(): void {}
