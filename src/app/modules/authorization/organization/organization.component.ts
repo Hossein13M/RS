@@ -2,8 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FuseConfigService } from '../../../../@fuse/services/config.service';
 import { fuseAnimations } from '../../../../@fuse/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// @ts-ignore
-import version from '../../../../../package.json';
 import { AuthorizationService } from '../authorization.service';
 import { Organization, UserRole } from '../auth.model';
 import { Router } from '@angular/router';
@@ -18,7 +16,6 @@ import { Router } from '@angular/router';
 export class OrganizationComponent implements OnInit {
     public form: FormGroup;
     public waiting = true;
-    public version = version.version;
     public organizationData: Array<Organization>;
 
     private static setActiveOrganization(organization: Organization): void {

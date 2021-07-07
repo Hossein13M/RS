@@ -32,9 +32,9 @@
             <div class="title">سازمان فعال</div>
 
             <form name="form" class="tw-w-full" (ngSubmit)="onSubmit()" [formGroup]="form" novalidate>
-                <mat-form-field appearance="outline">
+                <mat-form-field *ngIf="organizationData && organizationData.length > 0" appearance="outline">
                     <mat-label>سازمان</mat-label>
-                    <mat-select *ngIf="organizationData && organizationData.length > 0" formControlName="organization" required>
+                    <mat-select formControlName="organization" required>
                         <mat-option class="tw-text-right" [value]="organization" *ngFor="let organization of organizationData">
                             {{ organization.name }}
                         </mat-option>
@@ -46,10 +46,6 @@
                 <button mat-raised-button color="primary" class="submit-button" [disabled]="form.invalid">انتخاب سازمان</button>
             </form>
         </div>
-        <div class="version">
-            <span>
-                {{ version }}
-            </span>
-        </div>
+        <div class="version"></div>
     </div>
 </div>

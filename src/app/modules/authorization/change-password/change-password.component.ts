@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FuseConfigService } from '../../../../@fuse/services/config.service';
 import { fuseAnimations } from '../../../../@fuse/animations';
-// @ts-ignore
-import version from '../../../../../package.json';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangePassword } from '../auth.model';
@@ -20,7 +18,6 @@ import {AuthorizationService} from "../authorization.service";
 })
 export class ChangePasswordComponent implements OnInit {
     public form: FormGroup;
-    public version = version.version;
     private username: string;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
