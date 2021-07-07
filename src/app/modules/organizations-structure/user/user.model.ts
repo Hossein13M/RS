@@ -1,4 +1,4 @@
-export interface UserRoles {
+export interface UserRole {
     organizationId: number;
     organizationCode: number;
     personnelCode: string;
@@ -17,7 +17,7 @@ export interface User {
     birthDate: string;
     id: number;
     status: string;
-    userRoles: Array<UserRoles>;
+    userRoles: Array<UserRole>;
 }
 
 export interface Organization {

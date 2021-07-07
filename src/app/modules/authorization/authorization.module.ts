@@ -8,10 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FuseSharedModule } from '../../../@fuse/shared.module';
 import { LoginComponent } from './login/login.component';
-import { LoginService } from './login/login.service';
+import { AuthorizationService } from './authorization.service';
 import { OrganizationComponent } from './organization/organization.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import {ChangePasswordService} from "./change-password/change-password.service";
+import { MatSelectModule } from '@angular/material/select';
+import { ShareModule } from '#shared/share.module';
 
 const routes: Routes = [
     {
@@ -23,18 +24,14 @@ const routes: Routes = [
         component: ChangePasswordComponent,
     },
     {
-        path: `organization/:username`,
+        path: `organization`,
         component: OrganizationComponent,
-    },
-    {
-        path: `**`,
-        redirectTo: ``,
-    },
+    }
 ];
 
 @NgModule({
     declarations: [LoginComponent, OrganizationComponent, ChangePasswordComponent],
-    providers: [LoginService, ChangePasswordService],
+    providers: [AuthorizationService],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -44,6 +41,8 @@ const routes: Routes = [
         MatIconModule,
         MatInputModule,
         FuseSharedModule,
+        MatSelectModule,
+        ShareModule,
     ],
     exports: [RouterModule],
 })
