@@ -4,8 +4,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { AlertService } from 'app/services/alert.service';
 import { AuthenticationService } from 'app/services/authentication.service';
-// @ts-ignore
-import version from '../../../../../package.json';
 import { AuthorizationService } from '../authorization.service';
 import { Status, User } from '../auth.model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,7 +18,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
     public loginForm: FormGroup;
     public waiting = false;
-    public version = version.version;
 
     private static isUserUnauthorized(user: User): boolean {
         console.log(user.status);
@@ -60,6 +57,7 @@ export class LoginComponent implements OnInit {
         this.authorizationService.login(this.loginForm.value).subscribe(
             (token) => {
                 this.waiting = false;
+                this.Authentication.login(this.loginForm.value).subscribe();
                 LoginComponent.storeToken(token.accessToken);
                 const user = this.authorizationService.decodeToken(token);
                 if (LoginComponent.isUserUnauthorized(user)) {
