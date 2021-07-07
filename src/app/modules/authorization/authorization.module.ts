@@ -11,6 +11,7 @@ import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
 import { OrganizationComponent } from './organization/organization.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import {ChangePasswordService} from "./change-password/change-password.service";
 
 const routes: Routes = [
     {
@@ -33,7 +34,7 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [LoginComponent, OrganizationComponent, ChangePasswordComponent],
-    providers: [LoginService],
+    providers: [LoginService, ChangePasswordService],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
