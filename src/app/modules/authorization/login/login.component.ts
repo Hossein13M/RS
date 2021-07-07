@@ -7,7 +7,7 @@ import { AuthenticationService } from 'app/services/authentication.service';
 // @ts-ignore
 import version from '../../../../../package.json';
 import { LoginService } from './login.service';
-import { Status, User } from './login.model';
+import { Status, User } from '../auth.model';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
