@@ -46,7 +46,7 @@ export class TradeDashboardTableComponent implements OnInit, OnChanges {
     getTradeDashboardTable(): void {
         this.stateType = StateType.LOADING;
         this.data = null;
-        this.tradeDashboardTableService.getTradeDashboardTable(UtilityFunctions.convertDateToPersianDateString(new Date(this.date))).subscribe(
+        this.tradeDashboardTableService.getTradeDashboardTable(UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.date))).subscribe(
             (response) => {
                 this.data = [response];
                 this.stateType = StateType.PRESENT;

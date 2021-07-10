@@ -332,7 +332,7 @@ export class OpRiskAddComponent implements OnInit {
             this.operationRiskHistorySteps = response;
             this.matStepperSelectedIndex = response.length - 1;
             this.operationRiskHistorySteps.map((step: RiskStepInfo) => {
-                step.createdAt = UtilityFunctions.convertDateToPersianDateString(new Date(step.createdAt));
+                step.createdAt = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(step.createdAt));
                 const translatorForStepState = { submit: 'ثبت شده', accept: 'تایید شده', reject: 'رد شده' };
                 step.action = translatorForStepState[step.action];
             });

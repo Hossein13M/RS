@@ -119,7 +119,7 @@ export class AumComponent implements OnInit {
         let newFormValue = { ...formValue };
         newFormValue = this.removeEmptyOrNullValuesFromForm(newFormValue);
         const inputDate = new Date(newFormValue?.date);
-        !!inputDate.getDate() ? (newFormValue.date = UtilityFunctions.convertDateToPersianDateString(inputDate)) : delete newFormValue.date;
+        !!inputDate.getDate() ? (newFormValue.date = UtilityFunctions.convertDateToGregorianFormatForServer(inputDate)) : delete newFormValue.date;
         this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: newFormValue, queryParamsHandling: '' }).finally();
     }
 
@@ -139,7 +139,7 @@ export class AumComponent implements OnInit {
 
     private gatherDataForSearchParams(): void {
         this.searchParams.tamadonAssets = this.form.get('baskets').value.includes('1');
-        this.searchParams.date = UtilityFunctions.convertDateToPersianDateString(this.form.get('date').value);
+        this.searchParams.date = UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('date').value);
         this.searchParams.listedAssets = this.form.value.NL.includes('0');
         this.searchParams.nonlistedAssets = this.form.value.NL.includes('1');
         this.searchParams.bondsAssets = this.form.get('categories').value.includes('1');
@@ -151,6 +151,7 @@ export class AumComponent implements OnInit {
     }
 
     public submitForm(): void {
+        console.log(this.form);
         Object.keys(this.aumData).map((key) => (this.aumData[key].state = 'INIT'));
         // the above line is for setting back every tab to disable by default
         this.gatherDataForSearchParams();

@@ -104,7 +104,7 @@ export class YieldCurveComponent implements OnInit {
         this.showingData = null;
         this.gapData = null;
         this.yieldCurveData = null;
-        this.yieldCurveService.getYieldCurveData(UtilityFunctions.convertDateToPersianDateString(this.form.value.date)).subscribe(
+        this.yieldCurveService.getYieldCurveData(UtilityFunctions.convertDateToGregorianFormatForServer(this.form.value.date)).subscribe(
             (response) => {
                 this.yieldCurveData = response.yieldCurve;
                 if (this.yieldCurveData.length > 0)

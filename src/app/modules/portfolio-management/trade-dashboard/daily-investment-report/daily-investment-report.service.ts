@@ -10,7 +10,7 @@ export class DailyInvestmentReportService {
     constructor(private http: HttpClient) {}
 
     getDailyInvestmentReport(inputDate: Date, pagination: any): Observable<any> {
-        const date = UtilityFunctions.convertDateToPersianDateString(new Date(inputDate));
+        const date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(inputDate));
         return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, { params: { ...pagination, date } });
     }
 }

@@ -65,7 +65,7 @@ export class TradeBookShowComponent implements OnInit {
 
     public getTradeBookData(): void {
         this.hasDataFetched = false;
-        this.tradeBookData.date = UtilityFunctions.convertDateToPersianDateString(new Date(this.tradeBookData.date));
+        this.tradeBookData.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.tradeBookData.date));
         this.tradeBookService.getTradeDataByDate({ ...this.tradeBookData, ...this.pagination }).subscribe((response) => {
             this.pagination.total = response.total;
             this.data = this.parseData(response);

@@ -31,14 +31,14 @@ export class TradeBookHistoryComponent implements OnInit {
     ngOnInit(): void {
         this.initializeTableColumns();
         this.form.valueChanges.subscribe((newFormValue) => {
-            if (newFormValue.date) newFormValue.date = UtilityFunctions.convertDateToPersianDateString(new Date(newFormValue.date));
+            if (newFormValue.date) newFormValue.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(newFormValue.date));
             this.searchParams = newFormValue;
             this.pagination.skip = 0;
             this.getTradeBookHistory();
         });
 
         this.searchParams = this.form.value;
-        if (this.searchParams.date) this.searchParams.date = UtilityFunctions.convertDateToPersianDateString(new Date(this.searchParams.date));
+        if (this.searchParams.date) this.searchParams.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.searchParams.date));
 
         this.getTradeBookHistory();
     }

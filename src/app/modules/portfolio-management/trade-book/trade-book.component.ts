@@ -70,7 +70,7 @@ export class TradeBookComponent implements OnInit {
 
     private getAllTradingBooks(): void {
         this.stateType = StateType.LOADING;
-        const date = UtilityFunctions.convertDateToPersianDateString(this.form.value.date);
+        const date = UtilityFunctions.convertDateToGregorianFormatForServer(this.form.value.date);
         this.tradeBooksList = [];
         this.form.get('tradingBook').reset();
         if (this.dataSource) this.dataSource = _.take(this.dataSource, 0);
