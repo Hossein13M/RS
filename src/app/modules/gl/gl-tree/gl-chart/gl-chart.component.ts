@@ -66,7 +66,7 @@ export class GlChartComponent implements OnInit {
             if (response) {
                 response.map((x) => {
                     x.value = x.remainedAmount;
-                    x.date = UtilityFunctions.convertDateToPersianDateString(x.date);
+                    x.date = UtilityFunctions.convertDateToGregorianFormatForServer(x.date);
                 });
             }
             this.data = null;

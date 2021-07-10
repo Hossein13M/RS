@@ -35,7 +35,7 @@ export class AssetsReturnComponent implements OnInit {
     }
 
     get(): void {
-        const date = UtilityFunctions.convertDateToPersianDateString(this.searchFormGroup.value.endDate);
+        const date = UtilityFunctions.convertDateToGregorianFormatForServer(this.searchFormGroup.value.endDate);
         this.assetReturnService.getAssetReturns(date).subscribe(
             (response) => {
                 this.show = true;

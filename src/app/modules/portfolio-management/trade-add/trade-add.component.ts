@@ -132,7 +132,7 @@ export class TradeAddComponent implements OnInit {
     }
 
     public addTradeRegistration(): void {
-        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToPersianDateString(this.form.get('transactionDate').value));
+        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('transactionDate').value));
         this.tradeAddService.createTradeRegistration(this.form.value).subscribe(
             () => {
                 this.form.reset();
@@ -151,7 +151,7 @@ export class TradeAddComponent implements OnInit {
     }
 
     public updateTradeRegistration(): void {
-        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToPersianDateString(this.form.get('transactionDate').value));
+        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('transactionDate').value));
         this.form.value['id'] = this.editTradeId;
 
         this.tradeAddService.updateTradeRegistration(this.form.value).subscribe(
@@ -173,7 +173,7 @@ export class TradeAddComponent implements OnInit {
     public search(searchFilter: any): void {
         if (!searchFilter) return;
         if (searchFilter.transactionDate)
-            searchFilter.transactionDate = UtilityFunctions.convertDateToPersianDateString(new Date(searchFilter.transactionDate));
+            searchFilter.transactionDate = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(searchFilter.transactionDate));
         Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
         this.getTradeRegistration();
     }

@@ -30,7 +30,7 @@ export class TradeDashboardPieChartComponent implements OnInit, OnChanges {
     getTradePieChart(): void {
         this.stateType = StateType.LOADING;
         this.data = null;
-        this.tradeDashboardPieChartService.getTradeDashboardPieChart(UtilityFunctions.convertDateToPersianDateString(new Date(this.date))).subscribe(
+        this.tradeDashboardPieChartService.getTradeDashboardPieChart(UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.date))).subscribe(
             (response) => {
                 this.stateType = StateType.PRESENT;
                 this.data = response;

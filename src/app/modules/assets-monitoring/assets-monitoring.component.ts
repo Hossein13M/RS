@@ -58,7 +58,7 @@ export class AssetsMonitoringComponent implements OnInit {
     private prepareDataForAPI(): void {
         const searchParams: InstrumentSearchParams = {
             basket: this.form.value.basket,
-            date: UtilityFunctions.convertDateToPersianDateString(this.form.get('date').value),
+            date: UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('date').value),
         };
         const fixedSearchParams = this.checkDateForToday(searchParams);
         this.getInstruments(fixedSearchParams);
@@ -69,7 +69,7 @@ export class AssetsMonitoringComponent implements OnInit {
         this.loading = true;
         this.assetsMonitoringData.trendChart = [];
         const searchParams = {
-            date: UtilityFunctions.convertDateToPersianDateString(this.form.get('date').value),
+            date: UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('date').value),
             basket: this.form.value.basket,
             ticker: this.instrumentFormControl.value,
         };
@@ -88,7 +88,7 @@ export class AssetsMonitoringComponent implements OnInit {
         if (this.isToday(this.form.value.date._d)) {
             const yesterday = new Date(this.form.get('date').value._d.getTime());
             yesterday.setDate(this.form.get('date').value._d.getDate() - 1);
-            searchParams.date = UtilityFunctions.convertDateToPersianDateString(yesterday);
+            searchParams.date = UtilityFunctions.convertDateToGregorianFormatForServer(yesterday);
         }
         return searchParams;
     }

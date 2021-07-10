@@ -24,7 +24,7 @@ export class TradeDashboardTrendChartComponent implements OnChanges {
 
     getTradeDashboardTrendChart(): void {
         this.stateType = StateType.LOADING;
-        this.tradeDashboardTrendChartService.getTradeTrendChart(UtilityFunctions.convertDateToPersianDateString(new Date(this.date))).subscribe(
+        this.tradeDashboardTrendChartService.getTradeTrendChart(UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.date))).subscribe(
             (response) => {
                 this.stateType = StateType.PRESENT;
                 if (response) response.map((x) => (x.value = x.totalValue));

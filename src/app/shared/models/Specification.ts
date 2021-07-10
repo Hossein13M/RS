@@ -8,7 +8,7 @@ export class Specification {
     public pageEvent: PageEvent = { currentIndex: 0, pageSize: 10 };
 
     public convertDate(date: Date): string {
-        return UtilityFunctions.convertDateToPersianDateString(date);
+        return UtilityFunctions.convertDateToGregorianFormatForServer(date);
     }
 
     public setPageDetailData(res): void {

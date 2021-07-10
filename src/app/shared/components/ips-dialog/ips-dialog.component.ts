@@ -37,7 +37,7 @@ export class IpsDialogComponent implements OnInit {
     private getAssetsMonitoringIPSHistory(): void {
         const searchParams = {
             basket: this.data.basket,
-            date: UtilityFunctions.convertDateToPersianDateString(new Date()),
+            date: UtilityFunctions.convertDateToGregorianFormatForServer(new Date()),
             withDetails: this.data.withDetails,
         };
         this.ipsService.getIPSHistory(searchParams).subscribe((response) => {
