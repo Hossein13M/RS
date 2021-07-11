@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
     public waiting = false;
 
     private static isUserUnauthorized(user: User): boolean {
-        console.log(user.status);
         return user.status === Status.unauthorized;
     }
 
@@ -81,6 +80,4 @@ export class LoginComponent implements OnInit {
     private redirectToOrganization(): void {
         this.router.navigate([`./organization`], { relativeTo: this.activatedRoute });
     }
-
-    onSubmit(): void {}
 }
