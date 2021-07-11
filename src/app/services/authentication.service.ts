@@ -47,10 +47,7 @@ export class AuthenticationService {
     login(body): Observable<any> {
         return this.authService.authControllerLogin(body).pipe(
             map((res) => {
-                localStorage.removeItem('accessToken');
-                localStorage.setItem('accessToken', res.accessToken);
                 this.userTokenSubject.next(res.accessToken);
-                this.router.navigate(['/welcome']);
                 this.userInfo.getUserInfo().subscribe();
             })
         );
@@ -58,6 +55,8 @@ export class AuthenticationService {
 
     logout(): Promise<any> {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('activeOrganization');
+        localStorage.removeItem('user');
         return this.router.navigate(['/login']);
     }
 }

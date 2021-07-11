@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Organization, Roles, Units, User, UserRoles } from '../../user.model';
+import { Organization, Roles, Units, User, UserRole } from '../../user.model';
 import { UserService } from '../../user.service';
 import { forkJoin, Subject } from 'rxjs';
 import { mergeMap, takeUntil, tap } from 'rxjs/operators';
@@ -104,7 +104,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         });
     }
 
-    public addExistingOrganization(userRoles: UserRoles): void {
+    public addExistingOrganization(userRoles: UserRole): void {
         forkJoin({
             units: this.userService.getOrganizationUnits([userRoles.organizationCode]),
             roles: this.userService.getOrganizationRoles(userRoles.organizationCode, userRoles.units),
