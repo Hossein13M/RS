@@ -3,6 +3,7 @@ import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
+import { navigation } from '../../../app/dashboard-configs/navigation';
 
 @Component({
     selector: 'fuse-navigation',
@@ -40,12 +41,14 @@ export class FuseNavigationComponent implements OnInit {
      */
     ngOnInit(): void {
         // Load the navigation either from the input or from the service
-        this.navigation = this.navigation || this._fuseNavigationService.getCurrentNavigation();
+        // this.navigation = this.navigation || this._fuseNavigationService.getCurrentNavigation();
+
+        this.navigation = navigation;
 
         // Subscribe to the current navigation changes
         this._fuseNavigationService.onNavigationItemAdded.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {
             // Load the navigation
-            this.navigation = this._fuseNavigationService.getCurrentNavigation();
+            // this.navigation = this._fuseNavigationService.getCurrentNavigation();
 
             // Mark for check
             this._changeDetectorRef.markForCheck();
