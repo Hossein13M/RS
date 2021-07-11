@@ -25,10 +25,19 @@ export class AuthorizationService {
     }
 
     public decodeToken(token?: LoginResponse): User {
+        // Todo fix RBACK
+        const role =
+            'assets|nav|yield_curve|assets_return|risk_measuring|marketRisk|complianceFund|complianceCalc|fundCompliance|compliance|tree|grid|changes|glBrief|financialModel|wfe|contractDashboard|operator|baseData|userDetail|userInput|branch|broker|gl|deposit|bank|bourse-board|bourse-market|instrument|fundRole|supervisor|organizationType|instrumentType|fund|market|settings|user|dashboards|opRiskTreeChart|opRiskFlow|OpRiskManagement|OpRiskReporting|OpRiskReporting|opRisk|portfolio-management|trade-book-dashboard|trade-book|complianceCalc|marketRisk|trade-add|assetsMonitoring|organizations|organizationsList|rolesList';
         if (token) {
-            return jwtDecode(token.accessToken) as User;
+            return {
+                role,
+                ...jwtDecode(token.accessToken),
+            } as User;
         } else {
-            return jwtDecode(localStorage.getItem('accessToken'));
+            return {
+                role,
+                ...jwtDecode(localStorage.getItem('accessToken')),
+            } as User;
         }
     }
 }

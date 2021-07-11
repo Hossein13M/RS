@@ -13,6 +13,7 @@ export interface LoginResponse {
 }
 
 export interface User {
+    role: string;
     userId: number;
     firstname: string;
     lastname: string;
