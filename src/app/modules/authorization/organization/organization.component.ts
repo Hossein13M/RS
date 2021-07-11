@@ -53,7 +53,15 @@ export class OrganizationComponent implements OnInit {
         const codes: Array<number> = userRoles.map((userRole) => userRole.organizationCode);
         this.authorizationService.getOrganizations(codes).subscribe((response) => {
             this.organizationData = response.items;
+            this.isOrganizationSingle();
         });
+    }
+
+    private isOrganizationSingle(): void {
+        if (this.organizationData.length === 1) {
+            OrganizationComponent.setActiveOrganization(this.organizationData[0]);
+            this.redirectToWelcome();
+        }
     }
 
     public onSubmit(): void {
