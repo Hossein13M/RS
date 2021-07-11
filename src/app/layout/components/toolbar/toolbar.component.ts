@@ -29,11 +29,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         private authenticationService: AuthenticationService,
         private userInfoService: UserInfoService
     ) {
-        // this.userInfoService.userInfo$.subscribe((res) => {
-        // }, () => {
-        // });
+        this.userInfoService.userInfo$.subscribe((res) => {
+            // this.user = res;
+        });
         this.user = JSON.parse(localStorage.getItem('user'));
-        console.log(this.user);
 
         this.userStatusOptions = [
             { title: 'Online', icon: 'icon-checkbox-marked-circle', color: '#4CAF50' },
