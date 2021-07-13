@@ -7,7 +7,7 @@ import { ChangePassword } from '../auth.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { matchValidator } from '#shared/validators/match/match.validator';
-import {AuthorizationService} from "../authorization.service";
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
     selector: 'change-password',
@@ -18,8 +18,6 @@ import {AuthorizationService} from "../authorization.service";
 })
 export class ChangePasswordComponent implements OnInit {
     public form: FormGroup;
-    private username: string;
-
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -60,7 +58,7 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     private redirectToLogin(): void {
-        this.router.navigate([`./login`]);
+        this.router.navigate([`./login`]).finally();
     }
 
     private initConfirmPasswordValidation(): void {
