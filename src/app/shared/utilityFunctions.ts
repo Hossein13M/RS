@@ -30,4 +30,8 @@ export class UtilityFunctions {
         array.map((item: any) => newArr.push(item.id));
         return newArr;
     }
+
+    static getActiveOrganizationId(): number {
+        return JSON.parse(localStorage.getItem('activeOrganization')).id;
+    }
 }
