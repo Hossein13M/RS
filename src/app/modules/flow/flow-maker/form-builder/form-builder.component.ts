@@ -4,8 +4,8 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
 import { FlowsService } from 'app/services/App/flow/flow.service';
-import { OperatorManagmentService } from 'app/services/App/user/operator-managment.service';
-import { searchSelectStateType } from '../../../../shared/components/search-select/search-select.component';
+import { OperatorManagementService } from 'app/services/App/user/operator-management.service';
+import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
 import { SaveDialogComponent } from './save-dialog/save-dialog.component';
 
 @Component({
@@ -95,7 +95,7 @@ export class FormBuilderComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private operatorService: OperatorManagmentService,
+        private operatorService: OperatorManagementService,
         public dialog: MatDialog,
         private flowService: FlowsService,
         private snackBar: AlertService,
@@ -217,18 +217,16 @@ export class FormBuilderComponent implements OnInit {
             this.operatorsFormControl.markAsDirty();
             return;
         }
-        this.flowService
-            .addFlowForm(this.data.stateId, this.data.flowId, this.data.stateName, this.formGroup.value, this.operatorsFormControl.value)
-            .subscribe(
-                () => {
-                    this.snackBar.onSuccess('تغییرات با موفقیت ذخیره شد.');
-                    this.lastSavedData = {
-                        form: this.formGroup.value,
-                        operators: this.operatorsFormControl.value,
-                    };
-                },
-                () => this.snackBar.onError('تغییرات ذخیره نشد.')
-            );
+        this.flowService.addFlowForm(this.data.stateId, this.data.flowId, this.data.stateName, this.formGroup.value, this.operatorsFormControl.value).subscribe(
+            () => {
+                this.snackBar.onSuccess('تغییرات با موفقیت ذخیره شد.');
+                this.lastSavedData = {
+                    form: this.formGroup.value,
+                    operators: this.operatorsFormControl.value,
+                };
+            },
+            () => this.snackBar.onError('تغییرات ذخیره نشد.')
+        );
     }
 
     delete(index): void {
@@ -260,31 +258,19 @@ export class FormBuilderComponent implements OnInit {
     drop(event: CdkDragDrop<any[]>): void {
         if (event.previousContainer === event.container) {
             this.Forms = this.formGroup.value;
-            this.Forms[event.container.id].Value.splice(
-                event.currentIndex,
-                0,
-                this.Forms[event.container.id].Value.splice(event.previousIndex, 1)[0]
-            );
+            this.Forms[event.container.id].Value.splice(event.currentIndex, 0, this.Forms[event.container.id].Value.splice(event.previousIndex, 1)[0]);
             this.createForm();
         } else {
             if (event.previousContainer.id === 'Base') {
                 if (!(event.container.data.length >= this.limit)) {
                     this.Forms = this.formGroup.value;
-                    this.Forms[event.container.id].Value.splice(
-                        event.currentIndex,
-                        0,
-                        this.types[event.previousContainer.data[event.previousIndex].type]
-                    );
+                    this.Forms[event.container.id].Value.splice(event.currentIndex, 0, this.types[event.previousContainer.data[event.previousIndex].type]);
                     this.createForm();
                 }
             } else {
                 if (!(event.container.data.length >= this.limit)) {
                     this.Forms = this.formGroup.value;
-                    this.Forms[event.container.id].Value.splice(
-                        event.currentIndex,
-                        0,
-                        this.Forms[event.previousContainer.id].Value[event.previousIndex]
-                    );
+                    this.Forms[event.container.id].Value.splice(event.currentIndex, 0, this.Forms[event.previousContainer.id].Value[event.previousIndex]);
                     this.Forms[event.previousContainer.id].Value.splice(event.previousIndex, 1);
                     this.createForm();
                 }

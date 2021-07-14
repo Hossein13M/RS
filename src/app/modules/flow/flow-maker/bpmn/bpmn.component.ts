@@ -6,7 +6,7 @@ import { AlertService } from 'app/services/alert.service';
 import { FlowsService } from 'app/services/App/flow/flow.service';
 import { finalize } from 'rxjs/operators';
 import { json2xml, xml2json } from 'xml-js';
-import { OperatorManagmentService } from '../../../../services/App/user/operator-managment.service';
+import { OperatorManagementService } from '../../../../services/App/user/operator-management.service';
 import { EndStateSettingDialogComponent } from '../form-builder/end-state-setting-dialog/end-state-setting-dialog.component';
 import { FormBuilderComponent } from '../form-builder/form-builder.component';
 import { InjectionNames, Modeler, OriginalPaletteProvider, OriginalPropertiesProvider, PropertiesPanelModule } from './bpmn-js/bpmn-js';
@@ -18,23 +18,9 @@ const customModdle = {
     name: 'customModdle',
     uri: 'http://example.com/custom-moddle',
     prefix: 'custom',
-    xml: {
-        tagAlias: 'lowerCase',
-    },
+    xml: { tagAlias: 'lowerCase' },
     associations: [],
-    types: [
-        {
-            name: 'ExtUserTask',
-            extends: ['bpmn:UserTask'],
-            properties: [
-                {
-                    name: 'worklist',
-                    isAttr: true,
-                    type: 'String',
-                },
-            ],
-        },
-    ],
+    types: [{ name: 'ExtUserTask', extends: ['bpmn:UserTask'], properties: [{ name: 'worklist', isAttr: true, type: 'String' }] }],
 };
 
 @Component({
@@ -54,12 +40,11 @@ export class BpmnComponent implements OnInit {
     public customTranslate = { translate: ['value', customTranslate] };
     flowCategories;
 
-    initialBpmn = `
-    <?xml version="1.0" encoding="UTF-8"?>
+    initialBpmn: string = `<?xml version="1.0" encoding="UTF-8"?>
     <bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
-     xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" 
-     xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" 
+     xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+     xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
      targetNamespace="http://bpmn.io/schema/bpmn" id="Definitions_1">
       <bpmn:process id="Process_1" isExecutable="false">
         <bpmn:startEvent id="StartEvent_1"/>
@@ -71,8 +56,7 @@ export class BpmnComponent implements OnInit {
           </bpmndi:BPMNShape>
         </bpmndi:BPMNPlane>
       </bpmndi:BPMNDiagram>
-    </bpmn:definitions>
-    `;
+    </bpmn:definitions>`;
 
     constructor(
         public dialog: MatDialog,
@@ -80,15 +64,13 @@ export class BpmnComponent implements OnInit {
         private _formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private snackBar: AlertService,
-        private operatorService: OperatorManagmentService
+        private operatorService: OperatorManagementService
     ) {
         this.flowService.getFlowCategories().subscribe((res) => (this.flowCategories = res));
     }
 
     ngOnInit(): void {
-        this.operatorService.getOperators('').subscribe((operators) => {
-            this.operatorsList = operators?.items;
-        });
+        this.operatorService.getOperators('').subscribe((operators) => (this.operatorsList = operators?.items));
 
         this.flowForm = this._formBuilder.group({ flowName: ['', [Validators.required]], flowCategory: ['', Validators.required] });
 
@@ -96,10 +78,7 @@ export class BpmnComponent implements OnInit {
             if (params['id']) {
                 this.flowService.getFlow(params['id']).subscribe((res) => {
                     this.flowID = res._id;
-                    this.flowForm.setValue({
-                        flowName: res.name,
-                        flowCategory: res.category._id,
-                    });
+                    this.flowForm.setValue({ flowName: res.name, flowCategory: res.category._id });
                     this.initialBpmn = json2xml(JSON.stringify(res.attributes), { compact: true });
                     this.load();
                 });
@@ -148,7 +127,7 @@ export class BpmnComponent implements OnInit {
 
         if (event.element.type === 'bpmn:EndEvent') {
             event.element.businessObject.name = 'نهایی';
-            const dialogRef = this.dialog.open(EndStateSettingDialogComponent, {
+            this.dialog.open(EndStateSettingDialogComponent, {
                 data: { flowId: this.flowID, stateName: event.element.businessObject.name, stateId: event.element.id, operators: this.operatorsList },
                 panelClass: 'dialog-w40',
             });
@@ -187,7 +166,7 @@ export class BpmnComponent implements OnInit {
                 return;
             }
 
-            const checkEndAccessPromise = new Promise((resolve, reject) => {
+            const checkEndAccessPromise = new Promise((resolve) => {
                 this.flowService.getFlowForm(endEvents?._attributes.id, this.flowID).subscribe(
                     (flowDetail) => {
                         if (flowDetail?.accessRights?.length > 0) {
@@ -195,9 +174,7 @@ export class BpmnComponent implements OnInit {
                         }
                         resolve(false);
                     },
-                    () => {
-                        resolve(false);
-                    }
+                    () => resolve(false)
                 );
             });
 

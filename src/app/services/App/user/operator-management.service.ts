@@ -9,7 +9,7 @@ import { UserService } from '../../API/services/user.service';
 @Injectable({
     providedIn: 'root',
 })
-export class OperatorManagmentService {
+export class OperatorManagementService {
     public operators: BehaviorSubject<Array<ResponseOperatorItemDto>> = new BehaviorSubject([]);
     skip: number = 0;
     searchKeyword: string = '';
@@ -28,8 +28,8 @@ export class OperatorManagmentService {
         };
         return this.operatorService.operatorControllerCreateOperator(param).pipe(
             map((res) => {
-                // update the oprators list
-                let operators = this.operators.getValue();
+                // update the operators list
+                const operators = this.operators.getValue();
                 operators.push(res);
                 this.operators.next(operators);
                 return res;
@@ -50,7 +50,7 @@ export class OperatorManagmentService {
             map((res) => {
                 // update the operators list
                 const operators = this.operators.getValue();
-                const editedOperator = operators.find((operator) => operator.id == partyID);
+                const editedOperator = operators.find((operator) => operator.id === partyID);
                 editedOperator.firstName = firstName ? firstName : editedOperator.firstName;
                 editedOperator.lastName = lastName ? lastName : editedOperator.lastName;
                 editedOperator.email = email ? email : editedOperator.email;
@@ -86,12 +86,11 @@ export class OperatorManagmentService {
                 role: 'Operator',
             },
         };
-        // todo beacuse we have just operator this is static
         return this.userService.userControllerCreateUser(param).pipe(
             map((res) => {
                 // update the operators list
-                let operators = this.operators.getValue();
-                let addedUserOperator = operators.find((operator) => operator.id == partyId);
+                const operators = this.operators.getValue();
+                const addedUserOperator = operators.find((operator) => operator.id === partyId);
                 addedUserOperator.userName = userName;
                 addedUserOperator.mobileNumber = mobileNumber;
                 addedUserOperator.userId = res.userId;

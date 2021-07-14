@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseOperatorItemDto } from 'app/services/API/models';
-import { OperatorManagmentService } from 'app/services/App/user/operator-managment.service';
+import { OperatorManagementService } from 'app/services/App/user/operator-management.service';
 
 @Component({
     selector: 'app-add-operator',
@@ -24,7 +24,7 @@ export class AddOperatorComponent {
         public matDialogRef: MatDialogRef<AddOperatorComponent>,
         @Inject(MAT_DIALOG_DATA) private _data: any,
         private _formBuilder: FormBuilder,
-        private operatorService: OperatorManagmentService,
+        private operatorService: OperatorManagementService,
         private snackBar: MatSnackBar
     ) {
         // Set the defaults
@@ -41,15 +41,6 @@ export class AddOperatorComponent {
         this.userForm = this.createUserForm();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Create contact form
-     *
-     * @returns {FormGroup}
-     */
     createOperatorForm(): FormGroup {
         return this._formBuilder.group({
             firstName: [this.operator.firstName],
@@ -63,10 +54,7 @@ export class AddOperatorComponent {
             userName: [this.operator.userName, Validators.required],
             mobileNumber: [
                 this.operator.mobileNumber,
-                [
-                    Validators.required,
-                    Validators.pattern('(0|\\+98)?([ ]|,|-|[()]){0,2}9[1|2|3|4]' + '([ ]|,|-|[()]){0,2}(?:[0-9]([ ]|,|-|[()]){0,2}){8}'),
-                ],
+                [Validators.required, Validators.pattern('(0|\\+98)?([ ]|,|-|[()]){0,2}9[1|2|3|4]' + '([ ]|,|-|[()]){0,2}(?:[0-9]([ ]|,|-|[()]){0,2}){8}')],
             ],
             password: ['', [Validators.required, Validators.minLength(6)]],
         });
@@ -81,9 +69,7 @@ export class AddOperatorComponent {
                     this.operatorForm.controls['lastName'].value,
                     this.operatorForm.controls['email'].value
                 )
-                .subscribe(() => {
-                    this.snackBar.open('اپراتور با موفقیت اصلاح شد', '', { panelClass: 'snack-success', direction: 'rtl', duration: 3000 });
-                });
+                .subscribe(() => this.snackBar.open('اپراتور با موفقیت اصلاح شد', '', { panelClass: 'snack-success', direction: 'rtl', duration: 3000 }));
         }
 
         if (this.operator.userName) this.matDialogRef.close();
@@ -98,12 +84,7 @@ export class AddOperatorComponent {
                     )
                     .subscribe(
                         () => this.matDialogRef.close(),
-                        () =>
-                            this.snackBar.open('اطلاعات تکراری وارد شده است', '', {
-                                panelClass: 'snack-error',
-                                direction: 'rtl',
-                                duration: 3000,
-                            })
+                        () => this.snackBar.open('اطلاعات تکراری وارد شده است', '', { panelClass: 'snack-error', direction: 'rtl', duration: 3000 })
                     );
             }
         }
@@ -141,19 +122,10 @@ export class AddOperatorComponent {
                 .subscribe(
                     () => {
                         this.loading = false;
-                        this.snackBar.open('اپراتور با موفقیت ثبت شد', '', {
-                            panelClass: 'snack-success',
-                            direction: 'rtl',
-                            duration: 3000,
-                        });
+                        this.snackBar.open('اپراتور با موفقیت ثبت شد', '', { panelClass: 'snack-success', direction: 'rtl', duration: 3000 });
                         this.matDialogRef.close();
                     },
-                    () =>
-                        this.snackBar.open('اطلاعات تکراری وارد شده است', '', {
-                            panelClass: 'snack-error',
-                            direction: 'rtl',
-                            duration: 3000,
-                        })
+                    () => this.snackBar.open('اطلاعات تکراری وارد شده است', '', { panelClass: 'snack-error', direction: 'rtl', duration: 3000 })
                 );
         }
     }

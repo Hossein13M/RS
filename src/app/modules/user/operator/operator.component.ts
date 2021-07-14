@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { ResponseOperatorItemDto } from 'app/services/API/models';
-import { OperatorManagmentService } from 'app/services/App/user/operator-managment.service';
-import { debounceTime, distinctUntilChanged, map, mapTo } from 'rxjs/operators';
+import { OperatorManagementService } from 'app/services/App/user/operator-management.service';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { AddOperatorComponent } from './add-operator/add-operator.component';
 import { Column } from '#shared/components/table/table.model';
 
@@ -23,7 +23,7 @@ export class OperatorComponent implements OnInit, AfterViewInit {
     column: Array<Column>;
     @ViewChild('status') statusRef: TemplateRef<any>;
 
-    constructor(private operatorService: OperatorManagmentService, private _matDialog: MatDialog) {
+    constructor(private operatorService: OperatorManagementService, private _matDialog: MatDialog) {
         this.searchInput = new FormControl('');
     }
 
@@ -47,12 +47,12 @@ export class OperatorComponent implements OnInit, AfterViewInit {
 
         this.searchInput.valueChanges
             .pipe(debounceTime(300), distinctUntilChanged())
-            .subscribe((searchText) => this.operatorService.getOperators(searchText).subscribe((i) => {}));
+            .subscribe((searchText) => this.operatorService.getOperators(searchText).subscribe(() => {}));
     }
 
     initColumns(): void {
         this.column = [
-            {id: 'index', type: 'index'},
+            { id: 'index', type: 'index' },
             {
                 id: 'firstName',
                 name: 'نام',
