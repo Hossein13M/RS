@@ -17,7 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
     public loginForm: FormGroup;
-    public waiting = false;
+    public loading = false;
 
     private static isUserUnauthorized(user: User): boolean {
         return user.status === Status.unauthorized;
@@ -30,10 +30,10 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private _fuseConfigService: FuseConfigService,
-        private _formBuilder: FormBuilder,
+        private fb: FormBuilder,
         private Authentication: AuthenticationService,
         private authorizationService: AuthorizationService,
-        private sbs: AlertService,
+        private alertService: AlertService,
         private router: Router,
         private activatedRoute: ActivatedRoute
     ) {
@@ -48,36 +48,32 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.loginForm = this._formBuilder.group({ username: ['', [Validators.required]], password: ['', Validators.required] });
+        this.loginForm = this.fb.group({ username: [null, [Validators.required]], password: [null, Validators.required] });
     }
 
     public login(): void {
-        this.waiting = true;
+        this.loading = true;
         this.authorizationService.login(this.loginForm.value).subscribe(
             (token) => {
-                this.waiting = false;
+                this.loading = false;
                 this.Authentication.login(this.loginForm.value).subscribe();
                 LoginComponent.storeToken(token.accessToken);
                 const user = this.authorizationService.decodeToken(token);
                 localStorage.setItem('user', JSON.stringify(user));
-                if (LoginComponent.isUserUnauthorized(user)) {
-                    this.redirectToChangePassword();
-                } else {
-                    this.redirectToOrganization();
-                }
+                LoginComponent.isUserUnauthorized(user) ? this.redirectToChangePassword() : this.redirectToOrganization();
             },
             () => {
-                this.waiting = false;
-                this.sbs.onError('ورود موفقیت آمیز نبود.');
+                this.loading = false;
+                this.alertService.onError('ورود موفقیت آمیز نبود.');
             }
         );
     }
 
     private redirectToChangePassword(): void {
-        this.router.navigate([`./change-password`], { relativeTo: this.activatedRoute });
+        this.router.navigate([`./change-password`], { relativeTo: this.activatedRoute }).finally();
     }
 
     private redirectToOrganization(): void {
-        this.router.navigate([`./organization`], { relativeTo: this.activatedRoute });
+        this.router.navigate([`./organization`], { relativeTo: this.activatedRoute }).finally();
     }
 }

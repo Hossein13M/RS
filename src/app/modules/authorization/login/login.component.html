@@ -26,13 +26,13 @@
     <div id="login-form-wrapper" dir="rtl" fusePerfectScrollbar [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }">
         <div id="login-form">
             <div class="logo" fxHide.gt-xs>
-                <img src="../../../../assets/images/white-logo.png" />
+                <img src="../../../../assets/images/white-logo.png" alt="white logo image" />
             </div>
 
             <div class="title">ورود به حساب کاربری</div>
 
-            <form name="loginForm" (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
-                <mat-form-field appearance="outline">
+            <form name="loginForm" (submit)="login()" [formGroup]="loginForm" novalidate>
+                <mat-form-field appearance="outline" class="mb-2">
                     <mat-label>نام کاربری</mat-label>
                     <label>
                         <input matInput formControlName="username" />
@@ -49,9 +49,9 @@
                     <mat-error> کلمه عبور الزامی می باشد. </mat-error>
                 </mat-form-field>
 
-                <button mat-raised-button color="primary" class="submit-button" [disabled]="loginForm.invalid || waiting">
-                    <span *ngIf="!waiting">ورود</span>
-                    <img *ngIf="waiting" width="30px" src="../../../../assets/images/loading.svg" alt="loading" />
+                <button mat-raised-button color="primary" class="submit-button" type="submit" [disabled]="loginForm.invalid || loading">
+                    <span *ngIf="!loading">ورود</span>
+                    <img *ngIf="loading" width="30px" src="../../../../assets/images/loading.svg" alt="loading" />
                 </button>
             </form>
         </div>
