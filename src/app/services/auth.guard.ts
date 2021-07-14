@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
                 out.next(true);
             }
         } else {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/login']).finally();
             out.next(false);
         }
         return out.asObservable().pipe(
@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate {
             this.userInfoService.getUserInfo();
             return true;
         } else {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/login']).finally();
             return false;
         }
     }
