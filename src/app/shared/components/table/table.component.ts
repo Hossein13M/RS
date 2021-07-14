@@ -286,7 +286,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
         const _paginationObject: PaginationModel = { skip: 0, limit: 5, total: 100 };
         _paginationObject.limit = pageEvent.pageSize;
         _paginationObject.skip = pageEvent.pageIndex;
-        console.log(_paginationObject);
         this.paginationEvent.emit(_paginationObject);
     }
 

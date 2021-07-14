@@ -23,38 +23,16 @@ export class Page1Component implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.show = true;
         this.columns = [
-            {
-                name: 'نام',
-                id: 'name',
-                type: 'string',
-                minWidth: '200px',
-                search: {
-                    type: 'text',
-                    mode: TableSearchMode.LOCAL,
-                },
-            },
-            {
-                name: 'شناسه نماد',
-                id: 'ticker',
-                type: 'string',
-                minWidth: '100px',
-            },
-            {
-                name: 'سود/ضرر',
-                id: 'profit',
-                type: 'profit',
-                minWidth: '150px',
-            },
+            { name: 'نام', id: 'name', type: 'string', minWidth: '200px', search: { type: 'text', mode: TableSearchMode.LOCAL } },
+            { name: 'شناسه نماد', id: 'ticker', type: 'string', minWidth: '100px' },
+            { name: 'سود/ضرر', id: 'profit', type: 'profit', minWidth: '150px' },
             {
                 // NO Search Option Example
                 name: 'نوع',
                 id: 'type',
                 type: 'number',
                 minWidth: '130px',
-                search: {
-                    type: 'select',
-                    mode: TableSearchMode.LOCAL,
-                },
+                search: { type: 'select', mode: TableSearchMode.LOCAL },
             },
             {
                 name: 'وضعیت',
@@ -64,53 +42,23 @@ export class Page1Component implements OnInit, AfterViewInit {
                 search: {
                     type: 'select',
                     options: [
-                        {
-                            name: 'فعال',
-                            value: 'active',
-                        },
-                        {
-                            name: 'غیرفعال',
-                            value: 'deleted',
-                        },
+                        { name: 'فعال', value: 'active' },
+                        { name: 'غیرفعال', value: 'deleted' },
                     ],
                     mode: TableSearchMode.LOCAL,
                 },
-                convert: (value: any) => {
-                    return value === 'active' ? 'فعال' : 'غیر فعال';
-                },
+                convert: (value: any) => (value === 'active' ? 'فعال' : 'غیر فعال'),
             },
-            {
-                name: 'نام نماد',
-                id: 'symbol',
-                type: 'string',
-                minWidth: '150px',
-                search: {
-                    type: 'text',
-                    mode: TableSearchMode.SERVER,
-                },
-            },
-            {
-                name: 'محل معامله',
-                id: 'isInBourse',
-                type: 'string',
-                minWidth: '130px',
-                convert: (value: any) => {
-                    return value ? 'بورس' : 'غیر بورسی';
-                },
-            },
+            { name: 'نام نماد', id: 'symbol', type: 'string', minWidth: '150px', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            { name: 'محل معامله', id: 'isInBourse', type: 'string', minWidth: '130px', convert: (value: any) => (value ? 'بورس' : 'غیر بورسی') },
             {
                 name: 'زمان معامله',
                 id: 'date',
                 type: 'date',
                 width: '80px',
                 minWidth: '80px',
-                search: {
-                    type: 'date',
-                    mode: TableSearchMode.LOCAL,
-                },
-                convert: (value: any) => {
-                    return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-                },
+                search: { type: 'date', mode: TableSearchMode.LOCAL },
+                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
             },
             {
                 name: 'زمان فروش',
@@ -118,20 +66,10 @@ export class Page1Component implements OnInit, AfterViewInit {
                 type: 'date',
                 width: '80px',
                 minWidth: '80px',
-                search: {
-                    type: 'date',
-                    mode: TableSearchMode.LOCAL,
-                },
-                convert: (value: any) => {
-                    return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-                },
+                search: { type: 'date', mode: TableSearchMode.LOCAL },
+                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
             },
-            {
-                name: 'شخصی',
-                id: 'custom1',
-                type: 'custom',
-                cellTemplate: this.mamad,
-            },
+            { name: 'شخصی', id: 'custom1', type: 'custom', cellTemplate: this.mamad },
             {
                 name: 'عملیات',
                 id: 'operation',
@@ -139,27 +77,9 @@ export class Page1Component implements OnInit, AfterViewInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    {
-                        name: 'مشاهده',
-                        icon: 'visibility',
-                        color: 'primary',
-                        operation: 'show',
-                    },
-                    {
-                        name: 'ویرایش',
-                        icon: 'create',
-                        color: 'accent',
-                        operation: 'edit',
-                    },
-                    {
-                        name: 'حذف',
-                        icon: 'delete',
-                        color: 'warn',
-                        operation: ({ row, operationItem }: any) => {
-                            console.log('from page 1 component : ', row);
-                            operationItem.icon = 'toggle_off';
-                        },
-                    },
+                    { name: 'مشاهده', icon: 'visibility', color: 'primary', operation: 'show' },
+                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: 'edit' },
+                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row, operationItem }: any) => (operationItem.icon = 'toggle_off') },
                 ],
             },
             {
@@ -174,27 +94,9 @@ export class Page1Component implements OnInit, AfterViewInit {
                         data: {
                             title: 'یه دیالوگ تستی',
                             columns: [
-                                {
-                                    name: 'نام',
-                                    id: 'name',
-                                    type: 'string',
-                                    headerAlign: 'center',
-                                    dataAlign: 'center',
-                                },
-                                {
-                                    name: 'حجم',
-                                    id: 'volume',
-                                    type: 'number',
-                                    headerAlign: 'center',
-                                    dataAlign: 'center',
-                                },
-                                {
-                                    name: 'ارزش',
-                                    id: 'value',
-                                    type: 'price',
-                                    headerAlign: 'center',
-                                    dataAlign: 'center',
-                                },
+                                { name: 'نام', id: 'name', type: 'string', headerAlign: 'center', dataAlign: 'center' },
+                                { name: 'حجم', id: 'volume', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+                                { name: 'ارزش', id: 'value', type: 'price', headerAlign: 'center', dataAlign: 'center' },
                             ],
                             data: row.details,
                         },
