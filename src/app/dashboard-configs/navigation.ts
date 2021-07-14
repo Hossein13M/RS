@@ -11,6 +11,16 @@ export const navigation: FuseNavigation[] = [
             { id: 'user', title: 'کاربران', type: 'item', icon: 'people', url: '/organizations-structure/user' },
         ],
     },
+    {
+        id: 'contract',
+        title: 'مدیریت قراردادها',
+        icon: 'gavel',
+        type: 'collapsable',
+        children: [
+            // { id: 'contractsList', title: 'فهرست قراردادها', type: 'item', icon: 'fact_check', url: '/contract/contract-list' },
+            { id: 'contractType', title: 'نوع قرارداد', type: 'item', icon: 'format_list_bulleted', url: '/contract/contract-type' },
+        ],
+    },
 
     { id: 'assets', title: 'دارایی های تحت مدیریت', type: 'item', icon: 'money', url: '/aum' },
 
