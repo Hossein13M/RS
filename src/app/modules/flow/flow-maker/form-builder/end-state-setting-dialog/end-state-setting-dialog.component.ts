@@ -1,10 +1,10 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from '../../../../../services/alert.service';
 import { FlowsService } from '../../../../../services/App/flow/flow.service';
-import { OperatorManagmentService } from '../../../../../services/App/user/operator-managment.service';
-import { searchSelectStateType } from '../../../../../shared/components/search-select/search-select.component';
+import { OperatorManagementService } from '../../../../../services/App/user/operator-management.service';
+import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
 import { SaveDialogComponent } from '../save-dialog/save-dialog.component';
 
 @Component({
@@ -20,7 +20,7 @@ export class EndStateSettingDialogComponent implements OnInit {
 
     constructor(
         public dialog: MatDialog,
-        private operatorService: OperatorManagmentService,
+        private operatorService: OperatorManagementService,
         private fb: FormBuilder,
         private flowService: FlowsService,
         private alert: AlertService,
@@ -52,9 +52,7 @@ export class EndStateSettingDialogComponent implements OnInit {
         });
 
         this.dialogRef.disableClose = true;
-        this.dialogRef.backdropClick().subscribe((_) => {
-            this.closeThisDialog();
-        });
+        this.dialogRef.backdropClick().subscribe(() => this.closeThisDialog());
     }
 
     private createForm(): void {
@@ -78,19 +76,13 @@ export class EndStateSettingDialogComponent implements OnInit {
     closeThisDialog(): void {
         if (this.fg.value.operators.length === 0) {
             this.redBorder = true;
-            setTimeout(() => {
-                this.redBorder = false;
-            }, 1000);
+            setTimeout(() => (this.redBorder = false), 1000);
             this.alert.onError('این مرحله نمی‌تواند بدون سطح دسترسی باشد.');
             this.fg.markAsDirty();
             return;
         }
 
-        if (this.defaultValue !== this.fg.value) {
-            this.openSaveDialog();
-        } else {
-            this.dialogRef.close();
-        }
+        this.defaultValue !== this.fg.value ? this.openSaveDialog() : this.dialogRef.close();
     }
 
     openSaveDialog(): void {
@@ -105,12 +97,8 @@ export class EndStateSettingDialogComponent implements OnInit {
 
             if (result === 'true') {
                 this.flowService.addFlowForm(this.data.stateId, this.data.flowId, this.data.stateName, {}, this.fg.value.operators).subscribe(
-                    () => {
-                        this.alert.onSuccess('تغییرات با موفقیت ذخیره شد.');
-                    },
-                    () => {
-                        this.alert.onError('تغییرات ذخیره نشد.');
-                    }
+                    () => this.alert.onSuccess('تغییرات با موفقیت ذخیره شد.'),
+                    () => this.alert.onError('تغییرات ذخیره نشد.')
                 );
             }
         });
@@ -122,9 +110,7 @@ export class EndStateSettingDialogComponent implements OnInit {
                 this.alert.onSuccess('تغییرات با موفقیت ذخیره شد.');
                 this.defaultValue = this.fg.value;
             },
-            () => {
-                this.alert.onError('تغییرات ذخیره نشد.');
-            }
+            () => this.alert.onError('تغییرات ذخیره نشد.')
         );
     }
 }
