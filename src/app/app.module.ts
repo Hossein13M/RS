@@ -36,7 +36,6 @@ const appRoutes: Routes = [
     },
     {
         path: 'contract',
-        // canActivate: [AuthGuard],
         loadChildren: () => import('app/modules/contract/contract.module').then((m) => m.ContractModule),
     },
     {
