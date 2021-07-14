@@ -65,7 +65,6 @@ export class ChangePasswordComponent implements OnInit {
         const { newPassword, confirmNewPassword } = this.form.controls;
         newPassword.valueChanges.pipe(takeUntil(this._unsubscribeAll)).subscribe((value: string) => {
             confirmNewPassword.setValidators([Validators.required, matchValidator(value)]);
-            console.log(confirmNewPassword.errors);
         });
     }
 }

@@ -11,8 +11,9 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 export class AuthorizationService {
     constructor(private http: HttpClient) {}
 
-    public login(model: Login): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`/api/v2/auth/login`, model);
+    public login(loginInfo: Login): Observable<LoginResponse> {
+        console.log({ loginInfo });
+        return this.http.post<LoginResponse>(`/api/v2/auth/login`, loginInfo);
     }
 
     public changePassword(model: ChangePassword): Observable<null> {
