@@ -9,6 +9,7 @@ export interface UserRole {
 export interface User {
     firstname: string;
     lastname: string;
+    fullname: string;
     email: string;
     username: string;
     password: string;
