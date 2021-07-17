@@ -19,10 +19,6 @@ export class UserInfoService {
     private userTokenInfoSubject: BehaviorSubject<any>;
     public userTokenInfo$: Observable<any>;
 
-    public get userTokenInfo(): any {
-        return this.userInfoSubject.getValue();
-    }
-
     constructor(private http: HttpClient, private authenticationService: AuthenticationService) {
         this.userInfoSubject = new BehaviorSubject<any>(null);
         this.userInfo$ = this.userInfoSubject.asObservable().pipe(
@@ -46,7 +42,6 @@ export class UserInfoService {
 
         this.authenticationService.userToken$.subscribe((accessToken) => {
             const userTokenInfo = jwtDecode(accessToken);
-            this.getUserInfo().subscribe();
             this.userTokenInfoSubject.next(userTokenInfo);
         });
     }

@@ -4,7 +4,6 @@ import { AuthService } from 'app/services/API/services/auth.service';
 import jwtDecode from 'jwt-decode';
 import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { UserInfoService } from './App/userInfo/user-info.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -15,7 +14,7 @@ export class AuthenticationService {
         return this.userTokenSubject.getValue();
     }
 
-    constructor(private authService: AuthService, private router: Router, private userInfo: UserInfoService) {
+    constructor(private authService: AuthService, private router: Router) {
         this.userTokenSubject = new BehaviorSubject<any>(AuthenticationService.getAndValidateTokenFromLocalStorage());
         this.userToken$ = this.userTokenSubject.asObservable().pipe(
             switchMap(
@@ -45,12 +44,7 @@ export class AuthenticationService {
     }
 
     login(body): Observable<any> {
-        return this.authService.authControllerLogin(body).pipe(
-            map((res) => {
-                this.userTokenSubject.next(res.accessToken);
-                this.userInfo.getUserInfo().subscribe();
-            })
-        );
+        return this.authService.authControllerLogin(body).pipe(map((res) => this.userTokenSubject.next(res.accessToken)));
     }
 
     logout(): Promise<any> {
