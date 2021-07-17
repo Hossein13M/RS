@@ -31,7 +31,7 @@ export class UtilityFunctions {
         return newArr;
     }
 
-    static getActiveOrganizationId(): number {
-        return JSON.parse(localStorage.getItem('activeOrganization')).id;
+    static getActiveOrganizationInfo(requiredInfoType: 'code' | 'id'): number {
+        return JSON.parse(localStorage.getItem('activeOrganization'))[requiredInfoType];
     }
 }
