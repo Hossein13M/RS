@@ -17,4 +17,8 @@ export class ContractService {
     public changeContractTypeStatus(id: string): Observable<any> {
         return this.http.put<any>(`http://172.22.255.239:3006/api/v1/contract-type/inactive/${id}`, {});
     }
+
+    public getContractTypeForms(organization: number): Observable<any> {
+        return this.http.get<any>(`http://172.22.255.239:3006/api/v1/contract-type-form/`, { params: { organization } });
+    }
 }
