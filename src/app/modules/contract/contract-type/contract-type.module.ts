@@ -7,6 +7,7 @@ import { LayoutModule } from '../../../layout/layout.module';
 import { MatButtonModule } from '@angular/material/button';
 import { ShareModule } from '#shared/share.module';
 import { ContractTypeDialogComponent } from './contract-type-dialog/contract-type-dialog.component';
+import { UserService } from '../../organizations-structure/user/user.service';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractTypeComponent }];
 
@@ -14,5 +15,6 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractTypeCo
     declarations: [ContractTypeComponent, ContractTypeDialogComponent],
     imports: [CommonModule, RouterModule.forChild(routes), MatIconModule, LayoutModule, MatButtonModule, ShareModule],
     entryComponents: [ContractTypeDialogComponent],
+    providers: [UserService],
 })
 export class ContractTypeModule {}

@@ -13,7 +13,7 @@ import { ContractTypeDialogComponent } from './contract-type-dialog/contract-typ
 })
 export class ContractTypeComponent implements OnInit {
     public contractTypes: Array<ContractType>;
-    private activeOrganizationId: number = UtilityFunctions.getActiveOrganizationId();
+    private activeOrganizationId: number = UtilityFunctions.getActiveOrganizationInfo('id');
     public pagination = { skip: 0, limit: 5, total: 100 };
 
     tableColumn: Array<Column> = [
@@ -39,6 +39,7 @@ export class ContractTypeComponent implements OnInit {
 
     ngOnInit(): void {
         this.getContractTypes();
+        this.openContractTypeDialog('create');
     }
 
     public paginationControl(pageEvent?: any): void {
