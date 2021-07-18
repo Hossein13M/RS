@@ -2,7 +2,7 @@ const { guessProductionMode } = require('@ngneat/tailwind');
 const colors = require('tailwindcss/colors');
 
 module.exports = {
-    prefix: 'tw-',
+    prefix: '',
     important: true,
     purge: {
         enabled: guessProductionMode(),
