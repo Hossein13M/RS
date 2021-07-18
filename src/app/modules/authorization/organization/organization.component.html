@@ -24,18 +24,18 @@
     </div>
 
     <div id="login-form-wrapper" dir="rtl" fusePerfectScrollbar [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }">
-        <div id="login-form" class="tw-w-full">
+        <div id="login-form" class="w-full">
             <div class="logo" fxHide.gt-xs>
-                <img src="../../../../assets/images/white-logo.png" />
+                <img src="../../../../assets/images/white-logo.png" alt="white logo" />
             </div>
 
             <div class="title">سازمان فعال</div>
 
-            <form name="form" class="tw-w-full" (ngSubmit)="onSubmit()" [formGroup]="form" novalidate>
+            <form name="form" class="w-full" (ngSubmit)="onSubmit()" [formGroup]="form" novalidate>
                 <mat-form-field *ngIf="organizationData && organizationData.length > 0" appearance="outline">
                     <mat-label>سازمان</mat-label>
                     <mat-select formControlName="organization" required>
-                        <mat-option class="tw-text-right" [value]="organization" *ngFor="let organization of organizationData">
+                        <mat-option class="text-right" [value]="organization" *ngFor="let organization of organizationData">
                             {{ organization.name }}
                         </mat-option>
                     </mat-select>
