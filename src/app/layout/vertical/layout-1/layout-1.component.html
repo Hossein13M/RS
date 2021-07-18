@@ -11,26 +11,21 @@
     </ng-container>
     <!-- / TOOLBAR: Above -->
 
-    <div id="container-1" class="container">
+    <div id="container-1" class="fuse-container">
         <!-- NAVBAR: Left -->
         <ng-container *ngIf="fuseConfig.layout.navbar.position === 'left'">
             <ng-container *ngTemplateOutlet="leftNavbar"></ng-container>
         </ng-container>
         <!-- / NAVBAR: Left -->
 
-        <div id="container-2" class="container">
+        <div id="container-2" class="fuse-container">
             <!-- TOOLBAR: Below fixed -->
             <ng-container *ngIf="fuseConfig.layout.toolbar.position === 'below-fixed'">
                 <ng-container *ngTemplateOutlet="toolbar"></ng-container>
             </ng-container>
             <!-- / TOOLBAR: Below fixed -->
 
-            <div
-                id="container-3"
-                class="container"
-                fusePerfectScrollbar
-                [fusePerfectScrollbarOptions]="{ suppressScrollX: true, updateOnRouteChange: true }"
-            >
+            <div id="container-3" class="fuse-container" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{ suppressScrollX: true, updateOnRouteChange: true }">
                 <!-- TOOLBAR: Below static -->
                 <ng-container *ngIf="fuseConfig.layout.toolbar.position === 'below-static'">
                     <ng-container *ngTemplateOutlet="toolbar"></ng-container>

@@ -17,27 +17,26 @@ vertical-layout-1 {
         min-width: 0;
 
         // Container 1
-        > .container {
+        > .fuse-container {
             position: relative;
             display: flex;
-            flex: 1 1 0%;
+            flex: 1 1 0;
             width: 100%;
             min-height: 0;
-            min-width: 0;
 
             // Container 2
-            > .container {
+            > .fuse-container {
                 position: relative;
                 display: flex;
-                flex: 1 1 0%;
+                flex: 1 1 0;
                 flex-direction: column;
                 min-width: 0;
 
                 // Container 3 (Scrollable)
-                > .container {
+                > .fuse-container {
                     position: relative;
                     display: flex;
-                    flex: 1 1 0%;
+                    flex: 1 1 0;
                     flex-direction: column;
                     overflow-x: hidden;
                     overflow-y: auto;
@@ -46,11 +45,11 @@ vertical-layout-1 {
                     // Content component
                     content {
                         &.inner-scroll {
-                            flex: 1 1 0%;
+                            flex: 1 1 0;
                             min-height: 0;
 
                             > *:not(router-outlet) {
-                                flex: 1 1 0%;
+                                flex: 1 1 0;
                             }
                         }
                     }
