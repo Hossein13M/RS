@@ -1,4 +1,4 @@
-const colors = require('tailwindcss/colors');
+const { colors } = require('tailwindcss/defaultTheme');
 
 module.exports = {
     prefix: '',
@@ -14,6 +14,5 @@ module.exports = {
     variants: {
         extend: {},
     },
-
     plugins: [require('@tailwindcss/typography')],
 };
