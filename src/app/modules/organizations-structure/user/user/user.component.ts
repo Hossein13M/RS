@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from '../../../../services/alert.service';
 import { UserBatchComponent } from './user-batch/user-batch.component';
 import { Organization, User } from '../user.model';
@@ -147,7 +147,6 @@ export class UserComponent implements OnInit, OnDestroy {
         this.matDialog
             .open(UserBatchComponent, {
                 data: null,
-                panelClass: 'tw-dialog-fullscreen',
             })
             .afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
@@ -161,7 +160,6 @@ export class UserComponent implements OnInit, OnDestroy {
         this.matDialog
             .open(UserBatchComponent, {
                 data: user.id,
-                panelClass: 'tw-dialog-fullscreen',
             })
             .afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
@@ -171,7 +169,7 @@ export class UserComponent implements OnInit, OnDestroy {
     }
 
     private changeUserStatus(user: User): void {
-        this.userService.changeUserStatus(user.id).subscribe((result) => this.getUsers([]));
+        this.userService.changeUserStatus(user.id).subscribe(() => this.getUsers([]));
     }
 
     ngOnDestroy(): void {

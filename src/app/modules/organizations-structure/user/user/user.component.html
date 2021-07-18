@@ -1,16 +1,16 @@
 <div class="page-layout">
     <app-header pageTitle="مدیریت کاربر">
-        <form [formGroup]="organizationsForm" dir="rtl" class="tw-rtl tw-mr-auto tw-ml-5">
-            <mat-form-field appearance="standard" class="tw-w-80">
+        <form [formGroup]="organizationsForm" dir="rtl" class=" rtl  mr-auto  ml-5">
+            <mat-form-field appearance="standard" class=" w-80">
                 <mat-label>نهاد</mat-label>
                 <mat-select formControlName="organization" multiple required>
                     <ngx-mat-select-search
-                        class="tw-text-right"
+                        class=" text-right"
                         [noEntriesFoundLabel]="'یافت نشد'"
                         [placeholderLabel]="'جستجو'"
                         [formControl]="organizationsSearchControl"
                     ></ngx-mat-select-search>
-                    <mat-option class="tw-text-right" [value]="organize?.code" *ngFor="let organize of organizations">
+                    <mat-option class=" text-right" [value]="organize?.code" *ngFor="let organize of organizations">
                         {{ organize?.name }}
                     </mat-option>
                 </mat-select>

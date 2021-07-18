@@ -1,11 +1,11 @@
-<div class="tw-w-screen-80">
+<div class=" w-screen-80">
     <div [title]="isUpdate() ? 'تغییر' : 'ایجاد'" appDialogHeader>
         <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
     </div>
-    <mat-horizontal-stepper *ngIf="isUpdate() ? userData : true" class="tw-p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
+    <mat-horizontal-stepper *ngIf="isUpdate() ? userData : true" class=" p-12" dir="rtl" #stepper="matHorizontalStepper" linear>
         <mat-step>
             <ng-template matStepLabel>اطلاعات پایه</ng-template>
-            <form [formGroup]="form" class="tw-grid tw-grid-cols-3 tw-gap-7 tw-flex-wrap tw-pt-12" dir="rtl">
+            <form [formGroup]="form" class=" grid  grid-cols-3  gap-7  flex-wrap  pt-12" dir="rtl">
                 <mat-form-field appearance="outline">
                     <mat-label>نام کاربری</mat-label>
                     <input formControlName="username" matInput required />
@@ -48,7 +48,7 @@
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
-                <div class="tw-col-span-3">
+                <div class=" col-span-3">
                     <button color="primary" mat-raised-button matStepperNext>بعدی</button>
                 </div>
             </form>
@@ -56,12 +56,12 @@
 
         <mat-step [stepControl]="form">
             <ng-template matStepLabel>چینش سازمانی</ng-template>
-            <form [formGroup]="form" class="tw-mt-12" dir="rtl">
-                <div class="form tw-flex tw-flex-col tw-gap-7 tw-overflow-auto tw-pl-5">
-                    <div formArrayName="userRoles" *ngFor="let groupForm of userOrganizations.controls; let index = index" class="tw-w-full">
-                        <div [formGroupName]="index" class="tw-grid tw-grid-cols-2 tw-gap-7">
-                            <div class="tw-col-span-2 tw-flex tw-justify-between tw-align-center">
-                                <h2 class="tw-m-0">چینش سازمانی: {{ index + 1 }}</h2>
+            <form [formGroup]="form" class=" mt-12" dir="rtl">
+                <div class="form  flex  flex-col  gap-7  overflow-auto  pl-5">
+                    <div formArrayName="userRoles" *ngFor="let groupForm of userOrganizations.controls; let index = index" class=" w-full">
+                        <div [formGroupName]="index" class=" grid  grid-cols-2  gap-7">
+                            <div class=" col-span-2  flex  justify-between  align-center">
+                                <h2 class=" m-0">چینش سازمانی: {{ index + 1 }}</h2>
                                 <button
                                     *ngIf="this.userOrganizationControlsData.length > 1"
                                     (click)="deleteOrganization(index)"
@@ -83,13 +83,13 @@
                                 <mat-label>نهاد</mat-label>
                                 <mat-select formControlName="organizationCode" required>
                                     <ngx-mat-select-search
-                                        class="tw-text-right"
+                                        class=" text-right"
                                         [noEntriesFoundLabel]="'یافت نشد'"
                                         [placeholderLabel]="'جستجو'"
                                         [formControl]="userOrganizationControlsData[index].organizationsSearchControl"
                                     ></ngx-mat-select-search>
                                     <mat-option
-                                        class="tw-text-right"
+                                        class=" text-right"
                                         [value]="organize.code"
                                         *ngFor="let organize of userOrganizationControlsData[index].organizations"
                                     >
@@ -111,7 +111,7 @@
                             <mat-form-field appearance="outline" *ngIf="userOrganizationControlsData[index].roles.length > 0">
                                 <mat-label>نقش</mat-label>
                                 <mat-select formControlName="roles" multiple required>
-                                    <mat-option class="tw-text=right" *ngFor="let role of userOrganizationControlsData[index].roles" [value]="role.id">
+                                    <mat-option class=" text=right" *ngFor="let role of userOrganizationControlsData[index].roles" [value]="role.id">
                                         {{ role.name }}
                                     </mat-option>
                                 </mat-select>
@@ -119,13 +119,13 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <button (click)="addOrganization()" class="tw-w-full" color="accent" mat-flat-button type="button">
+                    <button (click)="addOrganization()" class=" w-full" color="accent" mat-flat-button type="button">
                         افزودن چینش سازمانی<mat-icon>add</mat-icon>
                     </button>
                 </div>
 
-                <div class="tw-mt-10">
-                    <button class="tw-ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
+                <div class=" mt-10">
+                    <button class=" ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
                     <button color="warn" mat-raised-button (click)="onSubmit()">ثبت کاربر</button>
                 </div>
             </form>
