@@ -55,17 +55,17 @@ export const navigation: FuseNavigation[] = [
             },
         ],
     },
-    {
-        id: 'baseData',
-        title: 'مدیریت قراردادها',
-        icon: 'fact_check',
-        type: 'collapsable',
-        children: [
-            { id: 'wfe', title: 'الگوی قراردادها', type: 'item', icon: 'developer_board', url: '/flow/flows' },
-            { id: 'contractDashboard', title: 'کارتابل قراردادها', type: 'item', icon: 'email', url: '/flow/instance' },
-            { id: 'operator', title: 'مدیریت مشتریان', type: 'item', icon: 'people', url: '/user/customer' },
-        ],
-    },
+    // {
+    //     id: 'baseData',
+    //     title: 'مدیریت قراردادها',
+    //     icon: 'fact_check',
+    //     type: 'collapsable',
+    //     children: [
+    //         { id: 'wfe', title: 'الگوی قراردادها', type: 'item', icon: 'developer_board', url: '/flow/flows' },
+    //         { id: 'contractDashboard', title: 'کارتابل قراردادها', type: 'item', icon: 'email', url: '/flow/instance' },
+    //         { id: 'operator', title: 'مدیریت مشتریان', type: 'item', icon: 'people', url: '/user/customer' },
+    //     ],
+    // },
     {
         id: 'settings',
         title: 'تنظیمات سیستم',
