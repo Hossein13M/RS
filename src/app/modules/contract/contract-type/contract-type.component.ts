@@ -29,8 +29,18 @@ export class ContractTypeComponent implements OnInit {
             sticky: true,
             showSearchButtons: false,
             operations: [
-                { name: 'ویرایش', icon: 'mode_edit', color: 'accent', operation: (row: any) => this.openContractTypeDialog('edit', row) },
-                { name: 'تغییر وضعیت', icon: 'sync_alt', color: 'accent', operation: (row: any) => this.changeContractTypeStatus(row.row._id) },
+                {
+                    name: 'ویرایش',
+                    icon: 'mode_edit',
+                    color: 'accent',
+                    operation: (row: { operationItem: any; row: ContractType }) => this.openContractTypeDialog('edit', row.row),
+                },
+                {
+                    name: 'تغییر وضعیت',
+                    icon: 'sync_alt',
+                    color: 'accent',
+                    operation: (row: { operationItem: any; row: ContractType }) => this.changeContractTypeStatus(row.row._id),
+                },
             ],
         },
     ];
