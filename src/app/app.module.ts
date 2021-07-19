@@ -35,6 +35,10 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/modules/flow/flow.module').then((m) => m.FlowModule),
     },
     {
+        path: 'contract',
+        loadChildren: () => import('app/modules/contract/contract.module').then((m) => m.ContractModule),
+    },
+    {
         path: 'aum',
         loadChildren: () => import('app/modules/aum/aum.module').then((m) => m.AUMModule),
     },

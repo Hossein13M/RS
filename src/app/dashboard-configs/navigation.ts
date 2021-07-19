@@ -11,6 +11,16 @@ export const navigation: FuseNavigation[] = [
             { id: 'user', title: 'کاربران', type: 'item', icon: 'people', url: '/organizations-structure/user' },
         ],
     },
+    {
+        id: 'contract',
+        title: 'مدیریت قراردادها',
+        icon: 'gavel',
+        type: 'collapsable',
+        children: [
+            // { id: 'contractsList', title: 'فهرست قراردادها', type: 'item', icon: 'fact_check', url: '/contract/contract-list' },
+            { id: 'contractType', title: 'نوع قرارداد', type: 'item', icon: 'format_list_bulleted', url: '/contract/contract-type' },
+        ],
+    },
 
     { id: 'assets', title: 'دارایی های تحت مدیریت', type: 'item', icon: 'money', url: '/aum' },
 
@@ -45,17 +55,17 @@ export const navigation: FuseNavigation[] = [
             },
         ],
     },
-    {
-        id: 'baseData',
-        title: 'مدیریت قراردادها',
-        icon: 'fact_check',
-        type: 'collapsable',
-        children: [
-            { id: 'wfe', title: 'الگوی قراردادها', type: 'item', icon: 'developer_board', url: '/flow/flows' },
-            { id: 'contractDashboard', title: 'کارتابل قراردادها', type: 'item', icon: 'email', url: '/flow/instance' },
-            { id: 'operator', title: 'مدیریت مشتریان', type: 'item', icon: 'people', url: '/user/customer' },
-        ],
-    },
+    // {
+    //     id: 'baseData',
+    //     title: 'مدیریت قراردادها',
+    //     icon: 'fact_check',
+    //     type: 'collapsable',
+    //     children: [
+    //         { id: 'wfe', title: 'الگوی قراردادها', type: 'item', icon: 'developer_board', url: '/flow/flows' },
+    //         { id: 'contractDashboard', title: 'کارتابل قراردادها', type: 'item', icon: 'email', url: '/flow/instance' },
+    //         { id: 'operator', title: 'مدیریت مشتریان', type: 'item', icon: 'people', url: '/user/customer' },
+    //     ],
+    // },
     {
         id: 'settings',
         title: 'تنظیمات سیستم',
