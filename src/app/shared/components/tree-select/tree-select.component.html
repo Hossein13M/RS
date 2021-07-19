@@ -16,7 +16,8 @@
                 [disabled]="disable || (maxSelect !== -1 && maxSelect <= tree.checklistSelection.selected.length && !tree.checklistSelection.isSelected(node))"
                 [checked]="tree.checklistSelection.isSelected(node)"
                 [value]="node.id"
-                (change)="leafItemSelectionToggle(node, tree)"
+                #value
+                (change)="leafItemSelectionToggle(node, tree, value)"
             >
                 {{ node.titleFA }}
             </mat-checkbox>
