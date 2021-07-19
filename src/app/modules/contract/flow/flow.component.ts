@@ -57,8 +57,8 @@ export class FlowComponent implements OnInit {
     public openFlowDialog(dialogType: 'edit' | 'create', flowType?: Flow): void {
         const dialogRef: MatDialogRef<any> = this.dialog.open(FlowDialogComponent, {
             data: dialogType === 'edit' ? flowType : null,
-            width: '800px',
-            height: '500px',
+            width: '500px',
+            height: '400px',
             panelClass: 'dialog-p-0',
         });
         dialogRef.afterClosed().subscribe((result) => result && this.getFlows());
