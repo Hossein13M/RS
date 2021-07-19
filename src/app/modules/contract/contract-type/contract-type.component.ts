@@ -39,7 +39,6 @@ export class ContractTypeComponent implements OnInit {
 
     ngOnInit(): void {
         this.getContractTypes();
-        this.openContractTypeDialog('create');
     }
 
     public paginationControl(pageEvent?: any): void {
@@ -62,8 +61,8 @@ export class ContractTypeComponent implements OnInit {
     public openContractTypeDialog(dialogType: 'edit' | 'create', contractType?: ContractType): void {
         const dialogRef: MatDialogRef<any> = this.dialog.open(ContractTypeDialogComponent, {
             data: dialogType === 'edit' ? contractType : null,
-            width: '1300px',
-            height: '600px',
+            width: '1100px',
+            height: '900px',
             panelClass: 'dialog-p-0',
         });
         dialogRef.afterClosed().subscribe((result) => result && this.getContractTypes());
