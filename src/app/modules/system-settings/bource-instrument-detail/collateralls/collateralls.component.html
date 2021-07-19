@@ -1,7 +1,7 @@
 <div class="dialog-content-wrapper" dir="rtl">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">ثبت وثیقه</span>
+            <span class="title dialog-title">افزودن وثیقه</span>
             <button mat-icon-button (click)="matDialogRef.close()">
                 <mat-icon>close</mat-icon>
             </button>
@@ -9,14 +9,10 @@
     </mat-toolbar>
 
     <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
-        <app-table
-            [data]="data"
-            [columns]="column"
-            [paginationSettings]="{ mode: 'local' }"
-        ></app-table>
+        <app-table [data]="data" [columns]="column" [paginationSettings]="{ mode: 'local' }"></app-table>
         <ng-container *ngIf="data?.length === 0">
             <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                <img width="140px" height="140px" src='../../../../../assets/images/no-data.svg' />
+                <img width="140px" height="140px" src="../../../../../assets/images/no-data.svg" alt="no data" />
                 <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
             </div>
         </ng-container>
@@ -60,7 +56,7 @@
 
                 <button mat-button *ngIf="selectedCollateral != null" (click)="clear()" color="warn">
                     <mat-icon class="mat-18">clear</mat-icon>
-                    انصراف
+                    برگشت
                 </button>
             </div>
         </form>

@@ -1,94 +1,105 @@
 <form #myForm="ngForm" [formGroup]="invoiceInfoForm" class="contract-form-container">
-    <div class="contract-form-header">
-        اطلاعات صورتحساب
-    </div>
+    <div class="contract-form-header">اطلاعات صورتحساب</div>
     <div class="contract-form-body" dir="rtl">
         <div class="contract-form-row">
             <mat-form-field appearance="outline">
-                <mat-label>تاریخ ارسال صورتحساب
+                <mat-label
+                    >تاریخ ارسال صورتحساب
                     <span style="color: red">*</span>
                 </mat-label>
-                <input (click)="start3.open()" matInput formControlName="sendingDate" [matDatepicker]="start3">
+                <input (click)="start3.open()" matInput formControlName="sendingDate" [matDatepicker]="start3" />
                 <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
                 <mat-datepicker #start3></mat-datepicker>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>مبلغ صورتحساب
+                <mat-label
+                    >مبلغ صورتحساب
                     <span style="color: red">*</span>
                 </mat-label>
-                <input formControlName="amount" matInput>
+                <input formControlName="amount" matInput />
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>ابتدای دوره صورتحساب
+                <mat-label
+                    >ابتدای دوره صورتحساب
                     <span style="color: red">*</span>
                 </mat-label>
-                <input (click)="start2.open()" matInput formControlName="startingDate" [matDatepicker]="start2">
+                <input (click)="start2.open()" matInput formControlName="startingDate" [matDatepicker]="start2" />
                 <mat-datepicker-toggle matSuffix [for]="start2"></mat-datepicker-toggle>
                 <mat-datepicker #start2></mat-datepicker>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
         </div>
         <div class="contract-form-row">
             <mat-form-field appearance="outline">
-                <mat-label>انتها دوره صورتحساب
+                <mat-label
+                    >انتها دوره صورتحساب
                     <span style="color: red">*</span>
                 </mat-label>
-                <input (click)="start1.open()" matInput formControlName="endingDate" [matDatepicker]="start1">
+                <input (click)="start1.open()" matInput formControlName="endingDate" [matDatepicker]="start1" />
                 <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
                 <mat-datepicker #start1></mat-datepicker>
-                <mat-error>
-                    وارد کردن این فیلد الزامی است.
-                </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>شرح صورتحساب
+                <mat-label
+                    >شرح صورتحساب
                     <span style="color: red">*</span>
                 </mat-label>
-                <input formControlName="description" matInput>
+                <input formControlName="description" matInput />
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>شماره ی صورتحساب
+                <mat-label
+                    >شماره ی صورتحساب
                     <span style="color: red">*</span>
                 </mat-label>
-                <input formControlName="number" matInput>
+                <input formControlName="number" matInput />
             </mat-form-field>
         </div>
         <div class="single-row-btn-container">
-            <button mat-raised-button *ngIf="selectedInvoiceInfoIndex==null" [disabled]="invoiceInfoForm.invalid"
-                    (click)="add()" class="save-button" [color]="'accent'" style="width: 150px;height: 40px">
-                <mat-icon>
-                    add
-                </mat-icon>
+            <button
+                mat-raised-button
+                *ngIf="selectedInvoiceInfoIndex == null"
+                [disabled]="invoiceInfoForm.invalid"
+                (click)="add()"
+                class="save-button"
+                [color]="'accent'"
+                style="width: 150px; height: 40px"
+            >
+                <mat-icon> add </mat-icon>
                 افزودن
             </button>
-            <button mat-raised-button *ngIf="selectedInvoiceInfoIndex!=null" [disabled]="invoiceInfoForm.invalid"
-                    (click)="edit()" class="save-button" [color]="'accent'" style="width: 150px;height: 40px">
-                <mat-icon>
-                    edit
-                </mat-icon>
+            <button
+                mat-raised-button
+                *ngIf="selectedInvoiceInfoIndex != null"
+                [disabled]="invoiceInfoForm.invalid"
+                (click)="edit()"
+                class="save-button"
+                [color]="'accent'"
+                style="width: 150px; height: 40px"
+            >
+                <mat-icon> edit </mat-icon>
                 اصلاح
             </button>
-            <button mat-raised-button *ngIf="selectedInvoiceInfoIndex!=null" (click)="clear()" class="save-button"
-                    style="width: 150px;height: 40px;margin-right: 10px">
-                <mat-icon>
-                    close
-                </mat-icon>
-                انصراف
+            <button
+                mat-raised-button
+                *ngIf="selectedInvoiceInfoIndex != null"
+                (click)="clear()"
+                class="save-button"
+                style="width: 150px; height: 40px; margin-right: 10px"
+            >
+                <mat-icon> close </mat-icon>
+                برگشت
             </button>
         </div>
     </div>
     <div class="form-tab-table-container">
-        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }">
             <ng-container matColumnDef="sendingDate">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>ارسال صورتحساب</mat-header-cell>
                 <mat-cell *matCellDef="let collateral" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{collateral.sendingDate  | convertDate}}
+                        {{ collateral.sendingDate | convertDate }}
                     </p>
                 </mat-cell>
             </ng-container>
@@ -97,7 +108,7 @@
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>مبلغ صورتحساب</mat-header-cell>
                 <mat-cell *matCellDef="let invoiceInfo" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{invoiceInfo?.amount |price}}
+                        {{ invoiceInfo?.amount | price }}
                     </p>
                 </mat-cell>
             </ng-container>
@@ -106,7 +117,7 @@
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>ابتدای دوره صورتحساب</mat-header-cell>
                 <mat-cell *matCellDef="let collateral" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{collateral.startingDate | convertDate}}
+                        {{ collateral.startingDate | convertDate }}
                     </p>
                 </mat-cell>
             </ng-container>
@@ -115,7 +126,7 @@
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>انتها دوره صورتحساب</mat-header-cell>
                 <mat-cell *matCellDef="let collateral" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{collateral.endingDate | convertDate}}
+                        {{ collateral.endingDate | convertDate }}
                     </p>
                 </mat-cell>
             </ng-container>
@@ -124,27 +135,24 @@
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>شرح صورتحساب</mat-header-cell>
                 <mat-cell *matCellDef="let invoiceInfo" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{invoiceInfo?.description}}
+                        {{ invoiceInfo?.description }}
                     </p>
                 </mat-cell>
             </ng-container>
-
 
             <ng-container matColumnDef="number">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>شماره تحت ضمانت</mat-header-cell>
                 <mat-cell *matCellDef="let invoiceInfo" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{invoiceInfo?.number }}
+                        {{ invoiceInfo?.number }}
                     </p>
                 </mat-cell>
             </ng-container>
 
-
             <ng-container matColumnDef="edit">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
-                <mat-cell *matCellDef="let invoiceInfo;let i = index" fxHide fxShow.gt-sm>
-                    <button class="edit-button" mat-raised-button style="background-color: orange;color: white"
-                            (click)="editInvoiceInfo(invoiceInfo,i)">
+                <mat-cell *matCellDef="let invoiceInfo; let i = index" fxHide fxShow.gt-sm>
+                    <button class="edit-button" mat-raised-button style="background-color: orange; color: white" (click)="editInvoiceInfo(invoiceInfo, i)">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button style="margin-right: 10px" mat-raised-button color="warn" (click)="delete(i)">
@@ -153,18 +161,13 @@
                 </mat-cell>
             </ng-container>
 
-
             <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
-                     [@animate]="{value:'*',params:{y:'100%'}}">
-            </mat-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
         </mat-table>
-        <ng-container *ngIf="dataSource.data.length===0">
-            <div style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                    موردی وجود ندارد
-                </div>
+        <ng-container *ngIf="dataSource.data.length === 0">
+            <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                <img width="140px" height="140px" src="./assets/images/no-data.svg" alt="no data" />
+                <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
             </div>
         </ng-container>
     </div>

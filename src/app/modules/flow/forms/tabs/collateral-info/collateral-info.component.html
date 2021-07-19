@@ -102,7 +102,7 @@
                     style="width: 200px; height: 40px; margin-right: 10px"
                 >
                     <mat-icon> close </mat-icon>
-                    انصراف
+                    برگشت
                 </button>
             </div>
         </div>
@@ -175,12 +175,7 @@
             <ng-container matColumnDef="edit">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
                 <mat-cell *matCellDef="let collateral; let i = index" fxHide fxShow.gt-sm>
-                    <button
-                        class="edit-button"
-                        mat-raised-button
-                        style="background-color: orange; color: white"
-                        (click)="editCollateral(collateral, i)"
-                    >
+                    <button class="edit-button" mat-raised-button style="background-color: orange; color: white" (click)="editCollateral(collateral, i)">
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button style="margin-right: 10px" mat-raised-button color="warn" (click)="delete(i)">
@@ -195,7 +190,7 @@
 
         <ng-container *ngIf="dataSource.data.length === 0">
             <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                <img width="140px" height="140px" src="./assets/images/no-data.svg" alt="no data" />
                 <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
             </div>
         </ng-container>

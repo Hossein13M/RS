@@ -1,64 +1,72 @@
 <form #myForm="ngForm" [formGroup]="marketMakingFeeForm" class="contract-form-container">
-    <div class="contract-form-header">
-        فرم ایجاد نرخ کارمزد بازارگردانی
-    </div>
+    <div class="contract-form-header">فرم ایجاد نرخ کارمزد بازارگردانی</div>
     <div class="contract-form-body" dir="rtl">
         <div class="contract-form-row">
             <mat-form-field appearance="outline">
-                <mat-label>شماره سال
+                <mat-label
+                    >شماره سال
+
                     <span style="color: red">*</span>
                 </mat-label>
-                <input type="number" formControlName="yearNumber" matInput>
+                <input type="number" formControlName="yearNumber" matInput />
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>نرخ کارمزد بازارگردانی
+                <mat-label>
+                    نرخ کارمزد بازارگردانی
                     <span style="color: red">*</span>
                 </mat-label>
-                <input type="number" formControlName="feeRate" matInput>
+                <input type="number" formControlName="feeRate" matInput />
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>مبلغ کارمزد بازارگردانی
+                <mat-label>
+                    مبلغ کارمزد بازارگردانی
                     <span style="color: red">*</span>
                 </mat-label>
-                <input type="number" formControlName="feeAmount" matInput>
+                <input type="number" formControlName="feeAmount" matInput />
             </mat-form-field>
         </div>
         <div class="single-row-btn-container">
-            <button mat-raised-button *ngIf="selectedMarketMakingFeeIndex==null"
-                    [disabled]="marketMakingFeeForm.invalid" (click)="add()"
-                    [color]="'accent'"
-                    style="width: 150px;height: 40px;margin-right: 10px">
-                <mat-icon>
-                    add
-                </mat-icon>
+            <button
+                mat-raised-button
+                *ngIf="selectedMarketMakingFeeIndex == null"
+                [disabled]="marketMakingFeeForm.invalid"
+                (click)="add()"
+                [color]="'accent'"
+                style="width: 150px; height: 40px; margin-right: 10px"
+            >
+                <mat-icon> add </mat-icon>
                 افزودن
             </button>
-            <button mat-raised-button *ngIf="selectedMarketMakingFeeIndex!=null"
-                    [disabled]="marketMakingFeeForm.invalid" (click)="edit()" [color]="'accent'"
-                    style="width: 150px;height: 40px;margin-right: 10px">
-                <mat-icon>
-                    edit
-                </mat-icon>
+            <button
+                mat-raised-button
+                *ngIf="selectedMarketMakingFeeIndex != null"
+                [disabled]="marketMakingFeeForm.invalid"
+                (click)="edit()"
+                [color]="'accent'"
+                style="width: 150px; height: 40px; margin-right: 10px"
+            >
+                <mat-icon> edit </mat-icon>
                 اصلاح
             </button>
-            <button mat-raised-button *ngIf="selectedMarketMakingFeeIndex!=null" (click)="clear()"
-                    class="save-button"
-                    style="width: 150px;height: 40px;margin-right: 10px">
-                <mat-icon>
-                    close
-                </mat-icon>
-                انصراف
+            <button
+                mat-raised-button
+                *ngIf="selectedMarketMakingFeeIndex != null"
+                (click)="clear()"
+                class="save-button"
+                style="width: 150px; height: 40px; margin-right: 10px"
+            >
+                <mat-icon> close </mat-icon>
+                برگشت
             </button>
         </div>
     </div>
     <div class="form-tab-table-container">
-        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
-            <!-- firstName Column -->
+        <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }">
             <ng-container matColumnDef="yearNumber">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>شماره سال</mat-header-cell>
                 <mat-cell *matCellDef="let marketmakingFee" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{marketmakingFee?.yearNumber}}
+                        {{ marketmakingFee?.yearNumber }}
                     </p>
                 </mat-cell>
             </ng-container>
@@ -66,7 +74,7 @@
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>نرخ کارمزد بازارگردانی</mat-header-cell>
                 <mat-cell *matCellDef="let marketmakingFee" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{marketmakingFee?.feeRate}}
+                        {{ marketmakingFee?.feeRate }}
                     </p>
                 </mat-cell>
             </ng-container>
@@ -74,17 +82,20 @@
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>مبلغ کارمزد بازارگردانی</mat-header-cell>
                 <mat-cell *matCellDef="let marketmakingFee" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{marketmakingFee?.feeAmount}}
+                        {{ marketmakingFee?.feeAmount }}
                     </p>
                 </mat-cell>
             </ng-container>
 
-
             <ng-container matColumnDef="edit">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
-                <mat-cell *matCellDef="let marketmakingFee;let i = index" fxHide fxShow.gt-sm>
-                    <button class="edit-button" mat-raised-button style="background-color: orange;color: white"
-                            (click)="editMarketMakingFee(marketmakingFee,i)">
+                <mat-cell *matCellDef="let marketmakingFee; let i = index" fxHide fxShow.gt-sm>
+                    <button
+                        class="edit-button"
+                        mat-raised-button
+                        style="background-color: orange; color: white"
+                        (click)="editMarketMakingFee(marketmakingFee, i)"
+                    >
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button style="margin-right: 10px" mat-raised-button color="warn" (click)="delete(i)">
@@ -93,25 +104,14 @@
                 </mat-cell>
             </ng-container>
 
-
             <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
-                     [@animate]="{value:'*',params:{y:'100%'}}">
-            </mat-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
         </mat-table>
-        <ng-container *ngIf="dataSource.data.length===0">
-            <div
-                style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                    موردی وجود ندارد
-                </div>
+        <ng-container *ngIf="dataSource.data.length === 0">
+            <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                <img width="140px" height="140px" src="./assets/images/no-data.svg" alt="no data" />
+                <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
             </div>
         </ng-container>
     </div>
 </form>
-
-
-
-
-

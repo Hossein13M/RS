@@ -12,7 +12,7 @@
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+    <div mat-dialog-content class="p-24 pb-0 m-0">
         <form [formGroup]="compliance" class="form" fxLayout="row wrap" style="align-items: center; justify-content: space-around">
             <div>
                 <mat-form-field appearance="outline">
@@ -34,7 +34,7 @@
             <div>
                 <mat-form-field appearance="outline" fxFlex>
                     <mat-label>حد پایین</mat-label>
-                    <input type="number" formControlName="down" matInput type="email" required />
+                    <input type="number" formControlName="down" matInput required />
                 </mat-form-field>
             </div>
 
@@ -58,9 +58,7 @@
             >
                 اصلاح
             </button>
-            <button mat-raised-button *ngIf="slectedCompliance" (click)="clear()" class="save-button" style="width: 200px; height: 40px">
-                انصراف
-            </button>
+            <button mat-raised-button *ngIf="slectedCompliance" (click)="clear()" class="save-button" style="width: 200px; height: 40px">برگشت</button>
         </form>
 
         <mat-table #table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }" id="compliances">

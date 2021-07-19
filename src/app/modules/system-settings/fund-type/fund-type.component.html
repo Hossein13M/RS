@@ -4,10 +4,10 @@
             [data]="data"
             [columns]="column"
             [paginationSettings]="{ mode: 'scroll' }"
-            [paginationObject]='pagination'
-            (searchEvent)='search($event)'
+            [paginationObject]="pagination"
+            (searchEvent)="search($event)"
             [status]="status"
-            height='55vh'
+            height="55vh"
         ></app-table>
     </div>
 
@@ -25,7 +25,7 @@
 
                 <button *ngIf="selectedIssuer" fxFlex="100" (click)="clear()" style="margin-left: 10px" color="warn" mat-raised-button>
                     <mat-icon>close</mat-icon>
-                    انصراف
+                    برگشت
                 </button>
 
                 <button *ngIf="!selectedIssuer" fxFlex="100" [disabled]="fundTypeName.invalid" (click)="addIssuer()" color="accent" mat-raised-button>

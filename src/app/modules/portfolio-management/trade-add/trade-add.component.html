@@ -71,7 +71,7 @@
         </form>
 
         <button mat-stroked-button *ngIf="!editTradeId" color="primary" (click)="addTradeRegistration()" [disabled]="form.invalid">افزودن</button>
-        <button mat-stroked-button *ngIf="editTradeId" color="warn" (click)="cancelEdit()" class="add-btn">انصراف</button>
+        <button mat-stroked-button *ngIf="editTradeId" color="warn" (click)="cancelEdit()" class="add-btn">برگشت</button>
         <button mat-stroked-button *ngIf="editTradeId" color="accent" (click)="updateTradeRegistration()" class="add-btn">بروزرسانی</button>
     </div>
 
@@ -80,8 +80,8 @@
             [data]="tradeRegistrations"
             [columns]="columns"
             [paginationSettings]="{ mode: 'backend' }"
-            [paginationObject]='pagination'
-            (paginationEvent)='paginationControl($event)'
+            [paginationObject]="pagination"
+            (paginationEvent)="paginationControl($event)"
         >
         </app-table>
     </div>

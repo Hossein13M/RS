@@ -42,15 +42,9 @@
                 <mat-icon> edit </mat-icon>
                 اصلاح
             </button>
-            <button
-                mat-raised-button
-                *ngIf="selectedVariableFeeIndex != null"
-                (click)="clear()"
-                class="save-button"
-                style="width: 200px; height: 40px"
-            >
+            <button mat-raised-button *ngIf="selectedVariableFeeIndex != null" (click)="clear()" class="save-button" style="width: 200px; height: 40px">
                 <mat-icon> close </mat-icon>
-                انصراف
+                برگشت
             </button>
         </div>
     </div>
@@ -105,7 +99,7 @@
         </mat-table>
         <ng-container *ngIf="dataSource.data.length === 0">
             <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                <img width="140px" height="140px" src="./assets/images/no-data.svg" />
+                <img width="140px" height="140px" src="./assets/images/no-data.svg" alt="no data" />
                 <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
             </div>
         </ng-container>

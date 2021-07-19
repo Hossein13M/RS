@@ -1,7 +1,5 @@
 <div class="page-layout" dir="rtl">
-    <!-- HEADER -->
     <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
-        <!-- APP TITLE -->
         <div fxLayout="row wrap" fxLayoutAlign="between center">
             <div class="logo" fxLayout="row" fxLayoutAlign="start center">
                 <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> تعریف حدود صندوق‌ها </span>
@@ -9,11 +7,9 @@
         </div>
         <button mat-raised-button color="primary" (click)="create()">
             <mat-icon>add</mat-icon>
-            ایجاد
+            افزودن
         </button>
-        <!-- / APP TITLE -->
     </div>
-    <!-- / HEADER -->
 
     <div id="table-container">
         <div style="width: 100%">
@@ -21,13 +17,13 @@
                 [data]="data"
                 [columns]="column"
                 [paginationSettings]="{ mode: 'backend' }"
-                [paginationObject]='pagination'
-                (searchEvent)='search($event)'
-                (paginationEvent)='paginationControl($event)'
+                [paginationObject]="pagination"
+                (searchEvent)="search($event)"
+                (paginationEvent)="paginationControl($event)"
             ></app-table>
             <ng-container *ngIf="data?.length === 0">
                 <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                    <img width="140px" height="140px" src='../../../../assets/images/no-data.svg' />
+                    <img width="140px" height="140px" src="../../../../assets/images/no-data.svg" alt="no data" />
                     <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                 </div>
             </ng-container>
@@ -81,7 +77,7 @@
         style="width: 200px; height: 40px"
     >
         <mat-icon>close</mat-icon>
-        انصراف
+         برگشت
     </button>
 </div>
 </form>
