@@ -18,6 +18,7 @@
             "@fuse": ["@fuse/"],
             // custom paths
             "#shared/*": ["app/shared/*"],
+            "#services/*": ["app/services/*"],
             "#env/*": ["environments/*"]
         }
     },
