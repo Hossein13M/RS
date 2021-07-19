@@ -16,8 +16,8 @@ export class FlowComponent implements OnInit {
     public pagination = { skip: 0, limit: 5, total: 100 };
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
-        { id: 'name', name: 'نوع قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'isActive', name: 'وضعیت نوع قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
+        { id: 'name', name: 'جریان قرارداد', type: 'string', minWidth: '200px' },
+        { id: 'isActive', name: 'وضعیت جریان قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
         { id: 'createdAt', name: 'تاریخ ساخت', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '200px' },
         {
             name: 'عملیات',
