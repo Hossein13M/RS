@@ -9,6 +9,7 @@ export interface UserRole {
 export interface User {
     firstname: string;
     lastname: string;
+    fullname: string;
     email: string;
     username: string;
     password: string;
@@ -39,7 +40,7 @@ export interface Units {
     organization: number;
     deletedAt: string;
     children: Array<Units>;
-    mapping: Array<any>;
+    mappings: Array<{ childId: number; id: number; name: string }>;
 }
 
 export interface Roles {

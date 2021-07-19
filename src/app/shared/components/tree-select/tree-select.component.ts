@@ -1,12 +1,11 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, Output } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { fuseAnimations } from '@fuse/animations';
 import { map } from 'rxjs/operators';
 import { Tree, TreeFlatNode, TreeNode } from './tree-select.types';
-import { timer } from 'rxjs';
 
 @Component({
     selector: 'app-tree-select',
@@ -22,6 +21,7 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
     @Input() data;
     @Input() maxSelect = -1;
     @Input() selectedValueFieldName = 'titleFA';
+    @Output() event = new EventEmitter<any>();
     tree: Tree;
     show = false;
     disable = false;
@@ -51,7 +51,6 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
         this.data.children = this.data.children.sort((a, b) => a.id - b.id);
         const flatNodeMap = new Map<TreeFlatNode, TreeNode>();
         const nestedNodeMap = new Map<TreeNode, TreeFlatNode>();
-        const checklistSelection = this.tree.checklistSelection;
         const transformer = (node: TreeNode, level: number) => {
             let flatNode: TreeFlatNode;
             if (nestedNodeMap.has(node) && nestedNodeMap.get(node).id === node.id) {
@@ -91,8 +90,9 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
 
     hasChild = (_: number, nodeData: TreeFlatNode) => nodeData.expandable;
 
-    leafItemSelectionToggle(node: TreeFlatNode, tree: any): void {
+    leafItemSelectionToggle(node: TreeFlatNode, tree: any, value?: any): void {
         tree.checklistSelection.toggle(node);
+        if (value) this.event.emit({ node: node, tree: tree, value: value });
         // if (tree.checklistSelection.isSelected(node)) {
         //     this.selectAllParents(node, tree);
         // }

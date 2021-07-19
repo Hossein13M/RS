@@ -1,0 +1,130 @@
+<div class="dialog-content-wrapper flex flex-col h-full" dir="rtl">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ title }}</span>
+            <button mat-icon-button (click)="this.dialogRef.close()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row *ngIf="isEditMode" class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
+            <div class="contact-name mt-8">{{ isEditMode ? data.name : '' }}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class="p-24 pb-0 m-0 h-full">
+        <form [formGroup]="form" (submit)="submitForm()" class="flex flex-col justify-between h-full">
+            <div class="flex flex-col">
+                <div class="flex justify-around">
+                    <mat-form-field appearance="outline">
+                        <mat-label>نوع قرارداد</mat-label>
+                        <mat-icon matSuffix class="secondary-text">business</mat-icon>
+                        <input name="name" formControlName="name" matInput required />
+                        <mat-error *ngIf="form.get('name').hasError('required')"> وارد کردن این فیلد الزامی است. </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>فرم قرارداد</mat-label>
+                        <mat-select formControlName="form" required>
+                            <mat-option class="text=right" *ngFor="let contractTypeForm of contractTypeForms" [value]="contractTypeForm._id">
+                                {{ contractTypeForm.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-hint *ngIf="!contractTypeForms.length"> موردی برای نمایش وجود ندارد</mat-hint>
+                    </mat-form-field>
+                </div>
+
+                <h1 class="text-center">دسترسی‌های نوع قرارداد:</h1>
+
+                <div class="flex justify-evenly mb-10 col-auto">
+                    <mat-card class="w-2/5">
+                        <mat-card-header class="flex justify-center">
+                            <mat-card-title>دسترسی بر اساس کاربران</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <app-search-select
+                                label="دسترسی کاربران"
+                                placeholder="جستجو در کاربران"
+                                appearance="outline"
+                                [searchFn]="searchUser"
+                                valuePropertyName="id"
+                                [uiPropertyName]="'fullname'"
+                                formControlName="users"
+                                [multi]="true"
+                            >
+                            </app-search-select>
+                        </mat-card-content>
+                    </mat-card>
+
+                    <mat-card class="w-2/5">
+                        <mat-card-header class="flex justify-center">
+                            <mat-card-title>دسترسی بر اساس نقش کاربران</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <app-tree-select [data]="allRolesList" formControlName="roles" selectedValueFieldName="name"></app-tree-select>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <hr />
+
+                <mat-card class="mx-auto mt-6 w-10/12">
+                    <mat-card-header class="flex justify-center">
+                        <mat-card-title>دسترسی بر اساس نقش کاربران در واحد گزینش‌شده</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="flex flex-col" formArrayName="units">
+                            <div *ngFor="let skill of rolesBasedOnUnits().controls; let index = index">
+                                <div class="flex justify-around items-center py-5 border-2" [formGroupName]="index">
+                                    <app-tree-select
+                                        (event)="detectChanges($event, index)"
+                                        [maxSelect]="1"
+                                        [data]="units"
+                                        formControlName="units"
+                                        selectedValueFieldName="name"
+                                    ></app-tree-select>
+
+                                    <mat-form-field class="role-form-field pt-5" appearance="outline" *ngIf="rolesOnUnit[index]">
+                                        <mat-label>نقش</mat-label>
+                                        <mat-select formControlName="roles" multiple required>
+                                            <mat-option class="text-right" *ngFor="let role of rolesOnUnit[index]" [value]="role.id">
+                                                {{ role.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-hint *ngIf="!rolesOnUnit[index].length"> نخست یک ساختار سازمانی را انتخاب کنید</mat-hint>
+                                    </mat-form-field>
+
+                                    <button mat-flat-button color="warn" class="remove-btn-height" (click)="removeItemFromUnitFormArray(index)" type="button">
+                                        پاک کردن
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button
+                                mat-flat-button
+                                color="accent"
+                                class="max-w-4xl flex justify-center py-3 mx-auto mt-5"
+                                (click)="addUnitRolesToFormArray()"
+                                type="button"
+                            >
+                                افزودن
+                                <mat-icon class="mat-18">add</mat-icon>
+                            </button>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+            <div mat-dialog-actions class="m-0 p-16 flex justify-around items-center mt-auto">
+                <button mat-flat-button color="primary" type="submit">
+                    <mat-icon class="icon-header">{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
+                    {{ this.isEditMode ? 'ویرایش نوع قرارداد' : 'افزودن نوع قرارداد' }}
+                </button>
+                <button mat-flat-button color="warn" type="button" (click)="dialogRef.close(false)">
+                    <mat-icon class="icon-header">close</mat-icon>
+                    انصراف
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
