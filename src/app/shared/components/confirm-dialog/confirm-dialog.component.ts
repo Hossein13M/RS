@@ -32,7 +32,7 @@ export interface DialogData {
                     <button mat-raised-button class="mat-warn mr-16" (click)="dialogRef.close(false)">
                         <mat-icon> close</mat-icon>
 
-                        {{ data.rejectLabel ? data.rejectLabel : 'انصراف' }}
+                        {{ data.rejectLabel ? data.rejectLabel : ' برگشت' }}
                     </button>
                 </div>
 

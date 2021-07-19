@@ -24,7 +24,7 @@
                 </button>
                 <button *ngIf="selectedIssuer" (click)="clear()" style="margin-left: 10px" color="warn" mat-raised-button>
                     <mat-icon>close</mat-icon>
-                    انصراف
+                     برگشت
                 </button>
 
                 <button *ngIf="!selectedIssuer" [disabled]="issuerName.invalid" (click)="addIssuer()" color="accent" mat-raised-button>

@@ -1,55 +1,60 @@
 <form [formGroup]="syndicateMemberForm" class="contract-form-container">
-    <div class="contract-form-header">
-        فرم ایجاد اعضای سندیکا
-    </div>
+    <div class="contract-form-header">فرم ایجاد اعضای سندیکا</div>
     <div class="contract-form-body" dir="rtl">
         <div class="contract-form-row-2">
             <mat-form-field appearance="outline">
-                <mat-label>شرکت عضو سندیکا
+                <mat-label>
+                    شرکت عضو سندیکا
                     <span style="color: red">*</span>
                 </mat-label>
-                <input type="text" formControlName="name" matInput>
+                <input type="text" formControlName="name" matInput />
             </mat-form-field>
             <mat-form-field appearance="outline">
-                <mat-label>سهم الشرکه عضو سندیکا
+                <mat-label>
+                    سهم الشرکه عضو سندیکا
                     <span style="color: red">*</span>
                 </mat-label>
-                <input type="number" formControlName="sharePercent" matInput>
+                <input type="number" formControlName="sharePercent" matInput />
             </mat-form-field>
             <div class="form-row-btn-container">
-                <button mat-raised-button *ngIf="selectedSyndicateMemberIndex==null"
-                        [disabled]="syndicateMemberForm.invalid"
-                        (click)="add()" class="save-button" [color]="'accent'" style="width: 150px;height: 40px">
-                    <mat-icon>
-                        add
-                    </mat-icon>
+                <button
+                    mat-raised-button
+                    *ngIf="selectedSyndicateMemberIndex == null"
+                    [disabled]="syndicateMemberForm.invalid"
+                    (click)="add()"
+                    class="save-button"
+                    [color]="'accent'"
+                    style="width: 150px; height: 40px"
+                >
+                    <mat-icon> add </mat-icon>
                     افزودن
                 </button>
-                <button mat-raised-button *ngIf="selectedSyndicateMemberIndex!=null"
-                        [disabled]="syndicateMemberForm.invalid"
-                        (click)="edit()" class="save-button" [color]="'accent'" style="width: 150px;height: 40px">
-                    <mat-icon>
-                        edit
-                    </mat-icon>
+                <button
+                    mat-raised-button
+                    *ngIf="selectedSyndicateMemberIndex != null"
+                    [disabled]="syndicateMemberForm.invalid"
+                    (click)="edit()"
+                    class="save-button"
+                    [color]="'accent'"
+                    style="width: 150px; height: 40px"
+                >
+                    <mat-icon> edit </mat-icon>
                     اصلاح
                 </button>
-                <button mat-raised-button *ngIf="selectedSyndicateMemberIndex!=null" (click)="clear()"
-                        style="width: 150px;height: 40px;margin-right: 10px">
-                    <mat-icon>
-                        close
-                    </mat-icon>
-                    انصراف
+                <button mat-raised-button *ngIf="selectedSyndicateMemberIndex != null" (click)="clear()" style="width: 150px; height: 40px; margin-right: 10px">
+                    <mat-icon> close </mat-icon>
+                    برگشت
                 </button>
             </div>
         </div>
     </div>
     <div class="form-tab-table-container">
-        <mat-table [dataSource]="dataSource" [@animateStagger]="{value:'50'}">
+        <mat-table [dataSource]="dataSource" [@animateStagger]="{ value: '50' }">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>شرکت عضو سندیکا</mat-header-cell>
                 <mat-cell *matCellDef="let syndicateMember" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{syndicateMember?.name}}
+                        {{ syndicateMember?.name }}
                     </p>
                 </mat-cell>
             </ng-container>
@@ -57,15 +62,19 @@
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>سهم الشرکه عضو سندیکا</mat-header-cell>
                 <mat-cell *matCellDef="let syndicateMember" fxHide fxShow.gt-sm>
                     <p class="email text-truncate">
-                        {{syndicateMember?.sharePercent}}
+                        {{ syndicateMember?.sharePercent }}
                     </p>
                 </mat-cell>
             </ng-container>
             <ng-container matColumnDef="edit">
                 <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>عملیات</mat-header-cell>
-                <mat-cell *matCellDef="let syndicateMember;let i = index" fxHide fxShow.gt-sm>
-                    <button class="edit-button" mat-raised-button style="background-color: orange;color: white"
-                            (click)="editSyndicateMember(syndicateMember,i)">
+                <mat-cell *matCellDef="let syndicateMember; let i = index" fxHide fxShow.gt-sm>
+                    <button
+                        class="edit-button"
+                        mat-raised-button
+                        style="background-color: orange; color: white"
+                        (click)="editSyndicateMember(syndicateMember, i)"
+                    >
                         <mat-icon>edit</mat-icon>
                     </button>
                     <button style="margin-right: 10px" mat-raised-button color="warn" (click)="delete(i)">
@@ -74,17 +83,12 @@
                 </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple
-                     [@animate]="{value:'*',params:{y:'100%'}}">
-            </mat-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns" matRipple [@animate]="{ value: '*', params: { y: '100%' } }"> </mat-row>
         </mat-table>
-        <ng-container *ngIf="dataSource.data.length===0">
-            <div
-                style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                <img width="140px" height="140px" src="./assets/images/no-data.svg">
-                <div style="font-size: 13px;color: #449FDB;margin-top: 7px">
-                    موردی وجود ندارد
-                </div>
+        <ng-container *ngIf="dataSource.data.length === 0">
+            <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                <img width="140px" height="140px" src="./assets/images/no-data.svg" alt="no data" />
+                <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
             </div>
         </ng-container>
     </div>

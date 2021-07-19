@@ -56,12 +56,7 @@
 
                             <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-evenly none" style="margin-right: auto">
                                 <div fxLayout="column" fxFlex="100px" fxLayoutAlign="space-evenly none">
-                                    <button
-                                        mat-flat-button
-                                        color="accent"
-                                        [disabled]="barChartSearchForm.invalid"
-                                        (click)="getBarChart('riskBarChartData')"
-                                    >
+                                    <button mat-flat-button color="accent" [disabled]="barChartSearchForm.invalid" (click)="getBarChart('riskBarChartData')">
                                         <mat-icon>search</mat-icon>
                                         جستجو
                                     </button>
@@ -69,7 +64,7 @@
                                 <div fxLayout="column" fxFlex="100px" fxLayoutAlign="space-evenly none">
                                     <button color="warn" mat-stroked-button (click)="riskBarChartData = null">
                                         <mat-icon>cancel</mat-icon>
-                                        انصراف
+                                        برگشت
                                     </button>
                                 </div>
                             </div>
@@ -179,7 +174,7 @@
                                     <div fxLayout="column" fxFlex="100px" fxLayoutAlign="space-evenly none">
                                         <button color="warn" mat-stroked-button (click)="lossBarChartData = null">
                                             <mat-icon>cancel</mat-icon>
-                                            انصراف
+                                            برگشت
                                         </button>
                                     </div>
                                 </div>

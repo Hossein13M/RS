@@ -68,7 +68,7 @@
                         <input type="text" matInput required formControlName="description" />
                     </mat-form-field>
                 </div>
-                <div fxLayout="column" matInput fxFlex="30" fxLayoutAlign="space-evenly none">
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
                     <mat-form-field appearance="outline">
                         <mat-label>محرکه عملیاتی</mat-label>
                         <mat-select required formControlName="drivers" multiple>
@@ -83,25 +83,19 @@
                 <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
                     <mat-form-field appearance="outline" style="width: 100%">
                         <mat-label>تاریخ وقوع رویداد زیان</mat-label>
-                        <input
-                            [matDatepicker]='lossEventDate'
-                            [max]='dateLimit.lossEventDate.max'
-                            formControlName='lossEventDate'
-                            matInput
-                            required
-                        />
+                        <input [matDatepicker]="lossEventDate" [max]="dateLimit.lossEventDate.max" formControlName="lossEventDate" matInput required />
                         <mat-datepicker-toggle matSuffix [for]="lossEventDate"></mat-datepicker-toggle>
                         <mat-datepicker #lossEventDate></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div fxLayout="column" matInput fxFlex="30" fxLayoutAlign="space-evenly none">
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
                     <mat-form-field appearance="outline" style="width: 100%">
                         <mat-label>تاریخ اختتام پرونده</mat-label>
                         <input
-                            (dateChange)='calculateDate()'
-                            [matDatepicker]='profileFinishingDate'
-                            [min]='dateLimit.profileFinishingDate.min'
-                            formControlName='profileFinishingDate'
+                            (dateChange)="calculateDate()"
+                            [matDatepicker]="profileFinishingDate"
+                            [min]="dateLimit.profileFinishingDate.min"
+                            formControlName="profileFinishingDate"
                             matInput
                             required
                         />
@@ -132,14 +126,14 @@
                         <mat-datepicker #lossEventDiscoveryDate></mat-datepicker>
                     </mat-form-field>
                 </div>
-                <div fxLayout="column" matInput fxFlex="30" fxLayoutAlign="space-evenly none">
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
                     <mat-form-field appearance="outline" style="width: 100%">
                         <mat-label>تاریخ شروع بررسی</mat-label>
                         <input
-                            [matDatepicker]='checkStartingDate'
-                            [max]='dateLimit.checkStartingDate.max'
-                            [min]='dateLimit.profileFinishingDate.min'
-                            formControlName='checkStartingDate'
+                            [matDatepicker]="checkStartingDate"
+                            [max]="dateLimit.checkStartingDate.max"
+                            [min]="dateLimit.profileFinishingDate.min"
+                            formControlName="checkStartingDate"
                             matInput
                             required
                         />
@@ -151,9 +145,9 @@
                     <mat-form-field appearance="outline" style="width: 100%">
                         <mat-label>تاریخ پایان بررسی</mat-label>
                         <input
-                            [matDatepicker]='checkFinishingDate'
-                            [min]='dateLimit.checkFinishingDate.min'
-                            formControlName='checkFinishingDate'
+                            [matDatepicker]="checkFinishingDate"
+                            [min]="dateLimit.checkFinishingDate.min"
+                            formControlName="checkFinishingDate"
                             matInput
                             required
                         />
@@ -164,7 +158,7 @@
             </div>
 
             <div fxLayout="row" fxLayoutAlign="space-evenly center " style="margin-top: 20px" fxFlex="100">
-                <div fxLayout="column" matInput fxFlex="30" fxLayoutAlign="space-evenly none">
+                <div fxLayout="column" fxFlex="30" fxLayoutAlign="space-evenly none">
                     <mat-form-field appearance="outline">
                         <mat-label>پوشش</mat-label>
                         <mat-select formControlName="recoveries" multiple>
@@ -231,7 +225,7 @@
                 <div fxLayout="column" fxFlex="10" fxLayoutAlign="space-evenly none">
                     <a [routerLink]="['/op-risk/management']" color="warn" mat-raised-button>
                         <mat-icon>cancel</mat-icon>
-                        انصراف
+                        برگشت
                     </a>
                 </div>
                 <div fxLayout="column" fxFlex="10" fxLayoutAlign="space-evenly none"></div>
@@ -248,7 +242,7 @@
                 <div fxLayout="column" fxFlex="10" fxLayoutAlign="space-evenly none">
                     <a [routerLink]="['/op-risk/management']" color="warn" mat-raised-button>
                         <mat-icon>cancel</mat-icon>
-                        انصراف
+                        برگشت
                     </a>
                 </div>
                 <div fxLayout="column" fxFlex="10" fxLayoutAlign="space-evenly none"></div>
