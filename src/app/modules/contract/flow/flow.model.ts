@@ -1,7 +1,11 @@
 export interface Flow {
     name: string;
-    id: number | string;
-    bpmnConfiguration: any;
-    contractTypes: Array<any>;
     isManual: boolean;
+    organization: number;
+    _id: string;
+    isActive: boolean;
+    createdAt: string;
+    updatedAt: string;
+    bpmnConfiguration: any;
+    contractTypes: Array<string>;
 }
