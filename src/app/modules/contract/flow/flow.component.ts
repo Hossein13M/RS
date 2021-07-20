@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FlowDialogComponent } from './flow-dialog/flow-dialog.component';
 import { FlowService } from './flow.service';
 import { Flow } from './flow.model';
+import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'app-flow',
@@ -14,11 +15,19 @@ import { Flow } from './flow.model';
 export class FlowComponent implements OnInit {
     public flows: any;
     public pagination = { skip: 0, limit: 5, total: 100 };
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'جریان قرارداد', type: 'string', minWidth: '200px' },
         { id: 'isActive', name: 'وضعیت جریان قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
-        { id: 'createdAt', name: 'تاریخ ساخت', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '200px' },
+        { id: 'isManual', name: 'گونه‌ی دستی', convert: (value) => (value ? 'دستی' : 'غیردستی'), type: 'string', minWidth: '200px' },
+        {
+            id: 'createdAt',
+            name: 'تاریخ ساخت',
+            convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
+            type: 'string',
+            minWidth: '200px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -37,21 +46,29 @@ export class FlowComponent implements OnInit {
                     name: 'تغییر وضعیت',
                     icon: 'sync_alt',
                     color: 'accent',
-                    operation: (row: { operationItem: any; row: Flow }) => this.changeFlowStatus(row.row.id),
+                    operation: (row: { operationItem: any; row: Flow }) => this.changeFlowStatus(row.row._id),
                 },
             ],
         },
     ];
-    constructor(private dialog: MatDialog, private flowService: FlowService) {}
+    constructor(private dialog: MatDialog, private flowService: FlowService, private alertService: AlertService) {}
 
-    ngOnInit(): void {}
-
-    private getFlows(): void {
-        this.flowService.getFlows().subscribe((response) => (this.flows = response));
+    ngOnInit(): void {
+        this.getFlows();
     }
 
-    private changeFlowStatus(flowId: number | string): void {
-        this.flowService.changeFlowStatus(+flowId);
+    private getFlows(): void {
+        this.flowService.getFlows({ ...this.pagination, organization: this.organizationCode }).subscribe(
+            (response) => (this.flows = response.items),
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
+    }
+
+    private changeFlowStatus(flowId: string): void {
+        this.flowService.changeFlowStatus(flowId).subscribe(
+            () => this.getFlows(),
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
     }
 
     public openFlowDialog(dialogType: 'edit' | 'create', flowType?: Flow): void {
