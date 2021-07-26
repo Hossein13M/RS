@@ -6,7 +6,8 @@ import { searchSelectStateType } from '#shared/components/search-select/search-s
 import { ContractService } from '../../contract.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { Roles, Units, User } from '../../../organizations-structure/user/user.model';
-import { ContractForm, ContractType } from '../contract.model';
+import { ContractForm, ContractType, Form } from '../contract.model';
+import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'app-contract-type-dialog',
@@ -41,6 +42,7 @@ export class ContractTypeDialogComponent implements OnInit {
         private contractService: ContractService,
         public dialogRef: MatDialogRef<any>,
         private userService: UserService,
+        private alertService: AlertService,
         public dialog: MatDialogRef<ContractTypeDialogComponent>
     ) {}
 
@@ -50,6 +52,7 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     private getComponentDataFromServer(): void {
+        this.getOrganizationUsers();
         this.getOrganizationUsers();
         this.getOrganizationUnits();
         this.getOrganizationRoles();
@@ -104,12 +107,19 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     public submitForm(): void {
-        const data = this.form.value;
-        data.units.map((item) => (Array.isArray(item.units) ? (item.units = item.units[0]) : 1));
+        const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
+
         this.contractService.createContractType(data).subscribe(
             () => this.dialog.close(true),
-            () => this.dialog.close(false)
+            () => this.alertService.onError('مشکلی پیش آمده است.')
         );
+    }
+
+    static removeEmptyStatesFromForm(form: Form): Form {
+        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.users)) delete form.users;
+        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.roles)) delete form.roles;
+        if (form.units.length === 1 && form.units[0].roles === null) delete form.units;
+        return form;
     }
 
     public rolesBasedOnUnits(): FormArray {
@@ -117,7 +127,7 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     public addNewRolesBasedOnUnits(data?: { unit: number; roles: Array<number> }): FormGroup {
-        return data ? this.fb.group({ units: data.unit, roles: data.roles }) : this.fb.group({ units: 0, roles: [] });
+        return data ? this.fb.group({ units: data.unit, roles: data.roles }) : this.fb.group({ units: null, roles: null });
     }
 
     public addUnitRolesToFormArray(data?: { unit: number; roles: Array<number> }): void {
