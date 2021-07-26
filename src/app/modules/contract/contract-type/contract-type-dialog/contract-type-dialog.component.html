@@ -24,6 +24,14 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
+                        <mat-label>واژه‌ی کلیدی قرارداد</mat-label>
+                        <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
+                        <input name="name" formControlName="keyword" matInput required />
+                        <mat-error *ngIf="form.get('keyword').hasError('required')"> وارد کردن این فیلد الزامی است. </mat-error>
+                        <mat-error *ngIf="form.get('keyword').hasError('pattern')"> تنها حروف انگلیسی مجاز است. </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
                         <mat-label>فرم قرارداد</mat-label>
                         <mat-select formControlName="form" required>
                             <mat-option class="text=right" *ngFor="let contractTypeForm of contractTypeForms" [value]="contractTypeForm._id">
@@ -116,13 +124,13 @@
             </div>
 
             <div mat-dialog-actions class="m-0 p-16 flex justify-around items-center mt-auto">
-                <button mat-flat-button color="primary" type="submit">
+                <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
                     <mat-icon class="icon-header">{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
                     {{ this.isEditMode ? 'ویرایش نوع قرارداد' : 'افزودن نوع قرارداد' }}
                 </button>
                 <button mat-flat-button color="warn" type="button" (click)="dialogRef.close(false)">
                     <mat-icon class="icon-header">close</mat-icon>
-                     برگشت
+                    برگشت
                 </button>
             </div>
         </form>
