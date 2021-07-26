@@ -27,6 +27,7 @@ export class ContractTypeDialogComponent implements OnInit {
     private unitFormArrayItems: FormArray;
     public form: FormGroup = this.fb.group({
         name: [null, Validators.required],
+        keyword: [null, [Validators.required, Validators.pattern(/^[a-zA-Z]*$/)]],
         form: [null],
         organization: [this.activeOrganizationCode, Validators.required],
         users: [null, Validators.required],
