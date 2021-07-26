@@ -11,7 +11,6 @@ export class AuthorizationService {
     constructor(private http: HttpClient) {}
 
     public login(loginInfo: Login): Observable<LoginResponse> {
-        console.log({ loginInfo });
         return this.http.post<LoginResponse>(`/api/v2/auth/login`, loginInfo);
     }
 
