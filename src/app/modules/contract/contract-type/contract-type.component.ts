@@ -13,7 +13,7 @@ import { ContractTypeDialogComponent } from './contract-type-dialog/contract-typ
 })
 export class ContractTypeComponent implements OnInit {
     public contractTypes: Array<ContractType>;
-    private activeOrganizationId: number = UtilityFunctions.getActiveOrganizationInfo('id');
+    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public pagination = { skip: 0, limit: 5, total: 100 };
 
     tableColumn: Array<Column> = [
@@ -58,7 +58,7 @@ export class ContractTypeComponent implements OnInit {
     }
 
     public getContractTypes(): void {
-        this.contractService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationId }).subscribe((response) => {
+        this.contractService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe((response) => {
             this.contractTypes = response.items;
             this.pagination.total = response.total;
         });

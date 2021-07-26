@@ -26,3 +26,13 @@ export interface ContractForm {
     updatedAt: string;
     _id: string;
 }
+
+export interface Form {
+    form: string;
+    keyword: string;
+    name: string;
+    organization: number;
+    roles?: Array<number> | null;
+    units?: [{ units: Array<number> | null; roles: Array<number> | null }] | null;
+    users?: Array<number> | null;
+}
