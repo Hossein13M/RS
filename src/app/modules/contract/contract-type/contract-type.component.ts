@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ContractService } from '../contract.service';
-import { Column } from '#shared/components/table/table.model';
-import { ContractType } from './contract.model';
-import { UtilityFunctions } from '#shared/utilityFunctions';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Column } from '#shared/components/table/table.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+import { ContractService } from '../contract.service';
+import { ContractType } from './contract.model';
 import { ContractTypeDialogComponent } from './contract-type-dialog/contract-type-dialog.component';
 
 @Component({
