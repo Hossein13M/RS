@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Column } from '#shared/components/table/table.model';
+import { AlertService } from '#services/alert.service';
 import { OrganizationStructureService } from '../organization-structure.service';
 import { OrganizationStructureModel } from '../organization-structure.model';
-import { Column } from '#shared/components/table/table.model';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OrganizationComponent } from '../organization/organization.component';
-import { AlertService } from '../../../services/alert.service';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-organizations',
@@ -29,8 +29,8 @@ export class OrganizationsListComponent implements OnInit {
             operations: [
                 { name: 'مدیریت ساختار و نقش', icon: 'filter_list', color: 'accent', operation: (row: any) => this.navigateToUnitsAndRolesPage(row) },
                 { name: 'گرفتن رونوشت', icon: 'file_copy', color: 'accent', operation: (row: OrganizationStructureModel) => this.copyOrganization(row) },
-                { name: 'ویرایش نام', icon: 'mode_edit', color: 'accent', operation: (row: any) => this.openOrganizationModal(row) },
-                { name: 'غیرفعال‌سازی', icon: 'sync_alt', color: 'accent', operation: (row: any) => this.deactivateOrganization(row) },
+                { name: 'ویرایش نام', icon: 'mode_edit', color: 'primary', operation: (row: any) => this.openOrganizationModal(row) },
+                { name: 'غیرفعال‌سازی', icon: 'sync_alt', color: 'warn', operation: (row: any) => this.deactivateOrganization(row) },
             ],
         },
     ];
