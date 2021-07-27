@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Column } from '#shared/components/table/table.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '#services/alert.service';
 import { FlowDialogComponent } from './flow-dialog/flow-dialog.component';
 import { FlowService } from './flow.service';
 import { Flow } from './flow.model';
-import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'app-flow',
@@ -52,12 +53,12 @@ export class FlowComponent implements OnInit {
                     name: 'BPMN (پیشینه‌ی الگوسازی فرآیند کسب‌و‌کار)',
                     icon: 'model_training',
                     color: 'accent',
-                    operation: (row: { operationItem: any; row: Flow }) => this.changeFlowStatus(row.row._id),
+                    operation: (row: { operationItem: any; row: Flow }) => this.navigateToFlowBPMNPage(row.row._id),
                 },
             ],
         },
     ];
-    constructor(private dialog: MatDialog, private flowService: FlowService, private alertService: AlertService) {}
+    constructor(private dialog: MatDialog, private flowService: FlowService, private alertService: AlertService, private router: Router) {}
 
     ngOnInit(): void {
         this.getFlows();
@@ -91,5 +92,9 @@ export class FlowComponent implements OnInit {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getFlows();
+    }
+
+    private navigateToFlowBPMNPage(flowId: string): void {
+        this.router.navigate(['contract/flow/bpmn/' + flowId]).finally();
     }
 }
