@@ -1,1 +1,14 @@
-<p>bpmn works!</p>
+<div *ngIf="stateType === 'INIT' || stateType === 'LOADING'" class="flex h-full w-full justify-center items-center">
+    <mat-spinner></mat-spinner>
+</div>
+
+<div class="page-layout" *ngIf="stateType === 'PRESENT'">
+    <app-header [pageTitle]="'الگوی جریان: ' + flowDetails.name" class="wp-100">
+        <button mat-flat-button (click)="saveBPMN()">
+            <mat-icon class="mat-18">add</mat-icon>
+            افزودن BPMN به جریان
+        </button>
+    </app-header>
+
+    <div class="fuse-card m-40 p-40"></div>
+</div>
