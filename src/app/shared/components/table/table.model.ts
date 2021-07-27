@@ -1,4 +1,5 @@
 import { TemplateRef } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
 
 export enum TableSearchMode {
     'NONE',
@@ -21,7 +22,8 @@ export interface PaginationChangeType {
 // Column types
 export type Column = SimpleColumn | OperationColumn | CustomColumn | DetailColumn | IndexColumn;
 
-export type Color = 'primary' | 'warn' | 'accent';
+// export type Color = 'primary' | 'warn' | 'accent';
+export type Color = ThemePalette;
 
 export interface SimpleColumn {
     id: string;
