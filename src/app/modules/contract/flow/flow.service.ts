@@ -16,6 +16,11 @@ export class FlowService {
         return this.http.get<ResponseWithPagination<Flow>>(`/api/v2/flow`, { params });
     }
 
+    public getSingleFlowDetails(searchParams: { organization: number; id: string }): Observable<Flow> {
+        const params = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
+        return this.http.get<Flow>(`/api/v2/flow`, { params });
+    }
+
     public changeFlowStatus(flowId: string): Observable<void> {
         return this.http.put<void>(`/api/v2/flow/inactive/${flowId}`, {});
     }
