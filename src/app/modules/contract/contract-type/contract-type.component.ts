@@ -32,13 +32,13 @@ export class ContractTypeComponent implements OnInit {
                 {
                     name: 'ویرایش',
                     icon: 'mode_edit',
-                    color: 'accent',
+                    color: 'primary',
                     operation: (row: { operationItem: any; row: ContractType }) => this.openContractTypeDialog('edit', row.row),
                 },
                 {
                     name: 'تغییر وضعیت',
                     icon: 'sync_alt',
-                    color: 'accent',
+                    color: 'warn',
                     operation: (row: { operationItem: any; row: ContractType }) => this.changeContractTypeStatus(row.row._id),
                 },
             ],
