@@ -38,11 +38,11 @@
                                     [color]="showSearchBar ? 'primary' : ''"
                                     (click)="openSearchBar()"
                                 >
-                                    <mat-icon class="mat-18">search</mat-icon>
+                                    <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">search</mat-icon>
                                 </button>
 
                                 <button mat-icon-button [matMenuTriggerFor]="saveMenu" *ngIf="col.showExportButtons !== false">
-                                    <mat-icon class="mat-18">save</mat-icon>
+                                    <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">save</mat-icon>
                                 </button>
                                 <mat-menu #saveMenu="matMenu">
                                     <app-table-save-xls [data]="data" [columns]="columns"></app-table-save-xls>
@@ -53,7 +53,7 @@
                                 <!--   Header Operations   -->
                                 <ng-container *ngFor="let op of col.headerOperations">
                                     <button mat-icon-button *ngIf="!op?.raised" [color]="op.color" [matTooltip]="op.name" (click)="doOperationHeader(op)">
-                                        <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
+                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op.icon }}</mat-icon>
                                     </button>
                                     <button
                                         mat-raised-button
@@ -62,7 +62,7 @@
                                         [matTooltip]="op.name"
                                         (click)="doOperationHeader(op)"
                                     >
-                                        <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
+                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op.icon }}</mat-icon>
                                     </button>
                                 </ng-container>
                             </div>
@@ -97,12 +97,12 @@
                         <div *ngIf="col.type == 'profit'" class="profit">
                             <div fxLayout="row wrap" fxLayoutAlign="end center" *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] < 0" class="negative">
                                 {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number: '.0-4' }}
-                                <mat-icon class="mat-18">arrow_drop_down</mat-icon>
+                                <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">arrow_drop_down</mat-icon>
                             </div>
 
                             <div fxLayout="row wrap" fxLayoutAlign="end center" *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] > 0" class="positive">
                                 {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number: '.0-4' }}
-                                <mat-icon class="mat-18">arrow_drop_up</mat-icon>
+                                <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">arrow_drop_up</mat-icon>
                             </div>
                         </div>
 
@@ -132,7 +132,7 @@
                                         [matTooltip]="op.name"
                                         mat-icon-button
                                     >
-                                        <mat-icon class="mat-18">{{ op.icon }}</mat-icon>
+                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op.icon }}</mat-icon>
                                     </button>
                                     <button
                                         (click)="doOperation(el, op)"
@@ -141,7 +141,7 @@
                                         [matTooltip]="op.name"
                                         mat-icon-button
                                     >
-                                        <mat-icon class="mat-18">{{ op?.content(el) }}</mat-icon>
+                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op?.content(el) }}</mat-icon>
                                     </button>
                                     <div *ngSwitchCase="'template'">
                                         <ng-template [ngTemplateOutlet]="op?.content" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
@@ -210,7 +210,7 @@
 
                 <!--    Data Row    -->
                 <tr
-                    id='important'
+                    id="important"
                     class="odd: bg-gray-100"
                     mat-row
                     *matRowDef="let row; columns: displayedColumns; let i = index"
