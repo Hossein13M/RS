@@ -40,7 +40,6 @@ export class ContractTypeDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: ContractType,
         private fb: FormBuilder,
         private contractService: ContractTypeService,
-        public dialogRef: MatDialogRef<any>,
         private userService: UserService,
         private alertService: AlertService,
         public dialog: MatDialogRef<ContractTypeDialogComponent>
