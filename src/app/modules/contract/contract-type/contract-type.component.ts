@@ -16,7 +16,7 @@ export class ContractTypeComponent implements OnInit {
     private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public pagination = { skip: 0, limit: 5, total: 100 };
 
-    tableColumn: Array<Column> = [
+    public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'نوع قرارداد', type: 'string', minWidth: '200px' },
         { id: 'isActive', name: 'وضعیت نوع قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
