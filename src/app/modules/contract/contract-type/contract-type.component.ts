@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContractService } from '../contract.service';
+import { ContractTypeService } from './contract-type.service';
 import { Column } from '#shared/components/table/table.model';
 import { ContractType } from './contract.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
@@ -45,7 +45,7 @@ export class ContractTypeComponent implements OnInit {
         },
     ];
 
-    constructor(private contractService: ContractService, private dialog: MatDialog) {}
+    constructor(private contractService: ContractTypeService, private dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.getContractTypes();
