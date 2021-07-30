@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { searchSelectStateType } from '#shared/components/search-select/search-select.component';
-import { ContractService } from '../../contract.service';
+import { ContractTypeService } from '../contract-type.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { Roles, Units, User } from '../../../organizations-structure/user/user.model';
 import { ContractForm, ContractType, Form } from '../contract.model';
@@ -39,7 +39,7 @@ export class ContractTypeDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: ContractType,
         private fb: FormBuilder,
-        private contractService: ContractService,
+        private contractService: ContractTypeService,
         public dialogRef: MatDialogRef<any>,
         private userService: UserService,
         private alertService: AlertService,
