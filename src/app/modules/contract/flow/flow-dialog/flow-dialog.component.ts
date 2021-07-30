@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ContractType } from '../../contract-type/contract.model';
+import { ContractType } from '../../contract-type/contract-type.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FlowService } from '../flow.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
