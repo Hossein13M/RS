@@ -2,7 +2,7 @@
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
             <span class="title dialog-title">{{ title }}</span>
-            <button mat-icon-button (click)="this.dialogRef.close()">
+            <button mat-icon-button (click)="dialog.close()">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
@@ -128,7 +128,7 @@
                     <mat-icon class="icon-header">{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
                     {{ this.isEditMode ? 'ویرایش نوع قرارداد' : 'افزودن نوع قرارداد' }}
                 </button>
-                <button mat-flat-button color="warn" type="button" (click)="dialogRef.close(false)">
+                <button mat-flat-button color="warn" type="button" (click)="dialog.close(false)">
                     <mat-icon class="icon-header">close</mat-icon>
                     برگشت
                 </button>

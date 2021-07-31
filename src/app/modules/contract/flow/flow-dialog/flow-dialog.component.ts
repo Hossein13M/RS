@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ContractType } from '../../contract-type/contract.model';
+import { ContractType } from '../../contract-type/contract-type.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FlowService } from '../flow.service';
-import { ContractService } from '../../contract.service';
+import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { Flow } from '../flow.model';
 
@@ -29,7 +29,7 @@ export class FlowDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: Flow,
         private fb: FormBuilder,
         private flowService: FlowService,
-        private contractService: ContractService,
+        private contractService: ContractTypeService,
         public dialogRef: MatDialogRef<any>,
         public dialog: MatDialogRef<FlowDialogComponent>
     ) {}
