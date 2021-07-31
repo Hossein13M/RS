@@ -40,7 +40,8 @@
                             "src/styles.scss",
                             "node_modules/bpmn-js/dist/assets/diagram-js.css",
                             "node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css",
-                            "node_modules/bpmn-js-properties-panel/styles/properties.less"
+                            "node_modules/bpmn-js-properties-panel/styles/properties.less",
+                            "node_modules/bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css"
                         ],
                         "scripts": ["src/assets/js/minio-browser/minio-browser.js"],
                         "allowedCommonJsDependencies": ["core-js", "raf", "xlsx", "@babel/runtime"],
