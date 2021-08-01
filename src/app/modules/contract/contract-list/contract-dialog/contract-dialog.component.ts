@@ -23,7 +23,7 @@ export class ContractDialogComponent implements OnInit {
     public title: string = 'افزودن قرارداد';
     public contractTypes: Array<ContractType>;
     public customers: Array<Customer>;
-    public flows: Array<Flow>;
+    public flows: Array<Flow> = [];
     public contracts: Array<Contract>;
     public pagination = { skip: 0, limit: 100, total: 100 };
     public contractCategories: Array<{ name: string; id: number }> = [
@@ -47,7 +47,7 @@ export class ContractDialogComponent implements OnInit {
         organization: [this.activeOrganizationCode, Validators.required],
         customer: [null, Validators.required],
         category: [1, Validators.required],
-        code: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]*$/)]],
+        code: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]*$/)]],
         parentId: [],
         contractType: [null, Validators.required],
         flow: ['', Validators.required],
@@ -56,11 +56,11 @@ export class ContractDialogComponent implements OnInit {
     ngOnInit(): void {
         this.checkForEditMode();
         this.getData().then(() => (this.stateType = StateType.PRESENT));
+        this.form.get('contractType').valueChanges.subscribe(() => this.getFlows());
     }
 
     private async getData(): Promise<any> {
         this.getContractTypes();
-        this.getFlows();
         this.getCustomers();
         this.getContracts();
     }
@@ -84,10 +84,12 @@ export class ContractDialogComponent implements OnInit {
     }
 
     private getFlows(): void {
-        this.flowService.getFlows({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe(
-            (response) => (this.flows = response.items),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
-        );
+        this.flowService
+            .getFlows({ ...this.pagination, organization: this.activeOrganizationCode, contractTypes: [this.form.get('contractType').value] })
+            .subscribe(
+                (response) => (this.flows = response.items),
+                () => this.alertService.onError('مشکلی پیش آمده‌است')
+            );
     }
 
     private getCustomers(): void {
