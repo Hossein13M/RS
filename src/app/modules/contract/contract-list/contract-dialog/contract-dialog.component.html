@@ -27,7 +27,7 @@
                     <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
                     <input name="name" formControlName="code" matInput required />
                     <mat-error *ngIf="form.get('code').hasError('required')"> وارد کردن این فیلد الزامی است. </mat-error>
-                    <mat-error *ngIf="form.get('code').hasError('pattern')"> تنها حروف انگلیسی مجاز است. </mat-error>
+                    <mat-error *ngIf="form.get('code').hasError('pattern')"> تنها حروف و اعداد انگلیسی مجاز است. </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
@@ -46,12 +46,13 @@
                             {{ flow.name }}
                         </mat-option>
                     </mat-select>
+                    <mat-hint *ngIf="!flows.length">برای نوع قرارداد برگزیده، هیچ جریانی یافت نشد</mat-hint>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>مشتری</mat-label>
                     <mat-select formControlName="customer" required>
-                        <mat-option class="text=right" *ngFor="let customer of customers" [value]="{ id: customer.id, name: customer.name }">
+                        <mat-option class="text=right" *ngFor="let customer of customers" [value]="customer">
                             {{ customer.name }}
                         </mat-option>
                     </mat-select>

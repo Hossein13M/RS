@@ -7,7 +7,7 @@ import { ContractService } from '../contract.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { FlowService } from '../../flow/flow.service';
-import { Contract, Customer } from '../contract.model';
+import { Contract } from '../contract.model';
 import { Flow } from '../../flow/flow.model';
 import { StateType } from '#shared/state-type.enum';
 
@@ -21,10 +21,10 @@ export class ContractDialogComponent implements OnInit {
     public stateType: StateType = StateType.INIT;
     public isEditMode: boolean = false;
     public title: string = 'افزودن قرارداد';
-    public contractTypes: Array<ContractType>;
-    public customers: Array<Customer>;
-    public flows: Array<Flow>;
-    public contracts: Array<Contract>;
+    public contractTypes: Array<ContractType> = [];
+    public customers: Array<{ id: number; name: string }> = [];
+    public flows: Array<Flow> = [];
+    public contracts: Array<Contract> = [];
     public pagination = { skip: 0, limit: 100, total: 100 };
     public contractCategories: Array<{ name: string; id: number }> = [
         { name: 'قرارداد', id: 1 },
@@ -33,7 +33,7 @@ export class ContractDialogComponent implements OnInit {
     ];
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: ContractType,
+        @Inject(MAT_DIALOG_DATA) public data: Contract,
         private fb: FormBuilder,
         private contractService: ContractService,
         private contractTypeService: ContractTypeService,
@@ -47,20 +47,22 @@ export class ContractDialogComponent implements OnInit {
         organization: [this.activeOrganizationCode, Validators.required],
         customer: [null, Validators.required],
         category: [1, Validators.required],
-        code: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]*$/)]],
+        code: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9]*$/)]],
         parentId: [],
         contractType: [null, Validators.required],
         flow: ['', Validators.required],
     });
 
     ngOnInit(): void {
-        this.checkForEditMode();
-        this.getData().then(() => (this.stateType = StateType.PRESENT));
+        this.getData().then(() => {
+            this.stateType = StateType.PRESENT;
+            this.checkForEditMode();
+        });
+        this.form.get('contractType').valueChanges.subscribe(() => this.getFlows());
     }
 
     private async getData(): Promise<any> {
         this.getContractTypes();
-        this.getFlows();
         this.getCustomers();
         this.getContracts();
     }
@@ -71,7 +73,13 @@ export class ContractDialogComponent implements OnInit {
         if (this.isEditMode) this.setDataForEditMode();
     }
 
-    private setDataForEditMode(): void {}
+    private setDataForEditMode(): void {
+        this.form.get('name').setValue(this.data.name);
+        this.form.get('contractType').setValue(this.data.contractType);
+        this.getFlows();
+        this.form.get('code').setValue(this.data.code);
+        this.form.get('category').setValue(this.data.category);
+    }
 
     private getContractTypes(): void {
         this.contractTypeService
@@ -80,18 +88,29 @@ export class ContractDialogComponent implements OnInit {
     }
 
     private getContracts(): void {
-        this.contractService.getContractsList().subscribe((response) => (this.contracts = response.items));
+        this.contractService
+            .getContractsList({ organization: this.activeOrganizationCode, isActive: true })
+            .subscribe((response) => (this.contracts = response.items));
     }
 
     private getFlows(): void {
-        this.flowService.getFlows({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe(
-            (response) => (this.flows = response.items),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
-        );
+        this.flowService
+            .getFlows({ ...this.pagination, organization: this.activeOrganizationCode, contractTypes: [this.form.get('contractType').value] })
+            .subscribe(
+                (response) => (this.flows = response.items),
+                () => this.alertService.onError('مشکلی پیش آمده‌است'),
+                () => this.isEditMode && this.form.get('flow').setValue(this.data.flow)
+            );
     }
 
     private getCustomers(): void {
-        this.contractService.getCustomers().subscribe((response) => (this.customers = response.items));
+        this.contractService.getCustomers().subscribe((response) => {
+            this.customers = [];
+            response.items.map((item) => this.customers.push({ id: item.id, name: item.name }));
+            if (this.isEditMode) {
+                this.customers.map((item) => item.id === this.data.customer.id && this.form.get('customer').setValue(item));
+            }
+        });
     }
 
     public submitForm(): void {
