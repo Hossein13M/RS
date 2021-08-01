@@ -33,7 +33,7 @@ export class ContractDialogComponent implements OnInit {
     ];
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: ContractType,
+        @Inject(MAT_DIALOG_DATA) public data: Contract,
         private fb: FormBuilder,
         private contractService: ContractService,
         private contractTypeService: ContractTypeService,
@@ -71,7 +71,14 @@ export class ContractDialogComponent implements OnInit {
         if (this.isEditMode) this.setDataForEditMode();
     }
 
-    private setDataForEditMode(): void {}
+    private setDataForEditMode(): void {
+        this.form.get('name').setValue(this.data.name);
+        this.form.get('contractType').setValue(this.data.contractType);
+        this.getFlows();
+        this.form.get('code').setValue(this.data.code);
+        this.form.get('category').setValue(this.data.category);
+        this.form.get('customer').setValue({ id: this.data.customer.id, name: this.data.customer.name });
+    }
 
     private getContractTypes(): void {
         this.contractTypeService
@@ -90,7 +97,8 @@ export class ContractDialogComponent implements OnInit {
             .getFlows({ ...this.pagination, organization: this.activeOrganizationCode, contractTypes: [this.form.get('contractType').value] })
             .subscribe(
                 (response) => (this.flows = response.items),
-                () => this.alertService.onError('مشکلی پیش آمده‌است')
+                () => this.alertService.onError('مشکلی پیش آمده‌است'),
+                () => this.isEditMode && this.form.get('flow').setValue(this.data.flow)
             );
     }
 
