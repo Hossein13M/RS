@@ -7,7 +7,7 @@ import { ContractService } from '../contract.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { FlowService } from '../../flow/flow.service';
-import { Contract, Customer } from '../contract.model';
+import { Contract } from '../contract.model';
 import { Flow } from '../../flow/flow.model';
 import { StateType } from '#shared/state-type.enum';
 
@@ -21,10 +21,10 @@ export class ContractDialogComponent implements OnInit {
     public stateType: StateType = StateType.INIT;
     public isEditMode: boolean = false;
     public title: string = 'افزودن قرارداد';
-    public contractTypes: Array<ContractType>;
-    public customers: Array<Customer>;
+    public contractTypes: Array<ContractType> = [];
+    public customers: Array<{ id: number; name: string }> = [];
     public flows: Array<Flow> = [];
-    public contracts: Array<Contract>;
+    public contracts: Array<Contract> = [];
     public pagination = { skip: 0, limit: 100, total: 100 };
     public contractCategories: Array<{ name: string; id: number }> = [
         { name: 'قرارداد', id: 1 },
@@ -54,8 +54,10 @@ export class ContractDialogComponent implements OnInit {
     });
 
     ngOnInit(): void {
-        this.checkForEditMode();
-        this.getData().then(() => (this.stateType = StateType.PRESENT));
+        this.getData().then(() => {
+            this.stateType = StateType.PRESENT;
+            this.checkForEditMode();
+        });
         this.form.get('contractType').valueChanges.subscribe(() => this.getFlows());
     }
 
@@ -77,7 +79,6 @@ export class ContractDialogComponent implements OnInit {
         this.getFlows();
         this.form.get('code').setValue(this.data.code);
         this.form.get('category').setValue(this.data.category);
-        this.form.get('customer').setValue({ id: this.data.customer.id, name: this.data.customer.name });
     }
 
     private getContractTypes(): void {
@@ -103,7 +104,13 @@ export class ContractDialogComponent implements OnInit {
     }
 
     private getCustomers(): void {
-        this.contractService.getCustomers().subscribe((response) => (this.customers = response.items));
+        this.contractService.getCustomers().subscribe((response) => {
+            this.customers = [];
+            response.items.map((item) => this.customers.push({ id: item.id, name: item.name }));
+            if (this.isEditMode) {
+                this.customers.map((item) => item.id === this.data.customer.id && this.form.get('customer').setValue(item));
+            }
+        });
     }
 
     public submitForm(): void {

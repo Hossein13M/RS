@@ -52,7 +52,7 @@
                 <mat-form-field appearance="outline">
                     <mat-label>مشتری</mat-label>
                     <mat-select formControlName="customer" required>
-                        <mat-option class="text=right" *ngFor="let customer of customers" [value]="{ id: customer.id, name: customer.name }">
+                        <mat-option class="text=right" *ngFor="let customer of customers" [value]="customer">
                             {{ customer.name }}
                         </mat-option>
                     </mat-select>
