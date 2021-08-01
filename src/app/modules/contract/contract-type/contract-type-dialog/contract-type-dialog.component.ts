@@ -101,7 +101,7 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     private getContractTypeForms(): void {
-        this.contractService.getContractTypeForms(UtilityFunctions.getActiveOrganizationInfo('id')).subscribe((response) => {
+        this.contractService.getContractTypeForms(UtilityFunctions.getActiveOrganizationInfo('code')).subscribe((response) => {
             this.contractTypeForms = response;
         });
     }
