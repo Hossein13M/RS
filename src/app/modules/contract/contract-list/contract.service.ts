@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Contract, Customer } from './contract.model';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable()
 export class ContractService {
     constructor(private http: HttpClient) {}
 
-    public getContractsList(): Observable<ResponseWithPagination<Contract>> {
-        return this.http.get<ResponseWithPagination<Contract>>(`/api/v1/contract`);
+    public getContractsList(searchParams: { organization: number; name?: string; isActive?: boolean }): Observable<ResponseWithPagination<Contract>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
+        return this.http.get<ResponseWithPagination<Contract>>(`/api/v1/contract`, { params });
     }
 
     public createNewContract(contractInfo: Contract): Observable<ResponseWithPagination<Contract>> {
