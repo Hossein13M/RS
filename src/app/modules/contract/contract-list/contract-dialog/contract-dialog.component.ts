@@ -80,7 +80,9 @@ export class ContractDialogComponent implements OnInit {
     }
 
     private getContracts(): void {
-        this.contractService.getContractsList().subscribe((response) => (this.contracts = response.items));
+        this.contractService
+            .getContractsList({ organization: this.activeOrganizationCode, isActive: true })
+            .subscribe((response) => (this.contracts = response.items));
     }
 
     private getFlows(): void {
