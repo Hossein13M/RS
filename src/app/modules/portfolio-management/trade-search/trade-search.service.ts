@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
@@ -12,7 +12,7 @@ export class TradeSearchService {
     }
 
     public searchTrade(paginationInfo: any, searchParams: any): Observable<any> {
-        const params = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
         return this.http.get<any>(`/api/v1/portfolio-management-service/search-trade-data?skip=${paginationInfo.skip}&limit=${paginationInfo.limit}`, {
             params,
         });
