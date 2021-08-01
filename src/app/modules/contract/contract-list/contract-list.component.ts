@@ -51,6 +51,7 @@ export class ContractListComponent implements OnInit {
     }
 
     private getContractsList(): void {
+        this.contracts = [];
         this.contractService.getContractsList().subscribe((response) => {
             this.contracts = response.items;
             this.pagination.total = response.total;
