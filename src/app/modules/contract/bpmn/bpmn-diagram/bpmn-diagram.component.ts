@@ -3,6 +3,10 @@ import { defaultBpmn } from '../default.bpmn';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import { MatDialog } from '@angular/material/dialog';
+import { BpmnDialogComponent } from '../bpmn-dialog/bpmn-dialog.component';
+import { AlertService } from '#services/alert.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-bpmn-diagram',
@@ -11,13 +15,17 @@ import BpmnModeler from 'bpmn-js/lib/Modeler';
 })
 export class BpmnDiagramComponent {
     private modeler;
-
+    private flowID: string;
     public saveName = '';
+    private eventBus: any;
 
-    constructor() {}
+    constructor(private dialog: MatDialog, private alertService: AlertService, private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.initBpmn();
+        this.flowID = this.activatedRoute.snapshot.queryParamMap.get('id');
+        this.eventBus = this.modeler.get('eventBus');
+        this.eventBus.on('element.dblclick', this.clickListener.bind(this));
     }
 
     initBpmn() {
@@ -28,10 +36,6 @@ export class BpmnDiagramComponent {
             },
             additionalModules: [propertiesProvider, propertiesPanelModule],
         });
-        this.createDiagram();
-    }
-
-    createDiagram() {
         this.importDiagram();
     }
 
@@ -72,5 +76,27 @@ export class BpmnDiagramComponent {
         if (data) {
             this.saveName = name;
         }
+    }
+
+    public clickListener(event): void {
+        if (event.element.type === 'bpmn:Task') {
+            if (event.element.businessObject.name) {
+                this.openDialog(event.element.businessObject.name, event.element.id);
+            } else {
+                this.alertService.onError('نخست یک نام برگزینید');
+            }
+        }
+
+        if (event.element.type === 'bpmn:EndEvent') {
+            event.element.businessObject.name = 'پایانی';
+            this.dialog.open(BpmnDialogComponent, {
+                data: { flowId: this.flowID, stateName: event.element.businessObject.name, stateId: event.element.id },
+                panelClass: 'dialog-w40',
+            });
+        }
+    }
+
+    private openDialog(name, id): void {
+        this.dialog.open(BpmnDialogComponent, { panelClass: 'dialog-p-0', data: { flowId: this.flowID, stateName: name, stateId: id } });
     }
 }
