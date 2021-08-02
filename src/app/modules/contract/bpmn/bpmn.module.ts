@@ -7,11 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BpmnDiagramComponent } from './bpmn-diagram/bpmn-diagram.component';
+import { BpmnDialogComponent } from './bpmn-dialog/bpmn-dialog.component';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: BpmnComponent }];
 
 @NgModule({
-    declarations: [BpmnComponent, BpmnDiagramComponent],
+    declarations: [BpmnComponent, BpmnDiagramComponent, BpmnDialogComponent],
     imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
     exports: [BpmnComponent],
 })
