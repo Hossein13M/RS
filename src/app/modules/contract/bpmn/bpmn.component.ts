@@ -26,7 +26,7 @@ export class BpmnComponent implements OnInit {
     private getFlowDetails(): void {
         const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
         this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.flowId, ...pagination }).subscribe((response) => {
-            this.flowDetails = response;
+            this.flowDetails = response.items[0];
             this.stateType = StateType.PRESENT;
         });
     }
