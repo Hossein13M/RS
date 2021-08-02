@@ -16,23 +16,16 @@ export class BpmnComponent implements OnInit {
     public flowDetails: Flow;
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
 
-    //
-    importError?: Error;
-    diagramUrl = 'https://cdn.staticaly.com/gh/bpmn-io/bpmn-js-examples/dfceecba/starter/diagram.bpmn';
-
     constructor(private activatedRoute: ActivatedRoute, private flowService: FlowService) {}
 
     ngOnInit(): void {
-        this.getFlowIdFromURL();
-    }
-
-    private getFlowIdFromURL(): void {
         this.flowId = this.activatedRoute.snapshot.paramMap.get('id');
         this.getFlowDetails();
     }
 
     private getFlowDetails(): void {
-        this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.flowId }).subscribe((response) => {
+        const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
+        this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.flowId, ...pagination }).subscribe((response) => {
             this.flowDetails = response;
             this.stateType = StateType.PRESENT;
         });
@@ -40,20 +33,5 @@ export class BpmnComponent implements OnInit {
 
     public saveBPMN(): void {
         console.log('kir');
-    }
-
-    public handleImported(event) {
-        console.log(event);
-        const { type, error, warnings } = event;
-
-        if (type === 'success') {
-            console.log(`Rendered diagram (%s warnings)`, warnings.length);
-        }
-
-        if (type === 'error') {
-            console.error('Failed to render diagram', error);
-        }
-
-        this.importError = error;
     }
 }
