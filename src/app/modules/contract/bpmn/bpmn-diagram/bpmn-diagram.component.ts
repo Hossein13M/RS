@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { defaultBpmn } from '../default.bpmn';
-import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,10 +30,10 @@ export class BpmnDiagramComponent {
     initBpmn() {
         this.modeler = new BpmnModeler({
             container: '#js-canvas',
-            propertiesPanel: {
-                parent: '#js-properties-panel',
-            },
-            additionalModules: [propertiesProvider, propertiesPanelModule],
+            // propertiesPanel: {
+            //     parent: '#js-properties-panel',
+            // },
+            additionalModules: [propertiesProvider],
         });
         this.importDiagram();
     }
@@ -44,6 +43,7 @@ export class BpmnDiagramComponent {
             if (err) {
                 console.error(err);
             }
+            // noinspection JSPotentiallyInvalidUsageOfClassThis
             this.modeler.get('canvas').zoom('fit-viewport');
         });
     }
@@ -90,13 +90,20 @@ export class BpmnDiagramComponent {
         if (event.element.type === 'bpmn:EndEvent') {
             event.element.businessObject.name = 'پایانی';
             this.dialog.open(BpmnDialogComponent, {
+                width: '1200px',
+                height: '700px',
+                panelClass: 'dialog-p-0',
                 data: { flowId: this.flowID, stateName: event.element.businessObject.name, stateId: event.element.id },
-                panelClass: 'dialog-w40',
             });
         }
     }
 
     private openDialog(name, id): void {
-        this.dialog.open(BpmnDialogComponent, { panelClass: 'dialog-p-0', data: { flowId: this.flowID, stateName: name, stateId: id } });
+        this.dialog.open(BpmnDialogComponent, {
+            width: '1200px',
+            height: '700px',
+            panelClass: 'dialog-p-0',
+            data: { flowId: this.flowID, stateName: name, stateId: id },
+        });
     }
 }
