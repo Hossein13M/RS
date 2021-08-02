@@ -1,1 +1,53 @@
-<p>bpmn-dialog works!</p>
+<div class="flex flex-col h-full" dir="rtl">
+    <div class="dialog-content-wrapper flex flex-col" dir="rtl">
+        <mat-toolbar matDialogTitle class="mat-accent m-0">
+            <mat-toolbar-row class="flex justify-between items-center">
+                <span class="title dialog-title">پیکربندی {{ data.stateName }} </span>
+                <button mat-icon-button (click)="dialogRef.close()">
+                    <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+                </button>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+
+    <div class="flex flex-col h-full">
+        <mat-card class="m-10 p-0">
+            <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+                <mat-card-title class="text-white mb-0">دسترسی‌های این گام</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="mt-10 mb-2">
+                <form [formGroup]="form" (submit)="submitForm()" class="flex w-full justify-evenly">
+                    <mat-form-field appearance="outline">
+                        <mat-label>دسترسی کاربران</mat-label>
+                        <mat-select formControlName="users" multiple>
+                            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>دسترسی کاربران گزینشی</mat-label>
+                        <mat-select formControlName="selectiveUsers" multiple>
+                            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </mat-card-content>
+
+            <mat-card-footer class="text-center mb-2 flex justify-center items-center">
+                <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                <p>
+                    در دسترسی
+                    <strong>گزینشی</strong>
+                    شما بایستی یک کاربر را به عنوان کاربر پیش‌فرض انتخاب کنید. با این روش، در کارتابل قرارداد، دیگر نیازی به گزینش کاربر برای دادن دسترسی نیست.
+                </p>
+            </mat-card-footer>
+        </mat-card>
+
+        <mat-card class="m-10 p-0">
+            <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+                <mat-card-title class="text-white mb-0">فرم این گام</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="mt-10 mb-2"> Text content </mat-card-content>
+        </mat-card>
+    </div>
+</div>
