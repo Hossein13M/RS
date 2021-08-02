@@ -8,12 +8,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BpmnDiagramComponent } from './bpmn-diagram/bpmn-diagram.component';
 import { BpmnDialogComponent } from './bpmn-dialog/bpmn-dialog.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FlexModule } from '@angular/flex-layout';
+import { MatCardModule } from '@angular/material/card';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: BpmnComponent }];
 
 @NgModule({
     declarations: [BpmnComponent, BpmnDiagramComponent, BpmnDialogComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
+    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatToolbarModule, MatDialogModule, FlexModule, MatCardModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule],
     exports: [BpmnComponent],
 })
 export class BpmnModule {}
