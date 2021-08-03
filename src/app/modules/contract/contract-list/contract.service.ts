@@ -18,6 +18,10 @@ export class ContractService {
         return this.http.post<ResponseWithPagination<Contract>>(`/api/v1/contract`, contractInfo);
     }
 
+    public editContract(contractName: { id: string; name: string }): Observable<ResponseWithPagination<Contract>> {
+        return this.http.put<ResponseWithPagination<Contract>>(`/api/v1/contract`, contractName);
+    }
+
     public changeContractName(contractInfo: { id: string; name: string }): Observable<ResponseWithPagination<Contract>> {
         return this.http.put<ResponseWithPagination<Contract>>(`/api/v1/contract`, contractInfo);
     }
