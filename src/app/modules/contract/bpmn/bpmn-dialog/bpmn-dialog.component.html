@@ -1,0 +1,173 @@
+<div class="flex flex-col h-full" dir="rtl">
+    <div class="dialog-content-wrapper flex flex-col">
+        <mat-toolbar matDialogTitle class="mat-accent m-0">
+            <mat-toolbar-row class="flex justify-between items-center">
+                <span class="title dialog-title">پیکربندی {{ data.stateName }} </span>
+                <div class="buttons">
+                    <button mat-icon-button type="submit" form="form">
+                        <mat-icon fontSet="material-icons-outlined">save</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="dialogRef.close()">
+                        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+                    </button>
+                </div>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
+
+    <div class="flex flex-col h-full">
+        <mat-card class="m-10 p-0">
+            <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+                <mat-card-title class="text-white mb-0">دسترسی‌های این گام</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="mt-10 mb-2">
+                <form [formGroup]="form" id="form" (submit)="submitForm()" class="flex w-full justify-evenly items-center">
+                    <mat-checkbox formControlName="initializer">دسترسی ثبت‌کننده به این گام</mat-checkbox>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>دسترسی گزینشی کاربران</mat-label>
+                        <mat-select formControlName="selectiveUsers" multiple>
+                            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <app-tree-select
+                        class="flex items-center"
+                        (event)="detectChanges($event)"
+                        [maxSelect]="1"
+                        [data]="units"
+                        formControlName="units"
+                        selectedValueFieldName="name"
+                    ></app-tree-select>
+
+                    <mat-form-field appearance="outline" *ngIf="!!form.get('roles')">
+                        <mat-label>نقش‌های این ساختار سازمانی</mat-label>
+                        <mat-select formControlName="roles" multiple>
+                            <mat-option *ngFor="let role of rolesOnUnit" [value]="role.id">{{ role.name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            </mat-card-content>
+
+            <mat-card-footer class="text-center mb-2 flex flex-col">
+                <!--                <p>-->
+                <!--                    در دسترسی-->
+                <!--                    <strong>گزینشی</strong>-->
+                <!--                    شما بایستی یک کاربر را به عنوان کاربر پیش‌فرض انتخاب کنید. با این روش، در کارتابل قرارداد، دیگر نیازی به گزینش کاربر برای دادن دسترسی نیست.-->
+                <!--                </p>-->
+
+                <div class="flex justify-center items-center">
+                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                    <p>
+                        پس از گزینش
+                        <strong>ساختار سازمانی</strong>
+                        و سپس گزینش
+                        <strong>نقش درون ساختار</strong>
+                        می‌توانید به همه‌ی کاربران آن نقش، دسترسی به این گام
+                        <strong>BPMN</strong>
+                        بدهید.
+                    </p>
+                </div>
+
+                <div class="flex justify-center items-center">
+                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                    <p>
+                        فهرست کاربران در
+                        <strong>دسترسی گزینشی</strong>
+                        کاربرانی است که در
+                        <strong>کارتابل قرارداد</strong>
+                        می‌توانید از میان آن‌ها به یکی از کاربران دسترسی به این گام
+                        <strong>BPMN</strong>
+                        بدهید.
+                    </p>
+                </div>
+            </mat-card-footer>
+        </mat-card>
+
+        <mat-card class="m-10 p-0">
+            <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+                <mat-card-title class="text-white mb-0">فرم این گام</mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="my-10 flex justify-evenly">
+                <mat-card class="w-2/5 m-10 p-0">
+                    <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+                        <mat-card-title class="text-white mb-0">ابزارها</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content class="flex justify-center items-center my-10">
+                        <div cdkDropList class="flex justify-evenly w-full" [id]="'Base'" [cdkDropListData]="formTools" [cdkDropListSortingDisabled]="true">
+                            <div class="flex flex-col items-center justify-center" *ngFor="let item of formTools" [cdkDragDisabled]="item.disabled" cdkDrag>
+                                <mat-icon fontSet="material-icons-outlined" *ngIf="!!item.icon" class="tool-icon"> {{ item.icon }} </mat-icon>
+                                <img *ngIf="!!item.imageLink" [src]="item.imageLink" alt="image not available" class="tool-icon" />
+                                <strong>{{ item.name }}</strong>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-footer class="text-center mx-0 mb-2 flex items-center justify-center">
+                        <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>
+                        <p>با کشیدن و رها کردن هر ابزار در بخش فرم، از آن در این گام بهره ببرید.</p>
+                    </mat-card-footer>
+                </mat-card>
+
+                <mat-card class="w-3/5 m-10 p-0">
+                    <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+                        <mat-card-title class="text-white mb-0">فرم</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <!-- DDDDDDDDDDDDD                                                                                     AAA-->
+                        <!-- D::::::::::::DDD                                                                                 A:::A-->
+                        <!-- D:::::::::::::::DD                                                                              A:::::A-->
+                        <!-- DDD:::::DDDDD:::::D                                                                            A:::::::A-->
+                        <!-- D:::::D    D:::::D rrrrr   rrrrrrrrr      ooooooooooo   ppppp   ppppppppp                   A:::::::::A          rrrrr   rrrrrrrrr       eeeeeeeeeeee    aaaaaaaaaaaaa-->
+                        <!-- D:::::D     D:::::Dr::::rrr:::::::::r   oo:::::::::::oo p::::ppp:::::::::p                 A:::::A:::::A         r::::rrr:::::::::r    ee::::::::::::ee  a::::::::::::a-->
+                        <!-- D:::::D     D:::::Dr:::::::::::::::::r o:::::::::::::::op:::::::::::::::::p               A:::::A A:::::A        r:::::::::::::::::r  e::::::eeeee:::::eeaaaaaaaaa:::::a-->
+                        <!-- D:::::D     D:::::Drr::::::rrrrr::::::ro:::::ooooo:::::opp::::::ppppp::::::p             A:::::A   A:::::A       rr::::::rrrrr::::::re::::::e     e:::::e         a::::a-->
+                        <!-- D:::::D     D:::::D r:::::r     r:::::ro::::o     o::::o p:::::p     p:::::p            A:::::A     A:::::A       r:::::r     r:::::re:::::::eeeee::::::e  aaaaaaa:::::a-->
+                        <!-- D:::::D     D:::::D r:::::r     rrrrrrro::::o     o::::o p:::::p     p:::::p           A:::::AAAAAAAAA:::::A      r:::::r     rrrrrrre:::::::::::::::::e aa::::::::::::a-->
+                        <!-- D:::::D     D:::::D r:::::r            o::::o     o::::o p:::::p     p:::::p          A:::::::::::::::::::::A     r:::::r            e::::::eeeeeeeeeee a::::aaaa::::::a-->
+                        <!-- D:::::D    D:::::D  r:::::r            o::::o     o::::o p:::::p    p::::::p         A:::::AAAAAAAAAAAAA:::::A    r:::::r            e:::::::e         a::::a    a:::::a-->
+                        <!-- DDD:::::DDDDD:::::D   r:::::r            o:::::ooooo:::::o p:::::ppppp:::::::p        A:::::A             A:::::A   r:::::r            e::::::::e        a::::a    a:::::a-->
+                        <!-- D:::::::::::::::DD    r:::::r            o:::::::::::::::o p::::::::::::::::p        A:::::A               A:::::A  r:::::r             e::::::::eeeeeeeea:::::aaaa::::::a-->
+                        <!-- D::::::::::::DDD      r:::::r             oo:::::::::::oo  p::::::::::::::pp        A:::::A                 A:::::A r:::::r              ee:::::::::::::e a::::::::::aa:::a-->
+                        <!-- DDDDDDDDDDDDD         rrrrrrr               ooooooooooo    p::::::pppppppp         AAAAAAA                   AAAAAAArrrrrrr                eeeeeeeeeeeeee  aaaaaaaaaa  aaaa-->
+
+                        <!--                        <div cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="form.Value" (cdkDropListDropped)="drop($event)">-->
+                        <!--                            <div *ngFor="let item of form.Value; let j = index" cdkDrag>-->
+                        <!--                                <div dir="rtl">-->
+                        <!--                                    <button mat-icon-button color="primary" (click)="deleteItem(i, j)">-->
+                        <!--                                        <mat-icon fontSet="material-icons-outlined" color="warn">cancel</mat-icon>-->
+                        <!--                                    </button>-->
+
+                        <!--                                    <mat-icon>{{ item.icon }}</mat-icon>-->
+
+                        <!--                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">-->
+                        <!--                                        <mat-label>نوشته ی داخل دکمه</mat-label>-->
+                        <!--                                        <input [formControl]="formGroup?.controls[i]?.controls['Value']?.controls[j].controls['Value']" matInput />-->
+                        <!--                                    </mat-form-field>-->
+
+                        <!--                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">-->
+                        <!--                                        <mat-label>نوع</mat-label>-->
+                        <!--                                        <mat-select [formControl]="formGroup?.controls[i]?.controls['Value']?.controls[j].controls['acction']">-->
+                        <!--                                            2-->
+                        <!--                                            <mat-option [value]="1">آپلود</mat-option>-->
+                        <!--                                            <mat-option [value]="2">دانلود</mat-option>-->
+                        <!--                                            <mat-option [value]="3">تایید</mat-option>-->
+                        <!--                                            <mat-option [value]="4">رد</mat-option>-->
+                        <!--                                            <mat-option [value]="5">گرفتن کد</mat-option>-->
+                        <!--                                        </mat-select>-->
+                        <!--                                    </mat-form-field>-->
+                        <!--                                </div>-->
+                        <!--                            </div>-->
+                        <!--                        </div>-->
+
+                        <!--                    dastan-->
+                    </mat-card-content>
+                    <mat-card-footer class="text-center mx-0 mb-2 flex justify-center items-center">
+                        <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>
+                        <p>برخی از ابزارها نیاز به تنظیمات ویژه‌ای دارند که در این بخش، می‌توانید آن‌ها را پیدا کنید.</p>
+                    </mat-card-footer>
+                </mat-card>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

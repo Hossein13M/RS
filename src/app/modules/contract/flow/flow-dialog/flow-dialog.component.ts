@@ -59,11 +59,13 @@ export class FlowDialogComponent implements OnInit {
     }
 
     private getContractTypes(): void {
-        this.contractService.getContractTypes({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('id') }).subscribe((response) => {
-            this.contractTypes = response.items;
-            this.pagination.total = response.total;
-            if (this.isEditMode) this.setDataForEditMode();
-        });
+        this.contractService
+            .getContractTypes({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code') })
+            .subscribe((response) => {
+                this.contractTypes = response.items;
+                this.pagination.total = response.total;
+                if (this.isEditMode) this.setDataForEditMode();
+            });
     }
 
     public submitForm(): void {
