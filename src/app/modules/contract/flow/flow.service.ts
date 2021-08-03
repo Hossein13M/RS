@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
@@ -12,7 +12,7 @@ export class FlowService {
     constructor(private http: HttpClient) {}
 
     public getFlows(searchParams: any): Observable<ResponseWithPagination<Flow>> {
-        const params = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
         return this.http.get<ResponseWithPagination<Flow>>(`/api/v2/flow`, { params });
     }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ContractTypeService } from './contract-type.service';
 import { Column } from '#shared/components/table/table.model';
+import { ContractType } from './contract-type.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ContractService } from '../contract.service';
 import { ContractType } from './contract.model';
@@ -16,7 +17,7 @@ export class ContractTypeComponent implements OnInit {
     private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public pagination = { skip: 0, limit: 5, total: 100 };
 
-    tableColumn: Array<Column> = [
+    public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'نوع قرارداد', type: 'string', minWidth: '200px' },
         { id: 'isActive', name: 'وضعیت نوع قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
@@ -45,7 +46,7 @@ export class ContractTypeComponent implements OnInit {
         },
     ];
 
-    constructor(private contractService: ContractService, private dialog: MatDialog) {}
+    constructor(private contractService: ContractTypeService, private dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.getContractTypes();
