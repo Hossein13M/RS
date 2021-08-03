@@ -1,10 +1,10 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from '#env/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AlertService } from '../services/alert.service';
+import { environment } from '#env/environment';
+import { AlertService } from '#services/alert.service';
 
 @Injectable({
     providedIn: 'root',
@@ -29,14 +29,18 @@ export class HttpRequestInterceptor implements HttpInterceptor {
 
         // TODO: this condition is temp:  request.url.startsWith(`http://172.21.255.236:3003`)
 
-        if (!request.url.startsWith(`${environment.serviceUrl}`) && !request.url.startsWith(`http://172.22.255.239:3006`)) {
+        if (
+            !request.url.startsWith(`${environment.serviceUrl}`) &&
+            !request.url.startsWith(`http://172.22.255.239:3006`) &&
+            !request.url.startsWith(`https://cdn.staticaly.com/gh/bpmn-io/bpmn-js-examples/dfceecba/starter/diagram.bpmn`)
+        ) {
             request = request.clone({ url: environment.serviceUrl + request.url });
         }
 
         // set Authorization header if any token exists in localstorage
         const identity = localStorage.getItem('accessToken');
 
-        if (identity) {
+        if (identity && !request.url.startsWith(`https://cdn.staticaly.com/gh/bpmn-io/bpmn-js-examples/dfceecba/starter/diagram.bpmn`)) {
             request = request.clone({ setHeaders: { Authorization: `Bearer ${identity}` } });
         }
 

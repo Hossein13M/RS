@@ -13,7 +13,7 @@ export const navigation: FuseNavigation[] = [
     },
     {
         id: 'contract',
-        title: 'مدیریت قراردادها',
+        title: 'قراردادها',
         icon: 'gavel',
         type: 'collapsable',
         children: [

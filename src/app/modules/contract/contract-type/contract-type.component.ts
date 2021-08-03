@@ -3,7 +3,8 @@ import { ContractTypeService } from './contract-type.service';
 import { Column } from '#shared/components/table/table.model';
 import { ContractType } from './contract-type.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ContractService } from '../contract.service';
+import { ContractType } from './contract.model';
 import { ContractTypeDialogComponent } from './contract-type-dialog/contract-type-dialog.component';
 
 @Component({
