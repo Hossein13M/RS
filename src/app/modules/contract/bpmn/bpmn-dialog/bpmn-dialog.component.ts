@@ -2,8 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { User } from '../../../organizations-structure/user/user.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Units, User } from '../../../organizations-structure/user/user.model';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-bpmn-dialog',
@@ -13,9 +13,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class BpmnDialogComponent implements OnInit {
     private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public users: Array<User> = [];
+    public units: Units;
+    public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
     public form: FormGroup = this.fb.group({
-        users: [Validators.required],
         selectiveUsers: [],
+        units: [],
     });
     constructor(
         public dialogRef: MatDialogRef<BpmnDialogComponent>,
@@ -26,6 +28,8 @@ export class BpmnDialogComponent implements OnInit {
 
     ngOnInit(): void {
         this.getOrganizationUsers();
+        this.getOrganizationUnits();
+        this.form.get('units').valueChanges.subscribe((v) => console.log(v));
     }
 
     private getOrganizationUsers(): any {
@@ -33,6 +37,37 @@ export class BpmnDialogComponent implements OnInit {
     }
 
     public submitForm(): void {
-        console.log(this.form.value);
+        const data: { selectiveUsers: [number]; units?: { unit: number; roles: [number] } } = this.prepareDataToSend();
+        console.log(data);
+    }
+
+    private prepareDataToSend(): { selectiveUsers: [number]; units?: { unit: number; roles: [number] } } {
+        const data = { selectiveUsers: this.form.value.selectiveUsers, units: { unit: this.form.value.units[0], roles: this.form.value.roles } };
+        if (!this.form.get('units').value.length) {
+            delete data.units;
+        }
+        return data;
+    }
+
+    private getOrganizationUnits(): void {
+        this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe((response) => (this.units = response));
+    }
+
+    private getRolesOnSpecificUnits(unitId: number): void {
+        this.units.children.map((item) => {
+            if (item.id === unitId) {
+                this.rolesOnUnit = item.mappings;
+            }
+        });
+    }
+
+    public detectChanges(event: any) {
+        if (event.value._checked) {
+            this.getRolesOnSpecificUnits(event.value.value);
+            this.form.addControl('roles', new FormControl(Validators.required));
+        } else {
+            this.rolesOnUnit = [];
+            this.form.removeControl('roles');
+        }
     }
 }

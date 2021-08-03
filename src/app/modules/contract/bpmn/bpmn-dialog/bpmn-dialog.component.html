@@ -1,11 +1,17 @@
 <div class="flex flex-col h-full" dir="rtl">
-    <div class="dialog-content-wrapper flex flex-col" dir="rtl">
+    <div class="dialog-content-wrapper flex flex-col">
         <mat-toolbar matDialogTitle class="mat-accent m-0">
             <mat-toolbar-row class="flex justify-between items-center">
                 <span class="title dialog-title">پیکربندی {{ data.stateName }} </span>
-                <button mat-icon-button (click)="dialogRef.close()">
-                    <mat-icon fontSet="material-icons-outlined">close</mat-icon>
-                </button>
+                <div class="buttons">
+                    <button mat-icon-button type="submit" form="form">
+                        <mat-icon fontSet="material-icons-outlined">save</mat-icon>
+                    </button>
+
+                    <button mat-icon-button (click)="dialogRef.close()">
+                        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+                    </button>
+                </div>
             </mat-toolbar-row>
         </mat-toolbar>
     </div>
@@ -16,30 +22,64 @@
                 <mat-card-title class="text-white mb-0">دسترسی‌های این گام</mat-card-title>
             </mat-card-header>
             <mat-card-content class="mt-10 mb-2">
-                <form [formGroup]="form" (submit)="submitForm()" class="flex w-full justify-evenly">
+                <form [formGroup]="form" id="form" (submit)="submitForm()" class="flex w-full justify-evenly">
                     <mat-form-field appearance="outline">
-                        <mat-label>دسترسی کاربران</mat-label>
-                        <mat-select formControlName="users" multiple>
+                        <mat-label>دسترسی گزینشی کاربران</mat-label>
+                        <mat-select formControlName="selectiveUsers" multiple>
                             <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>دسترسی کاربران گزینشی</mat-label>
-                        <mat-select formControlName="selectiveUsers" multiple>
-                            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
+                    <app-tree-select
+                        class="flex items-center"
+                        (event)="detectChanges($event)"
+                        [maxSelect]="1"
+                        [data]="units"
+                        formControlName="units"
+                        selectedValueFieldName="name"
+                    ></app-tree-select>
+
+                    <mat-form-field appearance="outline" *ngIf="!!form.get('roles')">
+                        <mat-label>نقش‌های این ساختار سازمانی</mat-label>
+                        <mat-select formControlName="roles" multiple>
+                            <mat-option *ngFor="let role of rolesOnUnit" [value]="role.id">{{ role.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </form>
             </mat-card-content>
 
-            <mat-card-footer class="text-center mb-2 flex justify-center items-center">
-                <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
-                <p>
-                    در دسترسی
-                    <strong>گزینشی</strong>
-                    شما بایستی یک کاربر را به عنوان کاربر پیش‌فرض انتخاب کنید. با این روش، در کارتابل قرارداد، دیگر نیازی به گزینش کاربر برای دادن دسترسی نیست.
-                </p>
+            <mat-card-footer class="text-center mb-2 flex flex-col">
+                <!--                <p>-->
+                <!--                    در دسترسی-->
+                <!--                    <strong>گزینشی</strong>-->
+                <!--                    شما بایستی یک کاربر را به عنوان کاربر پیش‌فرض انتخاب کنید. با این روش، در کارتابل قرارداد، دیگر نیازی به گزینش کاربر برای دادن دسترسی نیست.-->
+                <!--                </p>-->
+
+                <div class="flex justify-center items-center">
+                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                    <p>
+                        پس از گزینش
+                        <strong>ساختار سازمانی</strong>
+                        و سپس گزینش
+                        <strong>نقش درون ساختار</strong>
+                        می‌توانید به همه‌ی کاربران آن نقش، دسترسی به این گام
+                        <strong>BPMN</strong>
+                        بدهید.
+                    </p>
+                </div>
+
+                <div class="flex justify-center items-center">
+                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                    <p>
+                        فهرست کاربران در
+                        <strong>دسترسی گزینشی</strong>
+                        کاربرانی است که در
+                        <strong>کارتابل قرارداد</strong>
+                        می‌توانید از میان آن‌ها به یکی از کاربران دسترسی به این گام
+                        <strong>BPMN</strong>
+                        بدهید.
+                    </p>
+                </div>
             </mat-card-footer>
         </mat-card>
 
