@@ -90,8 +90,8 @@ export class BpmnDiagramComponent {
         if (event.element.type === 'bpmn:EndEvent') {
             event.element.businessObject.name = 'پایانی';
             this.dialog.open(BpmnDialogComponent, {
-                width: '1200px',
-                height: '700px',
+                width: '1400px',
+                height: '750px',
                 panelClass: 'dialog-p-0',
                 data: { flowId: this.flowID, stateName: event.element.businessObject.name, stateId: event.element.id },
             });
@@ -100,8 +100,8 @@ export class BpmnDiagramComponent {
 
     private openDialog(name, id): void {
         this.dialog.open(BpmnDialogComponent, {
-            width: '1200px',
-            height: '700px',
+            width: '1400px',
+            height: '750px',
             panelClass: 'dialog-p-0',
             data: { flowId: this.flowID, stateName: name, stateId: id },
         });
