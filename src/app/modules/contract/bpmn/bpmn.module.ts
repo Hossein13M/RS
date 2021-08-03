@@ -16,12 +16,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ShareModule } from '#shared/share.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: BpmnComponent }];
 
 @NgModule({
     declarations: [BpmnComponent, BpmnDiagramComponent, BpmnDialogComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatToolbarModule, MatDialogModule, FlexModule, MatCardModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, ShareModule],
+    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatToolbarModule, MatDialogModule, FlexModule, MatCardModule, ReactiveFormsModule, MatFormFieldModule, MatSelectModule, ShareModule, DragDropModule],
     exports: [BpmnComponent],
 })
 export class BpmnModule {}
