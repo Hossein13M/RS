@@ -117,6 +117,17 @@ export class ContractDialogComponent implements OnInit {
         if (!this.isParentContractNecessary()) {
             this.form.removeControl('parentId');
         }
+        this.isEditMode ? this.editContract() : this.createContract();
+    }
+
+    private editContract(): void {
+        this.contractService.editContract({ id: this.data._id, name: this.form.value.name }).subscribe(
+            () => this.dialog.close(true),
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
+    }
+
+    private createContract(): void {
         this.contractService.createNewContract(this.form.value).subscribe(
             () => this.dialog.close(true),
             () => this.alertService.onError('مشکلی پیش آمده‌است')
