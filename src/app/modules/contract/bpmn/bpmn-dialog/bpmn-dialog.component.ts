@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserService } from '../../../organizations-structure/user/user.service';
-import { UtilityFunctions } from '#shared/utilityFunctions';
-import { Units, User } from '../../../organizations-structure/user/user.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+import { UserService } from '../../../organizations-structure/user/user.service';
+import { Units, User } from '../../../organizations-structure/user/user.model';
 
 @Component({
     selector: 'app-bpmn-dialog',
@@ -16,6 +16,9 @@ export class BpmnDialogComponent implements OnInit {
     public users: Array<User> = [];
     public units: Units;
     public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
+    public formDropListData: Array<any> = [];
+    public buttonFormArray: FormArray;
+
     public form: FormGroup = this.fb.group({
         selectiveUsers: [],
         units: [],
@@ -83,6 +86,57 @@ export class BpmnDialogComponent implements OnInit {
 
     //    refactor needs:
     drop(event: CdkDragDrop<any>): void {
+        console.log('kir');
         console.log(event);
+        if (event.previousContainer === event.container) {
+            this.formDropListData = this.buttonFormArray.value;
+            this.formDropListData[event.container.id].Value.splice(
+                event.currentIndex,
+                0,
+                this.formDropListData[event.container.id].Value.splice(event.previousIndex, 1)[0]
+            );
+            this.createForm();
+        } else {
+            if (event.previousContainer.id === 'Base') {
+                if (!(event.container.data.length >= 100)) {
+                    this.formDropListData = this.buttonFormArray.value;
+                    this.formDropListData[event.container.id].Value.splice(event.currentIndex, 0, 'button');
+                    this.createForm();
+                }
+            } else {
+                if (!(event.container.data.length >= 100)) {
+                    this.formDropListData = this.buttonFormArray.value;
+                    this.formDropListData[event.container.id].Value.splice(
+                        event.currentIndex,
+                        0,
+                        this.formDropListData[event.previousContainer.id].Value[event.previousIndex]
+                    );
+                    this.formDropListData[event.previousContainer.id].Value.splice(event.previousIndex, 1);
+                    this.createForm();
+                }
+            }
+        }
+    }
+
+    public deleteItem(j: number): void {
+        const valueFormArray = (this.buttonFormArray.at(0) as FormGroup).controls?.Value as FormArray;
+        this.formDropListData.splice(j, 1);
+        valueFormArray.removeAt(j);
+    }
+
+    createForm(): void {
+        console.log(this.buttonFormArray);
+        // this.buttonFormArray = this.fb.array(
+        //     this.formDropListData.map((item) => {
+        //         return this.fb.group({
+        //             name: this.fb.control(item.name),
+        //             Value: this.fb.array(
+        //                 item.Value.map((form) => {
+        //                     return this.fb.group(form);
+        //                 })
+        //             ),
+        //         });
+        //     })
+        // );
     }
 }
