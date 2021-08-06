@@ -95,7 +95,15 @@
                         <mat-card-title class="text-white mb-0">ابزارها</mat-card-title>
                     </mat-card-header>
                     <mat-card-content class="flex justify-center items-center my-10">
-                        <div cdkDropList class="flex justify-evenly w-full" [id]="'Base'" [cdkDropListData]="formTools" [cdkDropListSortingDisabled]="true">
+                        <div
+                            cdkDropList
+                            class="flex justify-evenly w-full"
+                            [id]="'Base'"
+                            [cdkDropListData]="formTools"
+                            [cdkDropListSortingDisabled]="true"
+                            (cdkDropListDropped)="drop($event)"
+                            #toolsList="cdkDropList"
+                        >
                             <div class="flex flex-col items-center justify-center" *ngFor="let item of formTools" [cdkDragDisabled]="item.disabled" cdkDrag>
                                 <mat-icon fontSet="material-icons-outlined" *ngIf="!!item.icon" class="tool-icon"> {{ item.icon }} </mat-icon>
                                 <img *ngIf="!!item.imageLink" [src]="item.imageLink" alt="image not available" class="tool-icon" />
@@ -131,34 +139,41 @@
                         <!-- D::::::::::::DDD      r:::::r             oo:::::::::::oo  p::::::::::::::pp        A:::::A                 A:::::A r:::::r              ee:::::::::::::e a::::::::::aa:::a-->
                         <!-- DDDDDDDDDDDDD         rrrrrrr               ooooooooooo    p::::::pppppppp         AAAAAAA                   AAAAAAArrrrrrr                eeeeeeeeeeeeee  aaaaaaaaaa  aaaa-->
 
-                        <!--                        <div cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="form.Value" (cdkDropListDropped)="drop($event)">-->
-                        <!--                            <div *ngFor="let item of form.Value; let j = index" cdkDrag>-->
-                        <!--                                <div dir="rtl">-->
-                        <!--                                    <button mat-icon-button color="primary" (click)="deleteItem(i, j)">-->
-                        <!--                                        <mat-icon fontSet="material-icons-outlined" color="warn">cancel</mat-icon>-->
-                        <!--                                    </button>-->
+                        <div
+                            cdkDropList
+                            cdkDropListOrientation="horizontal"
+                            [cdkDropListConnectedTo]="[toolsList]"
+                            [cdkDropListData]="formDropListData"
+                            (cdkDropListDropped)="drop($event)"
+                            class="horizontal-item-list bg-red-500"
+                        >
+                            <div *ngFor="let item of formDropListData; let index = index" cdkDrag>
+                                <div dir="rtl">
+                                    <button mat-icon-button color="primary" (click)="deleteItem(index)">
+                                        <mat-icon fontSet="material-icons-outlined" color="warn">cancel</mat-icon>
+                                    </button>
 
-                        <!--                                    <mat-icon>{{ item.icon }}</mat-icon>-->
+                                    <mat-icon>{{ item.icon }}</mat-icon>
 
-                        <!--                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">-->
-                        <!--                                        <mat-label>نوشته ی داخل دکمه</mat-label>-->
-                        <!--                                        <input [formControl]="formGroup?.controls[i]?.controls['Value']?.controls[j].controls['Value']" matInput />-->
-                        <!--                                    </mat-form-field>-->
+                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">
+                                        <mat-label>نوشته ی داخل دکمه</mat-label>
+                                        <input [formControl]="buttonFormArray?.controls['Value']?.controls[index].controls['Value']" matInput />
+                                    </mat-form-field>
 
-                        <!--                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">-->
-                        <!--                                        <mat-label>نوع</mat-label>-->
-                        <!--                                        <mat-select [formControl]="formGroup?.controls[i]?.controls['Value']?.controls[j].controls['acction']">-->
-                        <!--                                            2-->
-                        <!--                                            <mat-option [value]="1">آپلود</mat-option>-->
-                        <!--                                            <mat-option [value]="2">دانلود</mat-option>-->
-                        <!--                                            <mat-option [value]="3">تایید</mat-option>-->
-                        <!--                                            <mat-option [value]="4">رد</mat-option>-->
-                        <!--                                            <mat-option [value]="5">گرفتن کد</mat-option>-->
-                        <!--                                        </mat-select>-->
-                        <!--                                    </mat-form-field>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
+                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">
+                                        <mat-label>نوع</mat-label>
+                                        <mat-select [formControl]="buttonFormArray?.controls['Value']?.controls[index].controls['acction']">
+                                            2
+                                            <mat-option [value]="1">آپلود</mat-option>
+                                            <mat-option [value]="2">دانلود</mat-option>
+                                            <mat-option [value]="3">تایید</mat-option>
+                                            <mat-option [value]="4">رد</mat-option>
+                                            <mat-option [value]="5">گرفتن کد</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
 
                         <!--                    dastan-->
                     </mat-card-content>
