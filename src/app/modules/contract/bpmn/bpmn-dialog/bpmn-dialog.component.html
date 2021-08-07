@@ -2,7 +2,7 @@
     <div class="dialog-content-wrapper flex flex-col">
         <mat-toolbar matDialogTitle class="mat-accent m-0">
             <mat-toolbar-row class="flex justify-between items-center">
-                <span class="title dialog-title">پیکربندی {{ data.stateName }} </span>
+                <span class="title dialog-title">پیکربندی {{ dialogData.stateName }} </span>
                 <div class="buttons">
                     <button mat-icon-button type="submit" form="form">
                         <mat-icon fontSet="material-icons-outlined">save</mat-icon>
@@ -27,7 +27,7 @@
 
                     <mat-form-field appearance="outline">
                         <mat-label>دسترسی گزینشی کاربران</mat-label>
-                        <mat-select formControlName="selectiveUsers" multiple>
+                        <mat-select formControlName="users" multiple>
                             <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -90,77 +90,69 @@
                 <mat-card-title class="text-white mb-0">فرم این گام</mat-card-title>
             </mat-card-header>
             <mat-card-content class="my-10 flex justify-evenly">
-                <mat-card class="w-2/5 m-10 p-0">
-                    <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
-                        <mat-card-title class="text-white mb-0">ابزارها</mat-card-title>
+                <mat-card class="w-1/6 m-10 p-0 flex flex-col">
+                    <mat-card-header class="flex justify-center flex-shrink-0 bg-blue-500 m-0 py-3.5">
+                        <mat-card-title class="text-white mb-0">افزودن ابزار</mat-card-title>
                     </mat-card-header>
-                    <mat-card-content class="flex justify-center items-center my-10">
-                        <div cdkDropList class="flex justify-evenly w-full" [id]="'Base'" [cdkDropListData]="formTools" [cdkDropListSortingDisabled]="true">
-                            <div class="flex flex-col items-center justify-center" *ngFor="let item of formTools" [cdkDragDisabled]="item.disabled" cdkDrag>
+                    <mat-card-content class="flex justify-center items-center my-10 flex-grow">
+                        <div *ngFor="let item of formTools">
+                            <button (click)="addTool()" [disabled]="!!item.imageLink" class="flex flex-col items-center justify-center">
                                 <mat-icon fontSet="material-icons-outlined" *ngIf="!!item.icon" class="tool-icon"> {{ item.icon }} </mat-icon>
                                 <img *ngIf="!!item.imageLink" [src]="item.imageLink" alt="image not available" class="tool-icon" />
                                 <strong>{{ item.name }}</strong>
-                            </div>
+                            </button>
                         </div>
                     </mat-card-content>
                     <mat-card-footer class="text-center mx-0 mb-2 flex items-center justify-center">
                         <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>
-                        <p>با کشیدن و رها کردن هر ابزار در بخش فرم، از آن در این گام بهره ببرید.</p>
+                        <p>روی هر ابزار کلیک کنید.</p>
                     </mat-card-footer>
                 </mat-card>
 
-                <mat-card class="w-3/5 m-10 p-0">
+                <mat-card class="w-5/6 m-10 p-0">
                     <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
                         <mat-card-title class="text-white mb-0">فرم</mat-card-title>
                     </mat-card-header>
-                    <mat-card-content>
-                        <!-- DDDDDDDDDDDDD                                                                                     AAA-->
-                        <!-- D::::::::::::DDD                                                                                 A:::A-->
-                        <!-- D:::::::::::::::DD                                                                              A:::::A-->
-                        <!-- DDD:::::DDDDD:::::D                                                                            A:::::::A-->
-                        <!-- D:::::D    D:::::D rrrrr   rrrrrrrrr      ooooooooooo   ppppp   ppppppppp                   A:::::::::A          rrrrr   rrrrrrrrr       eeeeeeeeeeee    aaaaaaaaaaaaa-->
-                        <!-- D:::::D     D:::::Dr::::rrr:::::::::r   oo:::::::::::oo p::::ppp:::::::::p                 A:::::A:::::A         r::::rrr:::::::::r    ee::::::::::::ee  a::::::::::::a-->
-                        <!-- D:::::D     D:::::Dr:::::::::::::::::r o:::::::::::::::op:::::::::::::::::p               A:::::A A:::::A        r:::::::::::::::::r  e::::::eeeee:::::eeaaaaaaaaa:::::a-->
-                        <!-- D:::::D     D:::::Drr::::::rrrrr::::::ro:::::ooooo:::::opp::::::ppppp::::::p             A:::::A   A:::::A       rr::::::rrrrr::::::re::::::e     e:::::e         a::::a-->
-                        <!-- D:::::D     D:::::D r:::::r     r:::::ro::::o     o::::o p:::::p     p:::::p            A:::::A     A:::::A       r:::::r     r:::::re:::::::eeeee::::::e  aaaaaaa:::::a-->
-                        <!-- D:::::D     D:::::D r:::::r     rrrrrrro::::o     o::::o p:::::p     p:::::p           A:::::AAAAAAAAA:::::A      r:::::r     rrrrrrre:::::::::::::::::e aa::::::::::::a-->
-                        <!-- D:::::D     D:::::D r:::::r            o::::o     o::::o p:::::p     p:::::p          A:::::::::::::::::::::A     r:::::r            e::::::eeeeeeeeeee a::::aaaa::::::a-->
-                        <!-- D:::::D    D:::::D  r:::::r            o::::o     o::::o p:::::p    p::::::p         A:::::AAAAAAAAAAAAA:::::A    r:::::r            e:::::::e         a::::a    a:::::a-->
-                        <!-- DDD:::::DDDDD:::::D   r:::::r            o:::::ooooo:::::o p:::::ppppp:::::::p        A:::::A             A:::::A   r:::::r            e::::::::e        a::::a    a:::::a-->
-                        <!-- D:::::::::::::::DD    r:::::r            o:::::::::::::::o p::::::::::::::::p        A:::::A               A:::::A  r:::::r             e::::::::eeeeeeeea:::::aaaa::::::a-->
-                        <!-- D::::::::::::DDD      r:::::r             oo:::::::::::oo  p::::::::::::::pp        A:::::A                 A:::::A r:::::r              ee:::::::::::::e a::::::::::aa:::a-->
-                        <!-- DDDDDDDDDDDDD         rrrrrrr               ooooooooooo    p::::::pppppppp         AAAAAAA                   AAAAAAArrrrrrr                eeeeeeeeeeeeee  aaaaaaaaaa  aaaa-->
+                    <mat-card-content class="flex overflow-x-auto py-10">
+                        <!--each tool card-->
+                        <div *ngFor="let formArray of formArray.controls; index as index">
+                            <mat-card class="flex flex-col items-center bg-blue-50 mx-2 max-w-md">
+                                <mat-card-content>
+                                    <ng-container [formGroup]="formArray" class="flex flex-col items-center justify-evenly">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>نوشته‌ی دکمه</mat-label>
+                                            <input formControlName="name" [readonly]="formArray.get('isDefaultButton').value" matInput type="text" />
+                                            <mat-hint *ngIf="formArray.get('isDefaultButton').value">نام این دکمه را نمی‌توانید ویرایش کنید</mat-hint>
+                                        </mat-form-field>
 
-                        <!--                        <div cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="form.Value" (cdkDropListDropped)="drop($event)">-->
-                        <!--                            <div *ngFor="let item of form.Value; let j = index" cdkDrag>-->
-                        <!--                                <div dir="rtl">-->
-                        <!--                                    <button mat-icon-button color="primary" (click)="deleteItem(i, j)">-->
-                        <!--                                        <mat-icon fontSet="material-icons-outlined" color="warn">cancel</mat-icon>-->
-                        <!--                                    </button>-->
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>نوع دکمه</mat-label>
+                                            <mat-select formControlName="type" [disabled]="formArray.get('isDefaultButton').value">
+                                                <mat-option
+                                                    *ngFor="let buttonType of buttonTypes"
+                                                    [value]="buttonType.engName"
+                                                    [disabled]="!buttonType.isAvailable"
+                                                >
+                                                    {{ buttonType.perName }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
 
-                        <!--                                    <mat-icon>{{ item.icon }}</mat-icon>-->
-
-                        <!--                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">-->
-                        <!--                                        <mat-label>نوشته ی داخل دکمه</mat-label>-->
-                        <!--                                        <input [formControl]="formGroup?.controls[i]?.controls['Value']?.controls[j].controls['Value']" matInput />-->
-                        <!--                                    </mat-form-field>-->
-
-                        <!--                                    <mat-form-field style="flex-basis: 20%; margin-left: 10px" appearance="outline">-->
-                        <!--                                        <mat-label>نوع</mat-label>-->
-                        <!--                                        <mat-select [formControl]="formGroup?.controls[i]?.controls['Value']?.controls[j].controls['acction']">-->
-                        <!--                                            2-->
-                        <!--                                            <mat-option [value]="1">آپلود</mat-option>-->
-                        <!--                                            <mat-option [value]="2">دانلود</mat-option>-->
-                        <!--                                            <mat-option [value]="3">تایید</mat-option>-->
-                        <!--                                            <mat-option [value]="4">رد</mat-option>-->
-                        <!--                                            <mat-option [value]="5">گرفتن کد</mat-option>-->
-                        <!--                                        </mat-select>-->
-                        <!--                                    </mat-form-field>-->
-                        <!--                                </div>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
-
-                        <!--                    dastan-->
+                                        <button
+                                            class="flex mx-auto"
+                                            mat-flat-button
+                                            color="warn"
+                                            (click)="removeTool(index)"
+                                            [disabled]="formArray.get('isDefaultButton').value"
+                                        >
+                                            <span>پاک کردن این ابزار</span>
+                                            <mat-icon fontSet="material-icons-outlined"> clear </mat-icon>
+                                        </button>
+                                    </ng-container>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <!--each tool card-->
                     </mat-card-content>
                     <mat-card-footer class="text-center mx-0 mb-2 flex justify-center items-center">
                         <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>

@@ -8,4 +8,5 @@ export interface Flow {
     updatedAt: string;
     bpmnConfiguration: any; // this property is JSONized version of XML that BPMN Library creates
     contractTypes: Array<string>;
+    states: Array<string>;
 }

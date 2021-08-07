@@ -1,10 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserService } from '../../../organizations-structure/user/user.service';
+import { ActivatedRoute } from '@angular/router';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UtilityFunctions } from '#shared/utilityFunctions';
+import { UserService } from '../../../organizations-structure/user/user.service';
 import { Units, User } from '../../../organizations-structure/user/user.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../bpmn.model';
+import { FlowService } from '../../flow/flow.service';
+import { Flow } from '../../flow/flow.model';
+import { BpmnService } from '../bpmn.service';
 
 @Component({
     selector: 'app-bpmn-dialog',
@@ -16,26 +20,85 @@ export class BpmnDialogComponent implements OnInit {
     public users: Array<User> = [];
     public units: Units;
     public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
+    private data: BpmnData = {
+        step: '',
+        flow: '',
+        isNewStep: false,
+        name: '',
+        attributes: [],
+        accessRights: { units: { unit: 0, roles: [] }, users: [], initializer: false },
+    };
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
+    public flowDetails: Flow;
+
+    public buttonTypes: Array<{ perName: string; engName: string; isAvailable: boolean }> = [
+        { perName: 'آپلود', engName: 'upload', isAvailable: true },
+        { perName: 'دانلود', engName: 'download', isAvailable: true },
+        { perName: 'تایید', engName: 'accept', isAvailable: false },
+        { perName: 'رد', engName: 'reject', isAvailable: false },
+        { perName: 'گرفتن کد قرارداد', engName: 'code', isAvailable: true },
+    ];
     public form: FormGroup = this.fb.group({
-        selectiveUsers: [],
+        users: [],
         units: [],
         initializer: [false, Validators.required],
     });
-    public formTools: Array<{ type: string; name: string; icon?: string; imageLink?: string; disabled: boolean }> = [
+    public formTools: Array<BpmnStepTool> = [
         { type: 'button', name: 'دکمه', icon: 'donut_large', disabled: false },
         { type: 'button', name: 'ابزارهای جدید به زودی', imageLink: '../../../../../assets/images/coming-soon.png', disabled: true },
     ];
+
+    public formArray: FormArray = this.fb.array([]);
+
     constructor(
         public dialogRef: MatDialogRef<BpmnDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public dialogData: { flowId: string; stateId: string; stateName: string },
         private userService: UserService,
-        private fb: FormBuilder
-    ) {}
+        private fb: FormBuilder,
+        private activatedRoute: ActivatedRoute,
+        private flowService: FlowService,
+        private bpmnService: BpmnService
+    ) {
+        this.addDefaultButtons();
+    }
+
+    private addDefaultButtons() {
+        const acceptButton = this.fb.group({ name: ['تایید'], type: ['accept'], isDefaultButton: [true] });
+        const rejectButton = this.fb.group({ name: ['رد'], type: ['reject'], isDefaultButton: [true] });
+        this.formArray.push(acceptButton);
+        this.formArray.push(rejectButton);
+    }
 
     ngOnInit(): void {
         this.getOrganizationUsers();
         this.getOrganizationUnits();
-        this.form.get('units').valueChanges.subscribe((v) => console.log(v));
+        this.getFlowDetails();
+        this.form.get('units').valueChanges.subscribe((v) => {
+            this.getRolesOnSpecificUnits(v);
+            this.form.addControl('roles', new FormControl(Validators.required));
+        });
+    }
+
+    private getFlowDetails(): void {
+        const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
+        this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.dialogData.flowId, ...pagination }).subscribe((response) => {
+            this.flowDetails = response.items[0];
+            this.setBaseDataInfo();
+        });
+    }
+
+    private getStepInfo() {
+        this.bpmnService
+            .getBpmnStepInfo({ step: this.dialogData.stateId, flow: this.dialogData.flowId })
+            .subscribe((response) => this.setFormDataInEditMode(response));
+    }
+
+    private setBaseDataInfo() {
+        this.data.name = this.dialogData.stateName;
+        this.data.flow = this.dialogData.flowId;
+        this.data.step = this.dialogData.stateId;
+        this.data.isNewStep = this.flowDetails.states.includes(this.dialogData.stateId);
+        !this.data.isNewStep && this.getStepInfo();
     }
 
     private getOrganizationUsers(): any {
@@ -43,20 +106,21 @@ export class BpmnDialogComponent implements OnInit {
     }
 
     public submitForm(): void {
-        const data: { selectiveUsers: [number]; units?: { unit: number; roles: [number] }; initializer: boolean } = this.prepareDataToSend();
-        console.log(data);
+        this.prepareAccessRights();
+        this.data.attributes = this.formArray.value;
+        this.bpmnService.saveBpmnStep(this.data).subscribe();
     }
 
-    private prepareDataToSend(): { selectiveUsers: [number]; units?: { unit: number; roles: [number] }; initializer: boolean } {
-        const data = {
-            selectiveUsers: this.form.value.selectiveUsers,
-            units: { unit: this.form.value.units[0], roles: this.form.value.roles },
-            initializer: this.form.value.initializer,
+    private prepareAccessRights() {
+        this.data.accessRights = {
+            units: {
+                unit: this.form.get('units').value[0],
+                roles: this.form.get('roles').value,
+            },
+            initializer: this.form.get('initializer').value,
+            users: [],
         };
-        if (!this.form.get('units').value.length) {
-            delete data.units;
-        }
-        return data;
+        this.form.get('users').value.map((user) => this.data.accessRights.users.push({ userId: user, isDefault: false }));
     }
 
     private getOrganizationUnits(): void {
@@ -71,18 +135,39 @@ export class BpmnDialogComponent implements OnInit {
         });
     }
 
-    public detectChanges(event: any) {
+    public detectChanges(event: any, roleIds?: Array<number>) {
         if (event.value._checked) {
             this.getRolesOnSpecificUnits(event.value.value);
             this.form.addControl('roles', new FormControl(Validators.required));
+            roleIds && this.form.get('roles').setValue(roleIds);
         } else {
             this.rolesOnUnit = [];
             this.form.removeControl('roles');
         }
     }
 
-    //    refactor needs:
-    drop(event: CdkDragDrop<any>): void {
-        console.log(event);
+    public addTool(toolInfo?: BPMNButtonForm) {
+        this.formArray.insert(
+            0,
+            this.fb.group({
+                name: [toolInfo ? toolInfo.name : ''],
+                type: [toolInfo ? toolInfo.type : 'upload'],
+                isDefaultButton: [toolInfo ? toolInfo.isDefaultButton : false],
+            })
+        );
+    }
+
+    public removeTool(index: number) {
+        this.formArray.removeAt(index);
+    }
+
+    private setFormDataInEditMode(response: BpmnData) {
+        const userIdList = [];
+        this.form.get('initializer').setValue(response.accessRights.initializer);
+        response.accessRights.users.map((user) => userIdList.push(user.userId));
+        this.form.get('users').setValue(userIdList);
+        this.form.get('units').setValue([response.accessRights.units.unit]);
+        this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
+        response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
     }
 }
