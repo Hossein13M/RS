@@ -1,7 +1,7 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from 'app/services/alert.service';
 import { FlowsService } from 'app/services/App/flow/flow.service';
 import { OperatorManagementService } from 'app/services/App/user/operator-management.service';
@@ -130,7 +130,7 @@ export class FormBuilderComponent implements OnInit {
             this.createForm();
         });
         this.dialogRef.disableClose = true;
-        this.dialogRef.backdropClick().subscribe((_) => {
+        this.dialogRef.backdropClick().subscribe(() => {
             this.closeThisDialog();
         });
     }

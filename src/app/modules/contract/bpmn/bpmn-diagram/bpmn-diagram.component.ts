@@ -22,7 +22,7 @@ export class BpmnDiagramComponent {
 
     ngOnInit() {
         this.initBpmn();
-        this.flowID = this.activatedRoute.snapshot.queryParamMap.get('id');
+        this.flowID = this.activatedRoute.snapshot.params.id;
         this.eventBus = this.modeler.get('eventBus');
         this.eventBus.on('element.dblclick', this.clickListener.bind(this));
     }
@@ -78,7 +78,7 @@ export class BpmnDiagramComponent {
         }
     }
 
-    public clickListener(event, height: string = '900px'): void {
+    public clickListener(event): void {
         if (event.element.type === 'bpmn:Task') {
             if (event.element.businessObject.name) {
                 this.openDialog(event.element.businessObject.name, event.element.id);
