@@ -47,14 +47,7 @@ export class FlowDialogComponent implements OnInit {
     private setDataForEditMode(): void {
         this.form.get('name').setValue(this.data.name);
         this.form.get('isManual').setValue(this.data.isManual);
-        const contractTypes = [];
-        this.data.contractTypes.map((contractType) => {
-            this.contractTypes.map((item) => {
-                if (contractType === item._id) contractTypes.push(contractType);
-            });
-        });
-
-        this.form.get('contractTypes').patchValue(contractTypes);
+        this.form.get('contractTypes').setValue(this.data.contractTypes);
         this.form.addControl('id', new FormControl(this.data._id, Validators.required));
     }
 
