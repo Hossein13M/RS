@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ContractType } from '../../contract-type/contract-type.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FlowService } from '../flow.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
-import { UtilityFunctions } from '#shared/utilityFunctions';
 import { Flow } from '../flow.model';
 
 @Component({
