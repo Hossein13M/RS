@@ -33,6 +33,6 @@ export interface Form {
     name: string;
     organization: number;
     roles?: Array<number> | null;
-    units?: [{ units: Array<number> | null; roles: Array<number> | null }] | null;
+    units?: [{ unit: number | null; roles: Array<number> | null }] | null;
     users?: Array<number> | null;
 }
