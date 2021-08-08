@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from '#services/alert.service';
 import { json2xml, xml2json } from 'xml-js';
@@ -27,7 +27,13 @@ export class BpmnComponent implements OnInit {
     public saveName = '';
     private eventBus: any;
 
-    constructor(private activatedRoute: ActivatedRoute, private flowService: FlowService, private dialog: MatDialog, private alertService: AlertService) {}
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private flowService: FlowService,
+        private dialog: MatDialog,
+        private alertService: AlertService,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
         this.flowId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -103,7 +109,10 @@ export class BpmnComponent implements OnInit {
     }
 
     private submitData(info) {
-        this.flowService.saveBpmnConfiguration(info).subscribe((response) => console.log(response));
+        this.flowService.saveBpmnConfiguration(info).subscribe(
+            () => this.router.navigate([`/contract/flow`]).finally(() => this.alertService.onSuccess('این BPMN به جریان افزوده شد.')),
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
     }
 
     // BPMN Diagram
