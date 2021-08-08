@@ -6,6 +6,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { FlowService } from '../flow.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { Flow } from '../flow.model';
+import { xml2json } from 'xml-js';
+import { defaultBpmn } from '../../bpmn/default.bpmn';
 
 @Component({
     selector: 'app-flow-dialog',
@@ -62,14 +64,17 @@ export class FlowDialogComponent implements OnInit {
     }
 
     public submitForm(): void {
+        const bpmnConfiguration = JSON.parse(xml2json(defaultBpmn, { compact: true }));
+        const data = this.form.value;
+        data.bpmnConfiguration = bpmnConfiguration;
         if (this.isEditMode) {
-            this.flowService.editFlow(this.form.value).subscribe(
+            this.flowService.editFlow(data).subscribe(
                 () => this.dialog.close(true),
                 () => this.dialog.close(false)
             );
             return;
         }
-        this.flowService.addNewFlow(this.form.value).subscribe(
+        this.flowService.addNewFlow(data).subscribe(
             () => this.dialog.close(true),
             () => this.dialog.close(false)
         );

@@ -32,4 +32,8 @@ export class FlowService {
     public editFlow(flowInfo): Observable<Flow> {
         return this.http.put<Flow>(`/api/v2/flow`, flowInfo);
     }
+
+    public saveBpmnConfiguration(flowInformation): Observable<Flow> {
+        return this.http.put<Flow>(`/api/v2/flow`, flowInformation);
+    }
 }
