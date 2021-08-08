@@ -107,6 +107,7 @@ export class ContractTypeDialogComponent implements OnInit {
 
     public submitForm(): void {
         const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
+        data.units[0].unit = this.form.get('units').value[0].unit[0];
 
         this.contractService.createContractType(data).subscribe(
             () => this.dialog.close(true),
@@ -126,7 +127,7 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     public addNewRolesBasedOnUnits(data?: { unit: number; roles: Array<number> }): FormGroup {
-        return data ? this.fb.group({ units: data.unit, roles: data.roles }) : this.fb.group({ units: null, roles: null });
+        return data ? this.fb.group({ unit: data.unit, roles: data.roles }) : this.fb.group({ unit: null, roles: null });
     }
 
     public addUnitRolesToFormArray(data?: { unit: number; roles: Array<number> }): void {
