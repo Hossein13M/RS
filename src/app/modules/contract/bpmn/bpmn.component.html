@@ -2,8 +2,8 @@
     <mat-spinner></mat-spinner>
 </div>
 
-<div class="page-layout" *ngIf="stateType === 'PRESENT'">
-    <app-header [pageTitle]="'الگوی جریان: ' + flowDetails.name" class="wp-100">
+<div class="page-layout">
+    <app-header *ngIf="stateType === 'PRESENT'" [pageTitle]="'الگوی جریان: ' + flowDetails.name" class="wp-100">
         <button mat-flat-button (click)="saveBPMN()">
             <mat-icon class="mat-18">add</mat-icon>
             افزودن BPMN به جریان
@@ -11,6 +11,9 @@
     </app-header>
 
     <div class="fuse-card h-3/4 m-40 p-40">
-        <app-bpmn-diagram></app-bpmn-diagram>
+        <div class="content with-diagram flex h-full" id="container" dir="ltr">
+            <div class="flex-1 h-full" #ref id="js-canvas"></div>
+            <!--    <div class="properties-panel-parent h-full" id="js-properties-panel"></div>-->
+        </div>
     </div>
 </div>
