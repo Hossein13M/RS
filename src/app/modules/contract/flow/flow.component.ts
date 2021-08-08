@@ -15,7 +15,7 @@ import { Flow } from './flow.model';
 })
 export class FlowComponent implements OnInit {
     public flows: any;
-    public pagination = { skip: 0, limit: 5, total: 100 };
+    public pagination = { skip: 0, limit: 10, total: 100 };
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
