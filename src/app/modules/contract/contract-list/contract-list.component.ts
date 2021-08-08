@@ -72,7 +72,6 @@ export class ContractListComponent implements OnInit {
     }
 
     private changeContractStatus(contractId: string): void {
-        console.log(contractId);
         this.contractService.changeContractStatus(contractId).subscribe(
             () => this.checkIsActiveFormControl(),
             () => this.alertService.onError('مشکلی پیش آمده‌‌است')
