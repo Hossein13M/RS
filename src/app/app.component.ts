@@ -38,7 +38,13 @@ export class AppComponent implements OnInit, OnDestroy {
         private _platform: Platform
     ) {
         // Get default navigation
-        this.navigation = navigation;
+        const userRoles = JSON.parse(localStorage.getItem('user'));
+
+        if (userRoles.role === 'assets') {
+            this.navigation = [navigation[2]];
+        } else {
+            this.navigation = navigation;
+        }
         // Register the navigation to the service
         this._fuseNavigationService.register('main', this.navigation);
         // Set the main navigation as our current navigation
