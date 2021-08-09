@@ -42,7 +42,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             { title: 'Offline', icon: 'icon-checkbox-blank-circle-outline', color: '#616161' },
         ];
 
-        const userRoles = JSON.parse(localStorage.getItem('user'));
+        const userRoles = JSON.parse(localStorage.getItem('user'))  ?? { role: 'somethingElse' };
 
         if (userRoles.role === 'assets') {
             this.navigation = [navigation[2]];

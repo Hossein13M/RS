@@ -42,7 +42,7 @@ export class FuseNavigationComponent implements OnInit {
     ngOnInit(): void {
         // Load the navigation either from the input or from the service
         // this.navigation = this.navigation || this._fuseNavigationService.getCurrentNavigation();
-        const userRoles = JSON.parse(localStorage.getItem('user'));
+        const userRoles = JSON.parse(localStorage.getItem('user')) ?? { role: 'somethingElse' };
 
         if (userRoles.role === 'assets') {
             this.navigation = [navigation[2]];

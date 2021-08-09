@@ -25,7 +25,7 @@ export class VerticalLayout1Component implements OnInit, OnDestroy {
     constructor(private _fuseConfigService: FuseConfigService) {
         // Set the defaults
 
-        const userRoles = JSON.parse(localStorage.getItem('user'));
+        const userRoles = JSON.parse(localStorage.getItem('user'))  ?? { role: 'somethingElse' };
 
         if (userRoles.role === 'assets') {
             this.navigation = [navigation[2]];
