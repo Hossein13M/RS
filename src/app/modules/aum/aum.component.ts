@@ -4,15 +4,15 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { AUMService } from 'app/modules/aum/aum.service';
-import { StateManager } from 'app/shared/pipes/stateManager.pipe';
 import * as _ from 'lodash';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
 import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityFunctions } from '#shared/utilityFunctions';
+import { AUMService } from 'app/modules/aum/aum.service';
+import { StateManager } from 'app/shared/pipes/stateManager.pipe';
+import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
 
 @Component({
     selector: 'app-aum',
@@ -26,7 +26,6 @@ export class AumComponent implements OnInit {
     categories: Array<Category>;
     funds: Array<Fund>;
     form: FormGroup;
-    didAll;
     searchParams: SearchParams = {
         tamadonAssets: false,
         fundNationalCodes: [],
@@ -161,20 +160,20 @@ export class AumComponent implements OnInit {
         setTimeout(() => {
             this.form.get('categories').value.forEach((element) => {
                 this.form.get('NL').value.forEach((isBourse) => {
-                    if (isBourse === 0) {
-                        if (element === 2) {
+                    if (isBourse == 0) {
+                        if (element == 2) {
                             $forkAllCalls.push(this.getAumStock(false));
-                        } else if (element === 1) {
+                        } else if (element == 1) {
                             $forkAllCalls.push(this.getAumBond(false));
-                        } else if (element === 4) {
+                        } else if (element == 4) {
                             $forkAllCalls.push(this.getAumFund(false));
                         }
-                    } else if (isBourse === 1) {
-                        if (element === 1) {
+                    } else if (isBourse == 1) {
+                        if (element == 1) {
                             $forkAllCalls.push(this.getAumBond());
-                        } else if (element === 2) {
+                        } else if (element == 2) {
                             $forkAllCalls.push(this.getAumStock());
-                        } else if (element === 4) {
+                        } else if (element == 4) {
                             $forkAllCalls.push(this.getAumFund());
                         }
                     }
