@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, of, Subject } from 'rxjs';
 import * as _ from 'lodash';
 import { FuseNavigationItem } from '@fuse/types';
-import { UserInfoService } from '../../../app/services/App/userInfo/user-info.service';
+import { UserInfoService } from '#services/App/userInfo/user-info.service';
 import { switchMap, take } from 'rxjs/operators';
 
 @Injectable({

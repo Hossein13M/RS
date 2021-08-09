@@ -25,13 +25,27 @@ export class AuthorizationService {
 
     public decodeToken(token?: LoginResponse): User {
         // Todo fix RBACK
-        const role =
+        // const specialRoleForMohammadAliHosseini = 'assetsMonitoring';
+        // const role =
+        //     'assets|nav|yield_curve|assets_return|risk_measuring|marketRisk|complianceFund|complianceCalc|fundCompliance|compliance|tree|grid|changes|glBrief|financialModel|wfe|contractDashboard|operator|baseData|userDetail|userInput|branch|broker|gl|deposit|bank|bourse-board|bourse-market|instrument|fundRole|supervisor|organizationType|instrumentType|fund|market|settings|user|dashboards|opRiskTreeChart|opRiskFlow|OpRiskManagement|OpRiskReporting|OpRiskReporting|opRisk|portfolio-management|trade-book-dashboard|trade-book|complianceCalc|marketRisk|trade-add|assetsMonitoring|organizations|organizationsList|rolesList|contract|organizations|organizationsList|rolesList';
+        let role =
             'assets|nav|yield_curve|assets_return|risk_measuring|marketRisk|complianceFund|complianceCalc|fundCompliance|compliance|tree|grid|changes|glBrief|financialModel|wfe|contractDashboard|operator|baseData|userDetail|userInput|branch|broker|gl|deposit|bank|bourse-board|bourse-market|instrument|fundRole|supervisor|organizationType|instrumentType|fund|market|settings|user|dashboards|opRiskTreeChart|opRiskFlow|OpRiskManagement|OpRiskReporting|OpRiskReporting|opRisk|portfolio-management|trade-book-dashboard|trade-book|complianceCalc|marketRisk|trade-add|assetsMonitoring|organizations|organizationsList|rolesList|contract|organizations|organizationsList|rolesList';
         if (token) {
-            return {
-                role,
-                ...jwtDecode(token.accessToken),
-            } as User;
+            const specialUser: User = jwtDecode(token.accessToken);
+            if (specialUser.userId === 70) {
+                role = 'assets';
+                return {
+                    role,
+                    ...jwtDecode(token.accessToken),
+                } as User;
+            } else {
+                role =
+                    'assets|nav|yield_curve|assets_return|risk_measuring|marketRisk|complianceFund|complianceCalc|fundCompliance|compliance|tree|grid|changes|glBrief|financialModel|wfe|contractDashboard|operator|baseData|userDetail|userInput|branch|broker|gl|deposit|bank|bourse-board|bourse-market|instrument|fundRole|supervisor|organizationType|instrumentType|fund|market|settings|user|dashboards|opRiskTreeChart|opRiskFlow|OpRiskManagement|OpRiskReporting|OpRiskReporting|opRisk|portfolio-management|trade-book-dashboard|trade-book|complianceCalc|marketRisk|trade-add|assetsMonitoring|organizations|organizationsList|rolesList|contract|organizations|organizationsList|rolesList';
+                return {
+                    role,
+                    ...jwtDecode(token.accessToken),
+                } as User;
+            }
         } else {
             return {
                 role,
