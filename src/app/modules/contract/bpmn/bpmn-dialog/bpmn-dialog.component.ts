@@ -10,6 +10,7 @@ import { FlowService } from '../../flow/flow.service';
 import { Flow } from '../../flow/flow.model';
 import { BpmnService } from '../bpmn.service';
 import { AlertService } from '#services/alert.service';
+import { ContractFormButtonTypes } from '../../cardboard-list/cardboard.model';
 
 @Component({
     selector: 'app-bpmn-dialog',
@@ -32,7 +33,7 @@ export class BpmnDialogComponent implements OnInit {
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public flowDetails: Flow;
 
-    public buttonTypes: Array<{ perName: string; engName: string; isAvailable: boolean }> = [
+    public buttonTypes: Array<{ perName: string; engName: ContractFormButtonTypes; isAvailable: boolean }> = [
         { perName: 'آپلود', engName: 'upload', isAvailable: true },
         { perName: 'دانلود', engName: 'download', isAvailable: true },
         { perName: 'تایید', engName: 'accept', isAvailable: false },

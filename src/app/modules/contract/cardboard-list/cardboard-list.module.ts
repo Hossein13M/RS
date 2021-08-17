@@ -11,6 +11,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { PipesModule } from '#shared/pipes/pipes.module';
+import { CardboardContractInfoComponent } from './cardboard/cardboard-contract-info/cardboard-contract-info.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ConfirmationDialogModule } from '#shared/components/confirmation-dialog/confirmation-dialog.module';
 
 const routes: Routes = [
     { path: ':id', pathMatch: 'full', component: CardboardComponent },
@@ -18,8 +24,28 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    declarations: [CardboardListComponent, CardboardComponent, CardboardNoteComponent, CardboardHistoryComponent, CardboardFormComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatButtonModule, MatIconModule, MatCardModule, PipesModule],
+    declarations: [
+        CardboardListComponent,
+        CardboardComponent,
+        CardboardNoteComponent,
+        CardboardHistoryComponent,
+        CardboardFormComponent,
+        CardboardContractInfoComponent,
+    ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        LayoutModule,
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        PipesModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDatepickerModule,
+        ConfirmationDialogModule,
+    ],
     exports: [CardboardListComponent],
 })
 export class CardboardListModule {}
