@@ -107,7 +107,10 @@ export class ContractTypeDialogComponent implements OnInit {
 
     public submitForm(): void {
         const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
-        data.units[0].unit = this.form.get('units').value[0].unit[0];
+
+        data.units.map((item) => {
+            if (Array.isArray(item.unit)) item.unit = item.unit[0];
+        });
 
         this.contractService.createContractType(data).subscribe(
             () => this.dialog.close(true),
@@ -153,6 +156,7 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     public detectChanges(event: any, index) {
+        console.log(this.form.value);
         event.value._checked ? this.getRolesOnSpecificUnits(event.value.value, index) : (this.rolesOnUnit[index] = []);
     }
 
