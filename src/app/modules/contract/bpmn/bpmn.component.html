@@ -4,10 +4,17 @@
 
 <div class="page-layout">
     <app-header *ngIf="stateType === 'PRESENT'" [pageTitle]="'الگوی جریان: ' + flowDetails.name" class="wp-100">
-        <button mat-flat-button (click)="saveBPMN()">
-            <mat-icon class="mat-18">add</mat-icon>
-            افزودن BPMN به جریان
-        </button>
+        <div>
+            <button mat-flat-button color="warn" routerLink="/contract/flow" class="mx-5">
+                <mat-icon class="mat-18">keyboard_return</mat-icon>
+                بازگشت
+            </button>
+
+            <button mat-flat-button (click)="saveBPMN()" class="mx-5">
+                <mat-icon class="mat-18">add</mat-icon>
+                افزودن BPMN به جریان
+            </button>
+        </div>
     </app-header>
 
     <div class="fuse-card h-3/4 m-40 p-40">
