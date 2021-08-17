@@ -9,6 +9,7 @@ import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../bpmn.model';
 import { FlowService } from '../../flow/flow.service';
 import { Flow } from '../../flow/flow.model';
 import { BpmnService } from '../bpmn.service';
+import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'app-bpmn-dialog',
@@ -57,7 +58,8 @@ export class BpmnDialogComponent implements OnInit {
         private fb: FormBuilder,
         private activatedRoute: ActivatedRoute,
         private flowService: FlowService,
-        private bpmnService: BpmnService
+        private bpmnService: BpmnService,
+        private alertSerice: AlertService
     ) {
         this.addDefaultButtons();
     }
@@ -108,7 +110,10 @@ export class BpmnDialogComponent implements OnInit {
     public submitForm(): void {
         this.prepareAccessRights();
         this.data.attributes = this.formArray.value;
-        this.bpmnService.saveBpmnStep(this.data).subscribe();
+        this.bpmnService.saveBpmnStep(this.data).subscribe(
+            () => this.alertSerice.onSuccess('افزوده شد'),
+            () => this.alertSerice.onError('مشکلی پیش آمده‌است')
+        );
     }
 
     private prepareAccessRights() {
