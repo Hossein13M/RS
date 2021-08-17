@@ -9,7 +9,12 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 export class ContractService {
     constructor(private http: HttpClient) {}
 
-    public getContractsList(searchParams: { organization: number; name?: string; isActive?: boolean }): Observable<ResponseWithPagination<Contract>> {
+    public getContractsList(searchParams: {
+        organization: number;
+        name?: string;
+        isActive?: boolean;
+        id?: string;
+    }): Observable<ResponseWithPagination<Contract>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
         return this.http.get<ResponseWithPagination<Contract>>(`/api/v1/contract`, { params });
     }

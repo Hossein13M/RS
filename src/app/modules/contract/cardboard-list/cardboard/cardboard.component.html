@@ -1,5 +1,5 @@
 <div class="page-layout">
-    <app-header pageTitle="کارتابل قرارداد (اسم قرارداد)" class="wp-100">
+    <app-header pageTitle="کارتابل قرارداد" class="wp-100">
         <button mat-stroked-button (click)="navigateToCardboard()">
             <mat-icon class="mat-18">keyboard_return</mat-icon>
             بازگشت
@@ -7,9 +7,12 @@
     </app-header>
 
     <div class="fuse-card m-40 p-40 h-4/5 flex flex-col">
-        <app-cardboard-form class="w-full h-2/3 mb-40"></app-cardboard-form>
+        <div class="flex h-1/2 justify-between mb-40">
+            <app-cardboard-form class="flex-1 ml-6"></app-cardboard-form>
+            <app-cardboard-contract-info class="flex-1 mr-6"></app-cardboard-contract-info>
+        </div>
 
-        <div class="flex h-1/3 justify-between">
+        <div class="flex h-1/2 justify-between">
             <app-cardboard-note class="flex-1 ml-6"></app-cardboard-note>
             <app-cardboard-history class="flex-1 mr-6"></app-cardboard-history>
         </div>

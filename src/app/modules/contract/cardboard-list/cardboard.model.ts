@@ -11,6 +11,10 @@ export interface CardboardAction {
 
 export interface CardboardInfo {
     steps: Array<{ id: string; name: string }>;
-    form: any;
+    form: FormButton;
     status: string;
 }
+
+export type FormButton = Array<{ isDefaultButton: boolean; name: string; type: ContractFormButtonTypes }>;
+
+export type ContractFormButtonTypes = 'upload' | 'download' | 'accept' | 'reject' | 'code';
