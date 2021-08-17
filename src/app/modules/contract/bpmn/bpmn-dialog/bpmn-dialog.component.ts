@@ -97,7 +97,7 @@ export class BpmnDialogComponent implements OnInit {
         this.data.name = this.dialogData.stateName;
         this.data.flow = this.dialogData.flowId;
         this.data.step = this.dialogData.stateId;
-        this.data.isNewStep = this.flowDetails.states.includes(this.dialogData.stateId);
+        this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
         !this.data.isNewStep && this.getStepInfo();
     }
 
