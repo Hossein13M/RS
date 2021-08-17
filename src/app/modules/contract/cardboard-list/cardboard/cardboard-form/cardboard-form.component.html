@@ -1,0 +1,11 @@
+<mat-card class="h-full w-full" *ngIf="stateType === 'PRESENT'">
+    <mat-card-header class="w-full">
+        <div class="w-full flex justify-between mx-auto w-full">
+            <h2 class="font-bold">وضعیت قرارداد: {{ cardboardInfo.status | translator }}</h2>
+            <ul class="stepper" dir="ltr">
+                <li class="stepper__item complete" *ngFor="let step of cardboardInfo.steps">{{ step.name }}</li>
+            </ul>
+        </div>
+    </mat-card-header>
+    <mat-card-content> </mat-card-content>
+</mat-card>
