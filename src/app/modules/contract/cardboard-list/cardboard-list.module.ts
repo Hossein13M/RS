@@ -12,11 +12,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { PipesModule } from '#shared/pipes/pipes.module';
 import { CardboardContractInfoComponent } from './cardboard/cardboard-contract-info/cardboard-contract-info.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ConfirmationDialogModule } from '#shared/components/confirmation-dialog/confirmation-dialog.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CardboardPauseContractDialogComponent } from './cardboard/cardboard-pause-contract-dialog/cardboard-pause-contract-dialog.component';
 
 const routes: Routes = [
     { path: ':id', pathMatch: 'full', component: CardboardComponent },
@@ -31,6 +33,7 @@ const routes: Routes = [
         CardboardHistoryComponent,
         CardboardFormComponent,
         CardboardContractInfoComponent,
+        CardboardPauseContractDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -45,6 +48,8 @@ const routes: Routes = [
         MatInputModule,
         MatDatepickerModule,
         ConfirmationDialogModule,
+        MatTooltipModule,
+        FormsModule
     ],
     exports: [CardboardListComponent],
 })

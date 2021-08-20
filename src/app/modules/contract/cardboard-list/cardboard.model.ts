@@ -12,7 +12,7 @@ export interface CardboardAction {
 export interface CardboardInfo {
     steps: Array<{ id: string; name: string }>;
     form: FormButton;
-    status: string;
+    status: 'in progress' | 'pause' | string;
 }
 
 export type FormButton = Array<{ isDefaultButton: boolean; name: string; type: ContractFormButtonTypes }>;
