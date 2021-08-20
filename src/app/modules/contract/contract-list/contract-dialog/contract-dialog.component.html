@@ -25,9 +25,8 @@
                 <mat-form-field appearance="outline">
                     <mat-label>کد قرارداد</mat-label>
                     <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
-                    <input [readonly]="isEditMode" name="name" formControlName="code" matInput required />
+                    <input [readonly]="isEditMode" name="name" formControlName="code" matInput />
                     <mat-hint *ngIf="isEditMode">کد قرارداد را نمی‌توانید ویرایش کنید.</mat-hint>
-                    <mat-error *ngIf="form.get('code').hasError('required')"> وارد کردن این فیلد الزامی است. </mat-error>
                     <mat-error *ngIf="form.get('code').hasError('pattern')"> تنها حروف و اعداد انگلیسی مجاز است. </mat-error>
                 </mat-form-field>
 
