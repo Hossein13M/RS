@@ -6,7 +6,7 @@ import { StateType } from '#shared/state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '#shared/components/confirmation-dialog/confirmation-dialog.component';
 import { AlertService } from '#services/alert.service';
-import { CardboardPauseContractDialogComponent } from '../cardboard-pause-contract-dialog/cardboard-pause-contract-dialog.component';
+import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard-note-dialog.component';
 import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
@@ -81,7 +81,17 @@ export class CardboardFormComponent implements OnInit {
     public changeContractStatus(hasContractStatusIsInProgress: boolean) {
         if (hasContractStatusIsInProgress) {
             this.dialog
-                .open(CardboardPauseContractDialogComponent, { width: '600px', height: '400px', panelClass: 'dialog-p-0' })
+                .open(CardboardNoteDialogComponent, {
+                    width: '600px',
+                    height: '400px',
+                    panelClass: 'dialog-p-0',
+                    data: {
+                        headerNote: 'آیا می‌خواهید این قرارداد را متوقف کنید؟',
+                        buttonText: 'متوقف کردن قرارداد',
+                        buttonIcon: 'pause_circle_outline',
+                        buttonColor: 'warn',
+                    },
+                })
                 .afterClosed()
                 .subscribe((note: string) => !!note && this.pauseContract(note));
         } else {

@@ -1,7 +1,7 @@
 <mat-card class="flex flex-col items-center p-0 h-full" dir="rtl">
     <mat-card-header class="w-full bg-blue-600 py-3.5">
         <div class="flex justify-between w-full items-center">
-            <h2 class="font-bold text-white">آیا می‌خواهید این قرارداد را متوقف کنید؟</h2>
+            <h2 class="font-bold text-white">{{ dialogData.headerNote }}</h2>
 
             <button mat-icon-button (click)="onCloseDialog(false)" matTooltip="بستن این پنجره">
                 <mat-icon>clear</mat-icon>
@@ -19,9 +19,9 @@
     </mat-card-content>
 
     <mat-card-actions>
-        <button mat-flat-button class="px-10 p-2" color="warn" (click)="onCloseDialog(true)">
-            <mat-icon class="mat-18 mx-5">pause_circle_outline</mat-icon>
-            <span>متوقف کردن قرارداد</span>
+        <button mat-flat-button class="px-10 p-2" [color]="dialogData.buttonColor" (click)="onCloseDialog(true)">
+            <mat-icon class="mat-18 mx-5">{{ dialogData.buttonIcon }}</mat-icon>
+            <span>{{ dialogData.buttonText }}</span>
         </button>
     </mat-card-actions>
 </mat-card>
