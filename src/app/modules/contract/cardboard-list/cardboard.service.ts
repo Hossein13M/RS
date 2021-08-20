@@ -28,4 +28,8 @@ export class CardboardService {
     public pauseContract(contractId: string, note: string): Observable<void> {
         return this.http.post<void>(`/api/v1/contract-wizard/pause`, { contractId, note });
     }
+
+    public getContractCode(contractId: string): Observable<{ code: string }> {
+        return this.http.post<{ code: string }>(`/api/v1/contract-wizard/generate-code`, { contractId });
+    }
 }
