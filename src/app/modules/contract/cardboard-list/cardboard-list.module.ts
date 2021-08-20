@@ -18,7 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ConfirmationDialogModule } from '#shared/components/confirmation-dialog/confirmation-dialog.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CardboardPauseContractDialogComponent } from './cardboard/cardboard-pause-contract-dialog/cardboard-pause-contract-dialog.component';
+import { CardboardNoteDialogComponent } from './cardboard/cardboard-note-dialog/cardboard-note-dialog.component';
+import { ShareModule } from '#shared/share.module';
 
 const routes: Routes = [
     { path: ':id', pathMatch: 'full', component: CardboardComponent },
@@ -33,7 +34,7 @@ const routes: Routes = [
         CardboardHistoryComponent,
         CardboardFormComponent,
         CardboardContractInfoComponent,
-        CardboardPauseContractDialogComponent,
+        CardboardNoteDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -49,7 +50,8 @@ const routes: Routes = [
         MatDatepickerModule,
         ConfirmationDialogModule,
         MatTooltipModule,
-        FormsModule
+        FormsModule,
+        ShareModule
     ],
     exports: [CardboardListComponent],
 })

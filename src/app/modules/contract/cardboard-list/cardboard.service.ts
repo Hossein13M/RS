@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CardboardAction, CardboardInfo, ElectionUsers } from './cardboard.model';
+import { CardboardAction, CardboardInfo, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
 
 @Injectable({
     providedIn: 'root',
@@ -31,5 +31,17 @@ export class CardboardService {
 
     public getContractCode(contractId: string): Observable<{ code: string }> {
         return this.http.post<{ code: string }>(`/api/v1/contract-wizard/generate-code`, { contractId });
+    }
+
+    public getContractNotes(contractId: string): Observable<Array<ContractNote>> {
+        return this.http.get<Array<ContractNote>>(`/api/v1/contract-note/${contractId}`);
+    }
+
+    public addNote(noteInfo: NoteAdd): Observable<ContractNote> {
+        return this.http.post<ContractNote>(`/api/v1/contract-note`, noteInfo);
+    }
+
+    public getContractHistory(contractId: string): Observable<Array<ContractHistory>> {
+        return this.http.get<Array<ContractHistory>>(`/api/v1/contract-history/${contractId}`);
     }
 }
