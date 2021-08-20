@@ -55,10 +55,13 @@ export class CardboardFormComponent implements OnInit {
     private getContractCode(): void {
         this.cardboardService.getContractCode(this.contractId).subscribe(
             (response) => {
-                this.alertService.onSuccess(`کد قرارداد${response.code}  در کلیپ‌بورد کپی شد`);
+                this.alertService.onSuccess(`کد قرارداد ${response.code} ساخته شد و در کلیپ‌بورد کپی شد`);
                 this._clipboardService.copyFromContent(response.code);
             },
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) =>
+                error.message === 'Contract already has a final code!'
+                    ? this.alertService.onError('این قرارداد کد دارد')
+                    : this.alertService.onError('مشکلی پیش آمده‌است')
         );
     }
 
