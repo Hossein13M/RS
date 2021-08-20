@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '#shared/components/confirmation-dialog/confirmation-dialog.component';
 import { AlertService } from '#services/alert.service';
 import { CardboardPauseContractDialogComponent } from '../cardboard-pause-contract-dialog/cardboard-pause-contract-dialog.component';
+import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
     selector: 'app-cardboard-form',
@@ -22,7 +23,8 @@ export class CardboardFormComponent implements OnInit {
         private readonly cardboardService: CardboardService,
         private readonly activatedRoute: ActivatedRoute,
         private readonly dialog: MatDialog,
-        private readonly alertService: AlertService
+        private readonly alertService: AlertService,
+        private _clipboardService: ClipboardService
     ) {}
 
     ngOnInit(): void {
@@ -46,19 +48,25 @@ export class CardboardFormComponent implements OnInit {
                 this.openAcceptStepDialog();
                 break;
             default:
-                this.openConfirmDialogForRejectionOfStep();
+                this.onStepRejectionDialogOpening();
         }
     }
 
     private getContractCode(): void {
-        console.log('contract code');
+        this.cardboardService.getContractCode(this.contractId).subscribe(
+            (response) => {
+                this.alertService.onSuccess(`کد قرارداد${response.code}  در کلیپ‌بورد کپی شد`);
+                this._clipboardService.copyFromContent(response.code);
+            },
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
     }
 
     private openAcceptStepDialog(): void {
         console.log('open');
     }
 
-    private openConfirmDialogForRejectionOfStep(): void {
+    private onStepRejectionDialogOpening(): void {
         this.dialog
             .open(ConfirmationDialogComponent, { width: '400px', height: '180px', panelClass: 'dialog-p-0' })
             .afterClosed()
