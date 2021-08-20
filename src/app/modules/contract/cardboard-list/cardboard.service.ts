@@ -20,4 +20,12 @@ export class CardboardService {
     public getContractCardboardList(organization: number): Observable<any> {
         return this.http.get<any>(`somewhere`, { params: { organization } });
     }
+
+    public reopenContract(contractId: string): Observable<void> {
+        return this.http.post<void>(`/api/v1/contract-wizard/reopen`, { contractId });
+    }
+
+    public pauseContract(contractId: string, note: string): Observable<void> {
+        return this.http.post<void>(`/api/v1/contract-wizard/pause`, { contractId, note });
+    }
 }

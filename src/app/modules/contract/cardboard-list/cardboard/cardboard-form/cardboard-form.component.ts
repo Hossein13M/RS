@@ -5,6 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { StateType } from '#shared/state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '#shared/components/confirmation-dialog/confirmation-dialog.component';
+import { AlertService } from '#services/alert.service';
+import { CardboardPauseContractDialogComponent } from '../cardboard-pause-contract-dialog/cardboard-pause-contract-dialog.component';
 
 @Component({
     selector: 'app-cardboard-form',
@@ -16,7 +18,12 @@ export class CardboardFormComponent implements OnInit {
     public cardboardInfo: CardboardInfo;
     private contractId: string;
 
-    constructor(private readonly cardboardService: CardboardService, private readonly activatedRoute: ActivatedRoute, private readonly dialog: MatDialog) {}
+    constructor(
+        private readonly cardboardService: CardboardService,
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly dialog: MatDialog,
+        private readonly alertService: AlertService
+    ) {}
 
     ngOnInit(): void {
         this.contractId = this.activatedRoute.snapshot.params.id;
@@ -58,5 +65,39 @@ export class CardboardFormComponent implements OnInit {
             .subscribe((hasConfirmed) => {
                 hasConfirmed ? console.log('confirmed') : console.log('rejected');
             });
+    }
+
+    public changeContractStatus(hasContractStatusIsInProgress: boolean) {
+        if (hasContractStatusIsInProgress) {
+            this.dialog
+                .open(CardboardPauseContractDialogComponent, { width: '600px', height: '400px', panelClass: 'dialog-p-0' })
+                .afterClosed()
+                .subscribe((note: string) => !!note && this.pauseContract(note));
+        } else {
+            this.dialog
+                .open(ConfirmationDialogComponent, { width: '400px', height: '180px', panelClass: 'dialog-p-0' })
+                .afterClosed()
+                .subscribe((hasConfirmed) => hasConfirmed && this.reopenContract());
+        }
+    }
+
+    private reopenContract(): void {
+        this.cardboardService.reopenContract(this.contractId).subscribe(
+            () => {
+                this.alertService.onSuccess('با موفقیت بازگشایی شد');
+                setTimeout(() => window.location.reload(), 2000);
+            },
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
+    }
+
+    private pauseContract(note: string): void {
+        this.cardboardService.pauseContract(this.contractId, note).subscribe(
+            () => {
+                this.alertService.onSuccess('با موفقیت متوقف شد');
+                setTimeout(() => window.location.reload(), 2000);
+            },
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
     }
 }
