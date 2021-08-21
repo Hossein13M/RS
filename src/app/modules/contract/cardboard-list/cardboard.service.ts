@@ -21,6 +21,10 @@ export class CardboardService {
         return this.http.get<ContractCardboardList>(`/api/v1/contract-wizard/cardboard`, { params: { organization } });
     }
 
+    public rejectContractCardboardStep(stepInfo: { contractId: string; note: string }): Observable<void> {
+        return this.http.post<void>(`/api/v1/contract-wizard/reject`, stepInfo);
+    }
+
     public reopenContract(contractId: string): Observable<void> {
         return this.http.post<void>(`/api/v1/contract-wizard/reopen`, { contractId });
     }
