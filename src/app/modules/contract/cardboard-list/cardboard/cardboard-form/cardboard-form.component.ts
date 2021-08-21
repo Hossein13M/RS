@@ -42,7 +42,7 @@ export class CardboardFormComponent implements OnInit {
     public onButtonClick(buttonType: ContractFormButtonTypes): void {
         switch (buttonType) {
             case 'code':
-                this.getContractCode();
+                this.setContractCode();
                 break;
             case 'accept':
                 this.openAcceptStepDialog();
@@ -52,7 +52,7 @@ export class CardboardFormComponent implements OnInit {
         }
     }
 
-    private getContractCode(): void {
+    private setContractCode(): void {
         this.cardboardService.getContractCode(this.contractId).subscribe(
             (response) => {
                 this.alertService.onSuccess(`کد قرارداد ${response.code} ساخته شد و در کلیپ‌بورد کپی شد`);
@@ -71,11 +71,29 @@ export class CardboardFormComponent implements OnInit {
 
     private onStepRejectionDialogOpening(): void {
         this.dialog
-            .open(ConfirmationDialogComponent, { width: '400px', height: '180px', panelClass: 'dialog-p-0' })
+            .open(CardboardNoteDialogComponent, {
+                width: '600px',
+                height: '400px',
+                panelClass: 'dialog-p-0',
+                data: {
+                    headerNote: 'آیا می‌خواهید این قرارداد رو رد کنید؟',
+                    buttonText: 'رد کردن این قرارداد',
+                    buttonIcon: 'cancel',
+                    buttonColor: 'warn',
+                },
+            })
             .afterClosed()
-            .subscribe((hasConfirmed) => {
-                hasConfirmed ? console.log('confirmed') : console.log('rejected');
-            });
+            .subscribe((note: string) => !!note && this.rejectContractStep(note));
+    }
+
+    private rejectContractStep(note: string): void {
+        this.cardboardService.rejectContractCardboardStep({ contractId: this.contractId, note: note }).subscribe(
+            () => {
+                this.alertService.onSuccess('با موفقیت رد شد');
+                setTimeout(() => window.location.reload(), 2000);
+            },
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
+        );
     }
 
     public changeContractStatus(hasContractStatusIsInProgress: boolean) {
