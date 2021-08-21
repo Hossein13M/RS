@@ -20,6 +20,7 @@ import { ConfirmationDialogModule } from '#shared/components/confirmation-dialog
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CardboardNoteDialogComponent } from './cardboard/cardboard-note-dialog/cardboard-note-dialog.component';
 import { ShareModule } from '#shared/share.module';
+import { CardboardConfirmDialogComponent } from './cardboard/cardboard-confirm-dialog/cardboard-confirm-dialog.component';
 
 const routes: Routes = [
     { path: ':id', pathMatch: 'full', component: CardboardComponent },
@@ -35,6 +36,7 @@ const routes: Routes = [
         CardboardFormComponent,
         CardboardContractInfoComponent,
         CardboardNoteDialogComponent,
+        CardboardConfirmDialogComponent,
     ],
     imports: [
         CommonModule,
