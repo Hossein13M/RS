@@ -21,12 +21,13 @@
                 <mat-select formControlName="user">
                     <mat-option *ngFor="let user of nextStepSelectionUsers" [value]="user.userId">{{ user.userId }}</mat-option>
                 </mat-select>
+                <mat-hint *ngIf="!nextStepSelectionUsers.length">کاربری یافت نشد</mat-hint>
             </mat-form-field>
         </form>
     </mat-card-content>
 
     <mat-card-actions>
-        <button mat-flat-button class="px-10 p-2" color="primary" type="submit" form="form" (click)="confirmStep()">
+        <button mat-flat-button class="px-10 p-2" color="primary" type="submit" form="form">
             <mat-icon class="mat-18 mx-5">add</mat-icon>
             <span>تایید گام قرارداد</span>
         </button>

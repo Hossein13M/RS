@@ -26,7 +26,6 @@ export class CardboardConfirmDialogComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log(this.dialogData);
         this.getSelectionUsersOnNextStep();
     }
 
@@ -50,7 +49,8 @@ export class CardboardConfirmDialogComponent implements OnInit {
     }
 
     public confirmStep(): void {
-        this.cardboardService.confirmContractCardboardStep({ contractId: this.dialogData.contractId, ...this.form.value }).subscribe(
+        const user = this.form.value ? this.form.get('user').value : {};
+        this.cardboardService.confirmContractCardboardStep({ contractId: this.dialogData.contractId, user }).subscribe(
             () => {
                 this.alertService.onSuccess('با موفقیت تایید شد');
                 this.dialog.close(true);

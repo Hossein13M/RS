@@ -27,8 +27,8 @@ export class CardboardService {
         return this.http.post<void>(`/api/v1/contract-wizard/reject`, stepInfo);
     }
 
-    public confirmContractCardboardStep(info): Observable<void> {
-        return this.http.post<void>(`/api/v1/contract-wizard/confirm`, info);
+    public confirmContractCardboardStep(stepInfo: { contractId: string; user?: number }): Observable<void> {
+        return this.http.post<void>(`/api/v1/contract-wizard/confirm`, stepInfo);
     }
 
     public reopenContract(contractId: string): Observable<void> {
