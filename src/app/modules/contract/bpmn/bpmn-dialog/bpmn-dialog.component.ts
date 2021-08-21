@@ -9,6 +9,8 @@ import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../bpmn.model';
 import { FlowService } from '../../flow/flow.service';
 import { Flow } from '../../flow/flow.model';
 import { BpmnService } from '../bpmn.service';
+import { AlertService } from '#services/alert.service';
+import { ContractFormButtonTypes } from '../../cardboard-list/cardboard.model';
 
 @Component({
     selector: 'app-bpmn-dialog',
@@ -31,7 +33,7 @@ export class BpmnDialogComponent implements OnInit {
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public flowDetails: Flow;
 
-    public buttonTypes: Array<{ perName: string; engName: string; isAvailable: boolean }> = [
+    public buttonTypes: Array<{ perName: string; engName: ContractFormButtonTypes; isAvailable: boolean }> = [
         { perName: 'آپلود', engName: 'upload', isAvailable: true },
         { perName: 'دانلود', engName: 'download', isAvailable: true },
         { perName: 'تایید', engName: 'accept', isAvailable: false },
@@ -57,7 +59,8 @@ export class BpmnDialogComponent implements OnInit {
         private fb: FormBuilder,
         private activatedRoute: ActivatedRoute,
         private flowService: FlowService,
-        private bpmnService: BpmnService
+        private bpmnService: BpmnService,
+        private alertSerice: AlertService
     ) {
         this.addDefaultButtons();
     }
@@ -97,7 +100,7 @@ export class BpmnDialogComponent implements OnInit {
         this.data.name = this.dialogData.stateName;
         this.data.flow = this.dialogData.flowId;
         this.data.step = this.dialogData.stateId;
-        this.data.isNewStep = this.flowDetails.states.includes(this.dialogData.stateId);
+        this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
         !this.data.isNewStep && this.getStepInfo();
     }
 
@@ -108,7 +111,10 @@ export class BpmnDialogComponent implements OnInit {
     public submitForm(): void {
         this.prepareAccessRights();
         this.data.attributes = this.formArray.value;
-        this.bpmnService.saveBpmnStep(this.data).subscribe();
+        this.bpmnService.saveBpmnStep(this.data).subscribe(
+            () => this.alertSerice.onSuccess('افزوده شد'),
+            () => this.alertSerice.onError('مشکلی پیش آمده‌است')
+        );
     }
 
     private prepareAccessRights() {

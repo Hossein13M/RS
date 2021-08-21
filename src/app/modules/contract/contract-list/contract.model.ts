@@ -14,6 +14,10 @@ export interface Contract {
     readonly _id?: string;
     readonly createdAt?: Date;
     readonly updatedAt?: Date;
+    initializerUser?: {
+        id: number;
+        name: string;
+    };
 }
 
 export interface Customer {

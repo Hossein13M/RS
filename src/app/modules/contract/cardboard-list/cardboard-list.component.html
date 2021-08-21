@@ -1,0 +1,16 @@
+<div class="page-layout">
+    <app-header pageTitle="کارتابل قراردادها" class="wp-100"> </app-header>
+
+    <div class="fuse-card m-40 p-40">
+        <h1 class="wp-100 text-center mb-20">فهرست کارتابل قراردادها</h1>
+        <div class="container fuse-card">
+            <app-table
+                *ngIf="stateType === 'PRESENT'"
+                [data]="contractCardboardsTableData"
+                [columns]="tableColumn"
+                [paginationSettings]="{ mode: 'local' }"
+                [paginationObject]="pagination"
+            ></app-table>
+        </div>
+    </div>
+</div>
