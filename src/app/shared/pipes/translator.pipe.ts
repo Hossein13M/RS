@@ -10,6 +10,8 @@ export class TranslatorPipe implements PipeTransform {
                 return 'در حال پیشرفت';
             case 'pause':
                 return 'ایستاده';
+            case 'final':
+                return 'پایان';
             default:
                 return 'دیگر';
         }
