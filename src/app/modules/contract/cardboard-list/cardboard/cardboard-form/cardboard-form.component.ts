@@ -8,6 +8,7 @@ import { ConfirmationDialogComponent } from '#shared/components/confirmation-dia
 import { AlertService } from '#services/alert.service';
 import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard-note-dialog.component';
 import { ClipboardService } from 'ngx-clipboard';
+import { CardboardConfirmDialogComponent } from '../cardboard-confirm-dialog/cardboard-confirm-dialog.component';
 
 @Component({
     selector: 'app-cardboard-form',
@@ -66,7 +67,15 @@ export class CardboardFormComponent implements OnInit {
     }
 
     private openAcceptStepDialog(): void {
-        console.log('open');
+        this.dialog
+            .open(CardboardConfirmDialogComponent, {
+                width: '600px',
+                height: '400px',
+                panelClass: 'dialog-p-0',
+                data: { contractId: this.contractId, stepInfo: this.cardboardInfo },
+            })
+            .afterClosed()
+            .subscribe((hasConfirmed: boolean) => hasConfirmed && setTimeout(() => window.location.reload(), 2000));
     }
 
     private onStepRejectionDialogOpening(): void {

@@ -1,12 +1,13 @@
 export interface ElectionUsers {
     userId: null;
+    username: string;
     isDefault: boolean;
 }
 
 export interface CardboardAction {
-    contract: string;
-    step: string;
-    action: 'accept' | 'reject';
+    contractId: string;
+    currentStepId: string;
+    action: 'confirm' | 'reject';
 }
 
 export interface CardboardInfo {
