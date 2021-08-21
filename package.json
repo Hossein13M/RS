@@ -57,6 +57,7 @@
         "minio": "7.0.16",
         "moment-jalaali": "0.9.2",
         "ng2-charts": "2.3.0",
+        "ngx-clipboard": "14.0.1",
         "ngx-color-picker": "8.1.0",
         "ngx-cookie-service": "2.2.0",
         "ngx-mat-select-search": "3.3.0",

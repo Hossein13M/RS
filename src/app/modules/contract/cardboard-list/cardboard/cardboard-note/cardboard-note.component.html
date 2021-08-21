@@ -1,0 +1,15 @@
+<mat-card class="h-full w-full p-0">
+    <mat-card-header class="w-full bg-blue-600 m-0 py-3.5">
+        <div class="w-full flex justify-between items-center px-5 w-full">
+            <h2 class="font-bold text-white">یادداشت‌ها</h2>
+
+            <button mat-mini-fab (click)="onAddNoteClick()" color="primary" matTooltip="افزودن یادداشت">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content class="h-3/4 overflow-y-scroll">
+        <app-table [data]="contractNotes" [columns]="tableColumn" [paginationSettings]="{ mode: 'local' }" [paginationObject]="pagination"></app-table>
+    </mat-card-content>
+</mat-card>
