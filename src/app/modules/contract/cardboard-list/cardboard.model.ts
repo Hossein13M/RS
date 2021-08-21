@@ -71,3 +71,40 @@ export interface ContractHistoryTableData {
     action: string;
     updatedAt: Date;
 }
+
+export interface ContractCardboard {
+    isActive: true;
+    _id: string;
+    organization: number;
+    name: string;
+    customer: {
+        id: number;
+        name: string;
+    };
+    category: number;
+    initializerUser: {
+        id: number;
+        name: string;
+    };
+    contractType: string;
+    flow: string;
+    code: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ContractCardboardTableData {
+    isActive: true;
+    _id: string;
+    name: string;
+    code: string;
+    createdAt: string;
+    initializerUser: string;
+    customer: string;
+    final: boolean;
+}
+
+export interface ContractCardboardList {
+    active: Array<ContractCardboard>;
+    final: Array<ContractCardboard>;
+}

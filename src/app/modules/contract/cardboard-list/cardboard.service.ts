@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CardboardAction, CardboardInfo, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
+import { CardboardAction, CardboardInfo, ContractCardboardList, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
 
 @Injectable({
     providedIn: 'root',
@@ -17,8 +17,8 @@ export class CardboardService {
         return this.http.get<Array<ElectionUsers>>(`/api/v1/contract-wizard/next-step-selected-users`);
     }
 
-    public getContractCardboardList(organization: number): Observable<any> {
-        return this.http.get<any>(`somewhere`, { params: { organization } });
+    public getContractCardboardList(organization: number): Observable<ContractCardboardList> {
+        return this.http.get<ContractCardboardList>(`/api/v1/contract-wizard/cardboard`, { params: { organization } });
     }
 
     public reopenContract(contractId: string): Observable<void> {
