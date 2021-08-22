@@ -126,7 +126,12 @@ export class BpmnDialogComponent implements OnInit {
             initializer: this.form.get('initializer').value,
             users: [],
         };
-        this.form.get('users').value.map((user) => this.data.accessRights.users.push({ userId: user, isDefault: false }));
+        this.users.map((user) => {
+            if (this.form.get('users').value.includes(user.id)) {
+                this.data.accessRights.users.push({ userId: user.id, isDefault: false, username: user.fullname });
+            }
+        });
+        // this.form.get('users').value.map((user) => this.data.accessRights.users.push({ userId: user.id, isDefault: false, username: user.fullname }));
     }
 
     private getOrganizationUnits(): void {

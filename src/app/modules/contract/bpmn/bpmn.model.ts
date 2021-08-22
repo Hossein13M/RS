@@ -24,7 +24,7 @@ export interface BpmnData {
             unit: number;
             roles: Array<number>;
         };
-        users?: Array<{ userId: number; isDefault: boolean }>;
+        users?: Array<{ userId: number; isDefault: boolean; username: string }>;
         initializer: boolean;
     };
     _id?: string;
