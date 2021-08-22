@@ -6,7 +6,7 @@
         <div class="container fuse-card">
             <app-table
                 *ngIf="stateType === 'PRESENT'"
-                [data]="contractCardboardsTableData"
+                [data]="tableData"
                 [columns]="tableColumn"
                 [paginationSettings]="{ mode: 'local' }"
                 [paginationObject]="pagination"
