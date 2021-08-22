@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardboardService } from './cardboard.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { ContractCardboardList, ContractCardboardTableData } from './cardboard.model';
+import { ContractCardboard, ContractCardboardTableData } from './cardboard.model';
 import { Column } from '#shared/components/table/table.model';
 import { AlertService } from '#services/alert.service';
 import { StateType } from '#shared/state-type.enum';
@@ -15,9 +15,9 @@ import { StateType } from '#shared/state-type.enum';
 export class CardboardListComponent implements OnInit {
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public pagination = { skip: 0, limit: 100, total: 100 };
-    public contractCardboards: ContractCardboardList = { active: [], final: [] };
+    public contractCardboards: Array<ContractCardboard> = [];
+    public tableData: Array<ContractCardboardTableData> = [];
     public stateType: StateType = StateType.INIT;
-    public contractCardboardsTableData: Array<ContractCardboardTableData> = [];
 
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '70px' },
@@ -25,8 +25,14 @@ export class CardboardListComponent implements OnInit {
         { id: 'code', name: 'کد قرارداد', type: 'string', minWidth: '200px' },
         { id: 'customer', name: 'مشتری قرارداد', type: 'string', minWidth: '200px' },
         { id: 'initializerUser', name: 'ثبت‌کننده‌ی قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'final', name: 'وضعیت پایان قرارداد', convert: (value) => (value ? 'پایانی' : 'باز'), type: 'string', minWidth: '140px' },
-        { id: 'isActive', name: 'وضعیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '140px' },
+        { id: 'isActive', name: 'فعالیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '140px' },
+        {
+            id: 'status',
+            name: 'وضعیت قرارداد',
+            convert: (value) => (value === 'pause' ? 'متوقف‌شده' : value === 'final' ? 'پایانی' : 'در حال انجام'),
+            type: 'string',
+            minWidth: '140px',
+        },
         {
             id: 'createdAt',
             name: 'تاریخ ساخت',
@@ -62,40 +68,25 @@ export class CardboardListComponent implements OnInit {
         this.cardboardService.getContractCardboardList(this.organizationCode).subscribe(
             (response) => {
                 this.contractCardboards = response;
-                this.prepareTableDataReady();
+                this.prepareDataForTable();
             },
             () => this.alertService.onError('مشکلی پیش آمده‌است')
         );
     }
 
-    private prepareTableDataReady(): void {
-        this.contractCardboards.active.map((item) => {
-            this.contractCardboardsTableData.push({
+    private prepareDataForTable(): void {
+        this.contractCardboards.map((item) => {
+            this.tableData.push({
                 isActive: item.isActive,
                 _id: item._id,
                 name: item.name,
-                code: item.code,
+                code: item.code ?? 'ندارد',
                 createdAt: item.createdAt,
                 initializerUser: item.initializerUser.name,
                 customer: item.customer.name,
-                final: false,
+                status: item.status,
             });
         });
-
-        this.contractCardboards.final.map((item) => {
-            this.contractCardboardsTableData.push({
-                isActive: item.isActive,
-                _id: item._id,
-                name: item.name,
-                code: item.code,
-                createdAt: item.createdAt,
-                initializerUser: item.initializerUser.name,
-                customer: item.customer.name,
-                final: true,
-            });
-        });
-
-        console.log(this.contractCardboardsTableData);
         this.stateType = StateType.PRESENT;
     }
 }

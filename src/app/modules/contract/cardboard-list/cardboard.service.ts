@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CardboardAction, CardboardInfo, ContractCardboardList, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
+import { CardboardAction, CardboardInfo, ContractCardboard, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
@@ -19,8 +19,8 @@ export class CardboardService {
         return this.http.get<Array<ElectionUsers>>(`/api/v1/contract-wizard/next-step-selected-users`, { params });
     }
 
-    public getContractCardboardList(organization: number): Observable<ContractCardboardList> {
-        return this.http.get<ContractCardboardList>(`/api/v1/contract-wizard/cardboard`, { params: { organization } });
+    public getContractCardboardList(organization: number): Observable<Array<ContractCardboard>> {
+        return this.http.get<Array<ContractCardboard>>(`/api/v1/contract-wizard/cardboard`, { params: { organization } });
     }
 
     public rejectContractCardboardStep(stepInfo: { contractId: string; note: string }): Observable<void> {

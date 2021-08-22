@@ -10,6 +10,7 @@ export interface ContractType {
     organization: number;
     createdAt: string;
     updatedAt: string;
+    keyword: string;
 }
 
 export interface RolesListBasedOnUnit {

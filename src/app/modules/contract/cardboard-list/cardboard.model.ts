@@ -92,6 +92,7 @@ export interface ContractCardboard {
     code: string;
     createdAt: string;
     updatedAt: string;
+    status: 'pause' | 'final' | 'in progress';
 }
 
 export interface ContractCardboardTableData {
@@ -102,7 +103,7 @@ export interface ContractCardboardTableData {
     createdAt: string;
     initializerUser: string;
     customer: string;
-    final: boolean;
+    status: 'pause' | 'final' | 'in progress';
 }
 
 export interface ContractCardboardList {
