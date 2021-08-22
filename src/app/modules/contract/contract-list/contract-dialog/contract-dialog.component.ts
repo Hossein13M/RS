@@ -47,7 +47,7 @@ export class ContractDialogComponent implements OnInit {
         organization: [this.activeOrganizationCode, Validators.required],
         customer: [null, Validators.required],
         category: [1, Validators.required],
-        code: [null, [Validators.pattern(/^[a-zA-Z0-9]*$/)]],
+        code: [null],
         parentId: [],
         contractType: [null, Validators.required],
         flow: ['', Validators.required],
