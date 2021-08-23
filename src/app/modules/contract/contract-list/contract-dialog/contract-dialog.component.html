@@ -1,31 +1,27 @@
-<div class="dialog-content-wrapper flex flex-col h-full" dir="rtl">
+<div class="dialog-content-wrapper flex flex-col h-full">
     <mat-toolbar matDialogTitle class="mat-accent m-0">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">{{ title }}</span>
             <button mat-icon-button (click)="dialog.close()">
                 <mat-icon>close</mat-icon>
             </button>
-        </mat-toolbar-row>
-
-        <mat-toolbar-row *ngIf="isEditMode" class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
-            <div class="contact-name mt-8">{{ isEditMode ? data.name : '' }}</div>
+            <span class="title dialog-title">{{ title }}</span>
         </mat-toolbar-row>
     </mat-toolbar>
 
     <div class="p-24 pb-0 m-0 h-full" *ngIf="stateType === 'PRESENT'">
-        <form [formGroup]="form" (submit)="submitForm()" class="flex flex-col justify-between h-full">
+        <form [formGroup]="form" (submit)="submitForm()" class="flex flex-col justify-between h-full" dir="rtl">
             <div class="grid grid-cols-3 gap-7">
                 <mat-form-field appearance="outline">
-                    <mat-label>قرارداد</mat-label>
-                    <mat-icon matSuffix class="secondary-text">business</mat-icon>
+                    <mat-label>نام قرارداد</mat-label>
+                    <mat-icon matSuffix class="secondary-text">title</mat-icon>
                     <input name="name" formControlName="name" matInput required />
                     <mat-error *ngIf="form.get('name').hasError('required')"> وارد کردن این فیلد الزامی است. </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
                     <mat-label>کد قرارداد</mat-label>
-                    <mat-icon matSuffix class="secondary-text">vpn_key</mat-icon>
-                    <input [readonly]="isEditMode" name="name" formControlName="code" matInput />
+                    <mat-icon matSuffix class="secondary-text mr-5">font_download</mat-icon>
+                    <input [readonly]="isEditMode" name="name" formControlName="code" matInput dir="ltr" />
                     <mat-hint *ngIf="isEditMode">کد قرارداد را نمی‌توانید ویرایش کنید.</mat-hint>
                     <mat-error *ngIf="form.get('code').hasError('pattern')"> تنها حروف و اعداد انگلیسی مجاز است. </mat-error>
                 </mat-form-field>
