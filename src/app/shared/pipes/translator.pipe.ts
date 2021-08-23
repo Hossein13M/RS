@@ -7,9 +7,9 @@ export class TranslatorPipe implements PipeTransform {
     transform(value: string): string {
         switch (value) {
             case 'in progress':
-                return 'در حال انجام';
+                return 'درحال اجرا';
             case 'pause':
-                return 'ایستاده';
+                return 'متوقف‌شده';
             case 'final':
                 return 'پایان';
             default:
