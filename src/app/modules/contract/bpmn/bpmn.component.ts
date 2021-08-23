@@ -86,6 +86,14 @@ export class BpmnComponent implements OnInit {
                 return;
             }
 
+            const tasks = bpmnConfiguration['bpmn:definitions']['bpmn:process']['bpmn:task'];
+            tasks.map((task) => {
+                if (!task._attributes.name) {
+                    this.alertService.onError('همه‌ی گام‌های روندنما بایستی دارای نام باشند.');
+                    return;
+                }
+            });
+
             const bpmnShapes = bpmnPlane['bpmndi:BPMNShape'];
             const numberOfTasks = bpmnShapes.filter((el) => {
                 if (!el || !el._attributes || !el._attributes.bpmnElement) {
