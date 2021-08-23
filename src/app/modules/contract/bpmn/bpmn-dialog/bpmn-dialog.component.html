@@ -89,77 +89,59 @@
             <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
                 <mat-card-title class="text-white mb-0">فرم این گام</mat-card-title>
             </mat-card-header>
-            <mat-card-content class="my-10 flex justify-evenly">
-                <mat-card class="w-1/6 m-10 p-0 flex flex-col">
-                    <mat-card-header class="flex justify-center flex-shrink-0 bg-blue-500 m-0 py-3.5">
-                        <mat-card-title class="text-white mb-0">افزودن ابزار</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content class="flex justify-center items-center my-10 flex-grow">
-                        <div *ngFor="let item of formTools">
-                            <button (click)="addTool()" [disabled]="!!item.imageLink" class="flex flex-col items-center justify-center">
-                                <mat-icon fontSet="material-icons-outlined" *ngIf="!!item.icon" class="tool-icon"> {{ item.icon }} </mat-icon>
-                                <img *ngIf="!!item.imageLink" [src]="item.imageLink" alt="image not available" class="tool-icon" />
-                                <strong>{{ item.name }}</strong>
-                            </button>
-                        </div>
-                    </mat-card-content>
-                    <mat-card-footer class="text-center mx-0 mb-2 flex items-center justify-center">
-                        <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>
-                        <p>روی هر ابزار کلیک کنید.</p>
-                    </mat-card-footer>
-                </mat-card>
+            <mat-card-content class="my-10 flex mx-3">
+                <div *ngFor="let formArray of formArray.controls; index as index">
+                    <mat-card class="flex flex-col items-center bg-blue-50 mx-2 tool-card">
+                        <mat-card-content>
+                            <ng-container [formGroup]="formArray" class="flex flex-col items-center justify-evenly">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>نوشته‌ی دکمه</mat-label>
+                                    <input formControlName="name" [readonly]="formArray.get('isDefaultButton').value" matInput type="text" />
+                                    <mat-hint *ngIf="formArray.get('isDefaultButton').value">نام این دکمه را نمی‌توانید ویرایش کنید</mat-hint>
+                                </mat-form-field>
 
-                <mat-card class="w-5/6 m-10 p-0">
-                    <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
-                        <mat-card-title class="text-white mb-0">فرم</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content class="flex overflow-x-auto py-10">
-                        <!--each tool card-->
-                        <div *ngFor="let formArray of formArray.controls; index as index">
-                            <mat-card class="flex flex-col items-center bg-blue-50 mx-2 max-w-md">
-                                <mat-card-content>
-                                    <ng-container [formGroup]="formArray" class="flex flex-col items-center justify-evenly">
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>نوشته‌ی دکمه</mat-label>
-                                            <input formControlName="name" [readonly]="formArray.get('isDefaultButton').value" matInput type="text" />
-                                            <mat-hint *ngIf="formArray.get('isDefaultButton').value">نام این دکمه را نمی‌توانید ویرایش کنید</mat-hint>
-                                        </mat-form-field>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>نوع دکمه</mat-label>
+                                    <mat-select formControlName="type" [disabled]="formArray.get('isDefaultButton').value">
+                                        <mat-option *ngFor="let buttonType of buttonTypes" [value]="buttonType.engName" [disabled]="!buttonType.isAvailable">
+                                            {{ buttonType.perName }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
 
-                                        <mat-form-field appearance="outline">
-                                            <mat-label>نوع دکمه</mat-label>
-                                            <mat-select formControlName="type" [disabled]="formArray.get('isDefaultButton').value">
-                                                <mat-option
-                                                    *ngFor="let buttonType of buttonTypes"
-                                                    [value]="buttonType.engName"
-                                                    [disabled]="!buttonType.isAvailable"
-                                                >
-                                                    {{ buttonType.perName }}
-                                                </mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                <button
+                                    class="flex mx-auto"
+                                    mat-flat-button
+                                    color="warn"
+                                    (click)="removeTool(index)"
+                                    [disabled]="formArray.get('isDefaultButton').value"
+                                >
+                                    <span>پاک کردن این ابزار</span>
+                                    <mat-icon fontSet="material-icons-outlined"> clear </mat-icon>
+                                </button>
+                            </ng-container>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
 
-                                        <button
-                                            class="flex mx-auto"
-                                            mat-flat-button
-                                            color="warn"
-                                            (click)="removeTool(index)"
-                                            [disabled]="formArray.get('isDefaultButton').value"
-                                        >
-                                            <span>پاک کردن این ابزار</span>
-                                            <mat-icon fontSet="material-icons-outlined"> clear </mat-icon>
-                                        </button>
-                                    </ng-container>
-                                </mat-card-content>
-                            </mat-card>
-                        </div>
-                        <!--each tool card-->
-                    </mat-card-content>
-                    <mat-card-footer class="text-center mx-0 mb-2 flex justify-center items-center">
-                        <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>
-                        <p>برخی از ابزارها نیاز به تنظیمات ویژه‌ای دارند که در این بخش، می‌توانید آن‌ها را پیدا کنید.</p>
-                    </mat-card-footer>
-                </mat-card>
+                <button
+                    mat-button
+                    [disableRipple]="true"
+                    (click)="addTool()"
+                    *ngIf="isAddButtonAvailable()"
+                    matTooltip="افزودن دکمه‌ی جدید"
+                    matTooltipPosition="below"
+                    class="p-0"
+                >
+                    <mat-card class="flex flex-col justify-center items-center bg-gray-100 mx-5 h-5-6 empty-state-section m-0 tool-card">
+                        <mat-icon fontSet="material-icons-outlined" class="text-blue-600 text-7xl flex justify-center items-center">add_circle </mat-icon>
+                    </mat-card>
+                </button>
             </mat-card-content>
+            <mat-card-footer class="text-center mx-0 mb-2 flex justify-center items-center">
+                <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>
+                <p>برخی از ابزارها نیاز به تنظیمات ویژه‌ای دارند که در این بخش، می‌توانید آن‌ها را پیدا کنید.</p>
+            </mat-card-footer>
         </mat-card>
     </div>
 </div>
