@@ -19,7 +19,7 @@ export const navigation: FuseNavigation[] = [
         children: [
             { id: 'contractType', title: 'نوع قرارداد', type: 'item', icon: 'format_list_bulleted', url: '/contract/contract-type' },
             { id: 'contractFlow', title: 'جریان قرارداد', type: 'item', icon: 'timeline', url: '/contract/flow' },
-            { id: 'contractsList', title: 'فهرست قراردادها', type: 'item', icon: 'fact_check', url: '/contract/contract-list' },
+            { id: 'contractsList', title: 'قراردادها', type: 'item', icon: 'fact_check', url: '/contract/contract-list' },
             { id: 'contractCardboard', title: 'کارتابل قرارداد', type: 'item', icon: 'dashboard', url: '/contract/cardboard' },
         ],
     },
