@@ -25,14 +25,6 @@ export class CardboardListComponent implements OnInit {
         { id: 'code', name: 'کد قرارداد', type: 'string', minWidth: '200px' },
         { id: 'customer', name: 'مشتری قرارداد', type: 'string', minWidth: '200px' },
         { id: 'initializerUser', name: 'ثبت‌کننده‌ی قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'isActive', name: 'فعالیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '140px' },
-        {
-            id: 'status',
-            name: 'وضعیت قرارداد',
-            convert: (value) => (value === 'pause' ? 'متوقف‌شده' : value === 'final' ? 'پایانی' : 'در حال انجام'),
-            type: 'string',
-            minWidth: '140px',
-        },
         {
             id: 'createdAt',
             name: 'تاریخ ساخت',
@@ -40,6 +32,14 @@ export class CardboardListComponent implements OnInit {
             type: 'string',
             minWidth: '150px',
         },
+        {
+            id: 'status',
+            name: 'وضعیت قرارداد',
+            convert: (value) => (value === 'pause' ? 'متوقف‌شده' : value === 'final' ? 'پایانی' : 'در حال انجام'),
+            type: 'string',
+            minWidth: '140px',
+        },
+        { id: 'isActive', name: 'فعالیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '140px' },
         {
             name: 'عملیات',
             id: 'operation',

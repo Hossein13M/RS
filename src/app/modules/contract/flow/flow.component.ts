@@ -21,7 +21,6 @@ export class FlowComponent implements OnInit {
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'جریان قرارداد', type: 'string', minWidth: '200px' },
         { id: 'isManual', name: 'گونه', convert: (value) => (value ? 'دستی' : 'غیردستی'), type: 'string', minWidth: '200px' },
-        { id: 'isActive', name: 'وضعیت جریان قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
         {
             id: 'createdAt',
             name: 'تاریخ ساخت',
@@ -29,6 +28,7 @@ export class FlowComponent implements OnInit {
             type: 'string',
             minWidth: '200px',
         },
+        { id: 'isActive', name: 'وضعیت جریان قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
         {
             name: 'عملیات',
             id: 'operation',
