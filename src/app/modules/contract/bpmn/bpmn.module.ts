@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { ShareModule } from '#shared/share.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: BpmnComponent }];
 
@@ -37,6 +38,7 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: BpmnComponent 
         MatSelectModule,
         ShareModule,
         DragDropModule,
+        MatTooltipModule
     ],
     exports: [BpmnComponent],
 })

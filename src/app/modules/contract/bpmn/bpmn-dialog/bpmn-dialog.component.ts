@@ -168,6 +168,10 @@ export class BpmnDialogComponent implements OnInit {
         );
     }
 
+    public isAddButtonAvailable(): boolean {
+        return this.formArray.length < 5;
+    }
+
     public removeTool(index: number) {
         this.formArray.removeAt(index);
     }
