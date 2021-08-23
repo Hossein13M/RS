@@ -25,8 +25,8 @@ export class ContractListComponent implements OnInit {
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'isActive', name: 'وضعیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
         { id: 'createdAt', name: 'تاریخ ساخت', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '200px' },
+        { id: 'isActive', name: 'وضعیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
         {
             name: 'عملیات',
             id: 'operation',
@@ -43,7 +43,7 @@ export class ContractListComponent implements OnInit {
                 },
                 {
                     name: 'تغییر وضعیت',
-                    icon: 'sync_alt',
+                    icon: 'sync',
                     color: 'warn',
                     operation: (row: { operationItem: any; row: Contract }) => this.changeContractStatus(row.row._id),
                 },

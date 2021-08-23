@@ -20,8 +20,8 @@ export class FlowComponent implements OnInit {
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'جریان قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'isActive', name: 'وضعیت جریان قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
         { id: 'isManual', name: 'گونه', convert: (value) => (value ? 'دستی' : 'غیردستی'), type: 'string', minWidth: '200px' },
+        { id: 'isActive', name: 'وضعیت جریان قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
         {
             id: 'createdAt',
             name: 'تاریخ ساخت',
@@ -45,13 +45,13 @@ export class FlowComponent implements OnInit {
                 },
                 {
                     name: 'تغییر وضعیت',
-                    icon: 'sync_alt',
+                    icon: 'sync',
                     color: 'warn',
                     operation: (row: { operationItem: any; row: Flow }) => this.changeFlowStatus(row.row._id),
                 },
                 {
                     name: 'BPMN (پیشینه‌ی الگوسازی فرآیند کسب‌و‌کار)',
-                    icon: 'model_training',
+                    icon: 'account_tree',
                     color: 'accent',
                     operation: (row: { operationItem: any; row: Flow }) => this.navigateToFlowBPMNPage(row.row._id),
                 },
