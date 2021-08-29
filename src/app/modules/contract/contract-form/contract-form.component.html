@@ -1,0 +1,12 @@
+<div class="page-layout">
+    <app-header pageTitle="فرم‌ساز" class="wp-100">
+        <button mat-stroked-button (click)="openContractFormDialog()">
+            <mat-icon class="mat-18">add</mat-icon>
+            فهرست فرم‌ها
+        </button>
+    </app-header>
+
+    <div class="fuse-card">
+        <ag-form-builder dir="ltr" class="" (emittedForm)="handleFormInfo($event)"></ag-form-builder>
+    </div>
+</div>
