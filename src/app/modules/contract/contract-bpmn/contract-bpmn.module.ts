@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BpmnComponent } from './bpmn.component';
+import { ContractBpmnComponent } from './contract-bpmn.component';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutModule } from '../../../layout/layout.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { BpmnDialogComponent } from './bpmn-dialog/bpmn-dialog.component';
+import { ContractBpmnDialogComponent } from './contract-bpmn-dialog/contract-bpmn-dialog.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FlexModule } from '@angular/flex-layout';
@@ -18,10 +18,10 @@ import { ShareModule } from '#shared/share.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-const routes: Routes = [{ path: '', pathMatch: 'full', component: BpmnComponent }];
+const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractBpmnComponent }];
 
 @NgModule({
-    declarations: [BpmnComponent, BpmnDialogComponent],
+    declarations: [ContractBpmnComponent, ContractBpmnDialogComponent],
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
@@ -38,8 +38,8 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: BpmnComponent 
         MatSelectModule,
         ShareModule,
         DragDropModule,
-        MatTooltipModule
+        MatTooltipModule,
     ],
-    exports: [BpmnComponent],
+    exports: [ContractBpmnComponent],
 })
-export class BpmnModule {}
+export class ContractBpmnModule {}

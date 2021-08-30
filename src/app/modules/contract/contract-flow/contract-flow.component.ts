@@ -4,16 +4,16 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Column } from '#shared/components/table/table.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { AlertService } from '#services/alert.service';
-import { FlowDialogComponent } from './flow-dialog/flow-dialog.component';
-import { FlowService } from './flow.service';
-import { Flow } from './flow.model';
+import { ContractFlowDialogComponent } from './contract-flow-dialog/contract-flow-dialog.component';
+import { ContractFlowService } from './contract-flow.service';
+import { Flow } from './contract-flow.model';
 
 @Component({
-    selector: 'app-flow',
-    templateUrl: './flow.component.html',
-    styleUrls: ['./flow.component.scss'],
+    selector: 'app-contract-flow',
+    templateUrl: './contract-flow.component.html',
+    styleUrls: ['./contract-flow.component.scss'],
 })
-export class FlowComponent implements OnInit {
+export class ContractFlowComponent implements OnInit {
     public flows: any;
     public pagination = { skip: 0, limit: 100, total: 100 };
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
@@ -58,7 +58,7 @@ export class FlowComponent implements OnInit {
             ],
         },
     ];
-    constructor(private dialog: MatDialog, private flowService: FlowService, private alertService: AlertService, private router: Router) {}
+    constructor(private dialog: MatDialog, private flowService: ContractFlowService, private alertService: AlertService, private router: Router) {}
 
     ngOnInit(): void {
         this.getFlows();
@@ -79,7 +79,7 @@ export class FlowComponent implements OnInit {
     }
 
     public openFlowDialog(dialogType: 'edit' | 'create', flowType?: Flow): void {
-        const dialogRef: MatDialogRef<any> = this.dialog.open(FlowDialogComponent, {
+        const dialogRef: MatDialogRef<any> = this.dialog.open(ContractFlowDialogComponent, {
             data: dialogType === 'edit' ? flowType : null,
             width: '500px',
             height: '400px',
