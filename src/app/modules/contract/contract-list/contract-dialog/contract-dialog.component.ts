@@ -6,9 +6,9 @@ import { AlertService } from '#services/alert.service';
 import { ContractService } from '../contract.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { FlowService } from '../../flow/flow.service';
+import { ContractFlowService } from '../../contract-flow/contract-flow.service';
 import { Contract } from '../contract.model';
-import { Flow } from '../../flow/flow.model';
+import { Flow } from '../../contract-flow/contract-flow.model';
 import { StateType } from '#shared/state-type.enum';
 
 @Component({
@@ -38,7 +38,7 @@ export class ContractDialogComponent implements OnInit {
         private contractService: ContractService,
         private contractTypeService: ContractTypeService,
         private alertService: AlertService,
-        private flowService: FlowService,
+        private flowService: ContractFlowService,
         public dialog: MatDialogRef<ContractDialogComponent>
     ) {}
 

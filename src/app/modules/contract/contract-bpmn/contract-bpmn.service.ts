@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { BpmnData } from './bpmn.model';
+import { BpmnData } from './contract-bpmn.model';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BpmnService {
+export class ContractBpmnService {
     constructor(private http: HttpClient) {}
 
     public saveBpmnStep(bpmnStepInfo: BpmnData): Observable<void> {

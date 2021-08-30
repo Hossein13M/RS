@@ -7,16 +7,16 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 import { StateType } from '#shared/state-type.enum';
 import propertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
-import { FlowService } from '../flow/flow.service';
-import { Flow } from '../flow/flow.model';
-import { BpmnDialogComponent } from './bpmn-dialog/bpmn-dialog.component';
+import { ContractFlowService } from '../contract-flow/contract-flow.service';
+import { Flow } from '../contract-flow/contract-flow.model';
+import { ContractBpmnDialogComponent } from './contract-bpmn-dialog/contract-bpmn-dialog.component';
 
 @Component({
-    selector: 'app-bpmn',
-    templateUrl: './bpmn.component.html',
-    styleUrls: ['./bpmn.component.scss'],
+    selector: 'app-contract-bpmn',
+    templateUrl: './contract-bpmn.component.html',
+    styleUrls: ['./contract-bpmn.component.scss'],
 })
-export class BpmnComponent implements OnInit {
+export class ContractBpmnComponent implements OnInit {
     public stateType: StateType = StateType.INIT;
     private flowId: string;
     public flowDetails: Flow;
@@ -29,7 +29,7 @@ export class BpmnComponent implements OnInit {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private flowService: FlowService,
+        private flowService: ContractFlowService,
         private dialog: MatDialog,
         private alertService: AlertService,
         private router: Router
@@ -152,7 +152,7 @@ export class BpmnComponent implements OnInit {
             if (err) {
                 console.error(err);
             } else {
-                this.setEncoded(xml, 'bpmn.xml');
+                this.setEncoded(xml, 'contract-bpmn.xml');
             }
         });
         e.preventDefault();
@@ -164,7 +164,7 @@ export class BpmnComponent implements OnInit {
             if (err) {
                 console.error(err);
             } else {
-                this.setEncoded(svg, 'bpmn.svg');
+                this.setEncoded(svg, 'contract-bpmn.svg');
             }
         });
         e.preventDefault();
@@ -180,17 +180,17 @@ export class BpmnComponent implements OnInit {
     }
 
     public clickListener(event): void {
-        if (event.element.type === 'bpmn:Task') {
+        if (event.element.type === 'contract-bpmn:Task') {
             if (event.element.businessObject.name) {
                 this.openDialog(event.element.businessObject.name, event.element.id);
             } else this.alertService.onError('نخست یک نام برگزینید');
         }
 
-        if (event.element.type === 'bpmn:EndEvent') event.element.businessObject.name = 'پایانی';
+        if (event.element.type === 'contract-bpmn:EndEvent') event.element.businessObject.name = 'پایانی';
     }
 
     private openDialog(name, id): void {
-        this.dialog.open(BpmnDialogComponent, {
+        this.dialog.open(ContractBpmnDialogComponent, {
             width: '1500px',
             height: '900px',
             panelClass: 'dialog-p-0',

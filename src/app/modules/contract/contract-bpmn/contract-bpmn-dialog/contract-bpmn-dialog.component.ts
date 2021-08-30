@@ -5,19 +5,19 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { Units, User } from '../../../organizations-structure/user/user.model';
-import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../bpmn.model';
-import { FlowService } from '../../flow/flow.service';
-import { Flow } from '../../flow/flow.model';
-import { BpmnService } from '../bpmn.service';
+import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../contract-bpmn.model';
+import { ContractFlowService } from '../../contract-flow/contract-flow.service';
+import { Flow } from '../../contract-flow/contract-flow.model';
+import { ContractBpmnService } from '../contract-bpmn.service';
 import { AlertService } from '#services/alert.service';
-import { ContractFormButtonTypes } from '../../cardboard-list/cardboard.model';
+import { ContractFormButtonTypes } from '../../contract-cardboard/cardboard.model';
 
 @Component({
-    selector: 'app-bpmn-dialog',
-    templateUrl: './bpmn-dialog.component.html',
-    styleUrls: ['./bpmn-dialog.component.scss'],
+    selector: 'app-contract-bpmn-dialog',
+    templateUrl: './contract-bpmn-dialog.component.html',
+    styleUrls: ['./contract-bpmn-dialog.component.scss'],
 })
-export class BpmnDialogComponent implements OnInit {
+export class ContractBpmnDialogComponent implements OnInit {
     private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public users: Array<User> = [];
     public units: Units;
@@ -53,13 +53,13 @@ export class BpmnDialogComponent implements OnInit {
     public formArray: FormArray = this.fb.array([]);
 
     constructor(
-        public dialogRef: MatDialogRef<BpmnDialogComponent>,
+        public dialogRef: MatDialogRef<ContractBpmnDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public dialogData: { flowId: string; stateId: string; stateName: string },
         private userService: UserService,
         private fb: FormBuilder,
         private activatedRoute: ActivatedRoute,
-        private flowService: FlowService,
-        private bpmnService: BpmnService,
+        private flowService: ContractFlowService,
+        private bpmnService: ContractBpmnService,
         private alertSerice: AlertService
     ) {
         this.addDefaultButtons();
