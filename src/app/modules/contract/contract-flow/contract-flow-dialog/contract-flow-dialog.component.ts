@@ -4,17 +4,17 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { xml2json } from 'xml-js';
 import { ContractType } from '../../contract-type/contract-type.model';
-import { FlowService } from '../flow.service';
+import { ContractFlowService } from '../contract-flow.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
-import { Flow } from '../flow.model';
-import { defaultBpmn } from '../../bpmn/default.bpmn';
+import { Flow } from '../contract-flow.model';
+import { contractDefaultBpmn } from '../../contract-bpmn/contract-default-bpmn';
 
 @Component({
-    selector: 'app-flow-dialog',
-    templateUrl: './flow-dialog.component.html',
-    styleUrls: ['./flow-dialog.component.scss'],
+    selector: 'app-contract-flow-dialog',
+    templateUrl: './contract-flow-dialog.component.html',
+    styleUrls: ['./contract-flow-dialog.component.scss'],
 })
-export class FlowDialogComponent implements OnInit {
+export class ContractFlowDialogComponent implements OnInit {
     public title: string;
     public isEditMode: boolean = false;
     public contractTypes: Array<ContractType> = [];
@@ -30,10 +30,10 @@ export class FlowDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: Flow,
         private fb: FormBuilder,
-        private flowService: FlowService,
+        private flowService: ContractFlowService,
         private contractService: ContractTypeService,
         public dialogRef: MatDialogRef<any>,
-        public dialog: MatDialogRef<FlowDialogComponent>
+        public dialog: MatDialogRef<ContractFlowDialogComponent>
     ) {}
 
     ngOnInit(): void {
@@ -64,7 +64,7 @@ export class FlowDialogComponent implements OnInit {
     }
 
     public submitForm(): void {
-        const bpmnConfiguration = JSON.parse(xml2json(defaultBpmn, { compact: true }));
+        const bpmnConfiguration = JSON.parse(xml2json(contractDefaultBpmn, { compact: true }));
         const data = this.form.value;
         data.bpmnConfiguration = bpmnConfiguration;
         if (this.isEditMode) {
