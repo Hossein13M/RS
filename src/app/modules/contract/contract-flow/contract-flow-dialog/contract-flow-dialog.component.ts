@@ -7,7 +7,7 @@ import { ContractType } from '../../contract-type/contract-type.model';
 import { ContractFlowService } from '../contract-flow.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { Flow } from '../contract-flow.model';
-import { contractDefaultBpmn } from '../../contract-bpmn/contract-default-bpmn';
+import { contractDefaultBpmn, contractManualFlowDefaultBPMN } from '../../contract-bpmn/contract-default-bpmn';
 
 @Component({
     selector: 'app-contract-flow-dialog',
@@ -28,7 +28,7 @@ export class ContractFlowDialogComponent implements OnInit {
     });
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: Flow,
+        @Inject(MAT_DIALOG_DATA) public data: { flowData: Flow; isManualDialog: boolean },
         private fb: FormBuilder,
         private flowService: ContractFlowService,
         private contractService: ContractTypeService,
@@ -42,15 +42,30 @@ export class ContractFlowDialogComponent implements OnInit {
     }
 
     private checkForEditMode(): void {
-        this.isEditMode = !!this.data;
-        this.isEditMode ? (this.title = 'ویرایش جریان قرارداد') : (this.title = 'افزودن جریان قرارداد');
+        this.isEditMode = !!this.data.flowData;
+        if (this.data.isManualDialog) {
+            this.title = 'جریان دستی نهاد';
+            this.setDataForManualFlow();
+        } else this.isEditMode ? (this.title = 'ویرایش جریان قرارداد') : (this.title = 'افزودن جریان قرارداد');
     }
 
     private setDataForEditMode(): void {
-        this.form.get('name').setValue(this.data.name);
-        this.form.get('isManual').setValue(this.data.isManual);
-        this.form.get('contractTypes').setValue(this.data.contractTypes);
-        this.form.addControl('id', new FormControl(this.data._id, Validators.required));
+        this.form.get('name').setValue(this.data.flowData.name);
+        this.form.get('isManual').setValue(this.data.flowData.isManual);
+        this.form.get('contractTypes').setValue(this.data.flowData.contractTypes);
+        this.form.addControl('id', new FormControl(this.data.flowData._id, Validators.required));
+    }
+
+    private setDataForManualFlow(): void {
+        const organizationName = UtilityFunctions.getActiveOrganizationName();
+        this.form.get('name').setValue(`جریان دستی نهاد ${organizationName}`);
+        this.form.get('isManual').setValue(true);
+        this.flowService
+            .getFlows({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code'), isManual: true })
+            .subscribe((response) => {
+                this.form.get('contractTypes').setValue(response.items[0].contractTypes);
+                this.form.addControl('id', new FormControl(response.items[0]._id, Validators.required));
+            });
     }
 
     private getContractTypes(): void {
@@ -64,10 +79,16 @@ export class ContractFlowDialogComponent implements OnInit {
     }
 
     public submitForm(): void {
-        const bpmnConfiguration = JSON.parse(xml2json(contractDefaultBpmn, { compact: true }));
         const data = this.form.value;
-        data.bpmnConfiguration = bpmnConfiguration;
-        if (this.isEditMode) {
+        if (!this.isEditMode) {
+            data.bpmnConfiguration = this.data.isManualDialog
+                ? JSON.parse(xml2json(contractManualFlowDefaultBPMN, { compact: true }))
+                : JSON.parse(xml2json(contractDefaultBpmn, { compact: true }));
+        } else {
+            data.bpmnConfiguration = this.data.flowData.bpmnConfiguration;
+        }
+
+        if (this.isEditMode || this.data.isManualDialog) {
             this.flowService.editFlow(data).subscribe(
                 () => this.dialog.close(true),
                 () => this.dialog.close(false)
