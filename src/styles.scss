@@ -141,3 +141,10 @@ input[type='number'] {
     background: #2d323e;
     border-radius: 8px !important;
 }
+
+a,
+button {
+    outline: none !important;
+    text-decoration: none !important;
+    color: unset;
+}
