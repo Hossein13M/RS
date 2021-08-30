@@ -1,9 +1,15 @@
 <div class="page-layout">
     <app-header pageTitle="جریان قرارداد" class="wp-100">
-        <button mat-stroked-button (click)="openFlowDialog('create')">
-            <mat-icon class="mat-18">add</mat-icon>
-            افزودن جریان
-        </button>
+        <div>
+            <button class="mx-4" mat-flat-button color="primary" (click)="openFlowDialog('manual')">
+                <mat-icon class="mat-18">fiber_manual_record</mat-icon>
+                جریان دستی نهاد
+            </button>
+            <button class="mx-4" mat-stroked-button (click)="openFlowDialog('create')">
+                <mat-icon class="mat-18">add</mat-icon>
+                افزودن جریان
+            </button>
+        </div>
     </app-header>
 
     <div class="fuse-card m-40 p-40">

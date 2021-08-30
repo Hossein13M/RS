@@ -20,7 +20,6 @@ export class ContractFlowComponent implements OnInit {
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'جریان قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'isManual', name: 'گونه', convert: (value) => (value ? 'دستی' : 'غیردستی'), type: 'string', minWidth: '200px' },
         {
             id: 'createdAt',
             name: 'تاریخ ساخت',
@@ -78,9 +77,9 @@ export class ContractFlowComponent implements OnInit {
         );
     }
 
-    public openFlowDialog(dialogType: 'edit' | 'create', flowType?: Flow): void {
+    public openFlowDialog(dialogType: 'edit' | 'create' | 'manual', flowType?: Flow): void {
         const dialogRef: MatDialogRef<any> = this.dialog.open(ContractFlowDialogComponent, {
-            data: dialogType === 'edit' ? flowType : null,
+            data: { flowData: dialogType === 'edit' ? flowType : null, isManualDialog: dialogType === 'manual' },
             width: '500px',
             height: '400px',
             panelClass: 'dialog-p-0',

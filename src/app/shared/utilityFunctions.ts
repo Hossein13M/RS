@@ -34,4 +34,8 @@ export class UtilityFunctions {
     static getActiveOrganizationInfo(requiredInfoType: 'code' | 'id'): number {
         return JSON.parse(localStorage.getItem('activeOrganization'))[requiredInfoType];
     }
+
+    static getActiveOrganizationName(): string {
+        return JSON.parse(localStorage.getItem('activeOrganization'))['name'];
+    }
 }
