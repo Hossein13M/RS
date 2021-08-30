@@ -3,12 +3,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
-import { Flow } from './flow.model';
+import { Flow } from './contract-flow.model';
 
 @Injectable({
     providedIn: 'root',
 })
-export class FlowService {
+export class ContractFlowService {
     constructor(private http: HttpClient) {}
 
     public getFlows(searchParams: any): Observable<ResponseWithPagination<Flow>> {
