@@ -126,7 +126,6 @@ export class ContractBpmnDialogComponent implements OnInit {
                 }
             });
         } else {
-            console.log(this.form.value);
             this.data.accessRights = {
                 units: {
                     unit: !!this.form.get('units').value ? this.form.get('units').value[0] : 0,
