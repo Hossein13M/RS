@@ -7,7 +7,9 @@ export interface Flow {
     isActive: boolean;
     createdAt: string;
     updatedAt: string;
-    bpmnConfiguration: any; // this property is JSONized version of XML that BPMN Library creates
+    bpmnConfiguration: any; // this property is JSON version of XML that BPMN Library creates
     contractTypes: Array<string>;
     states: Array<string>;
+    activeContractTypes: Array<string>;
+    hasActiveContract: boolean;
 }
