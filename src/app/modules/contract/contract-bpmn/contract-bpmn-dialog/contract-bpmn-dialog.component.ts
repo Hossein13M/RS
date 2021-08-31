@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { AlertService } from '#services/alert.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
@@ -19,6 +19,7 @@ import { ContractFormButtonTypes } from '../../contract-cardboard/cardboard.mode
 })
 export class ContractBpmnDialogComponent implements OnInit {
     private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
+    private prevMatSelectValue: ContractFormButtonTypes;
     public users: Array<User> = [];
     public units: Units;
     public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
@@ -159,22 +160,26 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     public addTool(toolInfo?: BPMNButtonForm) {
+        let firstAvailableTool = this.buttonTypes.find((buttonType) => buttonType.isAvailable);
         this.formArray.insert(
             0,
             this.fb.group({
                 name: [toolInfo ? toolInfo.name : ''],
-                type: [toolInfo ? toolInfo.type : 'upload'],
+                type: [toolInfo ? toolInfo.type : firstAvailableTool.engName],
                 isDefaultButton: [toolInfo ? toolInfo.isDefaultButton : false],
             })
         );
+        this.buttonTypes[this.buttonTypes.indexOf(firstAvailableTool)].isAvailable = false;
     }
 
     public isAddButtonAvailable(): boolean {
         return this.formArray.length < 5;
     }
 
-    public removeTool(index: number) {
+    public removeTool(buttonTypeEvent, index: number) {
         this.formArray.removeAt(index);
+        let removedButtonType = this.buttonTypes.find((buttonType) => buttonType.engName === buttonTypeEvent.value.type);
+        this.buttonTypes[this.buttonTypes.indexOf(removedButtonType)].isAvailable = true;
     }
 
     private setFormDataInEditMode(response: BpmnData) {
@@ -191,5 +196,14 @@ export class ContractBpmnDialogComponent implements OnInit {
     public onAccessRightTypeChange(event): void {
         this.form.reset();
         this.form.get('accessRightType').setValue(event.value);
+    }
+
+    public onButtonTypeOpen(form: AbstractControl): void {
+        this.prevMatSelectValue = form.value.type;
+    }
+
+    public onButtonTypeChanges(event): void {
+        this.buttonTypes[this.buttonTypes.indexOf(this.buttonTypes.find((item) => item.engName === this.prevMatSelectValue))].isAvailable = true;
+        this.buttonTypes[this.buttonTypes.indexOf(this.buttonTypes.find((item) => item.engName === event.value))].isAvailable = false;
     }
 }
