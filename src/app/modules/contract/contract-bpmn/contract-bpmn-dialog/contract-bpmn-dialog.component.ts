@@ -161,6 +161,10 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     public addTool(toolInfo?: BPMNButtonForm) {
+        if (this.flowDetails.hasActiveContract) {
+            this.alertService.onInfo('نمی‌توانید فرم این گام را تغییر دهید');
+            return;
+        }
         let firstAvailableTool;
         if (!toolInfo) {
             firstAvailableTool = this.buttonTypes.find((buttonType) => buttonType.isAvailable);

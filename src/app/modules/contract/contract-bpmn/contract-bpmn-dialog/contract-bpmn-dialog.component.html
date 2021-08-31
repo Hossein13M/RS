@@ -101,10 +101,15 @@
                 <div *ngFor="let formArray of formArray.controls; index as index">
                     <mat-card class="flex flex-col items-center bg-blue-50 mx-2 tool-card">
                         <mat-card-content>
-                            <ng-container [formGroup]="formArray" class="flex flex-col items-center justify-evenly">
+                            <form [formGroup]="formArray" class="flex flex-col items-center justify-evenly">
                                 <mat-form-field appearance="outline">
                                     <mat-label>نوشته‌ی دکمه</mat-label>
-                                    <input formControlName="name" [readonly]="formArray.get('isDefaultButton').value" matInput type="text" />
+                                    <input
+                                        formControlName="name"
+                                        [readonly]="formArray.get('isDefaultButton').value || flowDetails.hasActiveContract"
+                                        matInput
+                                        type="text"
+                                    />
                                     <mat-hint *ngIf="formArray.get('isDefaultButton').value">نام این دکمه را نمی‌توانید ویرایش کنید</mat-hint>
                                 </mat-form-field>
 
@@ -112,7 +117,7 @@
                                     <mat-label>نوع دکمه</mat-label>
                                     <mat-select
                                         formControlName="type"
-                                        [disabled]="formArray.get('isDefaultButton').value"
+                                        [disabled]="formArray.get('isDefaultButton').value || flowDetails.hasActiveContract"
                                         (openedChange)="onButtonTypeOpen(formArray)"
                                         (selectionChange)="onButtonTypeChanges($event)"
                                     >
@@ -127,12 +132,12 @@
                                     mat-flat-button
                                     color="warn"
                                     (click)="removeTool(formArray, index)"
-                                    [disabled]="formArray.get('isDefaultButton').value"
+                                    [disabled]="formArray.get('isDefaultButton').value || flowDetails.hasActiveContract"
                                 >
                                     <span>پاک کردن این ابزار</span>
                                     <mat-icon fontSet="material-icons-outlined"> clear </mat-icon>
                                 </button>
-                            </ng-container>
+                            </form>
                         </mat-card-content>
                     </mat-card>
                 </div>
@@ -142,7 +147,11 @@
                     [disableRipple]="true"
                     (click)="addTool()"
                     *ngIf="isAddButtonAvailable()"
-                    matTooltip="افزودن دکمه‌ی جدید"
+                    [matTooltip]="
+                        flowDetails.hasActiveContract
+                            ? 'به دلیل این‌که با جریان این BPMN قرارداد ثبت شده، نمی‌توانید فرم آن‌را تغییر دهید.'
+                            : 'افزودن دکمه‌ی جدید'
+                    "
                     matTooltipPosition="below"
                     class="p-0"
                 >
