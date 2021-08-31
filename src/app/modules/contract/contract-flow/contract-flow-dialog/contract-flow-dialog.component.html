@@ -26,7 +26,12 @@
                 <mat-form-field appearance="outline">
                     <mat-label>نوع قرارداد</mat-label>
                     <mat-select formControlName="contractTypes" multiple required>
-                        <mat-option class="text=right" *ngFor="let contractType of contractTypes" [value]="contractType._id">
+                        <mat-option
+                            class="text=right"
+                            *ngFor="let contractType of contractTypes"
+                            [value]="contractType._id"
+                            [disabled]="isEditMode && data?.flowData.activeContractTypes.includes(contractType._id)"
+                        >
                             {{ contractType.name }}
                         </mat-option>
                     </mat-select>

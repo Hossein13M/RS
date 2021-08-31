@@ -64,6 +64,7 @@ export class ContractFlowDialogComponent implements OnInit {
             .getFlows({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code'), isManual: true })
             .subscribe((response) => {
                 this.form.get('contractTypes').setValue(response.items[0].contractTypes);
+                this.data.flowData = response.items[0];
                 this.form.addControl('id', new FormControl(response.items[0]._id, Validators.required));
             });
     }
