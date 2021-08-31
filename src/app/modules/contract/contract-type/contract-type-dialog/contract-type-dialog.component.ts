@@ -157,7 +157,6 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     public detectChanges(event: any, index) {
-        console.log(this.form.value);
         event.value._checked ? this.getRolesOnSpecificUnits(event.value.value, index) : (this.rolesOnUnit[index] = []);
     }
 
