@@ -152,7 +152,7 @@ export class ContractBpmnComponent implements OnInit {
             if (err) {
                 console.error(err);
             } else {
-                this.setEncoded(xml, 'contract-bpmn.xml');
+                this.setEncoded(xml, 'bpmn.xml');
             }
         });
         e.preventDefault();
@@ -164,7 +164,7 @@ export class ContractBpmnComponent implements OnInit {
             if (err) {
                 console.error(err);
             } else {
-                this.setEncoded(svg, 'contract-bpmn.svg');
+                this.setEncoded(svg, 'bpmn.svg');
             }
         });
         e.preventDefault();
@@ -180,13 +180,15 @@ export class ContractBpmnComponent implements OnInit {
     }
 
     public clickListener(event): void {
-        if (event.element.type === 'contract-bpmn:Task') {
+        console.log('this has been clicked');
+        console.log(event);
+        if (event.element.type === 'bpmn:Task') {
             if (event.element.businessObject.name) {
                 this.openDialog(event.element.businessObject.name, event.element.id);
             } else this.alertService.onError('نخست یک نام برگزینید');
         }
 
-        if (event.element.type === 'contract-bpmn:EndEvent') event.element.businessObject.name = 'پایانی';
+        if (event.element.type === 'bpmn:EndEvent') event.element.businessObject.name = 'پایانی';
     }
 
     private openDialog(name, id): void {
