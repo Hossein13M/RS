@@ -171,21 +171,19 @@ export class ContractBpmnComponent implements OnInit {
     }
 
     public clickListener(event): void {
-        if (event.element.type === 'bpmn:Task') {
-            if (event.element.businessObject.name) {
-                this.openDialog(event.element.businessObject.name, event.element.id);
-            } else this.alertService.onError('نخست یک نام برگزینید');
+        if (event.element.type === 'bpmn:Task' || event.element.type === 'bpmn:EndEvent') {
+            event.element.businessObject.name
+                ? this.openDialog(event.element.businessObject.name, event.element.id, event.element.type === 'bpmn:Task')
+                : this.alertService.onError('نخست یک نام برگزینید');
         }
-
-        if (event.element.type === 'bpmn:EndEvent') event.element.businessObject.name = 'پایانی';
     }
 
-    private openDialog(name, id): void {
+    private openDialog(stateName, stateId, isStateTypeTask: boolean): void {
         this.dialog.open(ContractBpmnDialogComponent, {
             width: '1500px',
-            height: '900px',
+            height: isStateTypeTask ? '900px' : '500px',
             panelClass: 'dialog-p-0',
-            data: { flowId: this.activatedRoute.snapshot.params.id, stateName: name, stateId: id },
+            data: { flowId: this.activatedRoute.snapshot.params.id, stateName, stateId, isStateTypeTask },
         });
     }
 }

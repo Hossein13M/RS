@@ -55,17 +55,15 @@ export class ContractBpmnDialogComponent implements OnInit {
     public formArray: FormArray = this.fb.array([]);
 
     constructor(
+        @Inject(MAT_DIALOG_DATA) public dialogData: { flowId: string; stateId: string; stateName: string; isStateTypeTask: boolean },
         public dialogRef: MatDialogRef<ContractBpmnDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public dialogData: { flowId: string; stateId: string; stateName: string },
         private userService: UserService,
         private fb: FormBuilder,
         private activatedRoute: ActivatedRoute,
         private flowService: ContractFlowService,
         private bpmnService: ContractBpmnService,
         private alertService: AlertService
-    ) {
-        this.addDefaultButtons();
-    }
+    ) {}
 
     private addDefaultButtons() {
         const acceptButton = this.fb.group({ name: ['تایید'], type: ['accept'], isDefaultButton: [true] });
@@ -75,6 +73,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.addDefaultButtons();
         this.getOrganizationUsers();
         this.getOrganizationUnits();
         this.getFlowDetails();
@@ -103,7 +102,9 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.data.flow = this.dialogData.flowId;
         this.data.step = this.dialogData.stateId;
         this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
-        !this.data.isNewStep && this.getStepInfo();
+        if (!this.data.isNewStep || !this.dialogData.isStateTypeTask) {
+            this.getStepInfo();
+        }
     }
 
     private getOrganizationUsers(): any {
@@ -112,7 +113,7 @@ export class ContractBpmnDialogComponent implements OnInit {
 
     public submitForm(): void {
         this.prepareAccessRights();
-        this.data.attributes = this.formArray.value;
+        if (this.dialogData.isStateTypeTask) this.data.attributes = this.formArray.value;
         this.bpmnService.saveBpmnStep(this.data).subscribe(
             () => this.alertService.onSuccess('افزوده شد'),
             () => this.alertService.onError('مشکلی پیش آمده‌است')
@@ -160,7 +161,11 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     public addTool(toolInfo?: BPMNButtonForm) {
-        let firstAvailableTool = this.buttonTypes.find((buttonType) => buttonType.isAvailable);
+        let firstAvailableTool;
+        if (!toolInfo) {
+            firstAvailableTool = this.buttonTypes.find((buttonType) => buttonType.isAvailable);
+            this.buttonTypes[this.buttonTypes.indexOf(firstAvailableTool)].isAvailable = false;
+        }
         this.formArray.insert(
             0,
             this.fb.group({
@@ -169,7 +174,6 @@ export class ContractBpmnDialogComponent implements OnInit {
                 isDefaultButton: [toolInfo ? toolInfo.isDefaultButton : false],
             })
         );
-        this.buttonTypes[this.buttonTypes.indexOf(firstAvailableTool)].isAvailable = false;
     }
 
     public isAddButtonAvailable(): boolean {
@@ -183,6 +187,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     private setFormDataInEditMode(response: BpmnData) {
+        this.checkForUnavailableButtons(response);
         this.form.get('accessRightType').setValue(response.accessRights.users.length ? 'dynamic' : 'static');
         const userIdList = [];
         this.form.get('initializer').setValue(response.accessRights.initializer);
@@ -191,6 +196,14 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.form.get('units').setValue([response.accessRights.units.unit]);
         this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
         response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
+    }
+
+    private checkForUnavailableButtons(responseFromServer: BpmnData): void {
+        let nullButtons = [];
+        this.buttonTypes.map((buttonType) => {
+            responseFromServer.attributes.map((item) => item.type === buttonType.engName && nullButtons.push(item.type));
+        });
+        this.buttonTypes.map((buttonType) => (buttonType.isAvailable = !nullButtons.includes(buttonType.engName)));
     }
 
     public onAccessRightTypeChange(event): void {
