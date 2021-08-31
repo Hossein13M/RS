@@ -4,11 +4,11 @@
             <mat-toolbar-row class="flex justify-between items-center">
                 <span class="title dialog-title">پیکربندی {{ dialogData.stateName }} </span>
                 <div class="buttons">
-                    <button mat-icon-button type="submit" form="form">
+                    <button mat-icon-button matTooltip="ذخیره" type="submit" form="form">
                         <mat-icon fontSet="material-icons-outlined">save</mat-icon>
                     </button>
 
-                    <button mat-icon-button (click)="dialogRef.close()">
+                    <button matTooltip="بستن" mat-icon-button (click)="dialogRef.close()">
                         <mat-icon fontSet="material-icons-outlined">close</mat-icon>
                     </button>
                 </div>
