@@ -21,65 +21,73 @@
             <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
                 <mat-card-title class="text-white mb-0">دسترسی‌های این گام</mat-card-title>
             </mat-card-header>
-            <mat-card-content class="mt-10 mb-2">
-                <form [formGroup]="form" id="form" (submit)="submitForm()" class="flex w-full justify-evenly items-center">
-                    <mat-checkbox formControlName="initializer">دسترسی ثبت‌کننده‌ی قرارداد به این گام</mat-checkbox>
+            <mat-card-content class="mt-10 mb-10">
+                <form [formGroup]="form" id="form" (submit)="submitForm()" class="flex flex-col w-full justify-evenly items-center">
+                    <mat-radio-group
+                        formControlName="accessRightType"
+                        class="flex justify-around items-center w-full pb-10 mb-10 border-b-2"
+                        (change)="onAccessRightTypeChange($event)"
+                    >
+                        <mat-radio-button value="static">دسترسی ثابت</mat-radio-button>
+                        <mat-radio-button value="dynamic">دسترسی پویا (گزینشی)</mat-radio-button>
+                    </mat-radio-group>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>دسترسی گزینشی کاربران</mat-label>
-                        <mat-select formControlName="users" multiple>
-                            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <div class="flex justify-center items-center">
+                        <div *ngIf="form.get('accessRightType').value === 'dynamic'">
+                            <mat-form-field appearance="outline">
+                                <mat-label>دسترسی گزینشی کاربران</mat-label>
+                                <mat-select formControlName="users" multiple>
+                                    <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
 
-                    <app-tree-select
-                        class="flex items-center"
-                        (event)="detectChanges($event)"
-                        [maxSelect]="1"
-                        [data]="units"
-                        formControlName="units"
-                        selectedValueFieldName="name"
-                    ></app-tree-select>
+                        <div *ngIf="form.get('accessRightType').value === 'static'" class="flex justify-around w-full items-center">
+                            <mat-checkbox formControlName="initializer" class="bottom-margin">دسترسی ثبت‌کننده‌ی قرارداد به این گام</mat-checkbox>
 
-                    <mat-form-field appearance="outline" *ngIf="!!form.get('roles')">
-                        <mat-label>نقش‌های این ساختار سازمانی</mat-label>
-                        <mat-select formControlName="roles" multiple>
-                            <mat-option *ngFor="let role of rolesOnUnit" [value]="role.id">{{ role.name }}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                            <app-tree-select
+                                class="flex items-center mx-40 tree-border bottom-margin"
+                                (event)="detectChanges($event)"
+                                [maxSelect]="1"
+                                [data]="units"
+                                formControlName="units"
+                                selectedValueFieldName="name"
+                            ></app-tree-select>
+
+                            <mat-form-field appearance="outline" *ngIf="!!form.get('roles')" class="py-0">
+                                <mat-label>نقش‌های این ساختار سازمانی</mat-label>
+                                <mat-select formControlName="roles" multiple>
+                                    <mat-option *ngFor="let role of rolesOnUnit" [value]="role.id">{{ role.name }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </form>
             </mat-card-content>
 
             <mat-card-footer class="text-center mb-2 flex flex-col">
-                <!--                <p>-->
-                <!--                    در دسترسی-->
-                <!--                    <strong>گزینشی</strong>-->
-                <!--                    شما بایستی یک کاربر را به عنوان کاربر پیش‌فرض انتخاب کنید. با این روش، در کارتابل قرارداد، دیگر نیازی به گزینش کاربر برای دادن دسترسی نیست.-->
-                <!--                </p>-->
-
                 <div class="flex justify-center items-center">
                     <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
                     <p>
-                        پس از گزینش
-                        <strong>ساختار سازمانی</strong>
-                        و سپس گزینش
-                        <strong>نقش درون ساختار</strong>
-                        می‌توانید به همه‌ی کاربران آن نقش، دسترسی به این گام
-                        <strong>BPMN</strong>
-                        بدهید.
+                        برای گام نخست، تنها دسترسی
+                        <strong>ثبت‌کننده‌ی قرارداد</strong>
+                        را داریم.
                     </p>
                 </div>
 
                 <div class="flex justify-center items-center">
                     <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
                     <p>
-                        فهرست کاربران در
-                        <strong>دسترسی گزینشی</strong>
-                        کاربرانی است که در
-                        <strong>کارتابل قرارداد</strong>
-                        می‌توانید از میان آن‌ها به یکی از کاربران دسترسی به این گام
-                        <strong>BPMN</strong>
-                        بدهید.
+                        پس از گزینش <strong>ساختار سازمانی</strong> و سپس گزینش <strong>نقش درون ساختار</strong> می‌توانید به همه‌ی کاربران آن نقش، دسترسی به
+                        این گام <strong>BPMN</strong> بدهید.
+                    </p>
+                </div>
+
+                <div class="flex justify-center items-center">
+                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                    <p>
+                        فهرست کاربران در <strong>دسترسی گزینشی</strong> کاربرانی است که در <strong>کارتابل قرارداد</strong> می‌توانید از میان آن‌ها به یکی از
+                        کاربران دسترسی به این گام <strong>BPMN</strong> بدهید.
                     </p>
                 </div>
             </mat-card-footer>

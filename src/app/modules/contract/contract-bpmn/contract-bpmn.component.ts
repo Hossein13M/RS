@@ -139,9 +139,8 @@ export class ContractBpmnComponent implements OnInit {
     importDiagram() {
         const bpmnConfiguration = this.convertJsonToXML();
         this.modeler.importXML(bpmnConfiguration, function (err) {
-            if (err) {
-                console.error(err);
-            }
+            if (err) console.error(err);
+
             // noinspection JSPotentiallyInvalidUsageOfClassThis
             // this.modeler.get('js-canvas').zoom('fit-viewport');
         });
@@ -149,11 +148,7 @@ export class ContractBpmnComponent implements OnInit {
 
     saveDiagram(e) {
         this.modeler.saveXML({ format: true }, (err, xml) => {
-            if (err) {
-                console.error(err);
-            } else {
-                this.setEncoded(xml, 'bpmn.xml');
-            }
+            err ? console.error(err) : this.setEncoded(xml, 'bpmn.xml');
         });
         e.preventDefault();
         e.stopPropagation();
@@ -161,11 +156,7 @@ export class ContractBpmnComponent implements OnInit {
 
     saveSVG(e) {
         this.modeler.saveSVG((err, svg) => {
-            if (err) {
-                console.error(err);
-            } else {
-                this.setEncoded(svg, 'bpmn.svg');
-            }
+            err ? console.error(err) : this.setEncoded(svg, 'bpmn.svg');
         });
         e.preventDefault();
         e.stopPropagation();
@@ -180,8 +171,6 @@ export class ContractBpmnComponent implements OnInit {
     }
 
     public clickListener(event): void {
-        console.log('this has been clicked');
-        console.log(event);
         if (event.element.type === 'bpmn:Task') {
             if (event.element.businessObject.name) {
                 this.openDialog(event.element.businessObject.name, event.element.id);
