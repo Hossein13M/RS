@@ -3,13 +3,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UtilityFunctions } from '#shared/utilityFunctions';
+import { AlertService } from '#services/alert.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { Units, User } from '../../../organizations-structure/user/user.model';
 import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../contract-bpmn.model';
 import { ContractFlowService } from '../../contract-flow/contract-flow.service';
 import { Flow } from '../../contract-flow/contract-flow.model';
 import { ContractBpmnService } from '../contract-bpmn.service';
-import { AlertService } from '#services/alert.service';
 import { ContractFormButtonTypes } from '../../contract-cardboard/cardboard.model';
 
 @Component({
@@ -41,6 +41,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         { perName: 'گرفتن کد قرارداد', engName: 'code', isAvailable: true },
     ];
     public form: FormGroup = this.fb.group({
+        accessRightType: ['static'],
         users: [],
         units: [],
         initializer: [false, Validators.required],
@@ -60,7 +61,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private flowService: ContractFlowService,
         private bpmnService: ContractBpmnService,
-        private alertSerice: AlertService
+        private alertService: AlertService
     ) {
         this.addDefaultButtons();
     }
@@ -112,26 +113,29 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.prepareAccessRights();
         this.data.attributes = this.formArray.value;
         this.bpmnService.saveBpmnStep(this.data).subscribe(
-            () => this.alertSerice.onSuccess('افزوده شد'),
-            () => this.alertSerice.onError('مشکلی پیش آمده‌است')
+            () => this.alertService.onSuccess('افزوده شد'),
+            () => this.alertService.onError('مشکلی پیش آمده‌است')
         );
     }
 
     private prepareAccessRights() {
-        this.data.accessRights = {
-            units: {
-                unit: this.form.get('units').value[0],
-                roles: this.form.get('roles').value,
-            },
-            initializer: this.form.get('initializer').value,
-            users: [],
-        };
-        this.users.map((user) => {
-            if (this.form.get('users').value.includes(user.id)) {
-                this.data.accessRights.users.push({ userId: user.id, isDefault: false, username: user.fullname });
-            }
-        });
-        // this.form.get('users').value.map((user) => this.data.accessRights.users.push({ userId: user.id, isDefault: false, username: user.fullname }));
+        if (this.form.get('accessRightType').value === 'dynamic') {
+            this.users.map((user) => {
+                if (this.form.get('users').value.includes(user.id)) {
+                    this.data.accessRights.users.push({ userId: user.id, isDefault: false, username: user.fullname });
+                }
+            });
+        } else {
+            console.log(this.form.value);
+            this.data.accessRights = {
+                units: {
+                    unit: !!this.form.get('units').value ? this.form.get('units').value[0] : 0,
+                    roles: this.form.get('roles')?.value ?? [],
+                },
+                initializer: this.form.get('initializer').value,
+                users: [],
+            };
+        }
     }
 
     private getOrganizationUnits(): void {
@@ -140,9 +144,7 @@ export class ContractBpmnDialogComponent implements OnInit {
 
     private getRolesOnSpecificUnits(unitId: number): void {
         this.units.children.map((item) => {
-            if (item.id === unitId) {
-                this.rolesOnUnit = item.mappings;
-            }
+            if (item.id === unitId) this.rolesOnUnit = item.mappings;
         });
     }
 
@@ -177,6 +179,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     private setFormDataInEditMode(response: BpmnData) {
+        this.form.get('accessRightType').setValue(response.accessRights.users.length ? 'dynamic' : 'static');
         const userIdList = [];
         this.form.get('initializer').setValue(response.accessRights.initializer);
         response.accessRights.users.map((user) => userIdList.push(user.userId));
@@ -184,5 +187,10 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.form.get('units').setValue([response.accessRights.units.unit]);
         this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
         response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
+    }
+
+    public onAccessRightTypeChange(event): void {
+        this.form.reset();
+        this.form.get('accessRightType').setValue(event.value);
     }
 }
