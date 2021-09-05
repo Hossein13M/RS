@@ -6,6 +6,8 @@ import { ContractHistory, ContractHistoryTableData } from '../../cardboard.model
 import { Column } from '#shared/components/table/table.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { StateType } from '#shared/state-type.enum';
+import { ContractHistoryIcons } from './cardboard-history.actions';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
     selector: 'app-cardboard-history',
@@ -15,7 +17,7 @@ import { StateType } from '#shared/state-type.enum';
 export class CardboardHistoryComponent implements OnInit {
     private contractId: string;
     public contractHistory: Array<ContractHistory> = [];
-    public tableDataContractHistoy: Array<ContractHistoryTableData> = [];
+    public tableDataContractHistory: Array<ContractHistoryTableData> = [];
     public pagination = { skip: 0, limit: 100, total: 100 };
     public stateType: StateType = StateType.INIT;
 
@@ -35,15 +37,15 @@ export class CardboardHistoryComponent implements OnInit {
 
     ngOnInit(): void {
         this.contractId = this.activatedRoute.snapshot.params.id;
-        this.getContractHistroy();
+        this.getContractHistory();
     }
 
-    private getContractHistroy(): void {
+    private getContractHistory(): void {
         this.cardBoardService.getContractHistory(this.contractId).subscribe(
             (response) => {
                 this.contractHistory = response;
                 this.contractHistory.map((item) => {
-                    this.tableDataContractHistoy.push({
+                    this.tableDataContractHistory.push({
                         fromStep: item.fromStep.name,
                         toStep: item.toStep.name,
                         user: item.user.name,
@@ -55,5 +57,19 @@ export class CardboardHistoryComponent implements OnInit {
             },
             () => this.alertService.onError('مشکلی پیش آمده‌است')
         );
+    }
+
+    public getHistoryStepInfo(contractHistoryStatue: ContractHistory, actionType: 'title' | 'subtitle'): string {
+        let finalText;
+        if (actionType === 'title') {
+            finalText = ContractHistoryIcons.find((item) => item.typePer === contractHistoryStatue.status).titleText;
+        } else {
+            finalText = ` - از ${contractHistoryStatue.fromStep.name} به ${contractHistoryStatue.toStep.name}`;
+        }
+        return finalText;
+    }
+
+    public getProperIcon(contractHistoryItem: ContractHistory, actionType: 'icon' | 'iconColor'): ThemePalette | string {
+        return ContractHistoryIcons.find((item) => item.typePer === contractHistoryItem.status)[actionType];
     }
 }
