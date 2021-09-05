@@ -1,4 +1,4 @@
-<div class="page-layout">
+<div class="page-layout h-full">
     <app-header pageTitle="کارتابل قرارداد" class="wp-100">
         <button mat-stroked-button (click)="navigateToCardboard()">
             <mat-icon class="mat-18">keyboard_return</mat-icon>
@@ -6,15 +6,14 @@
         </button>
     </app-header>
 
-    <div class="fuse-card mx-40 mt-20 p-40 h-4/5 flex flex-col">
-        <div class="flex h-2/5 mb-20">
-            <app-cardboard-form class="flex-1 ml-6"></app-cardboard-form>
-            <app-cardboard-contract-info class="flex-1 mr-6"></app-cardboard-contract-info>
+    <div class="fuse-card mx-40 mt-20 p-40 h-4/5 flex w-full">
+        <div class="flex flex-col h-full w-2/5 ml-10">
+            <app-cardboard-form class="h-1/2 mb-20"></app-cardboard-form>
+            <app-cardboard-note class="h-2/5"></app-cardboard-note>
         </div>
 
-        <div class="flex h-2/5 justify-between">
-            <app-cardboard-note class="flex-1 ml-6"></app-cardboard-note>
-            <app-cardboard-history class="flex-1 mr-6"></app-cardboard-history>
+        <div class="height-card w-1/2 mr-10">
+            <app-cardboard-history></app-cardboard-history>
         </div>
     </div>
 </div>
