@@ -5,7 +5,7 @@
 
             <button
                 mat-mini-fab
-                (click)='changeContractStatus(cardboardInfo.status === "in progress")'
+                (click)="changeContractStatus(cardboardInfo.status === 'in progress')"
                 [color]="cardboardInfo.status === 'in progress' ? 'warn' : 'primary'"
                 [matTooltip]="cardboardInfo.status === 'in progress' ? 'متوقف کردن قرارداد' : 'بازگشایی قرارداد'"
             >
@@ -21,7 +21,7 @@
             </ul>
         </div>
 
-        <div class="flex justify-evenly mt-80">
+        <div class="flex justify-evenly mt-80 mb-32">
             <button
                 *ngFor="let button of cardboardInfo.form"
                 mat-flat-button
