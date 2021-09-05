@@ -19,7 +19,7 @@
     </mat-card-content>
 
     <mat-card-actions>
-        <button mat-flat-button class="px-10 p-2" [color]="dialogData.buttonColor" (click)="onCloseDialog(true)">
+        <button mat-flat-button class="px-10 p-2" [color]="dialogData.buttonColor" (click)="onCloseDialog(true)" [disabled]="!note">
             <mat-icon class="mat-18 mx-5">{{ dialogData.buttonIcon }}</mat-icon>
             <span>{{ dialogData.buttonText }}</span>
         </button>
