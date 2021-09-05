@@ -63,7 +63,7 @@
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" *ngIf="isParentContractNecessary()">
+                <mat-form-field appearance="outline" *ngIf="isParentContractRequired">
                     <mat-label>قرارداد مرجع</mat-label>
                     <mat-select [disabled]="isEditMode" formControlName="parentId" required>
                         <mat-option class="text=right" *ngFor="let contract of contracts" [value]="contract._id">
