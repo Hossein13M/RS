@@ -109,9 +109,11 @@ export class ContractTypeDialogComponent implements OnInit {
     public submitForm(): void {
         const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
 
-        data.units.map((item) => {
-            if (Array.isArray(item.unit)) item.unit = item.unit[0];
-        });
+        if (this.form.value.units) {
+            data.units.map((item) => {
+                if (Array.isArray(item.unit)) item.unit = item.unit[0];
+            });
+        }
 
         this.contractService.createContractType(data).subscribe(
             () => this.dialog.close(true),
