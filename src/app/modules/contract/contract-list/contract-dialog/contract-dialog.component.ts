@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ContractType } from '../../contract-type/contract-type.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from '#services/alert.service';
 import { ContractService } from '../contract.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
@@ -26,6 +26,7 @@ export class ContractDialogComponent implements OnInit {
     public flows: Array<Flow> = [];
     public contracts: Array<Contract> = [];
     public pagination = { skip: 0, limit: 100, total: 100 };
+    public isParentContractRequired: Boolean = false;
     public contractCategories: Array<{ name: string; id: number }> = [
         { name: 'قرارداد', id: 1 },
         { name: 'الحاقیه', id: 2 },
@@ -48,7 +49,6 @@ export class ContractDialogComponent implements OnInit {
         customer: [null, Validators.required],
         category: [1, Validators.required],
         code: [null],
-        parentId: [],
         contractType: [null, Validators.required],
         flow: ['', Validators.required],
     });
@@ -59,6 +59,16 @@ export class ContractDialogComponent implements OnInit {
             this.checkForEditMode();
         });
         this.form.get('contractType').valueChanges.subscribe(() => this.getFlows());
+
+        this.form.get('category').valueChanges.subscribe((contractCategory: number) => {
+            if (contractCategory === 1) {
+                this.isParentContractRequired = false;
+                this.form.removeControl('parentId');
+            } else {
+                this.isParentContractRequired = true;
+                this.form.addControl('parentId', new FormControl(null, Validators.required));
+            }
+        });
     }
 
     private async getData(): Promise<any> {
@@ -79,6 +89,7 @@ export class ContractDialogComponent implements OnInit {
         this.getFlows();
         this.form.get('code').setValue(this.data.code);
         this.form.get('category').setValue(this.data.category);
+        this.data.category !== 1 && this.form.get('parentId').setValue(this.data.parentId);
     }
 
     private getContractTypes(): void {
@@ -114,9 +125,6 @@ export class ContractDialogComponent implements OnInit {
     }
 
     public submitForm(): void {
-        if (!this.isParentContractNecessary()) {
-            this.form.removeControl('parentId');
-        }
         this.isEditMode ? this.editContract() : this.createContract();
     }
 
@@ -132,9 +140,5 @@ export class ContractDialogComponent implements OnInit {
             () => this.dialog.close(true),
             () => this.alertService.onError('مشکلی پیش آمده‌است')
         );
-    }
-
-    public isParentContractNecessary(): boolean {
-        return this.form.get('category').value === 2 || this.form.get('category').value === 3;
     }
 }

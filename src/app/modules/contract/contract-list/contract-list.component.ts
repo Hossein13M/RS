@@ -82,7 +82,7 @@ export class ContractListComponent implements OnInit {
         const dialogRef: MatDialogRef<any> = this.dialog.open(ContractDialogComponent, {
             data: dialogType === 'edit' ? contractInfo : null,
             width: '900px',
-            height: '400px',
+            height: '480px',
             panelClass: 'dialog-p-0',
         });
         dialogRef.afterClosed().subscribe((result) => result && this.checkIsActiveFormControl());
