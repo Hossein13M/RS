@@ -18,6 +18,6 @@ export class ContractFormService {
     }
 
     public changeContractFormStatus(contractFormId: number): Observable<any> {
-        return this.http.post<any>(`/api/v1/contract-type-form/${contractFormId}`, {});
+        return this.http.put<any>(`/api/v1/contract-type-form/inactive/${contractFormId}`, {});
     }
 }
