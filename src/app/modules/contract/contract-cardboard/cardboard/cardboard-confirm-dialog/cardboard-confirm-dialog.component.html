@@ -19,7 +19,7 @@
             <mat-form-field appearance="outline">
                 <mat-label>گزینش کاربر</mat-label>
                 <mat-select formControlName="user">
-                    <mat-option *ngFor="let user of nextStepSelectionUsers" [value]="user.userId">{{ user.userId }}</mat-option>
+                    <mat-option *ngFor="let user of nextStepSelectionUsers" [value]="user.userId">{{ user.username }}</mat-option>
                 </mat-select>
                 <mat-hint *ngIf="!nextStepSelectionUsers.length">کاربری یافت نشد</mat-hint>
             </mat-form-field>
