@@ -45,6 +45,8 @@ export interface NoteAdd {
     };
 }
 
+export type stepType = 'تایید' | 'رد' | 'بازگشایی' | 'متوقف' | 'ایجاد کد' | 'شروع' | 'پایان';
+
 export interface ContractHistory {
     fromStep: {
         id: string;
@@ -58,7 +60,8 @@ export interface ContractHistory {
         id: number;
         name: string;
     };
-    action: string;
+    action?: string;
+    status: stepType;
     contract: string;
     _id: string;
     createdAt: Date;
@@ -104,9 +107,4 @@ export interface ContractCardboardTableData {
     initializerUser: string;
     customer: string;
     status: 'pause' | 'final' | 'in progress';
-}
-
-export interface ContractCardboardList {
-    active: Array<ContractCardboard>;
-    final: Array<ContractCardboard>;
 }
