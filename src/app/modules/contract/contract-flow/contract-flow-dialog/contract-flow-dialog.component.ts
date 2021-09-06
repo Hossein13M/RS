@@ -95,14 +95,14 @@ export class ContractFlowDialogComponent implements OnInit {
 
         if (this.isEditMode || this.data.isManualDialog) {
             this.flowService.editFlow(data).subscribe(
-                () => this.dialog.close(true),
-                () => this.dialog.close(false)
+                () => this.dialog.close({ isEditMode: true }),
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
             );
             return;
         }
         this.flowService.addNewFlow(data).subscribe(
-            (response) => this.dialog.close(response._id),
-            () => this.dialog.close(false)
+            (response) => this.dialog.close({ isEditMode: false, flowId: response._id }),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 }
