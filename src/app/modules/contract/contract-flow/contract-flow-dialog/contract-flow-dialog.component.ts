@@ -8,6 +8,7 @@ import { ContractFlowService } from '../contract-flow.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { Flow } from '../contract-flow.model';
 import { contractDefaultBpmn, contractManualFlowDefaultBPMN } from '../../contract-bpmn/contract-default-bpmn';
+import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'app-contract-flow-dialog',
@@ -33,7 +34,8 @@ export class ContractFlowDialogComponent implements OnInit {
         private flowService: ContractFlowService,
         private contractService: ContractTypeService,
         public dialogRef: MatDialogRef<any>,
-        public dialog: MatDialogRef<ContractFlowDialogComponent>
+        public dialog: MatDialogRef<ContractFlowDialogComponent>,
+        private readonly alertService: AlertService
     ) {}
 
     ngOnInit(): void {
@@ -60,23 +62,25 @@ export class ContractFlowDialogComponent implements OnInit {
         const organizationName = UtilityFunctions.getActiveOrganizationName();
         this.form.get('name').setValue(`جریان دستی نهاد ${organizationName}`);
         this.form.get('isManual').setValue(true);
-        this.flowService
-            .getFlows({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code'), isManual: true })
-            .subscribe((response) => {
+        this.flowService.getFlows({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code'), isManual: true }).subscribe(
+            (response) => {
                 this.form.get('contractTypes').setValue(response.items[0].contractTypes);
                 this.data.flowData = response.items[0];
                 this.form.addControl('id', new FormControl(response.items[0]._id, Validators.required));
-            });
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private getContractTypes(): void {
-        this.contractService
-            .getContractTypes({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code') })
-            .subscribe((response) => {
+        this.contractService.getContractTypes({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code') }).subscribe(
+            (response) => {
                 this.contractTypes = response.items;
                 this.pagination.total = response.total;
                 if (this.isEditMode) this.setDataForEditMode();
-            });
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     public submitForm(): void {

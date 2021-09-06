@@ -34,10 +34,13 @@ export class CardboardFormComponent implements OnInit {
     }
 
     private getCardboardInfo(): void {
-        this.cardboardService.getContractCardboardWizard(this.contractId).subscribe((response) => {
-            this.cardboardInfo = response;
-            this.stateType = StateType.PRESENT;
-        });
+        this.cardboardService.getContractCardboardWizard(this.contractId).subscribe(
+            (response) => {
+                this.cardboardInfo = response;
+                this.stateType = StateType.PRESENT;
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     public onButtonClick(buttonType: ContractFormButtonTypes): void {
@@ -59,10 +62,7 @@ export class CardboardFormComponent implements OnInit {
                 this.alertService.onSuccess(`کد قرارداد ${response.code} ساخته شد و در کلیپ‌بورد کپی شد`);
                 this._clipboardService.copyFromContent(response.code);
             },
-            (error) =>
-                error.message === 'Contract already has a final code!'
-                    ? this.alertService.onError('این قرارداد کد دارد')
-                    : this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
@@ -101,7 +101,7 @@ export class CardboardFormComponent implements OnInit {
                 this.alertService.onSuccess('با موفقیت رد شد');
                 setTimeout(() => window.location.reload(), 2000);
             },
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
@@ -135,7 +135,7 @@ export class CardboardFormComponent implements OnInit {
                 this.alertService.onSuccess('با موفقیت بازگشایی شد');
                 setTimeout(() => window.location.reload(), 2000);
             },
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
@@ -145,7 +145,7 @@ export class CardboardFormComponent implements OnInit {
                 this.alertService.onSuccess('با موفقیت متوقف شد');
                 setTimeout(() => window.location.reload(), 2000);
             },
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 }

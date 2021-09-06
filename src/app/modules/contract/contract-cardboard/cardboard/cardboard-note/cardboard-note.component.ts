@@ -40,7 +40,7 @@ export class CardboardNoteComponent implements OnInit {
     private getNotes(): void {
         this.cardboardService.getContractNotes(this.contractId).subscribe(
             (response) => (this.contractNotes = response),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
@@ -71,7 +71,7 @@ export class CardboardNoteComponent implements OnInit {
     private addNoteToContract(note: string): void {
         this.cardboardService.addNote({ contract: this.contractId, note, step: this.currentStepInfo }).subscribe(
             () => this.getNotes(),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 }

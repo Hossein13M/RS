@@ -15,7 +15,7 @@ import { StateType } from '#shared/state-type.enum';
 export class CardboardListComponent implements OnInit {
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public pagination = { skip: 0, limit: 100, total: 100 };
-    public contractCardboards: Array<ContractCardboard> = [];
+    public contractCardboard: Array<ContractCardboard> = [];
     public tableData: Array<ContractCardboardTableData> = [];
     public stateType: StateType = StateType.INIT;
 
@@ -67,15 +67,15 @@ export class CardboardListComponent implements OnInit {
     private getContractCardboard(): void {
         this.cardboardService.getContractCardboardList(this.organizationCode).subscribe(
             (response) => {
-                this.contractCardboards = response;
+                this.contractCardboard = response;
                 this.prepareDataForTable();
             },
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
     private prepareDataForTable(): void {
-        this.contractCardboards.map((item) => {
+        this.contractCardboard.map((item) => {
             this.tableData.push({
                 isActive: item.isActive,
                 _id: item._id,

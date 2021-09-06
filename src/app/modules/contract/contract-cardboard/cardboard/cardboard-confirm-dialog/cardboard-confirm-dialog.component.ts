@@ -40,7 +40,7 @@ export class CardboardConfirmDialogComponent implements OnInit {
                 this.nextStepSelectionUsers = response;
                 this.stateType = StateType.PRESENT;
             },
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
@@ -55,7 +55,7 @@ export class CardboardConfirmDialogComponent implements OnInit {
                 this.alertService.onSuccess('با موفقیت تایید شد');
                 this.dialog.close(true);
             },
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 }
