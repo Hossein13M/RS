@@ -77,9 +77,9 @@ export class ContractTypeDialogComponent implements OnInit {
     private setUserDataInEditMode(): void {
         const userData = [];
         this.users.map((user) => {
-            this.data.users.map((authorizedUser) => {
-                if (user.id === authorizedUser) userData.push(user);
-            });
+            if (this.data?.users?.length) {
+                this.data.users.map((authorizedUser) => user.id === authorizedUser && userData.push(user));
+            }
         });
         this.form.get('users').setValue(userData);
     }
