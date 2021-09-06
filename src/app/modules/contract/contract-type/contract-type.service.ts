@@ -25,4 +25,8 @@ export class ContractTypeService {
     public createContractType(contractTypeInfo: any): Observable<any> {
         return this.http.post<any>(`/api/v1/contract-type`, contractTypeInfo);
     }
+
+    public editContractType(contractTypeInfo: any): Observable<any> {
+        return this.http.put<any>(`/api/v1/contract-type`, contractTypeInfo);
+    }
 }

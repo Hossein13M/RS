@@ -33,7 +33,7 @@ export class ContractTypeDialogComponent implements OnInit {
         organization: [this.activeOrganizationCode, Validators.required],
         users: [null, Validators.required],
         roles: [null, Validators.required],
-        units: this.fb.array([this.addNewRolesBasedOnUnits()]),
+        units: this.fb.array([]),
     });
 
     constructor(
@@ -61,7 +61,6 @@ export class ContractTypeDialogComponent implements OnInit {
     private checkForEditMode(): void {
         this.isEditMode = !!this.data;
         this.isEditMode ? (this.title = 'ویرایش نوع قرارداد') : (this.title = 'افزودن نوع قرارداد');
-        if (this.isEditMode) this.setDataForEditMode();
     }
 
     private setDataForEditMode(): void {
@@ -71,7 +70,7 @@ export class ContractTypeDialogComponent implements OnInit {
         // this.form.get('users').setValue(this.data.authorizedUsers);
         this.form.get('roles').setValue(this.data.roles);
 
-        this.data.units.map((item) => this.addUnitRolesToFormArray(item));
+        this.data.units.map((item, index) => this.addUnitRolesToFormArray(item, index));
         // this.form.setValue(this.data);
     }
 
@@ -104,7 +103,10 @@ export class ContractTypeDialogComponent implements OnInit {
 
     private getOrganizationUnits(): void {
         this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe(
-            (response) => (this.units = response),
+            (response) => {
+                this.units = response;
+                if (this.isEditMode) this.setDataForEditMode();
+            },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
@@ -127,6 +129,16 @@ export class ContractTypeDialogComponent implements OnInit {
             });
         }
 
+        if (this.isEditMode) {
+            const editData = { ...data, id: this.data._id };
+            this.contractService.editContractType(editData).subscribe(
+                () => this.dialog.close(true),
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+            );
+
+            return;
+        }
+
         this.contractService.createContractType(data).subscribe(
             () => this.dialog.close(true),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
@@ -144,14 +156,15 @@ export class ContractTypeDialogComponent implements OnInit {
         return this.form.get('units') as FormArray;
     }
 
-    public addNewRolesBasedOnUnits(data?: { unit: number; roles: Array<number> }): FormGroup {
-        return data ? this.fb.group({ unit: data.unit, roles: data.roles }) : this.fb.group({ unit: null, roles: null });
+    public addNewRolesBasedOnUnits(data?: { unit: Array<number>; roles: Array<number> }): FormGroup {
+        return data ? this.fb.group({ unit: [data.unit], roles: [data.roles] }) : this.fb.group({ unit: null, roles: null });
     }
 
-    public addUnitRolesToFormArray(data?: { unit: number; roles: Array<number> }): void {
+    public addUnitRolesToFormArray(data?: { unit: number; roles: Array<number> }, index?: number): void {
         if (data) {
-            // this.unitFormArrayItems = this.form.get('units') as FormArray;
-            // this.unitFormArrayItems.push(this.addNewRolesBasedOnUnits(data));
+            this.unitFormArrayItems = this.form.get('units') as FormArray;
+            this.unitFormArrayItems.push(this.addNewRolesBasedOnUnits({ unit: [data.unit], roles: data.roles }));
+            this.getRolesOnSpecificUnits(data.unit, index);
         } else {
             this.unitFormArrayItems = this.form.get('units') as FormArray;
             this.unitFormArrayItems.push(this.addNewRolesBasedOnUnits());
