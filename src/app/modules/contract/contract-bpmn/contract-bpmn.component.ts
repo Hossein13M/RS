@@ -98,7 +98,7 @@ export class ContractBpmnComponent implements OnInit {
                 if (!task._attributes.name) {
                     this.alertService.onError('همه‌ی گام‌های روندنما بایستی دارای نام باشند.');
                     return;
-                } else if (!task['bpmn:incoming'] || !task['bpmn:incoming']) {
+                } else if (!task['bpmn:incoming'] || !task['bpmn:outgoing']) {
                     this.alertService.onError('روندنما نادرست است. همه‌ی گام‌ها بایستی با هم وصل باشند.');
                     return;
                 }
