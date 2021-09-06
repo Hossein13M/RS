@@ -148,7 +148,7 @@ export class ContractTypeDialogComponent implements OnInit {
     static removeEmptyStatesFromForm(form: Form): Form {
         if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.users)) delete form.users;
         if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.roles)) delete form.roles;
-        if (form.units.length === 1 && form.units[0].roles === null) delete form.units;
+        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.units)) delete form.units;
         return form;
     }
 
