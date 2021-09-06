@@ -17,9 +17,9 @@ export const navigation: FuseNavigation[] = [
         icon: 'gavel',
         type: 'collapsable',
         children: [
+            { id: 'contractCardboard', title: 'فرم قرارداد', type: 'item', icon: 'list_alt', url: '/contract/contract-form' },
             { id: 'contractType', title: 'نوع قرارداد', type: 'item', icon: 'format_list_bulleted', url: '/contract/contract-type' },
             { id: 'contractFlow', title: 'جریان قرارداد', type: 'item', icon: 'timeline', url: '/contract/flow' },
-            { id: 'contractCardboard', title: 'فرم قرارداد', type: 'item', icon: 'list_alt', url: '/contract/contract-form' },
             { id: 'contractsList', title: 'قراردادها', type: 'item', icon: 'fact_check', url: '/contract/contract-list' },
             { id: 'contractCardboard', title: 'کارتابل قرارداد', type: 'item', icon: 'dashboard', url: '/contract/cardboard' },
         ],
