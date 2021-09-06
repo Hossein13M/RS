@@ -84,7 +84,7 @@ export class ContractFlowComponent implements OnInit {
             height: '400px',
             panelClass: 'dialog-p-0',
         });
-        dialogRef.afterClosed().subscribe((result) => result && this.getFlows());
+        dialogRef.afterClosed().subscribe((flowId) => this.router.navigate(['contract/flow/bpmn/' + flowId]).finally());
     }
 
     public paginationControl(pageEvent?: any): void {

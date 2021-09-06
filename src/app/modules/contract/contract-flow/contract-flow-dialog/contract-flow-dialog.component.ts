@@ -101,7 +101,7 @@ export class ContractFlowDialogComponent implements OnInit {
             return;
         }
         this.flowService.addNewFlow(data).subscribe(
-            () => this.dialog.close(true),
+            (response) => this.dialog.close(response._id),
             () => this.dialog.close(false)
         );
     }
