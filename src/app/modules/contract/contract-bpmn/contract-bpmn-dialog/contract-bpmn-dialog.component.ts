@@ -114,6 +114,8 @@ export class ContractBpmnDialogComponent implements OnInit {
     public submitForm(): void {
         this.prepareAccessRights();
         if (this.dialogData.isStateTypeTask) this.data.attributes = this.formArray.value;
+        if (!this.data.accessRights.users.length) delete this.data.accessRights.users;
+        if (!this.data.accessRights.units.roles.length) delete this.data.accessRights.units;
         this.bpmnService.saveBpmnStep(this.data).subscribe(
             () => this.alertService.onSuccess('افزوده شد'),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
