@@ -11,6 +11,7 @@ import { ContractFlowService } from '../../contract-flow/contract-flow.service';
 import { Flow } from '../../contract-flow/contract-flow.model';
 import { ContractBpmnService } from '../contract-bpmn.service';
 import { ContractFormButtonTypes } from '../../contract-cardboard/cardboard.model';
+import { StateType } from '#shared/state-type.enum';
 
 @Component({
     selector: 'app-contract-bpmn-dialog',
@@ -33,6 +34,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     };
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public flowDetails: Flow;
+    public stateType: StateType = StateType.INIT;
 
     public buttonTypes: Array<{ perName: string; engName: ContractFormButtonTypes; isAvailable: boolean }> = [
         { perName: 'آپلود', engName: 'upload', isAvailable: true },
@@ -87,6 +89,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
         this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.dialogData.flowId, ...pagination }).subscribe((response) => {
             this.flowDetails = response.items[0];
+            this.stateType = StateType.PRESENT;
             this.setBaseDataInfo();
         });
     }
@@ -194,12 +197,12 @@ export class ContractBpmnDialogComponent implements OnInit {
 
     private setFormDataInEditMode(response: BpmnData) {
         this.checkForUnavailableButtons(response);
-        this.form.get('accessRightType').setValue(response.accessRights.users.length ? 'dynamic' : 'static');
+        this.form.get('accessRightType').setValue(response.accessRights?.users?.length ? 'dynamic' : 'static');
         const userIdList = [];
         this.form.get('initializer').setValue(response.accessRights.initializer);
-        response.accessRights.users.map((user) => userIdList.push(user.userId));
+        if (response.accessRights?.users?.length) response.accessRights.users.map((user) => userIdList.push(user.userId));
+        if (response.accessRights?.units) this.form.get('units').setValue([response.accessRights.units.unit]);
         this.form.get('users').setValue(userIdList);
-        this.form.get('units').setValue([response.accessRights.units.unit]);
         this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
         response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
     }
@@ -209,6 +212,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.buttonTypes.map((buttonType) => {
             responseFromServer.attributes.map((item) => item.type === buttonType.engName && nullButtons.push(item.type));
         });
+
         this.buttonTypes.map((buttonType) => (buttonType.isAvailable = !nullButtons.includes(buttonType.engName)));
     }
 
