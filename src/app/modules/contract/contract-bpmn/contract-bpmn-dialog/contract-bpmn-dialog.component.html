@@ -16,7 +16,8 @@
         </mat-toolbar>
     </div>
 
-    <div class="flex flex-col h-full">
+    <mat-progress-bar mode="indeterminate" color="warn" *ngIf="stateType !== 'PRESENT'"></mat-progress-bar>
+    <div class="flex flex-col h-full" *ngIf="stateType === 'PRESENT'">
         <mat-card class="m-10 p-0">
             <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
                 <mat-card-title class="text-white mb-0">دسترسی‌های این گام</mat-card-title>
@@ -57,7 +58,7 @@
                             <mat-form-field appearance="outline" *ngIf="!!form.get('roles')" class="py-0">
                                 <mat-label>نقش‌های این ساختار سازمانی</mat-label>
                                 <mat-select formControlName="roles" multiple>
-                                    <mat-option *ngFor="let role of rolesOnUnit" [value]="role.id">{{ role.name }}</mat-option>
+                                    <mat-option *ngFor="let role of rolesOnUnit" [value]="role.childId">{{ role.name }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -160,10 +161,10 @@
                     </mat-card>
                 </button>
             </mat-card-content>
-            <mat-card-footer class="text-center mx-0 mb-2 flex justify-center items-center">
-                <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>
-                <p>برخی از ابزارها نیاز به تنظیمات ویژه‌ای دارند که در این بخش، می‌توانید آن‌ها را پیدا کنید.</p>
-            </mat-card-footer>
+            <!--            <mat-card-footer class="text-center mx-0 mb-2 flex justify-center items-center">-->
+            <!--                <mat-icon fontSet="material-icons-outlined">help_outline</mat-icon>-->
+            <!--                <p>برخی از ابزارها نیاز به تنظیمات ویژه‌ای دارند که در این بخش، می‌توانید آن‌ها را پیدا کنید.</p>-->
+            <!--            </mat-card-footer>-->
         </mat-card>
     </div>
 </div>
