@@ -93,7 +93,7 @@ export class ContractDialogComponent implements OnInit {
     }
 
     private getContractTypes(): void {
-        this.contractTypeService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe(
+        this.contractTypeService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode, getByUserId: true }).subscribe(
             (response) => (this.contractTypes = response.items),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
