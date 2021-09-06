@@ -6,10 +6,6 @@
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
-
-        <mat-toolbar-row *ngIf="isEditMode" class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
-            <div class="contact-name mt-8">{{ isEditMode ? data.flowData.name : '' }}</div>
-        </mat-toolbar-row>
     </mat-toolbar>
 
     <div class="p-24 pb-0 m-0 h-full">
