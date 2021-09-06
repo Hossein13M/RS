@@ -61,6 +61,13 @@ export class ContractBpmnComponent implements OnInit {
                 return;
             }
 
+            const startEvents = bpmnConfiguration['bpmn:definitions']['bpmn:process']['bpmn:startEvent'];
+
+            if (!startEvents) {
+                this.alertService.onError('گام آغازینی برای روندنما موجود نیست.');
+                return;
+            }
+
             // Check End Conditions
             const endEvents = bpmnConfiguration['bpmn:definitions']['bpmn:process']['bpmn:endEvent'];
 
@@ -90,6 +97,9 @@ export class ContractBpmnComponent implements OnInit {
             tasks.map((task) => {
                 if (!task._attributes.name) {
                     this.alertService.onError('همه‌ی گام‌های روندنما بایستی دارای نام باشند.');
+                    return;
+                } else if (!task['bpmn:incoming'] || !task['bpmn:incoming']) {
+                    this.alertService.onError('روندنما نادرست است. همه‌ی گام‌ها بایستی با هم وصل باشند.');
                     return;
                 }
             });
