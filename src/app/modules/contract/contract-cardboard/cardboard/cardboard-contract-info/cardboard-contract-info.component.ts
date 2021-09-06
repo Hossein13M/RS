@@ -5,6 +5,7 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ActivatedRoute } from '@angular/router';
 import { StateType } from '#shared/state-type.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'app-cardboard-contract-info',
@@ -23,7 +24,12 @@ export class CardboardContractInfoComponent implements OnInit {
         initializerUser: [''],
     });
 
-    constructor(private readonly contractService: ContractService, private readonly activatedRoute: ActivatedRoute, private readonly fb: FormBuilder) {}
+    constructor(
+        private readonly contractService: ContractService,
+        private readonly activatedRoute: ActivatedRoute,
+        private readonly fb: FormBuilder,
+        private readonly alertService: AlertService
+    ) {}
 
     ngOnInit(): void {
         this.getContractInfo();
@@ -31,13 +37,16 @@ export class CardboardContractInfoComponent implements OnInit {
 
     private getContractInfo(): void {
         const searchParams = { ...this.pagination, ...{ organization: this.organizationCode, id: this.activatedRoute.snapshot.params.id } };
-        this.contractService.getContractsList(searchParams).subscribe((response) => {
-            this.contractInfo = response.items[0];
-            this.form.get('name').setValue(this.contractInfo.name);
-            this.form.get('date').setValue(UtilityFunctions.convertDateToPersianDateString(this.contractInfo.createdAt));
-            this.form.get('customer').setValue(this.contractInfo.customer.name);
-            this.form.get('initializerUser').setValue(this.contractInfo.initializerUser.name);
-            this.stateType = StateType.PRESENT;
-        });
+        this.contractService.getContractsList(searchParams).subscribe(
+            (response) => {
+                this.contractInfo = response.items[0];
+                this.form.get('name').setValue(this.contractInfo.name);
+                this.form.get('date').setValue(UtilityFunctions.convertDateToPersianDateString(this.contractInfo.createdAt));
+                this.form.get('customer').setValue(this.contractInfo.customer.name);
+                this.form.get('initializerUser').setValue(this.contractInfo.initializerUser.name);
+                this.stateType = StateType.PRESENT;
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 }

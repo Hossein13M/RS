@@ -93,15 +93,17 @@ export class ContractDialogComponent implements OnInit {
     }
 
     private getContractTypes(): void {
-        this.contractTypeService
-            .getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode })
-            .subscribe((response) => (this.contractTypes = response.items));
+        this.contractTypeService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe(
+            (response) => (this.contractTypes = response.items),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private getContracts(): void {
-        this.contractService
-            .getContractsList({ organization: this.activeOrganizationCode, isActive: true })
-            .subscribe((response) => (this.contracts = response.items));
+        this.contractService.getContractsList({ organization: this.activeOrganizationCode, isActive: true }).subscribe(
+            (response) => (this.contracts = response.items),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private getFlows(): void {
@@ -109,19 +111,22 @@ export class ContractDialogComponent implements OnInit {
             .getFlows({ ...this.pagination, organization: this.activeOrganizationCode, contractTypes: [this.form.get('contractType').value] })
             .subscribe(
                 (response) => (this.flows = response.items),
-                () => this.alertService.onError('مشکلی پیش آمده‌است'),
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور')),
                 () => this.isEditMode && this.form.get('flow').setValue(this.data.flow)
             );
     }
 
     private getCustomers(): void {
-        this.contractService.getCustomers().subscribe((response) => {
-            this.customers = [];
-            response.items.map((item) => this.customers.push({ id: item.id, name: item.name }));
-            if (this.isEditMode) {
-                this.customers.map((item) => item.id === this.data.customer.id && this.form.get('customer').setValue(item));
-            }
-        });
+        this.contractService.getCustomers().subscribe(
+            (response) => {
+                this.customers = [];
+                response.items.map((item) => this.customers.push({ id: item.id, name: item.name }));
+                if (this.isEditMode) {
+                    this.customers.map((item) => item.id === this.data.customer.id && this.form.get('customer').setValue(item));
+                }
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     public submitForm(): void {
@@ -131,14 +136,14 @@ export class ContractDialogComponent implements OnInit {
     private editContract(): void {
         this.contractService.editContract({ id: this.data._id, name: this.form.value.name }).subscribe(
             () => this.dialog.close(true),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
     private createContract(): void {
         this.contractService.createNewContract(this.form.value).subscribe(
             () => this.dialog.close(true),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 }

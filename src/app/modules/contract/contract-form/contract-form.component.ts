@@ -23,6 +23,9 @@ export class ContractFormComponent {
 
     public handleFormInfo(event: any): void {
         this.formInfo = { organization: this.organizationCode, sections: event.sections, name: event.name };
-        this.contractFormService.createContractForm(this.formInfo).subscribe(() => this.alertService.onSuccess('فرم به درستی ذخیره شد'));
+        this.contractFormService.createContractForm(this.formInfo).subscribe(
+            () => this.alertService.onSuccess('فرم به درستی ذخیره شد'),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 }

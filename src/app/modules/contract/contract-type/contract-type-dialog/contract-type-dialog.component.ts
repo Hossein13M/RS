@@ -86,24 +86,36 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     private getOrganizationUsers(): any {
-        this.userService.getUsers([`${this.activeOrganizationCode}`]).subscribe((response) => {
-            this.users = response.items;
-            if (this.isEditMode) this.setUserDataInEditMode();
-        });
+        this.userService.getUsers([`${this.activeOrganizationCode}`]).subscribe(
+            (response) => {
+                this.users = response.items;
+                if (this.isEditMode) this.setUserDataInEditMode();
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private getOrganizationRoles(): void {
-        this.userService.getOrganizationRoles(this.activeOrganizationCode, []).subscribe((response) => (this.allRolesList = response));
+        this.userService.getOrganizationRoles(this.activeOrganizationCode, []).subscribe(
+            (response) => (this.allRolesList = response),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private getOrganizationUnits(): void {
-        this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe((response) => (this.units = response));
+        this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe(
+            (response) => (this.units = response),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private getContractTypeForms(): void {
-        this.contractService.getContractTypeForms(UtilityFunctions.getActiveOrganizationInfo('code')).subscribe((response) => {
-            this.contractTypeForms = response;
-        });
+        this.contractService.getContractTypeForms(UtilityFunctions.getActiveOrganizationInfo('code')).subscribe(
+            (response) => {
+                this.contractTypeForms = response;
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     public submitForm(): void {
@@ -117,7 +129,7 @@ export class ContractTypeDialogComponent implements OnInit {
 
         this.contractService.createContractType(data).subscribe(
             () => this.dialog.close(true),
-            () => this.alertService.onError('مشکلی پیش آمده است.')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 

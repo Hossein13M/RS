@@ -66,14 +66,14 @@ export class ContractFlowComponent implements OnInit {
     private getFlows(): void {
         this.flowService.getFlows({ ...this.pagination, organization: this.organizationCode }).subscribe(
             (response) => (this.flows = response.items),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
     private changeFlowStatus(flowId: string): void {
         this.flowService.changeFlowStatus(flowId).subscribe(
             () => this.getFlows(),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 

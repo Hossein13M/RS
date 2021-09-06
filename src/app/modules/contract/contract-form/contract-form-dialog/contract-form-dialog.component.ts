@@ -50,13 +50,19 @@ export class ContractFormDialogComponent implements OnInit {
     }
 
     private getContractForms(): void {
-        this.contractFormService.getContractForm(this.organizationCode).subscribe((response) => (this.contractForm = response));
+        this.contractFormService.getContractForm(this.organizationCode).subscribe(
+            (response) => (this.contractForm = response),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private changeContractFormStatus(contractFormId: number): void {
-        this.contractFormService.changeContractFormStatus(contractFormId).subscribe(() => {
-            this.alertService.onSuccess('وضعیت فرم تغییر کرد');
-            this.getContractForms();
-        });
+        this.contractFormService.changeContractFormStatus(contractFormId).subscribe(
+            () => {
+                this.alertService.onSuccess('وضعیت فرم تغییر کرد');
+                this.getContractForms();
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 }

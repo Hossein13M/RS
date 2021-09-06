@@ -5,6 +5,7 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ContractTypeService } from './contract-type.service';
 import { ContractTypeDialogComponent } from './contract-type-dialog/contract-type-dialog.component';
 import { ContractType } from './contract-type.model';
+import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'app-contract-type',
@@ -45,7 +46,7 @@ export class ContractTypeComponent implements OnInit {
         },
     ];
 
-    constructor(private contractService: ContractTypeService, private dialog: MatDialog) {}
+    constructor(private contractService: ContractTypeService, private dialog: MatDialog, private readonly alertService: AlertService) {}
 
     ngOnInit(): void {
         this.getContractTypes();
@@ -58,10 +59,13 @@ export class ContractTypeComponent implements OnInit {
     }
 
     public getContractTypes(): void {
-        this.contractService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe((response) => {
-            this.contractTypes = response.items;
-            this.pagination.total = response.total;
-        });
+        this.contractService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe(
+            (response) => {
+                this.contractTypes = response.items;
+                this.pagination.total = response.total;
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private changeContractTypeStatus(contractTypeId: string): void {

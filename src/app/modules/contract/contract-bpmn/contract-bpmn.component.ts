@@ -119,7 +119,7 @@ export class ContractBpmnComponent implements OnInit {
     private submitData(info) {
         this.flowService.saveBpmnConfiguration(info).subscribe(
             () => this.router.navigate([`/contract/flow`]).finally(() => this.alertService.onSuccess('این BPMN به جریان افزوده شد.')),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 

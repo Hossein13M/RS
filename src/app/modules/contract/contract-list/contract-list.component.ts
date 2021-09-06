@@ -65,16 +65,19 @@ export class ContractListComponent implements OnInit {
 
     public getContractsList(searchParams?: { organization: number; name?: string; isActive?: boolean }): void {
         this.contracts = [];
-        this.contractService.getContractsList(searchParams).subscribe((response) => {
-            this.contracts = response.items;
-            this.pagination.total = response.total;
-        });
+        this.contractService.getContractsList(searchParams).subscribe(
+            (response) => {
+                this.contracts = response.items;
+                this.pagination.total = response.total;
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private changeContractStatus(contractId: string): void {
         this.contractService.changeContractStatus(contractId).subscribe(
             () => this.checkIsActiveFormControl(),
-            () => this.alertService.onError('مشکلی پیش آمده‌‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 

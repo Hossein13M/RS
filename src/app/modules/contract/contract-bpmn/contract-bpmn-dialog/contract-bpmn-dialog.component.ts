@@ -116,7 +116,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         if (this.dialogData.isStateTypeTask) this.data.attributes = this.formArray.value;
         this.bpmnService.saveBpmnStep(this.data).subscribe(
             () => this.alertService.onSuccess('افزوده شد'),
-            () => this.alertService.onError('مشکلی پیش آمده‌است')
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
     }
 
