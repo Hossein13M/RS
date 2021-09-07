@@ -76,11 +76,6 @@ export class ContractBpmnComponent implements OnInit {
                 return;
             }
 
-            if (typeof endEvents[Symbol.iterator] === 'function') {
-                this.alertService.onError('روندنما نمی‌تواند بیش از یک پایان داشته باشد.');
-                return;
-            }
-
             if (!endEvents?._attributes.name) {
                 this.alertService.onError('گام پایانی‌ نمی‌تواند بدون نام باشد.');
                 return;
@@ -94,6 +89,7 @@ export class ContractBpmnComponent implements OnInit {
             }
 
             const tasks = bpmnConfiguration['bpmn:definitions']['bpmn:process']['bpmn:task'];
+
             tasks.map((task) => {
                 if (!task._attributes.name) {
                     this.alertService.onError('همه‌ی گام‌های روندنما بایستی دارای نام باشند.');
@@ -104,20 +100,8 @@ export class ContractBpmnComponent implements OnInit {
                 }
             });
 
-            const bpmnShapes = bpmnPlane['bpmndi:BPMNShape'];
-            const numberOfTasks = bpmnShapes.filter((el) => {
-                if (!el || !el._attributes || !el._attributes.bpmnElement) {
-                    return false;
-                }
-                if (String(el._attributes.bpmnElement).startsWith('Task')) {
-                    return true;
-                }
-            }).length;
-
-            if (numberOfTasks < 2) {
-                this.alertService.onError('روندنما نمی‌تواند کمتر از ۲ گام باشد.');
-                return;
-            }
+            const checkValidationResult: boolean = this.checkSequenceFlowValidations(bpmnConfiguration);
+            if (!checkValidationResult) return;
 
             this.flowDetails.bpmnConfiguration = JSON.parse(xml2json(xml, { compact: true }));
             if (this.flowDetails._id) this.flowDetails.id = this.flowDetails._id;
@@ -131,6 +115,23 @@ export class ContractBpmnComponent implements OnInit {
             () => this.router.navigate([`/contract/flow`]).finally(() => this.alertService.onSuccess('این BPMN به جریان افزوده شد.')),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
+    }
+
+    private checkSequenceFlowValidations(bpmnProcess: any): boolean {
+        const endEvents = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:endEvent'];
+        const startEvents = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:startEvent'];
+        const tasks = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:task'];
+
+        if (Array.isArray(startEvents) && startEvents.length > 1) {
+            this.alertService.onError('روندنما نمی‌تواند بیش از یک آغاز داشته باشد');
+            return false;
+        } else if (Array.isArray(endEvents) && endEvents.length > 1) {
+            this.alertService.onError('روندنما نمی‌تواند بیش از یک پایان داشته باشد');
+            return false;
+        } else if (Array.isArray(tasks) && tasks.length < 2) {
+            this.alertService.onError('روندنما نمی‌تواند کم‌تر از دو گام داشته باشد');
+            return false;
+        } else return true;
     }
 
     // BPMN Diagram
@@ -184,7 +185,7 @@ export class ContractBpmnComponent implements OnInit {
         if (event.element.type === 'bpmn:Task' || event.element.type === 'bpmn:EndEvent') {
             event.element.businessObject.name
                 ? this.openDialog(event.element.businessObject.name, event.element.id, event.element.type === 'bpmn:Task')
-                : this.alertService.onError('نخست یک نام برگزینید');
+                : this.alertService.onInfo('نخست یک نام برگزینید');
         }
     }
 
