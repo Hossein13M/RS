@@ -120,7 +120,7 @@ export class ContractBpmnComponent implements OnInit {
             }
 
             this.flowDetails.bpmnConfiguration = JSON.parse(xml2json(xml, { compact: true }));
-            this.flowDetails.id = this.flowDetails._id;
+            if (this.flowDetails._id) this.flowDetails.id = this.flowDetails._id;
             delete this.flowDetails._id;
             this.submitData(this.flowDetails);
         });
