@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertService } from '#services/alert.service';
+import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { json2xml, xml2json } from 'xml-js';
+import { AlertService } from '#services/alert.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { StateType } from '#shared/state-type.enum';
-import propertiesProvider from 'bpmn-js-properties-panel/lib/provider/bpmn';
-import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { ContractFlowService } from '../contract-flow/contract-flow.service';
 import { Flow } from '../contract-flow/contract-flow.model';
 import { ContractBpmnDialogComponent } from './contract-bpmn-dialog/contract-bpmn-dialog.component';
+import { CustomPaletteProvider } from './contract-bpmn-palette.js';
 
 @Component({
     selector: 'app-contract-bpmn',
@@ -139,10 +139,7 @@ export class ContractBpmnComponent implements OnInit {
     initBpmn() {
         this.modeler = new BpmnModeler({
             container: '#js-canvas',
-            // propertiesPanel: {
-            //     parent: '#js-properties-panel',
-            // },
-            additionalModules: [propertiesProvider],
+            additionalModules: [CustomPaletteProvider],
         });
         this.importDiagram();
     }
