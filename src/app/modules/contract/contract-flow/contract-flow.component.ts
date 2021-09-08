@@ -37,6 +37,12 @@ export class ContractFlowComponent implements OnInit {
             showSearchButtons: false,
             operations: [
                 {
+                    name: 'BPMN (پیشینه‌ی الگوسازی فرآیند کسب‌و‌کار)',
+                    icon: 'account_tree',
+                    color: 'primary',
+                    operation: (row: { operationItem: any; row: Flow }) => this.navigateToFlowBPMNPage(row.row._id),
+                },
+                {
                     name: 'ویرایش',
                     icon: 'mode_edit',
                     color: 'primary',
@@ -47,12 +53,6 @@ export class ContractFlowComponent implements OnInit {
                     icon: 'sync',
                     color: 'warn',
                     operation: (row: { operationItem: any; row: Flow }) => this.changeFlowStatus(row.row._id),
-                },
-                {
-                    name: 'BPMN (پیشینه‌ی الگوسازی فرآیند کسب‌و‌کار)',
-                    icon: 'account_tree',
-                    color: 'accent',
-                    operation: (row: { operationItem: any; row: Flow }) => this.navigateToFlowBPMNPage(row.row._id),
                 },
             ],
         },
