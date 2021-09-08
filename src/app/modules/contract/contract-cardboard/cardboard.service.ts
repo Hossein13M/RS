@@ -27,7 +27,7 @@ export class CardboardService {
         return this.http.post<void>(`/api/v1/contract-wizard/reject`, stepInfo);
     }
 
-    public confirmContractCardboardStep(stepInfo: { contractId: string; user?: number }): Observable<void> {
+    public confirmContractCardboardStep(stepInfo: { contractId: string; nextStepSelectedUser?: { id: number; name: string } }): Observable<void> {
         return this.http.post<void>(`/api/v1/contract-wizard/confirm`, stepInfo);
     }
 
