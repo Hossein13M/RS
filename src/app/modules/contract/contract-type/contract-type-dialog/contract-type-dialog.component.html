@@ -1,14 +1,10 @@
 <div class="dialog-content-wrapper flex flex-col h-full" dir="rtl">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
+    <mat-toolbar matDialogTitle class="mat-accent m-0 text-black">
         <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">{{ title }}</span>
+            <span class="title dialog-title">{{ title }}{{ isEditMode ? ' - ' + data.name : '' }}</span>
             <button mat-icon-button (click)="dialog.close()">
                 <mat-icon>close</mat-icon>
             </button>
-        </mat-toolbar-row>
-
-        <mat-toolbar-row *ngIf="isEditMode" class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center">
-            <div class="contact-name mt-8">{{ isEditMode ? data.name : '' }}</div>
         </mat-toolbar-row>
     </mat-toolbar>
 

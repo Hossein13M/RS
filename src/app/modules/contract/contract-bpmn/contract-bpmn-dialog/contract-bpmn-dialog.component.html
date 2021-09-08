@@ -1,6 +1,6 @@
 <div class="flex flex-col h-full" dir="rtl">
     <div class="dialog-content-wrapper flex flex-col">
-        <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar matDialogTitle class="mat-primary m-0">
             <mat-toolbar-row class="flex justify-between items-center">
                 <span class="title dialog-title">پیکربندی {{ dialogData.stateName }} </span>
                 <div class="buttons">
@@ -19,7 +19,7 @@
     <mat-progress-bar mode="indeterminate" color="warn" *ngIf="stateType !== 'PRESENT'"></mat-progress-bar>
     <div class="flex flex-col h-full" *ngIf="stateType === 'PRESENT'">
         <mat-card class="m-10 p-0">
-            <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+            <mat-card-header class="flex justify-center primary m-0 py-3.5">
                 <mat-card-title class="text-white mb-0">دسترسی‌های این گام</mat-card-title>
             </mat-card-header>
             <mat-card-content class="mt-10 mb-10">
@@ -95,7 +95,7 @@
         </mat-card>
 
         <mat-card class="m-10 p-0" *ngIf="dialogData.isStateTypeTask">
-            <mat-card-header class="flex justify-center bg-blue-500 m-0 py-3.5">
+            <mat-card-header class="flex justify-center primary m-0 py-3.5">
                 <mat-card-title class="text-white mb-0">فرم این گام</mat-card-title>
             </mat-card-header>
             <mat-card-content class="my-10 flex mx-3">
