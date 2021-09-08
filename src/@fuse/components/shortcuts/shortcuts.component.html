@@ -18,12 +18,7 @@
 
                 <!--   Shortcuts   -->
                 <div class="w-40 h-40 p-4" fxLayout="row" fxLayoutAlign="center center" *ngFor="let shortcutItem of shortcutItems">
-                    <button
-                        mat-icon-button
-                        [matTooltip]="shortcutItem.title"
-                        [routerLinkActive]="shortcutItem.url"
-                        (click)="changeRouting(shortcutItem)"
-                    >
+                    <button mat-icon-button [matTooltip]="shortcutItem.title" [routerLinkActive]="shortcutItem.url" (click)="changeRouting(shortcutItem)">
                         <mat-icon class="secondary-text" *ngIf="shortcutItem.icon">{{ shortcutItem.icon }}</mat-icon>
                         <span *ngIf="!shortcutItem.icon" class="h2 secondary-text text-bold">
                             {{ shortcutItem.title.substr(0, 1).toUpperCase() }}
@@ -56,12 +51,7 @@
                             {{ shortcutItem.icon }}
                         </mat-icon>
 
-                        <span
-                            class="h2 w-32 h-32 p-4 mr-8 secondary-text text-bold"
-                            fxLayout="row"
-                            fxLayoutAlign="center center"
-                            *ngIf="!shortcutItem.icon"
-                        >
+                        <span class="h2 w-32 h-32 p-4 mr-8 secondary-text text-bold" fxLayout="row" fxLayoutAlign="center center" *ngIf="!shortcutItem.icon">
                             {{ shortcutItem.title.substr(0, 1).toUpperCase() }}
                         </span>
 
@@ -69,7 +59,7 @@
 
                         <mat-icon class="ml-8 amber-fg">star</mat-icon>
                     </div>
-                </mat-list-item>
+                </mat-list-item>mainL
 
                 <mat-list-item *ngIf="shortcutItems.length === 0">
                     <p>
@@ -85,12 +75,7 @@
                             {{ navigationItem.icon }}
                         </mat-icon>
 
-                        <span
-                            class="h2 w-32 h-32 p-4 mr-8 secondary-text text-bold"
-                            fxLayout="row"
-                            fxLayoutAlign="center center"
-                            *ngIf="!navigationItem.icon"
-                        >
+                        <span class="h2 w-32 h-32 p-4 mr-8 secondary-text text-bold" fxLayout="row" fxLayoutAlign="center center" *ngIf="!navigationItem.icon">
                             {{ navigationItem.title.substr(0, 1).toUpperCase() }}
                         </span>
 

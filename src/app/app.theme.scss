@@ -25,20 +25,54 @@ $fuse-black: (
 );
 
 $fuse-navy: (
-    50: #ececee,
-    100: #c5c6cb,
-    200: #9ea1a9,
-    300: #7d818c,
-    400: #5c616f,
-    500: #3c4252,
-    600: #353a48,
-    700: #2d323e,
-    800: #262933,
-    900: #1e2129,
-    A100: #c5c6cb,
-    A200: #9ea1a9,
-    A400: #5c616f,
-    A700: #2d323e,
+
+    50: #e4e7f1,
+    100: #bcc4dc,
+    200: #8f9dc5,
+    300: #6275ad,
+    400: #40589c,
+    500: #1e3a8a,
+    600: #1a3482,
+    700: #162c77,
+    800: #12256d,
+    900: #0a185a,
+    A100: #8e9eff,
+    A200: #5b72ff,
+    A400: #2846ff,
+    A700: #0e30ff,
+    contrast: (
+        50: $dark-primary-text,
+        100: $dark-primary-text,
+        200: $dark-primary-text,
+        300: $light-primary-text,
+        400: $light-primary-text,
+        500: $light-primary-text,
+        600: $light-primary-text,
+        700: $light-primary-text,
+        800: $light-primary-text,
+        900: $light-primary-text,
+        A100: $dark-primary-text,
+        A200: $light-primary-text,
+        A400: $light-primary-text,
+        A700: $light-primary-text,
+    ),
+);
+
+$default-accent-palette: (
+    50: #fffae7,
+    100: #fef3c2,
+    200: #feec9a,
+    300: #fee472,
+    400: #fdde53,
+    500: #fdd835,
+    600: #fdd430,
+    700: #fcce28,
+    800: #fcc822,
+    900: #fcbf16,
+    A100: #ffffff,
+    A200: #fffdf8,
+    A400: #ffeec5,
+    A700: #ffe7ac,
     contrast: (
         50: $dark-primary-text,
         100: $dark-primary-text,
@@ -76,7 +110,7 @@ $typography: mat.define-typography-config(
     $title: mat.define-typography-level(20px, 32px, 600),
     $body-2: mat.define-typography-level(14px, 24px, 600),
     $button: mat.define-typography-level(14px, 14px, 600),
-    $input: mat.define-typography-level(16px, 1.125, 400) // line-height must be unitless !!!,,,,,,,,
+    $input: mat.define-typography-level(16px, 1.125, 400) // line-height must be unitless !!!,,,,,,,,,,,,,,,
 );
 
 // Setup the typography
@@ -114,7 +148,7 @@ $typography: mat.define-typography-config(
 
 // Define the primary, accent and warn palettes
 $default-primary-palette: mat.define-palette($fuse-navy);
-$default-accent-palette: mat.define-palette(mat.$indigo-palette, 500, 500, 500);
+$default-accent-palette: mat.define-palette($default-accent-palette);
 $default-warn-palette: mat.define-palette(mat.$red-palette);
 
 // Create the Material theme object

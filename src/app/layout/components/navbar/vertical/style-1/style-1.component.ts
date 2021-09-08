@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { delay, filter, take, takeUntil } from 'rxjs/operators';
 // @ts-ignore
 import version from '../../../../../../../package.json';
+
 // import * as npm from '../../../../../../../package.json';
 
 @Component({
@@ -21,8 +22,8 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
     user;
-
-    version = version.version;
+    public version: string = version.version;
+    public isSideBarOpen: boolean = true;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -35,6 +36,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
      * @param {FuseNavigationService} _fuseNavigationService
      * @param {FuseSidebarService} _fuseSidebarService
      * @param {Router} _router
+     * @param userInfoService
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -124,6 +126,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
      * Toggle sidebar folded status
      */
     toggleSidebarFolded(): void {
+        this.isSideBarOpen = !this.isSideBarOpen;
         this._fuseSidebarService.getSidebar('navbar').toggleFold();
     }
 }
