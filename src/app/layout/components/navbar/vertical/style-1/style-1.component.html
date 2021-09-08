@@ -1,7 +1,6 @@
-<div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
-    <div class="logo">
-        <img class="logo-icon" src="assets/images/favicon.png" />
-        <img class="logo-text secondary-text" src="assets/images/logo-text.png" />
+<div class="navbar-top primary-900">
+    <div class="logo flex justify-center">
+        <img class="logo-text secondary-text" src="assets/images/logo-text.png" alt="logo-text" />
     </div>
 
     <div class="buttons">
@@ -21,23 +20,14 @@
     fusePerfectScrollbar
     [fusePerfectScrollbarOptions]="{ suppressScrollX: true }"
 >
-    <!-- <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
-
-        <div class="h3 username">{{user?.userRoles[0]?.firstName}}  {{user?.userRoles[0]?.lastName}}</div>
-        <div class="h5 email hint-text mt-8">{{user?.userRoles[0]?.email}}</div>
-        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
-            <img class="avatar" src="assets/images/Velazquez.jpg">
-        </div>
-
-    </div> -->
-
     <div class="navbar-content">
         <div class="nav-container">
             <fuse-navigation class="material2" layout="vertical"></fuse-navigation>
         </div>
 
-        <div class="version primary">
-            {{ version }}
+        <div class="version flex items-center justify-center primary">
+            <img class="logo-icon" src="assets/images/white-logo-non-text.png" alt="logo-icon" />
+            <span *ngIf="isSideBarOpen"> نسخه‌ی نرم‌افزار: {{ version }}</span>
         </div>
     </div>
 </div>
