@@ -41,12 +41,7 @@
             </div>
 
             <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
-                <button
-                    mat-stroked-button
-                    color="accent"
-                    [disabled]="!checkForValidationButton() || loading || instrumentFormControl.invalid"
-                    type="submit"
-                >
+                <button mat-stroked-button color="primary" [disabled]="!checkForValidationButton() || loading || instrumentFormControl.invalid" type="submit">
                     <mat-icon class="mat-18"> search </mat-icon>
                     جستجو
                 </button>
@@ -70,7 +65,7 @@
                         <mat-card-title>حجم کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number:'.0-4' }}</p>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number: '.0-4' }}</p>
                     </mat-card-content>
                 </div>
             </mat-card>
@@ -83,7 +78,7 @@
                     <app-pie-chart
                         [data]="assetsMonitoringData.pieChart"
                         height="300px"
-                        width='500px'
+                        width="500px"
                         chartName="نمودار دایره‌ای"
                         [cardLayout]="false"
                         categoryLabel="name"
@@ -98,8 +93,7 @@
                 <mat-card-title class="text-center">نمودار ارزش کل دارایی</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <app-trend-chart *ngIf="dataLoading" [data]="assetsMonitoringData.trendChart" [convertJalali]="true" height="380px">
-                </app-trend-chart>
+                <app-trend-chart *ngIf="dataLoading" [data]="assetsMonitoringData.trendChart" [convertJalali]="true" height="380px"> </app-trend-chart>
             </mat-card-content>
         </mat-card>
 
