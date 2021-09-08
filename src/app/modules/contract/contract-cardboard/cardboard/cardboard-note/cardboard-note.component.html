@@ -9,7 +9,17 @@
         </div>
     </mat-card-header>
 
-    <mat-card-content class="h-3/4 overflow-y-scroll">
-        <app-table [data]="contractNotes" [columns]="tableColumn" [paginationSettings]="{ mode: 'local' }" [paginationObject]="pagination"></app-table>
+    <mat-card-content class="h-3/4 overflow-y-scroll pt-5">
+        <div class="flex mx-5 items-center border-bottom" *ngFor="let contractNote of contractNotes">
+            <mat-icon class="mx-10 cursor-default" color="accent"> event_note </mat-icon>
+            <div class="flex flex-col justify-center">
+                <header class="flex">
+                    <h3>{{ contractNote.note }}</h3>
+                </header>
+                <section class="text-gray-600">
+                    <span> {{ contractNote.updatedAt | convertDate }} - {{ contractNote.step.name }} - {{ contractNote.user.name }} </span>
+                </section>
+            </div>
+        </div>
     </mat-card-content>
 </mat-card>
