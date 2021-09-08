@@ -15,19 +15,18 @@
             کاربر برای گام بعدی قرارداد، دسترسی بدهید
         </h3>
         <hr />
-        <form [formGroup]="form" (submit)="confirmStep()" id="form" class="mt-5">
+        <form [formGroup]="form" class="mt-5" *ngIf="nextStepSelectionUsers.length">
             <mat-form-field appearance="outline">
                 <mat-label>گزینش کاربر</mat-label>
-                <mat-select formControlName="user">
+                <mat-select formControlName="user" required>
                     <mat-option *ngFor="let user of nextStepSelectionUsers" [value]="user.userId">{{ user.username }}</mat-option>
                 </mat-select>
-                <mat-hint *ngIf="!nextStepSelectionUsers.length">کاربری یافت نشد</mat-hint>
             </mat-form-field>
         </form>
     </mat-card-content>
 
     <mat-card-actions>
-        <button mat-flat-button class="px-10 p-2" color="primary" type="submit" form="form">
+        <button mat-flat-button class="px-10 p-2" color="primary" (click)="confirmStep()">
             <mat-icon class="mat-18 mx-5">add</mat-icon>
             <span>تایید گام قرارداد</span>
         </button>

@@ -4,7 +4,7 @@ import { CardboardAction, CardboardInfo, ElectionUsers } from '../../cardboard.m
 import { CardboardService } from '../../cardboard.service';
 import { AlertService } from '#services/alert.service';
 import { StateType } from '#shared/state-type.enum';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-cardboard-confirm-dialog',
@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class CardboardConfirmDialogComponent implements OnInit {
     public nextStepSelectionUsers: Array<ElectionUsers> = [];
     public stateType: StateType = StateType.INIT;
-    public form: FormGroup = this.fb.group({ user: [] });
+    public form: FormGroup = this.fb.group({ user: [null, Validators.required] });
 
     constructor(
         private dialog: MatDialogRef<CardboardConfirmDialogComponent>,
@@ -50,6 +50,10 @@ export class CardboardConfirmDialogComponent implements OnInit {
 
     public confirmStep(): void {
         const user = this.form.value ? this.form.get('user').value : {};
+        if (this.nextStepSelectionUsers.length && this.form.invalid) {
+            this.alertService.onInfo('یک کاربر را برای دسترسی گام بعدی برگزینید');
+            return;
+        }
         this.cardboardService.confirmContractCardboardStep({ contractId: this.dialogData.contractId, user }).subscribe(
             () => {
                 this.alertService.onSuccess('با موفقیت تایید شد');
