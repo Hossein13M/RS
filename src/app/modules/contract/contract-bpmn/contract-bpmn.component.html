@@ -5,12 +5,12 @@
 <div class="page-layout">
     <app-header *ngIf="stateType === 'PRESENT'" [pageTitle]="'الگوی جریان: ' + flowDetails.name" class="wp-100">
         <div>
-            <button mat-flat-button color="warn" routerLink="/contract/flow" class="mx-5">
+            <button mat-stroked-button color="warn" routerLink="/contract/flow" class="mx-5">
                 <mat-icon class="mat-18">keyboard_return</mat-icon>
                 بازگشت
             </button>
 
-            <button mat-flat-button (click)="saveBPMN()" class="mx-5">
+            <button mat-stroked-button (click)="saveBPMN()" class="mx-5">
                 <mat-icon class="mat-18">add</mat-icon>
                 افزودن BPMN به جریان
             </button>
