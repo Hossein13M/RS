@@ -1,12 +1,12 @@
 <mat-card class="h-full w-full p-0" *ngIf="stateType === 'PRESENT'">
-    <mat-card-header class="w-full bg-blue-600 m-0 py-3.5">
+    <mat-card-header class="w-full bg-blue-900 m-0 py-3.5">
         <div class="w-full flex justify-between items-center px-5 w-full">
             <h2 class="font-bold text-white">فرم قرارداد</h2>
 
             <button
-                mat-mini-fab
+                mat-icon-button
+                class="text-white"
                 (click)="changeContractStatus(cardboardInfo.status === 'in progress')"
-                [color]="cardboardInfo.status === 'in progress' ? 'warn' : 'primary'"
                 [matTooltip]="cardboardInfo.status === 'in progress' ? 'متوقف کردن قرارداد' : 'بازگشایی قرارداد'"
             >
                 <mat-icon>{{ cardboardInfo.status === 'in progress' ? 'pause_circle' : 'play_arrow' }}</mat-icon>
