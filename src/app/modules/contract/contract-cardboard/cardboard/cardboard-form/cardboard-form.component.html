@@ -13,11 +13,12 @@
             </button>
         </div>
     </mat-card-header>
-    <mat-card-content class="flex flex-col px-2">
-        <div class="flex justify-evenly mt-80 mb-32">
+    <mat-card-content class="flex h-1/2 flex-col justify-center px-2">
+        <div class="flex justify-evenly">
             <button
-                *ngFor="let button of cardboardInfo.form"
                 mat-flat-button
+                *ngFor="let button of cardboardInfo.form"
+                [matTooltip]="button.name"
                 [color]="button.type === 'accept' ? 'primary' : button.type === 'reject' ? 'warn' : 'accent'"
                 (click)="onButtonClick(button.type)"
             >
@@ -25,4 +26,16 @@
             </button>
         </div>
     </mat-card-content>
+    <mat-card-footer class="text-center mb-2 flex flex-col">
+        <div class="flex justify-center items-center">
+            <mat-icon fontSet="material-icons-outlined" class="mx-2 cursor-default">help_outline</mat-icon>
+            <p>
+                این فرم، همان فرمی است که در هنگام ساخت
+                <strong>BPMN</strong>
+                این قرارداد،
+                <strong>به این گام</strong>
+                افزوده‌اید.
+            </p>
+        </div>
+    </mat-card-footer>
 </mat-card>
