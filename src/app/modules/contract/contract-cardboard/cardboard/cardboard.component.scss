@@ -40,3 +40,7 @@
         -webkit-clip-path: polygon(0% 0%, calc(100% - 20px) 0%, 100% 50%, calc(100% - 20px) 100%, 0% 100%);
     }
 }
+
+.min-height-card {
+    min-height: 270px;
+}
