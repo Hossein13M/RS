@@ -5,8 +5,6 @@ import { AlertService } from '#services/alert.service';
 import { CardboardService } from '../../cardboard.service';
 import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard-note-dialog.component';
 import { ContractNote } from '../../cardboard.model';
-import { Column } from '#shared/components/table/table.model';
-import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-cardboard-note',
@@ -17,13 +15,6 @@ export class CardboardNoteComponent implements OnInit {
     private contractId: string;
     public contractNotes: Array<ContractNote> = [];
     private currentStepInfo: { id: string; name: string };
-    public pagination = { skip: 0, limit: 100, total: 100 };
-
-    public tableColumn: Array<Column> = [
-        { id: 'index', type: 'index', minWidth: '50px' },
-        { id: 'updatedAt', name: 'تاریخ', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '100px' },
-        { id: 'note', name: 'یادداشت', type: 'string', minWidth: '200px' },
-    ];
 
     constructor(
         private readonly cardboardService: CardboardService,
