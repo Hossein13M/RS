@@ -1,4 +1,6 @@
 .header {
+    background: inherit;
+    background-image: url('~assets/images/background-dot-reversed.png') !important;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
