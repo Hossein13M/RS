@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { navigation } from 'app/dashboard-configs/navigation';
-import { UserInfoService } from 'app/services/App/userInfo/user-info.service';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,13 +25,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
-        private authenticationService: AuthenticationService,
-        private userInfoService: UserInfoService
+        private authenticationService: AuthenticationService
     ) {
-        this.userInfoService.userInfo$.subscribe((res) => {
-            // this.user = res;
-        });
         this.user = JSON.parse(localStorage.getItem('user'));
+        console.log(this.user);
 
         this.userStatusOptions = [
             { title: 'Online', icon: 'icon-checkbox-marked-circle', color: '#4CAF50' },
@@ -42,14 +38,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             { title: 'Offline', icon: 'icon-checkbox-blank-circle-outline', color: '#616161' },
         ];
 
-        const userRoles = JSON.parse(localStorage.getItem('user'))  ?? { role: 'somethingElse' };
-
-        if (userRoles.role === 'assets') {
-            this.navigation = [navigation[2]];
-        } else {
-            this.navigation = navigation;
-        }
-
+        const userRoles = JSON.parse(localStorage.getItem('user')) ?? { role: 'somethingElse' };
+        userRoles.role === 'assets' ? (this.navigation = [navigation[2]]) : (this.navigation = navigation);
         this._unsubscribeAll = new Subject();
     }
 
@@ -70,9 +60,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 
-    search(): void {}
-
     logout() {
-        this.authenticationService.logout();
+        this.authenticationService.logout().finally();
     }
 }
