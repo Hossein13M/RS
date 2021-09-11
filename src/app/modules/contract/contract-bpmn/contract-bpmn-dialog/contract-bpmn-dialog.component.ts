@@ -24,6 +24,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     public users: Array<User> = [];
     public units: Units;
     public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
+    public isFirstOrLastTask: boolean = false;
     private data: BpmnData = {
         step: '',
         flow: '',
@@ -57,7 +58,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     public formArray: FormArray = this.fb.array([]);
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public dialogData: { flowId: string; stateId: string; stateName: string; isStateTypeTask: boolean },
+        @Inject(MAT_DIALOG_DATA) public dialogData: { flowId: string; stateId: string; stateName: string; isStateTypeTask: boolean; bpmnProcesses },
         public dialogRef: MatDialogRef<ContractBpmnDialogComponent>,
         private userService: UserService,
         private fb: FormBuilder,
@@ -85,6 +86,22 @@ export class ContractBpmnDialogComponent implements OnInit {
         });
     }
 
+    private addUploadButtonOnFirstTaskAndEndEvent(): void {
+        const firstTaskId = this.dialogData.bpmnProcesses['bpmn:task'][0]['_attributes'].id;
+        const lastTaskId = this.dialogData.bpmnProcesses['bpmn:task'][this.dialogData.bpmnProcesses['bpmn:task'].length - 1]['_attributes'].id;
+        if (this.dialogData.stateId === firstTaskId || this.dialogData.stateId === lastTaskId) {
+            this.isFirstOrLastTask = true;
+            const uploadButton = this.buttonTypes.find((buttonType) => buttonType.engName === 'upload');
+            if (uploadButton.isAvailable) {
+                this.addTool({ name: 'آپلود', type: 'upload', isDefaultButton: false });
+            }
+        }
+    }
+
+    public checkForButtonStateOnTask(buttonType: ContractFormButtonTypes): boolean {
+        return this.isFirstOrLastTask && buttonType === 'upload';
+    }
+
     private getFlowDetails(): void {
         const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
         this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.dialogData.flowId, ...pagination }).subscribe((response) => {
@@ -107,7 +124,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
         if (!this.data.isNewStep || !this.dialogData.isStateTypeTask) {
             this.getStepInfo();
-        }
+        } else this.addUploadButtonOnFirstTaskAndEndEvent();
     }
 
     private getOrganizationUsers(): any {
@@ -203,8 +220,11 @@ export class ContractBpmnDialogComponent implements OnInit {
         if (response.accessRights?.users?.length) response.accessRights.users.map((user) => userIdList.push(user.userId));
         if (response.accessRights?.units) this.form.get('units').setValue([response.accessRights.units.unit]);
         this.form.get('users').setValue(userIdList);
-        this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
+        if (!!response.accessRights.units) {
+            this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
+        }
         response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
+        this.addUploadButtonOnFirstTaskAndEndEvent();
     }
 
     private checkForUnavailableButtons(responseFromServer: BpmnData): void {
