@@ -133,7 +133,11 @@
                                     mat-flat-button
                                     color="warn"
                                     (click)="removeTool(formArray, index)"
-                                    [disabled]="formArray.get('isDefaultButton').value || flowDetails.hasActiveContract"
+                                    [disabled]="
+                                        formArray.get('isDefaultButton').value ||
+                                        flowDetails.hasActiveContract ||
+                                        checkForButtonStateOnTask(formArray.get('type').value)
+                                    "
                                 >
                                     <span>پاک کردن این ابزار</span>
                                     <mat-icon fontSet="material-icons-outlined"> clear </mat-icon>

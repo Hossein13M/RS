@@ -187,11 +187,19 @@ export class ContractBpmnComponent implements OnInit {
     }
 
     private openDialog(stateName, stateId, isStateTypeTask: boolean): void {
-        this.dialog.open(ContractBpmnDialogComponent, {
-            width: '1500px',
-            height: isStateTypeTask ? '900px' : '500px',
-            panelClass: 'dialog-p-0',
-            data: { flowId: this.activatedRoute.snapshot.params.id, stateName, stateId, isStateTypeTask },
+        this.modeler.saveXML(async (err: any, xml: any) => {
+            const bpmnProcesses = JSON.parse(xml2json(xml, { compact: true }))['bpmn:definitions']['bpmn:process'];
+            if (Array.isArray(bpmnProcesses['bpmn:endEvent'])) {
+                this.alertService.onError('شما نمیتوانید دو پایان داشته باشید');
+                return;
+            }
+
+            this.dialog.open(ContractBpmnDialogComponent, {
+                width: '1500px',
+                height: isStateTypeTask ? '900px' : '500px',
+                panelClass: 'dialog-p-0',
+                data: { flowId: this.activatedRoute.snapshot.params.id, stateName, stateId, isStateTypeTask, bpmnProcesses },
+            });
         });
     }
 }
