@@ -30,7 +30,7 @@
                         (change)="onAccessRightTypeChange($event)"
                     >
                         <mat-radio-button value="static">دسترسی ثابت</mat-radio-button>
-                        <mat-radio-button value="dynamic">دسترسی پویا (گزینشی)</mat-radio-button>
+                        <mat-radio-button value="dynamic" [disabled]="taskStep === 'first'">دسترسی پویا (گزینشی)</mat-radio-button>
                     </mat-radio-group>
 
                     <div class="flex justify-center items-center">
@@ -44,9 +44,17 @@
                         </div>
 
                         <div *ngIf="form.get('accessRightType').value === 'static'" class="flex justify-around w-full items-center">
-                            <mat-checkbox formControlName="initializer" class="bottom-margin">دسترسی ثبت‌کننده‌ی قرارداد به این گام</mat-checkbox>
+                            <mat-checkbox
+                                formControlName="initializer"
+                                class="bottom-margin"
+                                [disabled]="taskStep === 'first'"
+                                [checked]="taskStep === 'first'"
+                            >
+                                دسترسی ثبت‌کننده‌ی قرارداد به این گام
+                            </mat-checkbox>
 
                             <app-tree-select
+                                *ngIf="taskStep !== 'first'"
                                 class="flex items-center mx-40 tree-border bottom-margin"
                                 (event)="detectChanges($event)"
                                 [maxSelect]="1"

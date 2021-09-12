@@ -24,7 +24,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     public users: Array<User> = [];
     public units: Units;
     public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
-    public isFirstOrLastTask: boolean = false;
+    public taskStep: 'first' | 'last' | 'other' = 'other';
     private data: BpmnData = {
         step: '',
         flow: '',
@@ -90,7 +90,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         const firstTaskId = this.dialogData.bpmnProcesses['bpmn:task'][0]['_attributes'].id;
         const lastTaskId = this.dialogData.bpmnProcesses['bpmn:task'][this.dialogData.bpmnProcesses['bpmn:task'].length - 1]['_attributes'].id;
         if (this.dialogData.stateId === firstTaskId || this.dialogData.stateId === lastTaskId) {
-            this.isFirstOrLastTask = true;
+            this.dialogData.stateId === firstTaskId ? (this.taskStep = 'first') : (this.taskStep = 'last');
             const uploadButton = this.buttonTypes.find((buttonType) => buttonType.engName === 'upload');
             if (uploadButton.isAvailable) {
                 this.addTool({ name: 'آپلود', type: 'upload', isDefaultButton: false });
@@ -99,7 +99,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     public checkForButtonStateOnTask(buttonType: ContractFormButtonTypes): boolean {
-        return this.isFirstOrLastTask && buttonType === 'upload';
+        return (this.taskStep === 'first' || this.taskStep === 'last') && buttonType === 'upload';
     }
 
     private getFlowDetails(): void {
