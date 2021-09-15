@@ -14,7 +14,7 @@
         </div>
     </mat-card-header>
     <mat-card-content class="flex h-1/2 flex-col justify-center px-2">
-        <div class="flex justify-evenly">
+        <div class="flex justify-evenly" *ngIf="cardboardInfo.status !== 'final'">
             <button
                 mat-flat-button
                 *ngFor="let button of cardboardInfo.form"
@@ -24,6 +24,9 @@
             >
                 {{ button.name }}
             </button>
+        </div>
+        <div class="flex justify-center" *ngIf="cardboardInfo.status === 'final'">
+            <button mat-flat-button matTooltip="فرم پایانی قرارداد" color="primary" (click)="openFinalFormDialog()">فرم پایانی قرارداد</button>
         </div>
     </mat-card-content>
     <mat-card-footer class="text-center mb-2 flex flex-col">
