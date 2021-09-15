@@ -47,7 +47,7 @@
         "@angular/router": "12.2.3",
         "@tailwindcss/typography": "0.4.1",
         "@types/prismjs": "1.16.0",
-        "ag-form-builder": "0.0.3-beta.5",
+        "ag-form-builder": "0.0.3-beta.10",
         "autoprefixer": "10.3.1",
         "bpmn-js": "8.7.1",
         "bpmn-js-properties-panel": "0.44.0",
