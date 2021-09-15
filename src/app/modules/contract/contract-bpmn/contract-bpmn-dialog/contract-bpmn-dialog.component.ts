@@ -122,7 +122,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.data.flow = this.dialogData.flowId;
         this.data.step = this.dialogData.stateId;
         this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
-        if (!this.data.isNewStep) {
+        if (!this.data.isNewStep || !this.dialogData.isStateTypeTask) {
             this.getStepInfo();
         } else this.addUploadButtonOnFirstTaskAndEndEvent();
     }
