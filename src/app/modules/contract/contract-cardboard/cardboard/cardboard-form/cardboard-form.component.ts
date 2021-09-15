@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CardboardInfo, ContractFormButtonTypes } from '../../cardboard.model';
 import { CardboardService } from '../../cardboard.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StateType } from '#shared/state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '#shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -9,6 +9,8 @@ import { AlertService } from '#services/alert.service';
 import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard-note-dialog.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { CardboardConfirmDialogComponent } from '../cardboard-confirm-dialog/cardboard-confirm-dialog.component';
+import { CardboardUploadDialogComponent } from '../cardboard-upload-dialog/cardboard-upload-dialog.component';
+import { AgSection } from 'ag-form-builder/lib/models/agSection.model';
 
 @Component({
     selector: 'app-cardboard-form',
@@ -25,7 +27,8 @@ export class CardboardFormComponent implements OnInit {
         private readonly activatedRoute: ActivatedRoute,
         private readonly dialog: MatDialog,
         private readonly alertService: AlertService,
-        private _clipboardService: ClipboardService
+        private _clipboardService: ClipboardService,
+        private readonly router: Router
     ) {}
 
     ngOnInit(): void {
@@ -51,6 +54,10 @@ export class CardboardFormComponent implements OnInit {
             case 'accept':
                 this.openAcceptStepDialog();
                 break;
+            case 'upload':
+                this.openUploadDialog();
+                break;
+
             default:
                 this.onStepRejectionDialogOpening();
         }
@@ -147,5 +154,30 @@ export class CardboardFormComponent implements OnInit {
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
+    }
+
+    public openFinalFormDialog(): void {
+        this.router.navigate(['/contract/viewer/' + this.contractId]).finally();
+        // this.dialog
+        //     .open(CardboardFormViewerDialogComponent, {
+        //         width: '1600px',
+        //         height: '900px',
+        //         panelClass: 'dialog-p-0',
+        //         data: { contractId: this.contractId, data: this.cardboardInfo.form },
+        //     })
+        //     .afterClosed()
+        //     .subscribe((result: any) => console.log(result));
+    }
+
+    public openUploadDialog(): void {
+        this.dialog
+            .open(CardboardUploadDialogComponent, {
+                width: '1400px',
+                height: '900px',
+                panelClass: 'dialog-p-0',
+                data: this.cardboardInfo.form as { name: string; sections: Array<AgSection> },
+            })
+            .afterClosed()
+            .subscribe((result: any) => console.log(result));
     }
 }
