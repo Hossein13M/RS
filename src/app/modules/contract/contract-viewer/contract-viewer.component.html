@@ -1,0 +1,7 @@
+<div class="page-layout">
+    <app-header pageTitle="نمایش فرم نهایی" class="wp-100"> </app-header>
+
+    <div class="fuse-card" *ngIf="!isLoading">
+        <lib-ag-form-viewer dir="ltr" [formInfo]="formData" (emittedFormViewerInfo)="handleFormViewerInfo($event)"></lib-ag-form-viewer>
+    </div>
+</div>
