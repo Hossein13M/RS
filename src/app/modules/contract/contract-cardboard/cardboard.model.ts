@@ -1,3 +1,5 @@
+import { AgSection } from 'ag-form-builder/lib/models/agSection.model';
+
 export interface ElectionUsers {
     userId: null;
     username: string;
@@ -12,9 +14,11 @@ export interface CardboardAction {
 
 export interface CardboardInfo {
     steps: Array<{ id: string; name: string }>;
-    form: FormButton;
+    form: FormButton | FinalForm;
     status: 'in progress' | 'pause' | string;
 }
+
+export type FinalForm = { name: string; sections: Array<AgSection> };
 
 export type FormButton = Array<{ isDefaultButton: boolean; name: string; type: ContractFormButtonTypes }>;
 
