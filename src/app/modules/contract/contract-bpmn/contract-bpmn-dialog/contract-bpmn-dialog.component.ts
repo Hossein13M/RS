@@ -88,8 +88,8 @@ export class ContractBpmnDialogComponent implements OnInit {
 
     private addUploadButtonOnFirstTaskAndEndEvent(): void {
         const firstTaskId = this.dialogData.bpmnProcesses['bpmn:task'][0]['_attributes'].id;
-        const lastTaskId = this.dialogData.bpmnProcesses['bpmn:task'][this.dialogData.bpmnProcesses['bpmn:task'].length - 1]['_attributes'].id;
-        if (this.dialogData.stateId === firstTaskId || this.dialogData.stateId === lastTaskId) {
+        const endEvent = this.dialogData.bpmnProcesses['bpmn:endEvent']['_attributes'].id;
+        if (this.dialogData.stateId === firstTaskId || this.dialogData.stateId === endEvent) {
             this.dialogData.stateId === firstTaskId ? (this.taskStep = 'first') : (this.taskStep = 'last');
             const uploadButton = this.buttonTypes.find((buttonType) => buttonType.engName === 'upload');
             if (uploadButton.isAvailable) {
@@ -122,7 +122,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.data.flow = this.dialogData.flowId;
         this.data.step = this.dialogData.stateId;
         this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
-        if (!this.data.isNewStep || !this.dialogData.isStateTypeTask) {
+        if (!this.data.isNewStep) {
             this.getStepInfo();
         } else this.addUploadButtonOnFirstTaskAndEndEvent();
     }
@@ -133,7 +133,7 @@ export class ContractBpmnDialogComponent implements OnInit {
 
     public submitForm(): void {
         this.prepareAccessRights();
-        if (this.dialogData.isStateTypeTask) this.data.attributes = this.formArray.value;
+        this.data.attributes = this.formArray.value;
         if (!this.data.accessRights.users.length) delete this.data.accessRights.users;
         if (!this.data.accessRights.units.roles.length) delete this.data.accessRights.units;
         this.bpmnService.saveBpmnStep(this.data).subscribe(

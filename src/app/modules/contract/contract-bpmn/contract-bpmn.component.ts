@@ -196,7 +196,7 @@ export class ContractBpmnComponent implements OnInit {
 
             this.dialog.open(ContractBpmnDialogComponent, {
                 width: '1500px',
-                height: isStateTypeTask ? '900px' : '500px',
+                height: '900px',
                 panelClass: 'dialog-p-0',
                 data: { flowId: this.activatedRoute.snapshot.params.id, stateName, stateId, isStateTypeTask, bpmnProcesses },
             });
