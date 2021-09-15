@@ -8,6 +8,8 @@ export const ContractHistoryIcons: Array<Action> = [
     { typePer: 'بازگشایی', icon: 'play_circle_filled', iconColor: 'accent', titleText: 'بازگشایی قرارداد' },
     { typePer: 'رد', icon: 'thumb_down_alt', iconColor: 'warn', titleText: 'رد کردن قرارداد' },
     { typePer: 'تایید', icon: 'thumb_up_off_alt', iconColor: 'accent', titleText: 'تایید قرارداد' },
+    { typePer: 'آپلود', icon: 'publish', iconColor: 'warn', titleText: 'آپلود قرارداد' },
+    { typePer: 'دانلود', icon: 'get_app', iconColor: 'warn', titleText: 'دانلود قرارداد' },
 ];
 
 export interface Action {
