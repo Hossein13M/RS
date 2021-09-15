@@ -8,6 +8,7 @@ const routes: Routes = [
     { path: `cardboard`, loadChildren: () => import('./contract-cardboard/cardboard-list.module').then((m) => m.CardboardListModule) },
     { path: `flow/bpmn/:id`, loadChildren: () => import('./contract-bpmn/contract-bpmn.module').then((m) => m.ContractBpmnModule) },
     { path: `flow`, loadChildren: () => import('./contract-flow/contract-flow.module').then((m) => m.ContractFlowModule) },
+    { path: `viewer/:id`, loadChildren: () => import('./contract-viewer/contract-viewer.module').then((m) => m.ContractViewerModule) },
 ];
 
 @NgModule({
