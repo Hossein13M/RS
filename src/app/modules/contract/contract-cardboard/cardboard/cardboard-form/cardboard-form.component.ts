@@ -10,7 +10,6 @@ import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard
 import { ClipboardService } from 'ngx-clipboard';
 import { CardboardConfirmDialogComponent } from '../cardboard-confirm-dialog/cardboard-confirm-dialog.component';
 import { CardboardUploadDialogComponent } from '../cardboard-upload-dialog/cardboard-upload-dialog.component';
-import { AgSection } from 'ag-form-builder/lib/models/agSection.model';
 
 @Component({
     selector: 'app-cardboard-form',
@@ -157,25 +156,16 @@ export class CardboardFormComponent implements OnInit {
     }
 
     public openFinalFormDialog(): void {
-        this.router.navigate(['/contract/viewer/' + this.contractId]).finally();
-        // this.dialog
-        //     .open(CardboardFormViewerDialogComponent, {
-        //         width: '1600px',
-        //         height: '900px',
-        //         panelClass: 'dialog-p-0',
-        //         data: { contractId: this.contractId, data: this.cardboardInfo.form },
-        //     })
-        //     .afterClosed()
-        //     .subscribe((result: any) => console.log(result));
+        this.router.navigate(['/contract/viewer/' + this.contractId]).finally(() => this.alertService.onInfo('فرم پایانی قرارداد را پر کنید.'));
     }
 
     public openUploadDialog(): void {
         this.dialog
             .open(CardboardUploadDialogComponent, {
-                width: '1400px',
-                height: '900px',
+                width: '600px',
+                height: '570px',
                 panelClass: 'dialog-p-0',
-                data: this.cardboardInfo.form as { name: string; sections: Array<AgSection> },
+                data: { contractId: this.contractId, hasSignedFile: this.cardboardInfo.hasSignedFile },
             })
             .afterClosed()
             .subscribe((result: any) => console.log(result));
