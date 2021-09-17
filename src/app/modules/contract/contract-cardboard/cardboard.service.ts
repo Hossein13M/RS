@@ -1,7 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CardboardAction, CardboardInfo, ContractCardboard, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
+import {
+    CardboardAction,
+    CardBoardDownloadFiles,
+    CardboardInfo,
+    ContractCardboard,
+    ContractHistory,
+    ContractNote,
+    DownloadFileSearchParams,
+    ElectionUsers,
+    NoteAdd,
+} from './cardboard.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
@@ -56,10 +66,15 @@ export class CardboardService {
     }
 
     public uploadFileInContractCarddboard(fileInfo: any): Observable<any> {
-        const headers: HttpHeaders = new HttpHeaders();
-        headers.append('Content-Type', 'multipart/form-data');
-        headers.append('Accept', 'application/json');
+        return this.http.post<any>(`/api/v1/contract-file/upload`, fileInfo);
+    }
 
-        return this.http.post<any>(`/api/v1/contract-file/upload`, fileInfo, { headers: headers });
+    public getDownloadedFilesList(searchParams: DownloadFileSearchParams): Observable<Array<CardBoardDownloadFiles>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
+        return this.http.get<Array<CardBoardDownloadFiles>>(`/api/v1/contract-file`, { params });
+    }
+
+    public downloadCounterTrigger(contractInfo: { contractId: string; fileName: string }): Observable<void> {
+        return this.http.post<void>(`/api/v1/contract-file/download`, contractInfo);
     }
 }

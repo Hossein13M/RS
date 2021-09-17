@@ -23,6 +23,7 @@ import { ShareModule } from '#shared/share.module';
 import { CardboardConfirmDialogComponent } from './cardboard/cardboard-confirm-dialog/cardboard-confirm-dialog.component';
 import { CardboardUploadDialogComponent } from './cardboard/cardboard-upload-dialog/cardboard-upload-dialog.component';
 import { AgFormViewerModule } from 'ag-form-builder';
+import { CardboardDownloadDialogComponent } from './cardboard/cardboard-download-dialog/cardboard-download-dialog.component';
 
 const routes: Routes = [
     { path: ':id', pathMatch: 'full', component: CardboardComponent },
@@ -40,6 +41,7 @@ const routes: Routes = [
         CardboardNoteDialogComponent,
         CardboardConfirmDialogComponent,
         CardboardUploadDialogComponent,
+        CardboardDownloadDialogComponent,
     ],
     imports: [
         CommonModule,
