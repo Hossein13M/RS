@@ -6,6 +6,7 @@ import { AgFormViewerModule } from 'ag-form-builder';
 import { LayoutModule } from '../../../layout/layout.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ContractViewerService } from './contract-viewer.service';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractViewerComponent }];
 
@@ -13,5 +14,6 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractViewer
     declarations: [ContractViewerComponent],
     imports: [CommonModule, RouterModule.forChild(routes), AgFormViewerModule, LayoutModule, MatButtonModule, MatIconModule],
     exports: [ContractViewerComponent],
+    providers: [ContractViewerService],
 })
 export class ContractViewerModule {}
