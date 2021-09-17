@@ -74,7 +74,7 @@ export class CardboardService {
         return this.http.get<Array<CardBoardDownloadFiles>>(`/api/v1/contract-file`, { params });
     }
 
-    public downloadCounterTrigger(contractInfo: { contractId: string; fileName: string }): Observable<void> {
+    public downloadCounterTrigger(contractInfo: { contract: string; fileName: string }): Observable<void> {
         return this.http.post<void>(`/api/v1/contract-file/download`, contractInfo);
     }
 }

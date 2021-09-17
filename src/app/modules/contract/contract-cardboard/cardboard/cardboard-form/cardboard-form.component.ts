@@ -40,6 +40,9 @@ export class CardboardFormComponent implements OnInit {
         this.cardboardService.getContractCardboardWizard(this.contractId).subscribe(
             (response) => {
                 this.cardboardInfo = response;
+                // if (Array.isArray(this.cardboardInfo.form)) {
+                //     this.cardboardInfo.form.push({ isDefaultButton: false, name: 'download', type: 'download' });
+                // }
                 this.stateType = StateType.PRESENT;
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
@@ -56,6 +59,10 @@ export class CardboardFormComponent implements OnInit {
                 break;
             case 'upload':
                 this.openUploadDialog();
+                break;
+
+            case 'download':
+                this.openDownloadDialog();
                 break;
 
             default:
@@ -175,8 +182,8 @@ export class CardboardFormComponent implements OnInit {
     public openDownloadDialog(): void {
         this.dialog
             .open(CardboardDownloadDialogComponent, {
-                width: '600px',
-                height: '900px',
+                width: '1000px',
+                height: '600px',
                 panelClass: 'dialog-p-0',
                 data: this.contractId,
             })
