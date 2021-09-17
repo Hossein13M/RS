@@ -10,6 +10,7 @@ import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard
 import { ClipboardService } from 'ngx-clipboard';
 import { CardboardConfirmDialogComponent } from '../cardboard-confirm-dialog/cardboard-confirm-dialog.component';
 import { CardboardUploadDialogComponent } from '../cardboard-upload-dialog/cardboard-upload-dialog.component';
+import { CardboardDownloadDialogComponent } from '../cardboard-download-dialog/cardboard-download-dialog.component';
 
 @Component({
     selector: 'app-cardboard-form',
@@ -166,6 +167,18 @@ export class CardboardFormComponent implements OnInit {
                 height: '570px',
                 panelClass: 'dialog-p-0',
                 data: { contractId: this.contractId, hasSignedFile: this.cardboardInfo.hasSignedFile },
+            })
+            .afterClosed()
+            .subscribe((result: any) => console.log(result));
+    }
+
+    public openDownloadDialog(): void {
+        this.dialog
+            .open(CardboardDownloadDialogComponent, {
+                width: '600px',
+                height: '900px',
+                panelClass: 'dialog-p-0',
+                data: this.contractId,
             })
             .afterClosed()
             .subscribe((result: any) => console.log(result));

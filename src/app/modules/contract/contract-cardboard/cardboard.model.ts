@@ -113,3 +113,28 @@ export interface ContractCardboardTableData {
     customer: string;
     status: 'pause' | 'final' | 'in progress';
 }
+
+export interface CardBoardDownloadFiles {
+    contract: string;
+    fileName: string;
+    description: string;
+    type: ContractFileType;
+    objectName: string;
+    user: { id: number; name: string };
+    version: number;
+    isArchived: true;
+    _id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    url: string;
+}
+
+export interface DownloadFileSearchParams {
+    contract: string;
+    fromDate?: string;
+    toDate?: string;
+    type?: ContractFileType;
+    fileName?: string;
+}
+
+export type ContractFileType = 'draft' | 'unsigned' | 'signed';
