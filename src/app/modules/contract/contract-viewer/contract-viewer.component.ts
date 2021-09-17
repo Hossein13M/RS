@@ -34,6 +34,10 @@ export class ContractViewerComponent implements OnInit {
         });
     }
 
+    public navigateToCardboardPage(): void {
+        this.router.navigate(['/contract/cardboard']).finally();
+    }
+
     public handleFormViewerInfo(event) {
         this.contractViewerService.sendFinalFormData({ contract: this.contractId, data: event }).subscribe(
             () => this.router.navigate(['/contract/contract-list']).finally(() => this.alertService.onSuccess('ثبت شد')),
