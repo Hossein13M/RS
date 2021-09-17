@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CardboardAction, CardboardInfo, ContractCardboard, ContractHistory, ContractNote, ElectionUsers, FinalForm, NoteAdd } from './cardboard.model';
+import { CardboardAction, CardboardInfo, ContractCardboard, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
@@ -53,9 +53,5 @@ export class CardboardService {
 
     public getContractHistory(contractId: string): Observable<Array<ContractHistory>> {
         return this.http.get<Array<ContractHistory>>(`/api/v1/contract-history/${contractId}`);
-    }
-
-    public sendFinalFormData(formInfo: { contract: string; data: Array<FinalForm> }): Observable<any> {
-        return this.http.put<any>(`/api/v1/contract-data`, formInfo);
     }
 }
