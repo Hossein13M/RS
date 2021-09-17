@@ -21,7 +21,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CardboardNoteDialogComponent } from './cardboard/cardboard-note-dialog/cardboard-note-dialog.component';
 import { ShareModule } from '#shared/share.module';
 import { CardboardConfirmDialogComponent } from './cardboard/cardboard-confirm-dialog/cardboard-confirm-dialog.component';
-import { CardboardFormViewerDialogComponent } from './cardboard/cardboard-form-viewer-dialog/cardboard-form-viewer-dialog.component';
 import { CardboardUploadDialogComponent } from './cardboard/cardboard-upload-dialog/cardboard-upload-dialog.component';
 import { AgFormViewerModule } from 'ag-form-builder';
 
@@ -40,7 +39,6 @@ const routes: Routes = [
         CardboardContractInfoComponent,
         CardboardNoteDialogComponent,
         CardboardConfirmDialogComponent,
-        CardboardFormViewerDialogComponent,
         CardboardUploadDialogComponent,
     ],
     imports: [
