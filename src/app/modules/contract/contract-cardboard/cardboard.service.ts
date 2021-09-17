@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CardboardAction, CardboardInfo, ContractCardboard, ContractHistory, ContractNote, ElectionUsers, NoteAdd } from './cardboard.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
@@ -53,5 +53,13 @@ export class CardboardService {
 
     public getContractHistory(contractId: string): Observable<Array<ContractHistory>> {
         return this.http.get<Array<ContractHistory>>(`/api/v1/contract-history/${contractId}`);
+    }
+
+    public uploadFileInContractCarddboard(fileInfo: any): Observable<any> {
+        const headers: HttpHeaders = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+
+        return this.http.post<any>(`/api/v1/contract-file/upload`, fileInfo, { headers: headers });
     }
 }

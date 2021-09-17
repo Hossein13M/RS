@@ -16,6 +16,7 @@ export interface CardboardInfo {
     steps: Array<{ id: string; name: string }>;
     form: FormButton | FinalForm;
     status: 'in progress' | 'pause' | string;
+    hasSignedFile: boolean;
 }
 
 export type FinalForm = { name: string; sections: Array<AgSection> };
