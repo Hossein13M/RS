@@ -14,7 +14,7 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 })
 export class CardboardDownloadDialogComponent implements OnInit {
     public filesList: Array<CardBoardDownloadFiles>;
-    public form: FormGroup = this.fb.group({ fromDate: [], toDate: [], type: [], fileName: [] });
+    public form: FormGroup = this.fb.group({ fromDate: [null], toDate: [null], type: [null], fileName: [null] });
     public pagination = { skip: 0, limit: 5, total: 100 };
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '50px' },
@@ -68,11 +68,15 @@ export class CardboardDownloadDialogComponent implements OnInit {
 
     public onSearchFile(): void {
         const searchParams: DownloadFileSearchParams = { ...this.form.value, contract: this.contractId };
+        Object.keys(searchParams).forEach((key) => searchParams[key] == null && delete searchParams[key]);
+        if (searchParams.toDate) searchParams.toDate = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(searchParams.toDate));
+        if (searchParams.fromDate) searchParams.toDate = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(searchParams.fromDate));
+
         this.getFilesList(searchParams);
     }
 
     public downloadFile(fileName: string, url: string): void {
-        this.cardBoardService.downloadCounterTrigger({ contractId: this.contractId, fileName: fileName }).subscribe(() => window.open(url, '_blank'));
+        this.cardBoardService.downloadCounterTrigger({ contract: this.contractId, fileName: fileName }).subscribe(() => window.open(url, '_blank'));
     }
 
     static convertFileTypeToPersian(fileTypeEngName: string): string {
