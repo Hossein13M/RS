@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CardboardService } from '../../cardboard.service';
 import { AlertService } from '#services/alert.service';
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +15,7 @@ import { ThemePalette } from '@angular/material/core';
     styleUrls: ['./cardboard-history.component.scss'],
 })
 export class CardboardHistoryComponent implements OnInit {
+    @Input() contractIdForDialog: string;
     private contractId: string;
     public contractHistory: Array<ContractHistory> = [];
     public tableDataContractHistory: Array<ContractHistoryTableData> = [];
@@ -36,7 +37,7 @@ export class CardboardHistoryComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.contractId = this.activatedRoute.snapshot.params.id;
+        this.contractId = !!this.contractIdForDialog ? this.contractIdForDialog : this.activatedRoute.snapshot.params.id;
         this.getContractHistory();
     }
 
