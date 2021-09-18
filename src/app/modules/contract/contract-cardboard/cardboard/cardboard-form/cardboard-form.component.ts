@@ -176,7 +176,7 @@ export class CardboardFormComponent implements OnInit {
                 data: { contractId: this.contractId, hasSignedFile: this.cardboardInfo.hasSignedFile },
             })
             .afterClosed()
-            .subscribe((result: any) => console.log(result));
+            .subscribe((result: boolean) => result && setTimeout(() => window.location.reload(), 2000));
     }
 
     public openDownloadDialog(): void {

@@ -65,10 +65,6 @@ export class CardboardService {
         return this.http.get<Array<ContractHistory>>(`/api/v1/contract-history/${contractId}`);
     }
 
-    public uploadFileInContractCarddboard(fileInfo: any): Observable<any> {
-        return this.http.post<any>(`/api/v1/contract-file/upload`, fileInfo);
-    }
-
     public getDownloadedFilesList(searchParams: DownloadFileSearchParams): Observable<Array<CardBoardDownloadFiles>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls(searchParams);
         return this.http.get<Array<CardBoardDownloadFiles>>(`/api/v1/contract-file`, { params });
