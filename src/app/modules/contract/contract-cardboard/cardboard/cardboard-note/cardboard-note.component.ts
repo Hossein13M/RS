@@ -12,7 +12,7 @@ import { ContractNote } from '../../cardboard.model';
     styleUrls: ['./cardboard-note.component.scss'],
 })
 export class CardboardNoteComponent implements OnInit {
-    @Input() contractIdForDialog: string;
+    @Input() contractIdForDialog: string = null;
     private contractId: string;
     public contractNotes: Array<ContractNote> = [];
     private currentStepInfo: { id: string; name: string };
