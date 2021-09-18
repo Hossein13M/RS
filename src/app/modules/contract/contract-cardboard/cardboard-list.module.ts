@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CardboardListComponent } from './cardboard-list.component';
 import { RouterModule, Routes } from '@angular/router';
 import { CardboardComponent } from './cardboard/cardboard.component';
-import { CardboardNoteComponent } from './cardboard/cardboard-note/cardboard-note.component';
 import { CardboardFormComponent } from './cardboard/cardboard-form/cardboard-form.component';
 import { LayoutModule } from '../../../layout/layout.module';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,6 +23,7 @@ import { CardboardUploadDialogComponent } from './cardboard/cardboard-upload-dia
 import { AgFormViewerModule } from 'ag-form-builder';
 import { CardboardDownloadDialogComponent } from './cardboard/cardboard-download-dialog/cardboard-download-dialog.component';
 import { CardboardHistoryModule } from './cardboard/cardboard-history/cardboard-history.module';
+import { CardboardNoteModule } from './cardboard/cardboard-note/cardboard-note.module';
 
 const routes: Routes = [
     { path: ':id', pathMatch: 'full', component: CardboardComponent },
@@ -34,7 +34,6 @@ const routes: Routes = [
     declarations: [
         CardboardListComponent,
         CardboardComponent,
-        CardboardNoteComponent,
         CardboardFormComponent,
         CardboardContractInfoComponent,
         CardboardNoteDialogComponent,
@@ -60,6 +59,7 @@ const routes: Routes = [
         ShareModule,
         AgFormViewerModule,
         CardboardHistoryModule,
+        CardboardNoteModule,
     ],
     exports: [CardboardListComponent],
 })

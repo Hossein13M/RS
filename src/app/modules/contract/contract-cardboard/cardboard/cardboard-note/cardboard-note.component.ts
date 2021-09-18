@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from '#services/alert.service';
@@ -12,6 +12,7 @@ import { ContractNote } from '../../cardboard.model';
     styleUrls: ['./cardboard-note.component.scss'],
 })
 export class CardboardNoteComponent implements OnInit {
+    @Input() contractIdForDialog: string;
     private contractId: string;
     public contractNotes: Array<ContractNote> = [];
     private currentStepInfo: { id: string; name: string };
@@ -24,7 +25,7 @@ export class CardboardNoteComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.contractId = this.activatedRoute.snapshot.params.id;
+        this.contractId = !!this.contractIdForDialog ? this.contractIdForDialog : this.activatedRoute.snapshot.params.id;
         this.getNotes();
     }
 
