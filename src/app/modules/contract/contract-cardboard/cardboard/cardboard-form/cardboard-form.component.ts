@@ -180,14 +180,11 @@ export class CardboardFormComponent implements OnInit {
     }
 
     public openDownloadDialog(): void {
-        this.dialog
-            .open(CardboardDownloadDialogComponent, {
-                width: '1000px',
-                height: '600px',
-                panelClass: 'dialog-p-0',
-                data: this.contractId,
-            })
-            .afterClosed()
-            .subscribe((result: any) => console.log(result));
+        this.dialog.open(CardboardDownloadDialogComponent, {
+            width: '1000px',
+            height: '600px',
+            panelClass: 'dialog-p-0',
+            data: this.contractId,
+        });
     }
 }

@@ -9,6 +9,7 @@ import { ContractDialogComponent } from './contract-dialog/contract-dialog.compo
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ContractNoteDialogComponent } from './contract-note-dialog/contract-note-dialog.component';
 import { ContractHistoryDialogComponent } from './contract-history-dialog/contract-history-dialog.component';
+import { ContractFinalFormDialogComponent } from './contract-final-form-dialog/contract-final-form-dialog.component';
 
 @Component({
     selector: 'app-contract-list',
@@ -54,6 +55,12 @@ export class ContractListComponent implements OnInit {
                     icon: 'sticky_note_2',
                     color: 'primary',
                     operation: (row: { operationItem: any; row: Contract }) => this.openContractNoteDialog(row.row._id),
+                },
+                {
+                    name: 'نمایش فرم پایانی قرارداد',
+                    icon: 'list_alt',
+                    color: 'accent',
+                    operation: (row: { operationItem: any; row: Contract }) => this.openContractFormDialog(row.row._id),
                 },
                 {
                     name: 'تغییر وضعیت',
@@ -111,6 +118,10 @@ export class ContractListComponent implements OnInit {
 
     public openContractNoteDialog(contractId: string): void {
         this.dialog.open(ContractNoteDialogComponent, { data: contractId, width: '600px', height: '250px', panelClass: 'dialog-p-0' });
+    }
+
+    public openContractFormDialog(contractId: string): void {
+        this.dialog.open(ContractFinalFormDialogComponent, { data: contractId, width: '800px', height: '350px', panelClass: 'dialog-p-0' });
     }
 
     public paginationControl(pageEvent?: any): void {

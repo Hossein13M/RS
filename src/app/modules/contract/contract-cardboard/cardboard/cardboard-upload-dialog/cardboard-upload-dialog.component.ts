@@ -29,7 +29,6 @@ export class CardboardUploadDialogComponent implements OnInit {
     }
 
     public uploadFiles(event: any) {
-        console.log(event.files[0]);
         this.uploadedFile = event.files[0];
         this.form.get('file').setValue(this.uploadedFile);
     }

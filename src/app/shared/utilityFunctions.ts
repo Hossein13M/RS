@@ -38,4 +38,8 @@ export class UtilityFunctions {
     static getActiveOrganizationName(): string {
         return JSON.parse(localStorage.getItem('activeOrganization'))['name'];
     }
+
+    static isDate(dateString: string): boolean {
+        return !isNaN(new Date(dateString).getDate()) && dateString !== null;
+    }
 }
