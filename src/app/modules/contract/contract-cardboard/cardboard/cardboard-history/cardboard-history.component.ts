@@ -15,7 +15,7 @@ import { ThemePalette } from '@angular/material/core';
     styleUrls: ['./cardboard-history.component.scss'],
 })
 export class CardboardHistoryComponent implements OnInit {
-    @Input() contractIdForDialog: string;
+    @Input() contractIdForDialog: string = null;
     private contractId: string;
     public contractHistory: Array<ContractHistory> = [];
     public tableDataContractHistory: Array<ContractHistoryTableData> = [];
