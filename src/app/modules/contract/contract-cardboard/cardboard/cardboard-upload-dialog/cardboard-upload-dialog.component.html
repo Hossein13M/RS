@@ -1,6 +1,6 @@
 <div class="page-layout">
     <app-header pageTitle="آپلود قرارداد" class="wp-100">
-        <button mat-icon-button matTooltip="بستن" (click)="dialog.close()">
+        <button mat-icon-button matTooltip="بستن" (click)="dialog.close(false)">
             <mat-icon class="mat-18">close</mat-icon>
         </button>
     </app-header>
@@ -8,7 +8,16 @@
     <mat-card dir="rtl" class="m-20">
         <form [formGroup]="form" id="formId" (submit)="submitForm()">
             <div class="text-center mb-10">
-                <input dir="rtl" name="uploadedFile" class="d-none" type="file" id="uploadFile" (change)="addFileToForm($event)" />
+                <input
+                    dir="rtl"
+                    name="uploadedFile"
+                    class="d-none"
+                    type="file"
+                    id="uploadFile"
+                    #fileUpload
+                    accept="image/*,.pdf,.docx,.docx"
+                    (change)="uploadFiles($event.target)"
+                />
                 <button
                     mat-button
                     [disableRipple]="true"

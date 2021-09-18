@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from '#services/alert.service';
-import { CardboardService } from '../../cardboard.service';
 
 @Component({
     selector: 'app-cardboard-upload-dialog',
@@ -10,24 +9,29 @@ import { CardboardService } from '../../cardboard.service';
     styleUrls: ['./cardboard-upload-dialog.component.scss'],
 })
 export class CardboardUploadDialogComponent implements OnInit {
+    private uploadedFile;
     public form: FormGroup = this.fb.group({
         contract: [null, Validators.required],
         fileName: [null, Validators.required],
         description: [null],
         type: ['draft', Validators.required],
-        file: [null],
+        file: [Validators.required],
     });
     constructor(
         public dialog: MatDialogRef<CardboardUploadDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public dialogData: { contractId: number; hasSignedFile: boolean },
         private readonly fb: FormBuilder,
-        private readonly alertService: AlertService,
-        private readonly cardBoardService: CardboardService
+        private readonly alertService: AlertService
     ) {}
 
     ngOnInit(): void {
         this.setUploadFormBase();
-        console.log(this.dialogData);
+    }
+
+    public uploadFiles(event: any) {
+        console.log(event.files[0]);
+        this.uploadedFile = event.files[0];
+        this.form.get('file').setValue(this.uploadedFile);
     }
 
     private setUploadFormBase(): void {
@@ -39,28 +43,25 @@ export class CardboardUploadDialogComponent implements OnInit {
     public submitForm(): void {
         const formData: FormData = new FormData();
         Object.keys(this.form.value).map((key) => formData.append(key, this.form.value[key]));
-        this.uploadFile(formData);
-        // const file = (document.getElementById('uploadFile') as HTMLInputElement).files[0];
-        // if (!file) {
-        //     this.alertService.onError('فایل را آپلود کنید');
-        //     return;
-        // } else {
-        //     this.form.get('file').patchValue(file);
-        //     this.form.updateValueAndValidity();
-        //     formData.append('file', file);
-        //     this.uploadFile(this.form.value);
-        // }
-    }
-
-    public addFileToForm(event): void {
-        // const file = (event.target as HTMLInputElement).files[0];
-        const file = event.target.files[0]
-        this.form.get('file').patchValue(file);
-        this.form.updateValueAndValidity();
+        if (!this.uploadedFile) {
+            this.alertService.onError('فایل را آپلود کنید');
+            return;
+        } else {
+            this.uploadFile(formData);
+        }
     }
 
     private uploadFile(formData: any): void {
-        this.cardBoardService.uploadFileInContractCarddboard(formData).subscribe((result) => console.log(result));
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'http://dev.management-api.iirms.ir/api/v1/contract-file/upload');
+        const token = localStorage.getItem('accessToken');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        xhr.send(formData);
+        xhr.addEventListener('load', () => {
+            this.alertService.onSuccess('با موفقیت آپلود شد');
+            this.dialog.close(true);
+        });
+        xhr.addEventListener('error', () => this.alertService.onError('مشکلی پیش آمده‌است'));
     }
 
     public triggerFileSelect(): void {
