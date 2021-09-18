@@ -7,6 +7,6 @@
     >
 
     <div class="fuse-card" *ngIf="!isLoading">
-        <lib-ag-form-viewer dir="ltr" [formInfo]="formData" (emittedFormViewerInfo)="handleFormViewerInfo($event)"></lib-ag-form-viewer>
+        <lib-ag-form-viewer dir="ltr" [formInfo]="formData" [dateLocale]="'fa-IR'" (emittedFormViewerInfo)="handleFormViewerInfo($event)"></lib-ag-form-viewer>
     </div>
 </div>
