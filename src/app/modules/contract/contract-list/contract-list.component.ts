@@ -7,6 +7,8 @@ import { ContractService } from './contract.service';
 import { Contract } from './contract.model';
 import { ContractDialogComponent } from './contract-dialog/contract-dialog.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ContractNoteDialogComponent } from './contract-note-dialog/contract-note-dialog.component';
+import { ContractHistoryDialogComponent } from './contract-history-dialog/contract-history-dialog.component';
 
 @Component({
     selector: 'app-contract-list',
@@ -40,6 +42,18 @@ export class ContractListComponent implements OnInit {
                     icon: 'mode_edit',
                     color: 'primary',
                     operation: (row: { operationItem: any; row: Contract }) => this.openContractDialog('edit', row.row),
+                },
+                {
+                    name: 'پیشینه‌ی قرارداد',
+                    icon: 'history',
+                    color: 'primary',
+                    operation: (row: { operationItem: any; row: Contract }) => this.openContractHistoryDialog(row.row._id),
+                },
+                {
+                    name: 'یادداشت‌های قرارداد',
+                    icon: 'sticky_note_2',
+                    color: 'primary',
+                    operation: (row: { operationItem: any; row: Contract }) => this.openContractNoteDialog(row.row._id),
                 },
                 {
                     name: 'تغییر وضعیت',
@@ -89,6 +103,14 @@ export class ContractListComponent implements OnInit {
             panelClass: 'dialog-p-0',
         });
         dialogRef.afterClosed().subscribe((result) => result && this.checkIsActiveFormControl());
+    }
+
+    public openContractHistoryDialog(contractId: string): void {
+        this.dialog.open(ContractHistoryDialogComponent, { data: contractId, width: '600px', height: '350px', panelClass: 'dialog-p-0' });
+    }
+
+    public openContractNoteDialog(contractId: string): void {
+        this.dialog.open(ContractNoteDialogComponent, { data: contractId, width: '900px', height: '480px', panelClass: 'dialog-p-0' });
     }
 
     public paginationControl(pageEvent?: any): void {

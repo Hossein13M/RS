@@ -5,7 +5,7 @@
         </div>
     </mat-card-header>
 
-    <mat-card-content class="h-5/6 overflow-y-scroll pt-10">
+    <mat-card-content class="h-5/6 pt-10" [ngClass]="contractIdForDialog ? '' : 'overflow-y-scroll'">
         <div class="flex mx-5 items-center border-bottom" *ngFor="let contractHistory of contractHistory">
             <mat-icon class="mat-18 mx-10 cursor-default" [matTooltip]="contractHistory.status" [color]="getProperIcon(contractHistory, 'iconColor')">{{
                 getProperIcon(contractHistory, 'icon')
