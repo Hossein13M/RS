@@ -110,7 +110,7 @@ export class ContractListComponent implements OnInit {
     }
 
     public openContractNoteDialog(contractId: string): void {
-        this.dialog.open(ContractNoteDialogComponent, { data: contractId, width: '900px', height: '480px', panelClass: 'dialog-p-0' });
+        this.dialog.open(ContractNoteDialogComponent, { data: contractId, width: '600px', height: '250px', panelClass: 'dialog-p-0' });
     }
 
     public paginationControl(pageEvent?: any): void {
