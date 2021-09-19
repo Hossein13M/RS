@@ -3,6 +3,7 @@ import { UpdateCollateralsDto } from './update-collaterals-dto';
 import { UpdateGuarantorsDto } from './update-guarantors-dto';
 import { UpdateMarketMakerDto } from './update-market-maker-dto';
 import { UpdateUnderwriterDto } from './update-underwriter-dto';
+
 export interface UpdateBourseInstrumentDetailsDto {
     account?: string;
     bankId?: number;

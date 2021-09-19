@@ -1,7 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SearchSelectDataType, searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+    SearchSelectDataType,
+    searchSelectStateType
+} from 'app/shared/components/search-select/search-select.component';
 import { NavService } from '../nav.service';
 
 export interface NavAddChangeDialogData {

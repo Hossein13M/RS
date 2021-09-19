@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { DetailLedgerSearchDto } from './detail-ledger-search-dto';
+
 export interface SubsidiaryLedgerSearchDto {
     aggregatedCreditAmount?: string;
     aggregatedDebitAmount?: string;

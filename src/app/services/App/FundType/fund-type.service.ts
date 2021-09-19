@@ -3,7 +3,6 @@ import { FundTypeDto } from 'app/services/API/models';
 import { FundTypeService } from 'app/services/API/services';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ResponseWithPagination } from '#shared/models/pagination.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 

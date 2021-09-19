@@ -10,7 +10,7 @@ import {
     OnInit,
     Output,
     Renderer2,
-    ViewEncapsulation,
+    ViewEncapsulation
 } from '@angular/core';
 import { animate, AnimationBuilder, AnimationPlayer, style } from '@angular/animations';
 import { MediaObserver } from '@angular/flex-layout';

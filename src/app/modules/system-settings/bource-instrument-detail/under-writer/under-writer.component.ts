@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { UnderwritersDto } from 'app/services/API/models';
 import { IssuersService } from 'app/services/App/Issuer/issuer.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Column } from '#shared/components/table/table.model';

@@ -1,11 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { GuarantorDtoWithId } from 'app/services/API/models';
 import { Guarantor, GuarantorsService } from 'app/services/App/Guarantor/guarantor.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Issuer } from '../../../services/App/Issuer/issuer.service';
 import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 import * as _ from 'lodash';

@@ -1,10 +1,28 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+    TemplateRef,
+    ViewChild
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import { Color, Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import {
+    Color,
+    Column,
+    DetailColumn,
+    OperationColumn,
+    PaginationChangeType,
+    PaginationSetting,
+    TableSearchMode
+} from './table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 
 enum StateType {

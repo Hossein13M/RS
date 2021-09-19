@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from '#shared/services/alert.service';
 import { UserInfoService } from 'app/services/App/userInfo/user-info.service';
 import { AlarmService } from 'app/services/feature-services/alarm.service';

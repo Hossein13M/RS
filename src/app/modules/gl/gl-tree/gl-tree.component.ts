@@ -2,7 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import * as _ from 'lodash';
-import { GlCategoryModel, GlDetailModel, GlGeneralModel, GlGroupModel, GlModel, GlSubsidiaryModel, TreeOrderType } from '../gl.model';
+import {
+    GlCategoryModel,
+    GlDetailModel,
+    GlGeneralModel,
+    GlGroupModel,
+    GlModel,
+    GlSubsidiaryModel,
+    TreeOrderType
+} from '../gl.model';
 import { GlPieChartComponent } from './gl-pie-chart/gl-pie-chart.component';
 import { GlService } from '../gl.service';
 

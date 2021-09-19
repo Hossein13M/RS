@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OrganizationStructureService } from '../organization-structure.service';
-import { OrganizationRole, OrganizationStructureModel, OrganizationUnit, Role, Unit } from '../organization-structure.model';
+import {
+    OrganizationRole,
+    OrganizationStructureModel,
+    OrganizationUnit,
+    Role,
+    Unit
+} from '../organization-structure.model';
 
 @Component({
     selector: 'app-role',
