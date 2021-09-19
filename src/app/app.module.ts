@@ -68,10 +68,6 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/modules/risk-measurement/risk-measurement.module').then((m) => m.RiskMeasurementModule),
     },
     {
-        path: 'user',
-        loadChildren: () => import('app/modules/user/user.module').then((m) => m.UserModule),
-    },
-    {
         path: 'system-settings',
         loadChildren: () => import('app/modules/system-settings/system-settings.module').then((m) => m.SystemSettingsModule),
     },
