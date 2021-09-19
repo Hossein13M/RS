@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { AlertService } from 'app/services/alert.service';
 import { AuthenticationService } from 'app/services/authentication.service';
-import { AuthorizationService } from '../authorization.service';
-import { Status, User } from '../auth.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthorizationService } from '../authorization.service';
 
 @Component({
     selector: 'login',
@@ -15,21 +14,12 @@ import { ActivatedRoute, Router } from '@angular/router';
     encapsulation: ViewEncapsulation.None,
     animations: fuseAnimations,
 })
-export class LoginComponent implements OnInit {
-    public loginForm: FormGroup;
-    public loading = false;
-
-    private static isUserUnauthorized(user: User): boolean {
-        return user.status === Status.unauthorized;
-    }
-
-    private static storeToken(token: string): void {
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('accessToken', token);
-    }
+export class LoginComponent {
+    public loginForm: FormGroup = this.fb.group({ username: [null, [Validators.required]], password: [null, Validators.required] });
+    public loading: boolean = false;
 
     constructor(
-        private _fuseConfigService: FuseConfigService,
+        private fuseConfigService: FuseConfigService,
         private fb: FormBuilder,
         private Authentication: AuthenticationService,
         private authorizationService: AuthorizationService,
@@ -37,18 +27,13 @@ export class LoginComponent implements OnInit {
         private router: Router,
         private activatedRoute: ActivatedRoute
     ) {
-        this._fuseConfigService.config = {
-            layout: {
-                navbar: { hidden: true },
-                toolbar: { hidden: true },
-                footer: { hidden: true },
-                sidepanel: { hidden: true },
-            },
-        };
+        this.configureFuseService();
     }
 
-    ngOnInit(): void {
-        this.loginForm = this.fb.group({ username: [null, [Validators.required]], password: [null, Validators.required] });
+    private configureFuseService(): void {
+        this.fuseConfigService.config = {
+            layout: { navbar: { hidden: true }, toolbar: { hidden: true }, footer: { hidden: true }, sidepanel: { hidden: true } },
+        };
     }
 
     public login(): void {
@@ -56,11 +41,11 @@ export class LoginComponent implements OnInit {
         this.authorizationService.login(this.loginForm.value).subscribe(
             (token) => {
                 this.loading = false;
-                this.Authentication.login(this.loginForm.value).subscribe();
-                LoginComponent.storeToken(token.accessToken);
-                const user = this.authorizationService.decodeToken(token);
-                localStorage.setItem('user', JSON.stringify(user));
-                LoginComponent.isUserUnauthorized(user) ? this.redirectToChangePassword() : this.redirectToOrganization();
+                AuthorizationService.storeToken(token.accessToken);
+                this.authorizationService.setUserInfoInLocalStorage(token);
+                AuthorizationService.isUserUnauthorized(this.authorizationService.decodeToken(token))
+                    ? this.redirectToChangePassword()
+                    : this.redirectToOrganization();
             },
             () => {
                 this.loading = false;

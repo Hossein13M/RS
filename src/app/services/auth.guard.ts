@@ -9,13 +9,11 @@ import { AuthenticationService } from './authentication.service';
 export class AuthGuard implements CanActivate {
     constructor(private router: Router, private userInfoService: UserInfoService, private authenticationService: AuthenticationService) {}
 
-    // FIXME: Remove can activate and implement canActivate Child
     canActivate(): Observable<boolean> {
         const out = new BehaviorSubject<boolean>(null);
         if (this.authenticationService.userToken) {
             if (!this.userInfoService.userInfo) {
                 this.userInfoService.userInfo$.subscribe(() => {
-                    // FIXME: Implement new route access checker here
                     out.next(true);
                 });
             } else {
@@ -37,15 +35,5 @@ export class AuthGuard implements CanActivate {
             ),
             take(1)
         );
-    }
-
-    canActivateChild(): boolean {
-        if (localStorage.getItem('accessToken')) {
-            this.userInfoService.getUserInfo();
-            return true;
-        } else {
-            this.router.navigate(['/login']).finally();
-            return false;
-        }
     }
 }

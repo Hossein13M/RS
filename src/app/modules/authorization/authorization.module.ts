@@ -15,18 +15,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { ShareModule } from '#shared/share.module';
 
 const routes: Routes = [
-    {
-        path: ``,
-        component: LoginComponent,
-    },
-    {
-        path: `change-password`,
-        component: ChangePasswordComponent,
-    },
-    {
-        path: `organization`,
-        component: OrganizationComponent,
-    }
+    { path: ``, component: LoginComponent },
+    { path: `change-password`, component: ChangePasswordComponent },
+    { path: `organization`, component: OrganizationComponent },
 ];
 
 @NgModule({
