@@ -2,7 +2,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { FlowsService } from 'app/services/App/flow/flow.service';
 import { OperatorManagementService } from 'app/services/App/user/operator-management.service';
 import { searchSelectStateType } from '#shared/components/search-select/search-select.component';

@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ContractViewerService } from '../../contract-viewer/contract-viewer.service';
 import { ContractViewerModel } from '../../contract-viewer/contract-viewer.model';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({

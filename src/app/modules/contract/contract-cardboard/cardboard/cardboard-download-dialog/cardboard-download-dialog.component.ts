@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { CardboardService } from '../../cardboard.service';
 import { CardBoardDownloadFiles, DownloadFileSearchParams } from '../../cardboard.model';
 import { FormBuilder, FormGroup } from '@angular/forms';

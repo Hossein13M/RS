@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import { json2xml, xml2json } from 'xml-js';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { StateType } from '#shared/state-type.enum';
 import { ContractFlowService } from '../contract-flow/contract-flow.service';

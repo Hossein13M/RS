@@ -1,7 +1,7 @@
 import { PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { debounceTime } from 'rxjs/operators';
 import { TradeAddService } from './trade-add.service';
 import { Ticker, TradeOrganization } from './trade-add.model';

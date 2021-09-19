@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { OpRiskFlowService } from '../../op-risk-flow/op-risk-flow.service';
 import { OpLossManagementService } from '../op-loss-management.service';
 import { OpRiskManagementService } from '../op-risk-management.service';

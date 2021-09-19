@@ -20,9 +20,9 @@ import { getFarsiPaginatorIntl } from '#shared/components/table/farsi-paginator-
 import { MaterialModule } from '#shared/material.module';
 import { ShareModule } from '#shared/share.module';
 import { GlModule } from './modules/gl/gl.module';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { AuthorizationModule } from './modules/authorization/authorization.module';
-import { AuthGuard } from '#shared/auth.guard';
+import { AuthGuard } from '#shared/services/auth.guard';
 
 const appRoutes: Routes = [
     {

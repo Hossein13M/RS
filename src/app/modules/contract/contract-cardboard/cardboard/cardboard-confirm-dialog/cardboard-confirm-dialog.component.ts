@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CardboardAction, CardboardInfo, ElectionUsers } from '../../cardboard.model';
 import { CardboardService } from '../../cardboard.service';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { StateType } from '#shared/state-type.enum';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 

@@ -3,7 +3,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { Observable, of } from 'rxjs';
 import { TreeChartFlatNode, TreeChartNode } from '../../op-risk/tree-chart/op-risk-tree-chart/op-risk-tree-chart.types';
 import { OrganizationStructureService } from '../organization-structure.service';

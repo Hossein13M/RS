@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Column } from '#shared/components/table/table.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ContractService } from './contract.service';
 import { Contract } from './contract.model';
 import { ContractDialogComponent } from './contract-dialog/contract-dialog.component';

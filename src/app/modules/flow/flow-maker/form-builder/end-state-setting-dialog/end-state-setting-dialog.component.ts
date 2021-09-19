@@ -1,7 +1,7 @@
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { FlowsService } from '../../../../../services/App/flow/flow.service';
 import { OperatorManagementService } from '../../../../../services/App/user/operator-management.service';
 import { searchSelectStateType } from '#shared/components/search-select/search-select.component';

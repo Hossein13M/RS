@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CardboardService } from '../../cardboard.service';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ActivatedRoute } from '@angular/router';
 import { ContractHistory, ContractHistoryTableData } from '../../cardboard.model';
 import { Column } from '#shared/components/table/table.model';

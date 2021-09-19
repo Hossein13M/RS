@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorizationService } from '../authorization.service';
 

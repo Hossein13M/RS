@@ -5,7 +5,7 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ContractTypeService } from './contract-type.service';
 import { ContractTypeDialogComponent } from './contract-type-dialog/contract-type-dialog.component';
 import { ContractType } from './contract-type.model';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 
 @Component({
     selector: 'app-contract-type',

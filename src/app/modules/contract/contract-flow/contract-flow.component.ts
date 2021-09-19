@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Column } from '#shared/components/table/table.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ContractFlowDialogComponent } from './contract-flow-dialog/contract-flow-dialog.component';
 import { ContractFlowService } from './contract-flow.service';
 import { Flow } from './contract-flow.model';

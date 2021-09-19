@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { fuseAnimations } from '@fuse/animations';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { Observable, of } from 'rxjs';
 import { TreeChartFlatNode, TreeChartNode, stateType } from '../../../modules/op-risk/tree-chart/op-risk-tree-chart/op-risk-tree-chart.types';
 import { OrganizationStructureService } from '../../../modules/organizations-structure/organization-structure.service';
