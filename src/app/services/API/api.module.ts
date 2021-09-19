@@ -34,15 +34,6 @@ import { EventRepetitionService } from './services/event-repetition.service';
 import { EventTitleFieldService } from './services/event-title-field.service';
 import { EventTitleService } from './services/event-title.service';
 import { EventService } from './services/event.service';
-import { FlowCategoryService } from './services/flow-category.service';
-import { FlowFileService } from './services/flow-file.service';
-import { FlowFormService } from './services/flow-form.service';
-import { FlowHistoryService } from './services/flow-history.service';
-import { FlowInstanceDataService } from './services/flow-instance-data.service';
-import { FlowInstanceService } from './services/flow-instance.service';
-import { FlowNoteService } from './services/flow-note.service';
-import { FlowWizardService } from './services/flow-wizard.service';
-import { FlowService } from './services/flow.service';
 import { FrequenceService } from './services/frequence.service';
 import { FundNavAssetAndDebitService } from './services/fund-nav-asset-and-debit.service';
 import { FundNavUserTransactionService } from './services/fund-nav-user-transaction.service';
@@ -72,8 +63,6 @@ import { SmsService } from './services/sms.service';
 import { StandardGlService } from './services/standard-gl.service';
 import { SubsidiaryLedgerTypeCodesService } from './services/subsidiary-ledger-type-codes.service';
 import { TradeRegistrationService } from './services/trade-registration.service';
-import { UserRoleService } from './services/user-role.service';
-import { UserService } from './services/user.service';
 
 /**
  * Module that provides all services and configuration.
@@ -90,8 +79,6 @@ import { UserService } from './services/user.service';
         },
 
         AuthService,
-        UserService,
-        UserRoleService,
         OperatorService,
         AuthItemService,
         AuthItemChildService,
@@ -108,15 +95,6 @@ import { UserService } from './services/user.service';
         EventFieldService,
         EventTitleFieldService,
         EventFieldValueService,
-        FlowCategoryService,
-        FlowService,
-        FlowNoteService,
-        FlowFormService,
-        FlowHistoryService,
-        FlowInstanceService,
-        FlowInstanceDataService,
-        FlowWizardService,
-        FlowFileService,
         BankService,
         GuarantorService,
         IssuerService,
