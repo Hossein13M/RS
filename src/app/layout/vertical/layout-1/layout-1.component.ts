@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { navigation } from 'app/dashboard-configs/navigation';
+import { AuthorizationService } from '../../../modules/authorization/authorization.service';
+import { FuseNavigation } from '../../../../@fuse/types';
 
 @Component({
     selector: 'vertical-layout-1',
@@ -12,12 +13,11 @@ import { navigation } from 'app/dashboard-configs/navigation';
 })
 export class VerticalLayout1Component implements OnInit, OnDestroy {
     fuseConfig: any;
-    navigation: any;
+    public navigation: Array<FuseNavigation> = [];
     private _unsubscribeAll: Subject<any>;
 
     constructor(private _fuseConfigService: FuseConfigService) {
-        const userRoles = JSON.parse(localStorage.getItem('user')) ?? { role: 'somethingElse' };
-        userRoles.role === 'assets' ? (this.navigation = [navigation[2]]) : (this.navigation = navigation);
+        this.navigation = AuthorizationService.checkUserAccess();
         this._unsubscribeAll = new Subject();
     }
 

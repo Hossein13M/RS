@@ -5,6 +5,9 @@ import { navigation } from 'app/dashboard-configs/navigation';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { User } from '../../../modules/authorization/auth.model';
+import { AuthorizationService } from '../../../modules/authorization/authorization.service';
+import { FuseNavigation } from '../../../../@fuse/types';
 
 @Component({
     selector: 'toolbar',
@@ -16,7 +19,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     horizontalNavbar: boolean;
     rightNavbar: boolean;
     hiddenNavbar: boolean;
-    navigation: any;
+    public navigation: Array<FuseNavigation> = [];
     userStatusOptions: any[];
 
     private _unsubscribeAll: Subject<any>;
@@ -37,8 +40,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             { title: 'Offline', icon: 'icon-checkbox-blank-circle-outline', color: '#616161' },
         ];
 
-        const userRoles = JSON.parse(localStorage.getItem('user')) ?? { role: 'somethingElse' };
-        userRoles.role === 'assets' ? (this.navigation = [navigation[2]]) : (this.navigation = navigation);
+        this.navigation = AuthorizationService.checkUserAccess();
         this._unsubscribeAll = new Subject();
     }
 
