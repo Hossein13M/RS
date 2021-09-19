@@ -9,12 +9,13 @@ import { ContractFormService } from './contract-form.service';
 import { LayoutModule } from '../../../layout/layout.module';
 import { ShareModule } from '#shared/share.module';
 import { AgFormBuilderModule } from 'ag-form-builder';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractFormComponent }];
 
 @NgModule({
     declarations: [ContractFormComponent, ContractFormDialogComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatButtonModule, MatIconModule, ShareModule, AgFormBuilderModule],
+    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatButtonModule, MatIconModule, ShareModule, AgFormBuilderModule, HeaderModule],
     entryComponents: [ContractFormDialogComponent],
     providers: [ContractFormService],
 })

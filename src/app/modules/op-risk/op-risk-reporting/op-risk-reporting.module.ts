@@ -9,6 +9,7 @@ import { ShareModule } from 'app/shared/share.module';
 import { ChartsModule } from 'ng2-charts';
 import { OpRiskReportingRoutingModule } from './op-risk-reporting-routing.module';
 import { OpRiskReportingComponent } from './op-risk-reporting/op-risk-reporting.component';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [OpRiskReportingComponent],
@@ -22,6 +23,7 @@ import { OpRiskReportingComponent } from './op-risk-reporting/op-risk-reporting.
         ShareModule,
         ChartsModule,
         ChartModule,
-    ],
+        HeaderModule
+    ]
 })
 export class OpRiskReportingModule {}

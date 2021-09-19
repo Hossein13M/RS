@@ -24,6 +24,7 @@ import { AgFormViewerModule } from 'ag-form-builder';
 import { CardboardDownloadDialogComponent } from './cardboard/cardboard-download-dialog/cardboard-download-dialog.component';
 import { CardboardHistoryModule } from './cardboard/cardboard-history/cardboard-history.module';
 import { CardboardNoteModule } from './cardboard/cardboard-note/cardboard-note.module';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [
     { path: ':id', pathMatch: 'full', component: CardboardComponent },
@@ -60,6 +61,7 @@ const routes: Routes = [
         AgFormViewerModule,
         CardboardHistoryModule,
         CardboardNoteModule,
+        HeaderModule
     ],
     exports: [CardboardListComponent],
 })

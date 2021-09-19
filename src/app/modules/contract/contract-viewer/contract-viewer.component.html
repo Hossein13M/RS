@@ -3,8 +3,8 @@
         <button mat-stroked-button color="accent" (click)="navigateToCardboardPage()">
             <mat-icon class="mat-18">keyboard_return</mat-icon>
             بازگشت به کارتابل قراردادها
-        </button></app-header
-    >
+        </button>
+    </app-header>
 
     <div class="fuse-card" *ngIf="!isLoading">
         <lib-ag-form-viewer dir="ltr" [formInfo]="formData" [dateLocale]="'fa-IR'" (emittedFormViewerInfo)="handleFormViewerInfo($event)"></lib-ag-form-viewer>

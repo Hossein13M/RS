@@ -14,6 +14,7 @@ import { CardboardNoteModule } from '../contract-cardboard/cardboard/cardboard-n
 import { ContractFinalFormDialogComponent } from './contract-final-form-dialog/contract-final-form-dialog.component';
 import { ContractViewerService } from '../contract-viewer/contract-viewer.service';
 import { MatChipsModule } from '@angular/material/chips';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractListComponent }];
 
@@ -34,6 +35,7 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractListCo
         CardboardHistoryModule,
         CardboardNoteModule,
         MatChipsModule,
+        HeaderModule
     ],
     providers: [ContractService, ContractViewerService],
     entryComponents: [ContractDialogComponent],

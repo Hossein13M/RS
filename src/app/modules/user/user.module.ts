@@ -8,10 +8,11 @@ import { AddOperatorComponent } from './operator/add-operator/add-operator.compo
 import { OperatorComponent } from './operator/operator.component';
 import { UserManagmentComponent } from './user-managment/user-managment.component';
 import { UserRoutingModule } from './user-routing.module';
+import { HeaderModule } from '../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [OperatorComponent, CustomerComponent, UserManagmentComponent, AddOperatorComponent, AddCustomerComponent],
-    imports: [CommonModule, UserRoutingModule, ShareModule, LayoutModule],
+    imports: [CommonModule, UserRoutingModule, ShareModule, LayoutModule, HeaderModule],
     exports: [ShareModule],
     entryComponents: [AddOperatorComponent, AddCustomerComponent],
 })

@@ -12,6 +12,7 @@ import { TradeDashboardRoutingModule } from './trade-dashboard-routing.module';
 import { TradeDashboardTableComponent } from './trade-dashboard-table/trade-dashboard-table.component';
 import { TradeDashboardTrendChartComponent } from './trade-dashboard-trend-chart/trade-dashboard-trend-chart.component';
 import { TradeDashboardComponent } from './trade-dashboard.component';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,6 @@ import { TradeDashboardComponent } from './trade-dashboard.component';
         TradeDashboardTrendChartComponent,
         TradeDashboardPieChartComponent,
     ],
-    imports: [CommonModule, TradeDashboardRoutingModule, LayoutModule, FlexModule, MaterialModule, ShareModule, MatProgressSpinnerModule, ChartModule],
+    imports: [CommonModule, TradeDashboardRoutingModule, LayoutModule, FlexModule, MaterialModule, ShareModule, MatProgressSpinnerModule, ChartModule, HeaderModule]
 })
 export class TradeDashboardModule {}

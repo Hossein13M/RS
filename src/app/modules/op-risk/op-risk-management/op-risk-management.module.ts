@@ -13,6 +13,7 @@ import { OpRiskListComponent } from './op-risk-list/op-risk-list.component';
 import { OpRiskManagementRoutingModule } from './op-risk-management-routing.module';
 import { RejectOpRiskComponent } from './reject-op-risk/reject-op-risk.component';
 import { SubmittedRisksComponent } from './submitted-risks/submitted-risks.component';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,7 @@ import { SubmittedRisksComponent } from './submitted-risks/submitted-risks.compo
         OpLossEditComponent,
         SubmittedRisksComponent,
     ],
-    imports: [CommonModule, OpRiskManagementRoutingModule, LayoutModule, MatIconModule, MatButtonModule, MatGridListModule, ShareModule],
+    imports: [CommonModule, OpRiskManagementRoutingModule, LayoutModule, MatIconModule, MatButtonModule, MatGridListModule, ShareModule, HeaderModule],
     entryComponents: [RejectOpRiskComponent],
 })
 export class OpRiskManagementModule {}

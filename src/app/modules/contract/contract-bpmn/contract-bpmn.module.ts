@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ShareModule } from '#shared/share.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractBpmnComponent }];
 
@@ -39,6 +40,7 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractBpmnCo
         ShareModule,
         DragDropModule,
         MatTooltipModule,
+        HeaderModule
     ],
     exports: [ContractBpmnComponent],
 })
