@@ -17,7 +17,7 @@ export const navigation: FuseNavigation[] = [
         icon: 'gavel',
         type: 'collapsable',
         children: [
-            { id: 'contractCardboard', title: 'فرم قرارداد', type: 'item', icon: 'list_alt', url: '/contract/contract-form' },
+            { id: 'contractForm', title: 'فرم قرارداد', type: 'item', icon: 'list_alt', url: '/contract/contract-form' },
             { id: 'contractType', title: 'نوع قرارداد', type: 'item', icon: 'format_list_bulleted', url: '/contract/contract-type' },
             { id: 'contractFlow', title: 'جریان قرارداد', type: 'item', icon: 'timeline', url: '/contract/flow' },
             { id: 'contractsList', title: 'قراردادها', type: 'item', icon: 'developer_board', url: '/contract/contract-list' },
@@ -58,26 +58,15 @@ export const navigation: FuseNavigation[] = [
             },
         ],
     },
-    // {
-    //     id: 'baseData',
-    //     title: 'مدیریت قراردادها',
-    //     icon: 'fact_check',
-    //     type: 'collapsable',
-    //     children: [
-    //         { id: 'wfe', title: 'الگوی قراردادها', type: 'item', icon: 'developer_board', url: '/flow/flows' },
-    //         { id: 'contractDashboard', title: 'کارتابل قراردادها', type: 'item', icon: 'email', url: '/flow/instance' },
-    //         { id: 'operator', title: 'مدیریت مشتریان', type: 'item', icon: 'people', url: '/user/customer' },
-    //     ],
-    // },
     {
         id: 'settings',
         title: 'تنظیمات سیستم',
         type: 'collapsable',
         icon: 'dashboard',
         children: [
-            { id: 'userDetail', title: 'ورود اطلاعات پایه', type: 'item', icon: 'dashboard', url: '/system-settings/input' },
-            { id: 'userInput', title: 'ورود اطلاعات ابزارها', type: 'item', icon: 'dashboard', url: '/system-settings/bourse' },
-            { id: 'branch', type: 'item', url: '/system-settings/branch', title: ' شعب بانک‌ها', icon: 'subject' },
+            { id: 'baseInfo', title: 'ورود اطلاعات پایه', type: 'item', icon: 'dashboard', url: '/system-settings/input' },
+            { id: 'instrumentsInfo', title: 'ورود اطلاعات ابزارها', type: 'item', icon: 'dashboard', url: '/system-settings/bourse' },
+            { id: 'bankBranch', type: 'item', url: '/system-settings/branch', title: ' شعب بانک‌ها', icon: 'subject' },
             { id: 'broker', type: 'item', url: '/system-settings/broker', title: 'لیست کارگزاری‌ها', icon: 'subject' },
             { id: 'gl', type: 'item', url: '/system-settings/gl', title: 'نگاشت کد دفتر کل', icon: 'subject' },
             { id: 'deposit', type: 'item', url: '/system-settings/deposit', title: 'ورود اطلاعات سپرده', icon: 'subject' },
