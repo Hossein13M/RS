@@ -1,7 +1,7 @@
 /* tslint:disable */
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
-import { HttpRequestInterceptor } from '../../interceptors/http-request-interceptor.service';
+import { HttpRequestInterceptor } from '#shared/interceptors/http-request-interceptor.service';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AlarmService } from './services/alarm.service';
 import { AssetsService } from './services/assets.service';
@@ -88,11 +88,7 @@ import { UserService } from './services/user.service';
             useClass: HttpRequestInterceptor,
             multi: true,
         },
-        // {
-        //     provide: HTTP_INTERCEPTORS,
-        //     useClass: HttpResponseInterceptor,
-        //     multi: true
-        // },
+
         AuthService,
         UserService,
         UserRoleService,
@@ -185,9 +181,7 @@ export class ApiModule {
             throw new Error('ApiModule is already loaded. Import in your base AppModule only.');
         }
         if (!http) {
-            throw new Error(
-                'You need to import the HttpClientModule in your AppModule! \n' + 'See also https://github.com/angular/angular/issues/20575'
-            );
+            throw new Error('You need to import the HttpClientModule in your AppModule! \n' + 'See also https://github.com/angular/angular/issues/20575');
         }
     }
 }
