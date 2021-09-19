@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { IssuerLicense } from '../../../modules/system-settings/issuer-license/issuer-license.model';
 
 export interface IssuerGoal {
     id: number;

@@ -7,7 +7,7 @@ import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
 import {
     FusePerfectScrollbarGeometry,
-    FusePerfectScrollbarPosition,
+    FusePerfectScrollbarPosition
 } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.interfaces';
 import { FuseConfigService } from '@fuse/services/config.service';
 

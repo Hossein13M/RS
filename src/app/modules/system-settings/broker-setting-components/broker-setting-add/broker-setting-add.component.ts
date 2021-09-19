@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from '#shared/services/alert.service';
 import { BankService } from 'app/services/feature-services/bank.service';
 import { BrokerSettingService } from 'app/services/feature-services/system-setting-services/broker-setting.service';

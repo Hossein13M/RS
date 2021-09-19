@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { GroupLedgerSearchDto } from './group-ledger-search-dto';
+
 export interface CategoryLedgerSearchDto {
     aggregatedCreditAmount?: string;
     aggregatedDebitAmount?: string;

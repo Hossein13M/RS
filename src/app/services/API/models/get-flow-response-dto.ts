@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { GetFlowResponseCategoryDto } from './get-flow-response-category-dto';
+
 export interface GetFlowResponseDto {
     _id: string;
     attributes: {};

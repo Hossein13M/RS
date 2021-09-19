@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SearchSelectDataType, searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
+import {
+    SearchSelectDataType,
+    searchSelectStateType
+} from 'app/shared/components/search-select/search-select.component';
 import { SearchSelectMockData } from './search-select-mock-data';
 
 @Component({

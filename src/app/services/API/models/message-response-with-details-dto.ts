@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { UserDto } from './user-dto';
+
 export interface MessageResponseWithDetailsDto {
     body: string;
     fromUser: UserDto;

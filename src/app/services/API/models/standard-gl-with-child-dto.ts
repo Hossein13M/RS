@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { StandardGlDto } from './standard-gl-dto';
+
 export interface StandardGlWithChildDto {
     accglcode?: number;
     children: StandardGlDto;

@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { EventLevelAndEventTitleResponseDto } from './event-level-and-event-title-response-dto';
+
 export interface CreateEventResponseDto {
     code?: string;
     comment?: string;

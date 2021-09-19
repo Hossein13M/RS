@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { OperatorService } from 'app/services/API/services';
+
 @Component({
     selector: 'app-operator-lists',
     templateUrl: './operator-lists.component.html',
