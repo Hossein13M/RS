@@ -21,6 +21,7 @@ export interface User {
     exp: number;
     iat: number;
     userRoles: Array<UserRole>;
+    services: string;
 }
 
 export enum Status {
