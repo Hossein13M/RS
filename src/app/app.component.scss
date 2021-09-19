@@ -1,9 +1,5 @@
 @import 'src/@fuse/scss/fuse';
 
-.h-screen-minus-toolbar {
-    height: calc(100vh - 65px);
-}
-
 :host {
     position: relative;
     display: flex;
