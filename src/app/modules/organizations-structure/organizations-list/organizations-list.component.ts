@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Column } from '#shared/components/table/table.model';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { OrganizationStructureService } from '../organization-structure.service';
 import { OrganizationStructureModel } from '../organization-structure.model';
 import { OrganizationComponent } from '../organization/organization.component';

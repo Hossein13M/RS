@@ -4,7 +4,7 @@ import { CardboardService } from './cardboard.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ContractCardboard, ContractCardboardTableData } from './cardboard.model';
 import { Column } from '#shared/components/table/table.model';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { StateType } from '#shared/state-type.enum';
 
 @Component({

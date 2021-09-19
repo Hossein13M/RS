@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { Column } from '#shared/components/table/table.model';
 import { ContractFormService } from '../contract-form.service';

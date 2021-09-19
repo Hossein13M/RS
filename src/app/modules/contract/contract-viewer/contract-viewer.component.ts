@@ -3,7 +3,7 @@ import { CardboardService } from '../contract-cardboard/cardboard.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FinalForm } from '../contract-cardboard/cardboard.model';
 import { ContractViewerService } from './contract-viewer.service';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 
 @Component({
     selector: 'app-contract-viewer',

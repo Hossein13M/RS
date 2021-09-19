@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { CardboardService } from '../../cardboard.service';
 import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard-note-dialog.component';
 import { ContractNote } from '../../cardboard.model';
