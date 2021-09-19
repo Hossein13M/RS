@@ -96,7 +96,6 @@ export class OrganizationsListComponent implements OnInit {
     }
 
     private copyOrganization(organization: OrganizationStructureModel): void {
-        // TODO: this needs to be implemented after the backend has been prepared
         window.alert('این قابلیت به زودی پیاده‌سازی می‌شود!');
     }
 

@@ -1,35 +1,28 @@
-<div class='dialog-content-wrapper' dir='rtl'>
-    <mat-toolbar class='mat-accent m-0' matDialogTitle>
-        <mat-toolbar-row fxLayout='row' fxLayoutAlign='space-between center'>
-            <span class='title dialog-title'>{{ title }}</span>
-            <button (click)='this.dialogRef.close()' mat-icon-button>
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-toolbar-row>
+<div class="dialog-content-wrapper" dir="rtl">
+    <app-header [pageTitle]="title" dir="rtl">
+        <button (click)="dialogRef.close()" mat-icon-button>
+            <mat-icon>close</mat-icon>
+        </button>
+    </app-header>
 
-        <mat-toolbar-row class='toolbar-bottom py-16' fxLayout='column' fxLayoutAlign='center center'>
-            <div class='contact-name mt-8'>{{ isEditMode ? data.name : '' }}</div>
-        </mat-toolbar-row>
-    </mat-toolbar>
-
-    <div class='p-24 pb-0 m-0' mat-dialog-content>
-        <form (submit)='submitForm()' [formGroup]='form' class='form'>
-            <div fxLayout='row' fxLayoutAlign='start start'>
-                <mat-form-field appearance='outline' fxFlex>
+    <div class="p-24 pb-0 m-0" mat-dialog-content>
+        <form (submit)="submitForm()" [formGroup]="form" class="form">
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
                     <mat-label>نام نهاد</mat-label>
-                    <mat-icon class='secondary-text' matSuffix>business</mat-icon>
-                    <input formControlName='name' matInput name='name' required />
+                    <mat-icon class="secondary-text" matSuffix>business</mat-icon>
+                    <input formControlName="name" matInput name="name" required />
                     <mat-error *ngIf="form.get('name').hasError('required')"> وارد کردن این فیلد الزامی است.</mat-error>
                 </mat-form-field>
             </div>
 
-            <div class='m-0 p-16' fxLayout='row' fxLayoutAlign='center center' mat-dialog-actions>
-                <button color='primary' mat-flat-button type='submit'>
-                    <mat-icon class='icon-header'>{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
+            <div class="m-0 p-16" fxLayout="row" fxLayoutAlign="center center" mat-dialog-actions>
+                <button color="primary" mat-flat-button type="submit">
+                    <mat-icon class="icon-header">{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
                     {{ this.isEditMode ? 'ویرایش نهاد' : 'افزودن نهاد' }}
                 </button>
-                <button (click)='dialogRef.close(false)' color='warn' mat-flat-button type='button'>
-                    <mat-icon class='icon-header'>close</mat-icon>
+                <button (click)="dialogRef.close(false)" color="warn" mat-flat-button type="button">
+                    <mat-icon class="icon-header">close</mat-icon>
                     برگشت
                 </button>
             </div>
