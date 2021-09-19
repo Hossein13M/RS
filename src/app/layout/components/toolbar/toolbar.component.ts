@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AuthorizationService } from '../../../modules/authorization/authorization.service';
 import { FuseNavigation } from '../../../../@fuse/types';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 
 @Component({
     selector: 'toolbar',

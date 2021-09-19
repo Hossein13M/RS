@@ -7,7 +7,7 @@ import { forkJoin, Subject } from 'rxjs';
 import { mergeMap, takeUntil, tap } from 'rxjs/operators';
 import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
 import * as _ from 'lodash';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 
 @Component({
     selector: 'app-user-batch',

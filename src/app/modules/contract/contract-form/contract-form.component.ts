@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ContractFormDialogComponent } from './contract-form-dialog/contract-form-dialog.component';
 import { ContractFormService } from './contract-form.service';
 import { ContractForm } from './contract-form.model';

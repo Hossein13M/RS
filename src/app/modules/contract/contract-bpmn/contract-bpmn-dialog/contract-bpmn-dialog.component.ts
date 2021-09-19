@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { Units, User } from '../../../organizations-structure/user/user.model';
 import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../contract-bpmn.model';

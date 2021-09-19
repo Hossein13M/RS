@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } fro
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { SyndicateMembersName } from '../../models/syndicate-members-name';
 
 @Component({

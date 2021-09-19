@@ -5,7 +5,7 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ActivatedRoute } from '@angular/router';
 import { StateType } from '#shared/state-type.enum';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 
 @Component({
     selector: 'app-cardboard-contract-info',

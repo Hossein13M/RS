@@ -2,7 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { forkJoin } from 'rxjs';
 import { OpRiskManagementService } from '../../op-risk-management/op-risk-management.service';
 import { OpRiskReportingService } from '../op-risk-reporting.service';

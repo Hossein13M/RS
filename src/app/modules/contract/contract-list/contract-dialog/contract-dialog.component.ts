@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ContractType } from '../../contract-type/contract-type.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ContractService } from '../contract.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';

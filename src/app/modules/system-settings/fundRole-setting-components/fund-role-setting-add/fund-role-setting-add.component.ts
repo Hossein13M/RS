@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { FundRoleService } from 'app/services/feature-services/system-setting-services/fund-role.service';
 import { OrganizationSupervisorService } from 'app/services/feature-services/system-setting-services/organization-supervisor.service';
 import { OrganizationTypeService } from 'app/services/feature-services/system-setting-services/organization-type.service';

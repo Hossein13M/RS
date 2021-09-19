@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { BondsListDto, BourseInstrumentDetailsDto } from 'app/services/API/models';
 import { BanksService } from 'app/services/App/bank/bank.service';
 import { BoursesInstrumentDetailService } from 'app/services/App/BourseInstrumentDetail/bourse-instrument-detail.service';

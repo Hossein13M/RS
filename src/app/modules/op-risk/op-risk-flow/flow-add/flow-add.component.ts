@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AlertService } from '#shared/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { OperatorService } from 'app/services/API/services';
 import { searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
 import { distinctUntilChanged } from 'rxjs/operators';
