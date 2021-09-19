@@ -10,7 +10,7 @@ export const ContractHistoryIcons: Array<Action> = [
     { typePer: 'تایید', icon: 'thumb_up_off_alt', iconColor: 'primary', titleText: 'تایید قرارداد' },
     { typePer: 'آپلود', icon: 'publish', iconColor: 'warn', titleText: 'آپلود قرارداد' },
     { typePer: 'دانلود', icon: 'get_app', iconColor: 'warn', titleText: 'دانلود قرارداد' },
-    { typePer: 'ثبت اطلاعات', icon: 'analytics', iconColor: 'primary', titleText: 'ثبت داده‌ی فرم پایانی' },
+    { typePer: 'ثبت اطلاعات', icon: 'description', iconColor: 'accent', titleText: 'ثبت داده‌ی فرم پایانی' },
 ];
 
 export interface Action {
