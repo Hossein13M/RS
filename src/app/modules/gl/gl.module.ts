@@ -44,14 +44,26 @@ export class GlModule {
                 children: [
                     { id: 'tree', type: 'item', url: '/gl/tree', title: 'درختواره خلاصه دفتر', icon: 'subject' },
                     { id: 'grid', type: 'item', url: '/gl/grid', title: 'جدول خلاصه دفتر', icon: 'grid_on' },
-                    { id: 'changes', type: 'item', url: 'gl/changes', title: 'تغییرات خلاصه دفتر', icon: 'published_with_changes' },
+                    {
+                        id: 'changes',
+                        type: 'item',
+                        url: 'gl/changes',
+                        title: 'تغییرات خلاصه دفتر',
+                        icon: 'published_with_changes',
+                    },
                 ],
             };
 
             if (this.fns.getNavigationItem('financialModel')) {
                 this.fns.addNavigationItem(customFunctionNavItem, 'financialModel');
             } else {
-                const financialModel = { id: 'financialModel', title: 'مدل مالی', icon: 'bar_chart', type: 'collapsable', children: [customFunctionNavItem] };
+                const financialModel = {
+                    id: 'financialModel',
+                    title: 'مدل مالی',
+                    icon: 'bar_chart',
+                    type: 'collapsable',
+                    children: [customFunctionNavItem],
+                };
                 this.fns.addNavigationItem(financialModel, 'end');
             }
         });

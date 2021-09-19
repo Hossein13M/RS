@@ -7,9 +7,6 @@ import { Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@ang
     encapsulation: ViewEncapsulation.None,
 })
 export class NavbarComponent {
-    // Private
-    _variant: string;
-
     /**
      * Constructor
      *
@@ -20,6 +17,9 @@ export class NavbarComponent {
         // Set the private defaults
         this._variant = 'vertical-style-1';
     }
+
+    // Private
+    _variant: string;
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors

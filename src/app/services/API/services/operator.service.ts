@@ -17,14 +17,26 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class OperatorService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation operatorControllerGetOperators
      */
     static readonly OperatorControllerGetOperatorsPath = '/api/v1/operator';
+    /**
+     * Path part for operation operatorControllerUpdateOperator
+     */
+    static readonly OperatorControllerUpdateOperatorPath = '/api/v1/operator';
+    /**
+     * Path part for operation operatorControllerCreateOperator
+     */
+    static readonly OperatorControllerCreateOperatorPath = '/api/v1/operator';
+    /**
+     * Path part for operation operatorControllerGetOperator
+     */
+    static readonly OperatorControllerGetOperatorPath = '/api/v1/operator/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -77,15 +89,8 @@ export class OperatorService extends BaseService {
          */
         searchKeyword?: any;
     }): Observable<ResponseOperatorDto> {
-        return this.operatorControllerGetOperators$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseOperatorDto>) => r.body as ResponseOperatorDto)
-        );
+        return this.operatorControllerGetOperators$Response(params).pipe(map((r: StrictHttpResponse<ResponseOperatorDto>) => r.body as ResponseOperatorDto));
     }
-
-    /**
-     * Path part for operation operatorControllerUpdateOperator
-     */
-    static readonly OperatorControllerUpdateOperatorPath = '/api/v1/operator';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -120,15 +125,8 @@ export class OperatorService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     operatorControllerUpdateOperator(params: { body: UpdateOperatorDto }): Observable<OperatorInfoDto> {
-        return this.operatorControllerUpdateOperator$Response(params).pipe(
-            map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto)
-        );
+        return this.operatorControllerUpdateOperator$Response(params).pipe(map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto));
     }
-
-    /**
-     * Path part for operation operatorControllerCreateOperator
-     */
-    static readonly OperatorControllerCreateOperatorPath = '/api/v1/operator';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -163,15 +161,8 @@ export class OperatorService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     operatorControllerCreateOperator(params: { body: OperatorDto }): Observable<OperatorInfoDto> {
-        return this.operatorControllerCreateOperator$Response(params).pipe(
-            map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto)
-        );
+        return this.operatorControllerCreateOperator$Response(params).pipe(map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto));
     }
-
-    /**
-     * Path part for operation operatorControllerGetOperator
-     */
-    static readonly OperatorControllerGetOperatorPath = '/api/v1/operator/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

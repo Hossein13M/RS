@@ -17,14 +17,34 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class PortfolioManagementServiceService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation portfolioManagementControllerGetOrganizations
      */
     static readonly PortfolioManagementControllerGetOrganizationsPath = '/api/v1/portfolio-management-service/organizations';
+    /**
+     * Path part for operation portfolioManagementControllerGetTradingBook
+     */
+    static readonly PortfolioManagementControllerGetTradingBookPath = '/api/v1/portfolio-management-service/trading-book';
+    /**
+     * Path part for operation portfolioManagementControllerGetTradeData
+     */
+    static readonly PortfolioManagementControllerGetTradeDataPath = '/api/v1/portfolio-management-service/trade-data';
+    /**
+     * Path part for operation portfolioManagementControllerSearchTradeData
+     */
+    static readonly PortfolioManagementControllerSearchTradeDataPath = '/api/v1/portfolio-management-service/search-trade-data';
+    /**
+     * Path part for operation portfolioManagementControllerDailyInvestmentReport
+     */
+    static readonly PortfolioManagementControllerDailyInvestmentReportPath = '/api/v1/portfolio-management-service/daily-investment-report';
+    /**
+     * Path part for operation portfolioManagementControllerUpdateIpsHistory
+     */
+    static readonly PortfolioManagementControllerUpdateIpsHistoryPath = '/api/v1/portfolio-management-service/update-ips-history';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -62,11 +82,6 @@ export class PortfolioManagementServiceService extends BaseService {
             map((r: StrictHttpResponse<Array<GetOrganizationsDto>>) => r.body as Array<GetOrganizationsDto>)
         );
     }
-
-    /**
-     * Path part for operation portfolioManagementControllerGetTradingBook
-     */
-    static readonly PortfolioManagementControllerGetTradingBookPath = '/api/v1/portfolio-management-service/trading-book';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -115,11 +130,6 @@ export class PortfolioManagementServiceService extends BaseService {
             map((r: StrictHttpResponse<Array<GetTradingBookResponseDto>>) => r.body as Array<GetTradingBookResponseDto>)
         );
     }
-
-    /**
-     * Path part for operation portfolioManagementControllerGetTradeData
-     */
-    static readonly PortfolioManagementControllerGetTradeDataPath = '/api/v1/portfolio-management-service/trade-data';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -185,11 +195,6 @@ export class PortfolioManagementServiceService extends BaseService {
             map((r: StrictHttpResponse<GetTradeDataResponseDto>) => r.body as GetTradeDataResponseDto)
         );
     }
-
-    /**
-     * Path part for operation portfolioManagementControllerSearchTradeData
-     */
-    static readonly PortfolioManagementControllerSearchTradeDataPath = '/api/v1/portfolio-management-service/search-trade-data';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -295,11 +300,6 @@ export class PortfolioManagementServiceService extends BaseService {
     }
 
     /**
-     * Path part for operation portfolioManagementControllerDailyInvestmentReport
-     */
-    static readonly PortfolioManagementControllerDailyInvestmentReportPath = '/api/v1/portfolio-management-service/daily-investment-report';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `portfolioManagementControllerDailyInvestmentReport()` instead.
      *
@@ -352,11 +352,6 @@ export class PortfolioManagementServiceService extends BaseService {
             map((r: StrictHttpResponse<Array<GetDailyInvestmentReportResponseDto>>) => r.body as Array<GetDailyInvestmentReportResponseDto>)
         );
     }
-
-    /**
-     * Path part for operation portfolioManagementControllerUpdateIpsHistory
-     */
-    static readonly PortfolioManagementControllerUpdateIpsHistoryPath = '/api/v1/portfolio-management-service/update-ips-history';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

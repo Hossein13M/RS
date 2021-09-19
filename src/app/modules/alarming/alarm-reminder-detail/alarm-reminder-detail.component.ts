@@ -10,11 +10,7 @@ import { AlarmService } from 'app/services/feature-services/alarm.service';
 export class AlarmReminderDetailComponent implements OnInit {
     data;
 
-    constructor(
-        public dialogRef: MatDialogRef<AlarmReminderDetailComponent>,
-        @Inject(MAT_DIALOG_DATA) public cData,
-        private alarmService: AlarmService
-    ) {}
+    constructor(public dialogRef: MatDialogRef<AlarmReminderDetailComponent>, @Inject(MAT_DIALOG_DATA) public cData, private alarmService: AlarmService) {}
 
     getReminderDetail() {
         this.alarmService.getReminderById(this.cData.inboxId).subscribe((res) => {

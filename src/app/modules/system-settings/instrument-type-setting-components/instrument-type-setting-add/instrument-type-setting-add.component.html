@@ -1,59 +1,59 @@
-<div class="dialog-container">
-    <div title="{{title}}"
-         appDialogHeader>
-        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+<div class='dialog-container'>
+    <div appDialogHeader
+         title='{{title}}'>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
     </div>
-    <form [formGroup]="form" class="setting-form-container" dir="rtl">
-        <div class="setting-form-row">
-            <mat-form-field appearance="outline">
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     نوع
                 </mat-label>
-                <input formControlName="type" matInput>
+                <input formControlName='type' matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     شناسه نماد
                 </mat-label>
-                <input formControlName="ticker" matInput>
+                <input formControlName='ticker' matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
-                   وضعیت
+                    وضعیت
                 </mat-label>
-                <input matInput formControlName="status">
+                <input formControlName='status' matInput>
             </mat-form-field>
         </div>
-        <div class="setting-form-row">
-            <mat-form-field appearance="outline">
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     نام
                 </mat-label>
-                <input matInput formControlName="name">
+                <input formControlName='name' matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     نام نماد
                 </mat-label>
-                <input matInput formControlName="symbol">
+                <input formControlName='symbol' matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
-                   محل معامله
+                    محل معامله
                 </mat-label>
-                <input formControlName="isInBourse" matInput>
+                <input formControlName='isInBourse' matInput>
             </mat-form-field>
         </div>
-        <div class="setting-btn-container">
-            <button (click)="close()" style="margin-left: 10px" color="warn" mat-raised-button>
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
                 <mat-icon>close</mat-icon>
-                 برگشت
+                برگشت
             </button>
-            <button *ngIf="!data" (click)="onCreateBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button (click)='onCreateBranch()' *ngIf='!data' [disabled]='form.invalid' color='accent' mat-raised-button>
                 <mat-icon>done</mat-icon>
                 ثبت
             </button>
-            <button *ngIf="data" (click)="onEditBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button (click)='onEditBranch()' *ngIf='data' [disabled]='form.invalid' color='accent' mat-raised-button>
                 <mat-icon>edit</mat-icon>
                 ویرایش
             </button>

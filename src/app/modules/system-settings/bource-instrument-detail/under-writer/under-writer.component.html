@@ -1,38 +1,40 @@
-<div class="dialog-content-wrapper" dir="rtl">
-    <mat-toolbar matDialogTitle class="mat-accent m-0">
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <span class="title dialog-title">افزودن پذیره نویس</span>
-            <button mat-icon-button (click)="matDialogRef.close()">
+<div class='dialog-content-wrapper' dir='rtl'>
+    <mat-toolbar class='mat-accent m-0' matDialogTitle>
+        <mat-toolbar-row fxLayout='row' fxLayoutAlign='space-between center'>
+            <span class='title dialog-title'>افزودن پذیره نویس</span>
+            <button (click)='matDialogRef.close()' mat-icon-button>
                 <mat-icon>close</mat-icon>
             </button>
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <div mat-dialog-content class="p-24 m-0" fusePerfectScrollbar>
-        <app-table [data]="data" [columns]="column" [paginationSettings]="{ mode: 'local' }"></app-table>
-        <ng-container *ngIf="data?.length === 0">
-            <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                <img width="140px" height="140px" src="../../../../../assets/images/no-data.svg" alt="no data" />
-                <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
+    <div class='p-24 m-0' fusePerfectScrollbar mat-dialog-content>
+        <app-table [columns]='column' [data]='data' [paginationSettings]="{ mode: 'local' }"></app-table>
+        <ng-container *ngIf='data?.length === 0'>
+            <div
+                style='display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column'>
+                <img alt='no data' height='140px' src='../../../../../assets/images/no-data.svg' width='140px' />
+                <div style='font-size: 13px; color: #449fdb; margin-top: 7px'>موردی وجود ندارد</div>
             </div>
         </ng-container>
 
-        <form [formGroup]="underWriterForm" class="form" fxLayout="row wrap" fxLayoutAlign="space-between center">
-            <div fxFlex="49">
-                <mat-form-field style="min-width: 200px; padding: 15px" appearance="outline">
+        <form [formGroup]='underWriterForm' class='form' fxLayout='row wrap' fxLayoutAlign='space-between center'>
+            <div fxFlex='49'>
+                <mat-form-field appearance='outline' style='min-width: 200px; padding: 15px'>
                     <mat-label>پذیره نویس</mat-label>
-                    <mat-select formControlName="underwriterId" [placeholder]="underWriterForm.value.underwriterName" [multiple]="false">
+                    <mat-select [multiple]='false' [placeholder]='underWriterForm.value.underwriterName'
+                                formControlName='underwriterId'>
                         <ngx-mat-select-search
-                            style="text-align: right"
+                            [formControl]='searchKey'
                             [noEntriesFoundLabel]="'یافت نشد'"
                             [placeholderLabel]="'جستجو'"
-                            [formControl]="searchKey"
+                            style='text-align: right'
                         ></ngx-mat-select-search>
                         <mat-option
-                            style="text-align: right"
-                            *ngFor="let UnderWriter of underWriters"
-                            [value]="UnderWriter.id"
                             (click)="underWriterForm.controls['underwriterName'].setValue(UnderWriter.name)"
+                            *ngFor='let UnderWriter of underWriters'
+                            [value]='UnderWriter.id'
+                            style='text-align: right'
                         >
                             {{ UnderWriter?.name }}
                         </mat-option>
@@ -40,26 +42,28 @@
                 </mat-form-field>
             </div>
 
-            <div fxFlex="49">
-                <mat-form-field appearance="outline" fxFlex>
+            <div fxFlex='49'>
+                <mat-form-field appearance='outline' fxFlex>
                     <mat-label>درصد</mat-label>
-                    <input type="number" formControlName="percent" matInput required />
+                    <input formControlName='percent' matInput required type='number' />
                 </mat-form-field>
             </div>
 
-            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
-                <button mat-button *ngIf="selectedUnderWriter == null" [disabled]="underWriterForm.invalid" (click)="add()" color="primary">
-                    <mat-icon class="mat-18">add_circle</mat-icon>
+            <div fxFlex='100' fxLayout='row wrap' fxLayoutAlign='center center'>
+                <button (click)='add()' *ngIf='selectedUnderWriter == null' [disabled]='underWriterForm.invalid'
+                        color='primary' mat-button>
+                    <mat-icon class='mat-18'>add_circle</mat-icon>
                     افزودن
                 </button>
 
-                <button mat-button *ngIf="selectedUnderWriter != null" [disabled]="underWriterForm.invalid" (click)="edit()" color="primary">
-                    <mat-icon class="mat-18">create</mat-icon>
+                <button (click)='edit()' *ngIf='selectedUnderWriter != null' [disabled]='underWriterForm.invalid'
+                        color='primary' mat-button>
+                    <mat-icon class='mat-18'>create</mat-icon>
                     اصلاح
                 </button>
 
-                <button mat-button *ngIf="selectedUnderWriter != null" (click)="clear()" color="warn">
-                    <mat-icon class="mat-18">clear</mat-icon>
+                <button (click)='clear()' *ngIf='selectedUnderWriter != null' color='warn' mat-button>
+                    <mat-icon class='mat-18'>clear</mat-icon>
                     برگشت
                 </button>
             </div>

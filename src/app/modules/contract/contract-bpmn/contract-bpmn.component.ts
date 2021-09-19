@@ -18,13 +18,12 @@ import { CustomPaletteProvider } from './contract-bpmn-palette.js';
 })
 export class ContractBpmnComponent implements OnInit {
     public stateType: StateType = StateType.INIT;
-    private flowId: string;
     public flowDetails: Flow;
+    public saveName = '';
+    private flowId: string;
     private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
-
     //BPMN Diagram
     private modeler;
-    public saveName = '';
     private eventBus: any;
 
     constructor(
@@ -38,18 +37,6 @@ export class ContractBpmnComponent implements OnInit {
     ngOnInit(): void {
         this.flowId = this.activatedRoute.snapshot.paramMap.get('id');
         this.getFlowDetails();
-    }
-
-    private getFlowDetails(): void {
-        const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
-        this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.flowId, ...pagination }).subscribe((response) => {
-            this.flowDetails = response.items[0];
-            this.stateType = StateType.PRESENT;
-            //implement BPMN Diagram and Modeler
-            this.initBpmn();
-            this.eventBus = this.modeler.get('eventBus');
-            this.eventBus.on('element.dblclick', this.clickListener.bind(this));
-        });
     }
 
     public saveBPMN(): void {
@@ -110,32 +97,6 @@ export class ContractBpmnComponent implements OnInit {
         });
     }
 
-    private submitData(info) {
-        this.flowService.saveBpmnConfiguration(info).subscribe(
-            () => this.router.navigate([`/contract/flow`]).finally(() => this.alertService.onSuccess('این BPMN به جریان افزوده شد.')),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
-    private checkSequenceFlowValidations(bpmnProcess: any): boolean {
-        const endEvents = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:endEvent'];
-        const startEvents = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:startEvent'];
-        const tasks = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:task'];
-
-        if (Array.isArray(startEvents) && startEvents.length > 1) {
-            this.alertService.onError('روندنما نمی‌تواند بیش از یک آغاز داشته باشد');
-            return false;
-        } else if (Array.isArray(endEvents) && endEvents.length > 1) {
-            this.alertService.onError('روندنما نمی‌تواند بیش از یک پایان داشته باشد');
-            return false;
-        } else if (Array.isArray(tasks) && tasks.length < 2) {
-            this.alertService.onError('روندنما نمی‌تواند کم‌تر از دو گام داشته باشد');
-            return false;
-        } else return true;
-    }
-
-    // BPMN Diagram
-
     initBpmn() {
         this.modeler = new BpmnModeler({
             container: '#js-canvas',
@@ -162,6 +123,8 @@ export class ContractBpmnComponent implements OnInit {
         e.stopPropagation();
     }
 
+    // BPMN Diagram
+
     saveSVG(e) {
         this.modeler.saveSVG((err, svg) => {
             err ? console.error(err) : this.setEncoded(svg, 'bpmn.svg');
@@ -174,16 +137,58 @@ export class ContractBpmnComponent implements OnInit {
         if (data) this.saveName = name;
     }
 
-    private convertJsonToXML(): string {
-        return json2xml(JSON.stringify(this.flowDetails.bpmnConfiguration), { compact: true });
-    }
-
     public clickListener(event): void {
         if (event.element.type === 'bpmn:Task' || event.element.type === 'bpmn:EndEvent') {
             event.element.businessObject.name
                 ? this.openDialog(event.element.businessObject.name, event.element.id, event.element.type === 'bpmn:Task')
                 : this.alertService.onInfo('نخست یک نام برگزینید');
         }
+    }
+
+    private getFlowDetails(): void {
+        const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
+        this.flowService
+            .getSingleFlowDetails({
+                organization: this.organizationCode,
+                id: this.flowId,
+                ...pagination,
+            })
+            .subscribe((response) => {
+                this.flowDetails = response.items[0];
+                this.stateType = StateType.PRESENT;
+                //implement BPMN Diagram and Modeler
+                this.initBpmn();
+                this.eventBus = this.modeler.get('eventBus');
+                this.eventBus.on('element.dblclick', this.clickListener.bind(this));
+            });
+    }
+
+    private submitData(info) {
+        this.flowService.saveBpmnConfiguration(info).subscribe(
+            () => this.router.navigate([`/contract/flow`]).finally(() => this.alertService.onSuccess('این BPMN به جریان افزوده شد.')),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
+    }
+
+    private checkSequenceFlowValidations(bpmnProcess: any): boolean {
+        const endEvents = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:endEvent'];
+        const startEvents = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:startEvent'];
+        const tasks = bpmnProcess['bpmn:definitions']['bpmn:process']['bpmn:task'];
+
+        if (Array.isArray(startEvents) && startEvents.length > 1) {
+            this.alertService.onError('روندنما نمی‌تواند بیش از یک آغاز داشته باشد');
+            return false;
+        } else if (Array.isArray(endEvents) && endEvents.length > 1) {
+            this.alertService.onError('روندنما نمی‌تواند بیش از یک پایان داشته باشد');
+            return false;
+        } else if (Array.isArray(tasks) && tasks.length < 2) {
+            this.alertService.onError('روندنما نمی‌تواند کم‌تر از دو گام داشته باشد');
+            return false;
+        } else return true;
+    }
+
+    private convertJsonToXML(): string {
+        return json2xml(JSON.stringify(this.flowDetails.bpmnConfiguration), { compact: true });
     }
 
     private openDialog(stateName, stateId, isStateTypeTask: boolean): void {
@@ -198,7 +203,13 @@ export class ContractBpmnComponent implements OnInit {
                 width: '1500px',
                 height: '900px',
                 panelClass: 'dialog-p-0',
-                data: { flowId: this.activatedRoute.snapshot.params.id, stateName, stateId, isStateTypeTask, bpmnProcesses },
+                data: {
+                    flowId: this.activatedRoute.snapshot.params.id,
+                    stateName,
+                    stateId,
+                    isStateTypeTask,
+                    bpmnProcesses,
+                },
             });
         });
     }

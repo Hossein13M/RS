@@ -18,6 +18,6 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [GlChangesComponent],
-    imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes), HeaderModule]
+    imports: [CommonModule, MaterialModule, ShareModule, MatTooltipModule, LayoutModule, RouterModule.forChild(routes), HeaderModule],
 })
 export class GlChangesModule {}

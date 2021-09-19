@@ -65,107 +65,8 @@ export class OpRiskAddComponent implements OnInit {
         if (this.riskComponentState !== RiskComponentState.Show) this.disableFormControllersOfInputs();
     }
 
-    private checkComponentState(): void {
-        this.backRouteAddress = this.activatedRoute.snapshot.queryParamMap.get('back') ?? '/op-risk/management';
-
-        const opRiskId: string = this.activatedRoute.snapshot.queryParamMap.get('opRiskId');
-        if (!opRiskId) this.riskComponentState = RiskComponentState.Add;
-        else {
-            const isComponentInEditMode: string = this.activatedRoute.snapshot.queryParamMap.get('edit');
-            !!isComponentInEditMode ? (this.riskComponentState = RiskComponentState.Edit) : (this.riskComponentState = RiskComponentState.Show);
-        }
-        this.chooseProperNameForTitle();
-    }
-
-    private onComponentStateInitialized(): void {
-        if (this.riskComponentState === RiskComponentState.Add) this.initialComponentOnAddState();
-        else if (this.riskComponentState === RiskComponentState.Edit) this.initialComponentOnEditState();
-        else if (this.riskComponentState === RiskComponentState.Show) this.initialComponentOnShowState();
-    }
-
-    private initialComponentOnShowState(): void {
-        this.getOpRiskDetailsOnShowState(this.activatedRoute.snapshot.queryParamMap.get('opRiskId'));
-        this.getSteps(this.activatedRoute.snapshot.queryParamMap.get('opRiskId'));
-    }
-
-    private initialComponentOnAddState(): void {
-        this.createForm();
-        this.loading = true;
-    }
-
-    private disableFormControllersOfInputs(): void {
-        const disablingFormControlArrayName: Array<{ formControlName: string; childrenFormControllers: Array<string> }> = [
-            { formControlName: 'recoveries', childrenFormControllers: ['recoveriesDescription', 'recoveriesAvg'] },
-            { formControlName: 'directLosses', childrenFormControllers: ['directLossesDescription', 'directLossesAvg'] },
-            { formControlName: 'inDirectLosses', childrenFormControllers: ['inDirectLossesDescription', 'inDirectLossesAvg'] },
-        ];
-
-        disablingFormControlArrayName.map((item) => {
-            item.childrenFormControllers.map((fc) => {
-                this.form.get(item.formControlName).valueChanges.subscribe((value) => {
-                    UtilityFunctions.checkValueForNotBeingAnEmptyArray(value) ? this.form.get(fc).enable() : this.form.get(fc).disable();
-                });
-            });
-        });
-    }
-
-    private initialComponentOnEditState(): void {
-        // TODO: this needs to be fixed after adding has been completed
-        this.loading = false;
-        const opRiskId = this.activatedRoute.snapshot.queryParamMap.get('opRiskId');
-        this.opManagementService.getOpRiskDetail(+opRiskId).subscribe((response: OperationRiskDetails) => {
-            this.loading = true;
-            this.data = response;
-            this.createForm();
-            if (response.controlDetails) {
-                if (UtilityFunctions.checkValueForNotBeingAnEmptyArray(response.controlDetails)) {
-                    this.form.controls['controlDescription'].setValue(response.controlDetails[0].description, { onlySelf: true });
-                    this.form.controls['controlType'].setValue(response.controlDetails[0].type, { onlySelf: true });
-                    this.form.controls['controlValue'].setValue(response.controlDetails[0].value, { onlySelf: true });
-                }
-            }
-            this.form.controls['flow'].disable();
-            this.isEditMode = true;
-        });
-    }
-
-    private chooseProperNameForTitle(): void {
-        const riskComponentTranslator = { Add: 'افزودن ریسک', Edit: 'ویرایش ریسک', Show: 'نمایش جزئیات ریسک' };
-        this.headerTitle = riskComponentTranslator[RiskComponentState[this.riskComponentState]];
-    }
-
-    private getFlows(): void {
-        this.opRiskFlowService
-            .getFlowsAssignedToUser()
-            .pipe(StateManager(this.flows))
-            .subscribe((response: Array<{ flowId: number; name: string }>) => (this.flows.data = response));
-    }
-
     public getTrees(treeId: string, treeIndex: number): void {
         this.opManagementService.getTrees(treeId).subscribe((response) => (this.trees[treeIndex]['data'] = response));
-    }
-
-    private getParents(): void {
-        let data;
-        if (this.riskComponentState === RiskComponentState.Show || this.riskComponentState === RiskComponentState.Edit) {
-            data = {
-                organizationCharts: UtilityFunctions.returnIdsFromAnArray(this.form.value.organizationCharts),
-                owners: UtilityFunctions.returnIdsFromAnArray(this.form.value.owners),
-                processes: UtilityFunctions.returnIdsFromAnArray(this.form.value.processes),
-                businessLines: UtilityFunctions.returnIdsFromAnArray(this.form.value.businessLines),
-                products: UtilityFunctions.returnIdsFromAnArray(this.form.value.products),
-            };
-        } else {
-            data = {
-                organizationCharts: this.form.value.organizationCharts,
-                owners: this.form.value.owners,
-                processes: this.form.value.processes,
-                businessLines: this.form.value.businessLines,
-                products: this.form.value.products,
-            };
-        }
-
-        this.opManagementService.getParentRisk(data).subscribe((response: Array<{ id: number; title: string }>) => (this.parents = response));
     }
 
     public onCreateRisk(): void {
@@ -260,6 +161,111 @@ export class OpRiskAddComponent implements OnInit {
             }
         }
         return finalData;
+    }
+
+    private checkComponentState(): void {
+        this.backRouteAddress = this.activatedRoute.snapshot.queryParamMap.get('back') ?? '/op-risk/management';
+
+        const opRiskId: string = this.activatedRoute.snapshot.queryParamMap.get('opRiskId');
+        if (!opRiskId) this.riskComponentState = RiskComponentState.Add;
+        else {
+            const isComponentInEditMode: string = this.activatedRoute.snapshot.queryParamMap.get('edit');
+            !!isComponentInEditMode ? (this.riskComponentState = RiskComponentState.Edit) : (this.riskComponentState = RiskComponentState.Show);
+        }
+        this.chooseProperNameForTitle();
+    }
+
+    private onComponentStateInitialized(): void {
+        if (this.riskComponentState === RiskComponentState.Add) this.initialComponentOnAddState();
+        else if (this.riskComponentState === RiskComponentState.Edit) this.initialComponentOnEditState();
+        else if (this.riskComponentState === RiskComponentState.Show) this.initialComponentOnShowState();
+    }
+
+    private initialComponentOnShowState(): void {
+        this.getOpRiskDetailsOnShowState(this.activatedRoute.snapshot.queryParamMap.get('opRiskId'));
+        this.getSteps(this.activatedRoute.snapshot.queryParamMap.get('opRiskId'));
+    }
+
+    private initialComponentOnAddState(): void {
+        this.createForm();
+        this.loading = true;
+    }
+
+    private disableFormControllersOfInputs(): void {
+        const disablingFormControlArrayName: Array<{ formControlName: string; childrenFormControllers: Array<string> }> = [
+            { formControlName: 'recoveries', childrenFormControllers: ['recoveriesDescription', 'recoveriesAvg'] },
+            {
+                formControlName: 'directLosses',
+                childrenFormControllers: ['directLossesDescription', 'directLossesAvg'],
+            },
+            {
+                formControlName: 'inDirectLosses',
+                childrenFormControllers: ['inDirectLossesDescription', 'inDirectLossesAvg'],
+            },
+        ];
+
+        disablingFormControlArrayName.map((item) => {
+            item.childrenFormControllers.map((fc) => {
+                this.form.get(item.formControlName).valueChanges.subscribe((value) => {
+                    UtilityFunctions.checkValueForNotBeingAnEmptyArray(value) ? this.form.get(fc).enable() : this.form.get(fc).disable();
+                });
+            });
+        });
+    }
+
+    private initialComponentOnEditState(): void {
+        // TODO: this needs to be fixed after adding has been completed
+        this.loading = false;
+        const opRiskId = this.activatedRoute.snapshot.queryParamMap.get('opRiskId');
+        this.opManagementService.getOpRiskDetail(+opRiskId).subscribe((response: OperationRiskDetails) => {
+            this.loading = true;
+            this.data = response;
+            this.createForm();
+            if (response.controlDetails) {
+                if (UtilityFunctions.checkValueForNotBeingAnEmptyArray(response.controlDetails)) {
+                    this.form.controls['controlDescription'].setValue(response.controlDetails[0].description, { onlySelf: true });
+                    this.form.controls['controlType'].setValue(response.controlDetails[0].type, { onlySelf: true });
+                    this.form.controls['controlValue'].setValue(response.controlDetails[0].value, { onlySelf: true });
+                }
+            }
+            this.form.controls['flow'].disable();
+            this.isEditMode = true;
+        });
+    }
+
+    private chooseProperNameForTitle(): void {
+        const riskComponentTranslator = { Add: 'افزودن ریسک', Edit: 'ویرایش ریسک', Show: 'نمایش جزئیات ریسک' };
+        this.headerTitle = riskComponentTranslator[RiskComponentState[this.riskComponentState]];
+    }
+
+    private getFlows(): void {
+        this.opRiskFlowService
+            .getFlowsAssignedToUser()
+            .pipe(StateManager(this.flows))
+            .subscribe((response: Array<{ flowId: number; name: string }>) => (this.flows.data = response));
+    }
+
+    private getParents(): void {
+        let data;
+        if (this.riskComponentState === RiskComponentState.Show || this.riskComponentState === RiskComponentState.Edit) {
+            data = {
+                organizationCharts: UtilityFunctions.returnIdsFromAnArray(this.form.value.organizationCharts),
+                owners: UtilityFunctions.returnIdsFromAnArray(this.form.value.owners),
+                processes: UtilityFunctions.returnIdsFromAnArray(this.form.value.processes),
+                businessLines: UtilityFunctions.returnIdsFromAnArray(this.form.value.businessLines),
+                products: UtilityFunctions.returnIdsFromAnArray(this.form.value.products),
+            };
+        } else {
+            data = {
+                organizationCharts: this.form.value.organizationCharts,
+                owners: this.form.value.owners,
+                processes: this.form.value.processes,
+                businessLines: this.form.value.businessLines,
+                products: this.form.value.products,
+            };
+        }
+
+        this.opManagementService.getParentRisk(data).subscribe((response: Array<{ id: number; title: string }>) => (this.parents = response));
     }
 
     private createForm(): void {

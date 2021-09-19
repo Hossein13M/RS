@@ -24,21 +24,6 @@ export class TradeDashboardTableComponent implements OnInit, OnChanges {
         this.getTradeDashboardTable();
     }
 
-    private initializeTableColumns(): void {
-        this.columns = [
-            { name: 'ارزش دارایی‌های تمدن', id: 'totalAssets', type: 'price', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'سهام', id: 'stock', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'صکوک', id: 'sukuk', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'سلف', id: 'forward', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'مشارکت', id: 'bond', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'شاخص آتی', id: 'indexFuture', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'ETF', id: 'etf', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'حق تقدم', id: 'right', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'اسناد خزانه', id: 'treasury', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-            { name: 'وجه نقد', id: 'cash', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-        ];
-    }
-
     ngOnChanges(): void {
         this.getTradeDashboardTable();
     }
@@ -53,5 +38,26 @@ export class TradeDashboardTableComponent implements OnInit, OnChanges {
             },
             () => (this.stateType = StateType.FAIL)
         );
+    }
+
+    private initializeTableColumns(): void {
+        this.columns = [
+            {
+                name: 'ارزش دارایی‌های تمدن',
+                id: 'totalAssets',
+                type: 'price',
+                headerAlign: 'center',
+                dataAlign: 'center',
+            },
+            { name: 'سهام', id: 'stock', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'صکوک', id: 'sukuk', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'سلف', id: 'forward', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'مشارکت', id: 'bond', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'شاخص آتی', id: 'indexFuture', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'ETF', id: 'etf', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'حق تقدم', id: 'right', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'اسناد خزانه', id: 'treasury', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+            { name: 'وجه نقد', id: 'cash', type: 'number', headerAlign: 'center', dataAlign: 'center' },
+        ];
     }
 }

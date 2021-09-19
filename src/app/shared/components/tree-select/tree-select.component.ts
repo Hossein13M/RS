@@ -1,14 +1,7 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, EventEmitter, forwardRef, Input, OnChanges, Output } from '@angular/core';
-import {
-    AbstractControl,
-    ControlValueAccessor,
-    NG_VALIDATORS,
-    NG_VALUE_ACCESSOR,
-    ValidationErrors,
-    Validator
-} from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { fuseAnimations } from '@fuse/animations';
 import { map } from 'rxjs/operators';
@@ -36,7 +29,6 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
     mouseIn: any;
     expandAll = true;
     showSelected = false;
-    public onTouched: () => void = () => {};
 
     constructor() {
         this.tree = {
@@ -48,6 +40,8 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
             nestedNodeMap: null,
         };
     }
+
+    public onTouched: () => void = () => {};
 
     ngOnChanges(): void {
         if (!this.data) {

@@ -13,11 +13,13 @@ export class OperatorListsComponent implements OnInit {
     @Output() operatorsID = new EventEmitter<any>();
 
     constructor(private service: OperatorService) {}
+
     comboChange(event) {
         if (!event) {
             this.operatorsID.emit(this.operators.value);
         }
     }
+
     ngOnInit() {
         this.service.operatorControllerGetOperators().subscribe((r) => {
             this.operatorsList = r.items;

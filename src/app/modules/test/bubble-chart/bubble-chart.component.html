@@ -1,14 +1,14 @@
 <div>
     <div>
-        <div style="display: block">
+        <div style='display: block'>
             <canvas
-                baseChart
-                class="chart"
+                [chartType]='bubbleChartType'
+                [datasets]='bubbleChartData'
                 [labels]="['', 'وسپا', 'پالایش', 'رایان افزار', '']"
-                [datasets]="bubbleChartData"
-                [options]="bubbleChartOptions"
-                [legend]="bubbleChartLegend"
-                [chartType]="bubbleChartType"
+                [legend]='bubbleChartLegend'
+                [options]='bubbleChartOptions'
+                baseChart
+                class='chart'
             >
             </canvas>
         </div>

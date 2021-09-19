@@ -18,7 +18,13 @@ export class OrganizationsListComponent implements OnInit {
     tableColumn: Array<Column> = [
         { id: 'index', type: 'index' },
         { id: 'name', name: 'نام نهاد', type: 'string', minWidth: '500px' },
-        { id: 'isActive', name: 'وضعیت نهاد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '500px' },
+        {
+            id: 'isActive',
+            name: 'وضعیت نهاد',
+            convert: (value) => (value ? 'فعال' : 'غیر فعال'),
+            type: 'string',
+            minWidth: '500px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -27,13 +33,34 @@ export class OrganizationsListComponent implements OnInit {
             sticky: true,
             showSearchButtons: false,
             operations: [
-                { name: 'مدیریت ساختار و نقش', icon: 'filter_list', color: 'accent', operation: (row: any) => this.navigateToUnitsAndRolesPage(row) },
-                { name: 'گرفتن رونوشت', icon: 'file_copy', color: 'accent', operation: (row: OrganizationStructureModel) => this.copyOrganization(row) },
-                { name: 'ویرایش نام', icon: 'mode_edit', color: 'primary', operation: (row: any) => this.openOrganizationModal(row) },
-                { name: 'غیرفعال‌سازی', icon: 'sync_alt', color: 'warn', operation: (row: any) => this.deactivateOrganization(row) },
+                {
+                    name: 'مدیریت ساختار و نقش',
+                    icon: 'filter_list',
+                    color: 'accent',
+                    operation: (row: any) => this.navigateToUnitsAndRolesPage(row),
+                },
+                {
+                    name: 'گرفتن رونوشت',
+                    icon: 'file_copy',
+                    color: 'accent',
+                    operation: (row: OrganizationStructureModel) => this.copyOrganization(row),
+                },
+                {
+                    name: 'ویرایش نام',
+                    icon: 'mode_edit',
+                    color: 'primary',
+                    operation: (row: any) => this.openOrganizationModal(row),
+                },
+                {
+                    name: 'غیرفعال‌سازی',
+                    icon: 'sync_alt',
+                    color: 'warn',
+                    operation: (row: any) => this.deactivateOrganization(row),
+                },
             ],
         },
     ];
+
     constructor(
         private organizationOrderService: OrganizationStructureService,
         public dialog: MatDialog,
@@ -45,22 +72,10 @@ export class OrganizationsListComponent implements OnInit {
         this.getOrganizations();
     }
 
-    private getOrganizations(): void {
-        this.organizationOrderService.getOrganizationsList(this.pagination).subscribe((response) => {
-            this.organizations = response.items;
-            this.pagination.total = response.total;
-        });
-    }
-
     public paginationControl(pageEvent?: any): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getOrganizations();
-    }
-
-    private copyOrganization(organization: OrganizationStructureModel): void {
-        // TODO: this needs to be implemented after the backend has been prepared
-        window.alert('این قابلیت به زودی پیاده‌سازی می‌شود!');
     }
 
     public openOrganizationModal(organization?: { operationItem: { color: string; icon: string; operation: any }; row: OrganizationStructureModel }): void {
@@ -71,6 +86,18 @@ export class OrganizationsListComponent implements OnInit {
             panelClass: 'dialog-p-0',
         });
         dialogRef.afterClosed().subscribe((result) => result && this.getOrganizations());
+    }
+
+    private getOrganizations(): void {
+        this.organizationOrderService.getOrganizationsList(this.pagination).subscribe((response) => {
+            this.organizations = response.items;
+            this.pagination.total = response.total;
+        });
+    }
+
+    private copyOrganization(organization: OrganizationStructureModel): void {
+        // TODO: this needs to be implemented after the backend has been prepared
+        window.alert('این قابلیت به زودی پیاده‌سازی می‌شود!');
     }
 
     private deactivateOrganization(organization: { operationItem: { color: string; icon: string; operation: any }; row: OrganizationStructureModel }): void {

@@ -16,14 +16,26 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class SentAlarmService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation sentAlarmControllerSentAlarm
      */
     static readonly SentAlarmControllerSentAlarmPath = '/api/v1/sent-alarm/{alarmId}';
+    /**
+     * Path part for operation sentAlarmControllerGetInboxAlarms
+     */
+    static readonly SentAlarmControllerGetInboxAlarmsPath = '/api/v1/sent-alarm/inbox';
+    /**
+     * Path part for operation sentAlarmControllerGetAlarm
+     */
+    static readonly SentAlarmControllerGetAlarmPath = '/api/v1/sent-alarm/{inboxId}';
+    /**
+     * Path part for operation sentAlarmControllerRecordReminderDate
+     */
+    static readonly SentAlarmControllerRecordReminderDatePath = '/api/v1/sent-alarm/reminder-date/{inboxId}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -60,11 +72,6 @@ export class SentAlarmService extends BaseService {
     sentAlarmControllerSentAlarm(params: { alarmId: number }): Observable<SentSuccessDto> {
         return this.sentAlarmControllerSentAlarm$Response(params).pipe(map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto));
     }
-
-    /**
-     * Path part for operation sentAlarmControllerGetInboxAlarms
-     */
-    static readonly SentAlarmControllerGetInboxAlarmsPath = '/api/v1/sent-alarm/inbox';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -124,11 +131,6 @@ export class SentAlarmService extends BaseService {
     }
 
     /**
-     * Path part for operation sentAlarmControllerGetAlarm
-     */
-    static readonly SentAlarmControllerGetAlarmPath = '/api/v1/sent-alarm/{inboxId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `sentAlarmControllerGetAlarm()` instead.
      *
@@ -163,11 +165,6 @@ export class SentAlarmService extends BaseService {
     sentAlarmControllerGetAlarm(params: { inboxId: number }): Observable<ItemAlarmDto> {
         return this.sentAlarmControllerGetAlarm$Response(params).pipe(map((r: StrictHttpResponse<ItemAlarmDto>) => r.body as ItemAlarmDto));
     }
-
-    /**
-     * Path part for operation sentAlarmControllerRecordReminderDate
-     */
-    static readonly SentAlarmControllerRecordReminderDatePath = '/api/v1/sent-alarm/reminder-date/{inboxId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

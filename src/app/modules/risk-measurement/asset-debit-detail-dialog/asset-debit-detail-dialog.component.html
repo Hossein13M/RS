@@ -1,27 +1,27 @@
-<div class="dialog-container">
+<div class='dialog-container'>
     <div [title]="'دارایی و بدهی'" appDialogHeader>
-        <mat-icon (click)="this.dialog.close()" class="icon-header">close</mat-icon>
+        <mat-icon (click)='this.dialog.close()' class='icon-header'>close</mat-icon>
     </div>
-    <div class="asset-debit-container" dir="rtl">
-        <div class="asset-and-debbit-row">
-            <mat-form-field style="flex-basis: 40%;margin-left: 10px" appearance="outline">
+    <div class='asset-debit-container' dir='rtl'>
+        <div class='asset-and-debbit-row'>
+            <mat-form-field appearance='outline' style='flex-basis: 40%;margin-left: 10px'>
                 <mat-label>
                     عنوان-کد سرفصل
-                    <span style="color: red">*</span></mat-label>
-                <mat-select [formControl]="codeSarfaslValue">
-                    <ngx-mat-select-search style="text-align: right"
+                    <span style='color: red'>*</span></mat-label>
+                <mat-select [formControl]='codeSarfaslValue'>
+                    <ngx-mat-select-search [formControl]='safaslCodeFilter'
                                            [noEntriesFoundLabel]=" 'یافت نشد'"
                                            [placeholderLabel]="'جستجو'"
-                                           [formControl]="safaslCodeFilter"></ngx-mat-select-search>
-                    <mat-option style="text-align: right;" *ngFor="let op of filteredSarfaslCode | async"
-                                [value]="op?.code">
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredSarfaslCode | async' [value]='op?.code'
+                                style='text-align: right;'>
                         {{op?.title}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-form-field style="flex-basis: 30%;margin-left: 10px" appearance="outline">
+            <mat-form-field appearance='outline' style='flex-basis: 30%;margin-left: 10px'>
                 <mat-label>نوع</mat-label>
-                <mat-select [formControl]="codeSarfaslType">
+                <mat-select [formControl]='codeSarfaslType'>
                     <mat-option [value]="'asset'">
                         دارایی
                     </mat-option>
@@ -30,77 +30,77 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <div class="asset-and-debbit-btn-container">
-                <button [disabled]="!codeSarfaslValue.value || !codeSarfaslType.value" (click)="createCodeSarfaslObj()"
-                        mat-raised-button [color]="'accent'">
+            <div class='asset-and-debbit-btn-container'>
+                <button (click)='createCodeSarfaslObj()' [color]="'accent'"
+                        [disabled]='!codeSarfaslValue.value || !codeSarfaslType.value' mat-raised-button>
                     <mat-icon>add</mat-icon>
                     افزودن
                 </button>
             </div>
         </div>
-        <div style="display: flex;align-items: center;justify-content: center;margin: 0 30px">
-            <div class="parent fuse-card">
-                <div class="header1 accent">
+        <div style='display: flex;align-items: center;justify-content: center;margin: 0 30px'>
+            <div class='parent fuse-card'>
+                <div class='header1 accent'>
                     دارایی
                 </div>
-                <div class="header">
-                    <div class="header-item">
+                <div class='header'>
+                    <div class='header-item'>
                         کد حساب
                     </div>
-                    <div class="header-item">
+                    <div class='header-item'>
                         نام حساب
                     </div>
                 </div>
-                <div class="body">
-                    <div class="body-item">
-                        <ng-container *ngFor="let c of codeSarfaslObj">
-                            <div *ngIf="c.type ==='asset'" class="item">
-                                <mat-icon (click)="removeItem(c)" matTooltip="حذف"
-                                          style="color: red;cursor: pointer;flex-basis: 20%">highlight_off
+                <div class='body'>
+                    <div class='body-item'>
+                        <ng-container *ngFor='let c of codeSarfaslObj'>
+                            <div *ngIf="c.type ==='asset'" class='item'>
+                                <mat-icon (click)='removeItem(c)' matTooltip='حذف'
+                                          style='color: red;cursor: pointer;flex-basis: 20%'>highlight_off
                                 </mat-icon>
-                                <div style="flex-basis: 80%">
+                                <div style='flex-basis: 80%'>
                                     {{c?.code}}
                                 </div>
                             </div>
                         </ng-container>
                     </div>
-                    <div class="body-item">
-                        <ng-container *ngFor="let c of codeSarfaslObj">
-                            <div *ngIf="c.type ==='asset'" class="item">
+                    <div class='body-item'>
+                        <ng-container *ngFor='let c of codeSarfaslObj'>
+                            <div *ngIf="c.type ==='asset'" class='item'>
                                 <span>{{c?.name}}</span>
                             </div>
                         </ng-container>
                     </div>
                 </div>
             </div>
-            <div class="parent fuse-card">
-                <div class="header1 accent">
+            <div class='parent fuse-card'>
+                <div class='header1 accent'>
                     بدهی
                 </div>
-                <div class="header">
-                    <div class="header-item">
+                <div class='header'>
+                    <div class='header-item'>
                         کد حساب
                     </div>
-                    <div class="header-item">
+                    <div class='header-item'>
                         نام حساب
                     </div>
                 </div>
-                <div class="body">
-                    <div class="body-item">
-                        <ng-container *ngFor="let c of codeSarfaslObj">
-                            <div *ngIf="c.type ==='debit'" class="item">
-                                <mat-icon (click)="removeItem(c)" matTooltip="حذف"
-                                          style="color: red;cursor: pointer;flex-basis: 20%">highlight_off
+                <div class='body'>
+                    <div class='body-item'>
+                        <ng-container *ngFor='let c of codeSarfaslObj'>
+                            <div *ngIf="c.type ==='debit'" class='item'>
+                                <mat-icon (click)='removeItem(c)' matTooltip='حذف'
+                                          style='color: red;cursor: pointer;flex-basis: 20%'>highlight_off
                                 </mat-icon>
-                                <div style="flex-basis: 80%">
+                                <div style='flex-basis: 80%'>
                                     {{c?.code}}
                                 </div>
                             </div>
                         </ng-container>
                     </div>
-                    <div class="body-item">
-                        <ng-container *ngFor="let c of codeSarfaslObj">
-                            <div *ngIf="c.type ==='debit'" class="item">
+                    <div class='body-item'>
+                        <ng-container *ngFor='let c of codeSarfaslObj'>
+                            <div *ngIf="c.type ==='debit'" class='item'>
                                 {{c?.name}}
                             </div>
                         </ng-container>
@@ -108,8 +108,8 @@
                 </div>
             </div>
         </div>
-        <div class="asset-debit-btn">
-            <button style="margin: 0 30px;background-color: #49973c;color: white" (click)="callApi()" mat-raised-button>
+        <div class='asset-debit-btn'>
+            <button (click)='callApi()' mat-raised-button style='margin: 0 30px;background-color: #49973c;color: white'>
                 <mat-icon>done</mat-icon>
                 ثبت و ادامه
             </button>

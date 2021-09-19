@@ -21,14 +21,62 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class AssetsService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation assetsControllerGetAssetBaskets
      */
     static readonly AssetsControllerGetAssetBasketsPath = '/api/v1/asset/basket';
+    /**
+     * Path part for operation assetsControllerGetAssetFunds
+     */
+    static readonly AssetsControllerGetAssetFundsPath = '/api/v1/asset/fund';
+    /**
+     * Path part for operation assetsControllerGetAssetsCategory
+     */
+    static readonly AssetsControllerGetAssetsCategoryPath = '/api/v1/asset/category';
+    /**
+     * Path part for operation assetsControllerGetIsBourseCategory
+     */
+    static readonly AssetsControllerGetIsBourseCategoryPath = '/api/v1/asset/is-bourse-category';
+    /**
+     * Path part for operation assetsControllerGetBondAssets
+     */
+    static readonly AssetsControllerGetBondAssetsPath = '/api/v1/asset/bonds';
+    /**
+     * Path part for operation assetsControllerGetBondAssetsNl
+     */
+    static readonly AssetsControllerGetBondAssetsNlPath = '/api/v1/asset/nl/bonds';
+    /**
+     * Path part for operation assetsControllerGetStockAssets
+     */
+    static readonly AssetsControllerGetStockAssetsPath = '/api/v1/asset/stocks';
+    /**
+     * Path part for operation assetsControllerGetStockAssetsNl
+     */
+    static readonly AssetsControllerGetStockAssetsNlPath = '/api/v1/asset/nl/stocks';
+    /**
+     * Path part for operation assetsControllerGetFundAssets
+     */
+    static readonly AssetsControllerGetFundAssetsPath = '/api/v1/asset/funds';
+    /**
+     * Path part for operation assetsControllerGetFundAssetsNl
+     */
+    static readonly AssetsControllerGetFundAssetsNlPath = '/api/v1/asset/nl/funds';
+    /**
+     * Path part for operation assetsControllerGetDepositAssets
+     */
+    static readonly AssetsControllerGetDepositAssetsPath = '/api/v1/asset/deposits';
+    /**
+     * Path part for operation assetsControllerGetEtfDtfAssets
+     */
+    static readonly AssetsControllerGetEtfDtfAssetsPath = '/api/v1/asset/etf-dtf';
+    /**
+     * Path part for operation assetsControllerGetCertificateOfDeposit
+     */
+    static readonly AssetsControllerGetCertificateOfDepositPath = '/api/v1/asset/cod';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -62,15 +110,8 @@ export class AssetsService extends BaseService {
      * This method doesn't expect any request body.
      */
     assetsControllerGetAssetBaskets(params?: {}): Observable<Array<IdAndTitleDto>> {
-        return this.assetsControllerGetAssetBaskets$Response(params).pipe(
-            map((r: StrictHttpResponse<Array<IdAndTitleDto>>) => r.body as Array<IdAndTitleDto>)
-        );
+        return this.assetsControllerGetAssetBaskets$Response(params).pipe(map((r: StrictHttpResponse<Array<IdAndTitleDto>>) => r.body as Array<IdAndTitleDto>));
     }
-
-    /**
-     * Path part for operation assetsControllerGetAssetFunds
-     */
-    static readonly AssetsControllerGetAssetFundsPath = '/api/v1/asset/fund';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -105,15 +146,8 @@ export class AssetsService extends BaseService {
      * This method doesn't expect any request body.
      */
     assetsControllerGetAssetFunds(params: { basketIds: Array<number> }): Observable<Array<AssetFundsDto>> {
-        return this.assetsControllerGetAssetFunds$Response(params).pipe(
-            map((r: StrictHttpResponse<Array<AssetFundsDto>>) => r.body as Array<AssetFundsDto>)
-        );
+        return this.assetsControllerGetAssetFunds$Response(params).pipe(map((r: StrictHttpResponse<Array<AssetFundsDto>>) => r.body as Array<AssetFundsDto>));
     }
-
-    /**
-     * Path part for operation assetsControllerGetAssetsCategory
-     */
-    static readonly AssetsControllerGetAssetsCategoryPath = '/api/v1/asset/category';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -153,11 +187,6 @@ export class AssetsService extends BaseService {
     }
 
     /**
-     * Path part for operation assetsControllerGetIsBourseCategory
-     */
-    static readonly AssetsControllerGetIsBourseCategoryPath = '/api/v1/asset/is-bourse-category';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `assetsControllerGetIsBourseCategory()` instead.
      *
@@ -193,11 +222,6 @@ export class AssetsService extends BaseService {
             map((r: StrictHttpResponse<Array<IdAndTitleDto>>) => r.body as Array<IdAndTitleDto>)
         );
     }
-
-    /**
-     * Path part for operation assetsControllerGetBondAssets
-     */
-    static readonly AssetsControllerGetBondAssetsPath = '/api/v1/asset/bonds';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -260,11 +284,6 @@ export class AssetsService extends BaseService {
     }
 
     /**
-     * Path part for operation assetsControllerGetBondAssetsNl
-     */
-    static readonly AssetsControllerGetBondAssetsNlPath = '/api/v1/asset/nl/bonds';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `assetsControllerGetBondAssetsNl()` instead.
      *
@@ -323,11 +342,6 @@ export class AssetsService extends BaseService {
     }): Observable<BondsDtoNl> {
         return this.assetsControllerGetBondAssetsNl$Response(params).pipe(map((r: StrictHttpResponse<BondsDtoNl>) => r.body as BondsDtoNl));
     }
-
-    /**
-     * Path part for operation assetsControllerGetStockAssets
-     */
-    static readonly AssetsControllerGetStockAssetsPath = '/api/v1/asset/stocks';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -390,11 +404,6 @@ export class AssetsService extends BaseService {
     }
 
     /**
-     * Path part for operation assetsControllerGetStockAssetsNl
-     */
-    static readonly AssetsControllerGetStockAssetsNlPath = '/api/v1/asset/nl/stocks';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `assetsControllerGetStockAssetsNl()` instead.
      *
@@ -444,11 +453,6 @@ export class AssetsService extends BaseService {
     }): Observable<StockDtoNl> {
         return this.assetsControllerGetStockAssetsNl$Response(params).pipe(map((r: StrictHttpResponse<StockDtoNl>) => r.body as StockDtoNl));
     }
-
-    /**
-     * Path part for operation assetsControllerGetFundAssets
-     */
-    static readonly AssetsControllerGetFundAssetsPath = '/api/v1/asset/funds';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -511,11 +515,6 @@ export class AssetsService extends BaseService {
     }
 
     /**
-     * Path part for operation assetsControllerGetFundAssetsNl
-     */
-    static readonly AssetsControllerGetFundAssetsNlPath = '/api/v1/asset/nl/funds';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `assetsControllerGetFundAssetsNl()` instead.
      *
@@ -576,11 +575,6 @@ export class AssetsService extends BaseService {
     }
 
     /**
-     * Path part for operation assetsControllerGetDepositAssets
-     */
-    static readonly AssetsControllerGetDepositAssetsPath = '/api/v1/asset/deposits';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `assetsControllerGetDepositAssets()` instead.
      *
@@ -633,11 +627,6 @@ export class AssetsService extends BaseService {
     }): Observable<DepositsDto> {
         return this.assetsControllerGetDepositAssets$Response(params).pipe(map((r: StrictHttpResponse<DepositsDto>) => r.body as DepositsDto));
     }
-
-    /**
-     * Path part for operation assetsControllerGetEtfDtfAssets
-     */
-    static readonly AssetsControllerGetEtfDtfAssetsPath = '/api/v1/asset/etf-dtf';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -705,11 +694,6 @@ export class AssetsService extends BaseService {
     }): Observable<EtfDtfDto> {
         return this.assetsControllerGetEtfDtfAssets$Response(params).pipe(map((r: StrictHttpResponse<EtfDtfDto>) => r.body as EtfDtfDto));
     }
-
-    /**
-     * Path part for operation assetsControllerGetCertificateOfDeposit
-     */
-    static readonly AssetsControllerGetCertificateOfDepositPath = '/api/v1/asset/cod';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

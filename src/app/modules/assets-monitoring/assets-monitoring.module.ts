@@ -42,7 +42,7 @@ import { HeaderModule } from '../../layout/components/header/header.module';
         ChartModule,
         IpsDialogModule,
         PipesModule,
-        HeaderModule
+        HeaderModule,
     ],
     providers: [AssetsMonitoringService],
 })

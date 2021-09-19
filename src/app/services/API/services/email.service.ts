@@ -14,14 +14,14 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class EmailService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation emailControllerSendEmail
      */
     static readonly EmailControllerSendEmailPath = '/api/v1/email';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

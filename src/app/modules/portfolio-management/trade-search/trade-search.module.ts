@@ -21,7 +21,7 @@ import { HeaderModule } from '../../../layout/components/header/header.module';
         NgxMatSelectSearchModule,
         MatTooltipModule,
         NoDataModule,
-        HeaderModule
-    ]
+        HeaderModule,
+    ],
 })
 export class TradeSearchModule {}

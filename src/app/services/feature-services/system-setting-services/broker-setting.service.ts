@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
     providedIn: 'root',
 })
 export class BrokerSettingService {
-
     constructor(private http: HttpClient) {}
 
     getBrokerSettings(): Observable<any> {

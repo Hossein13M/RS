@@ -144,6 +144,6 @@ export class IssuerLicenceService {
 
     public getIssuerLicense(paginationParams?, searchParams?): Observable<ResponseWithPagination<IssuerLicense>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
-        return this.http.get<ResponseWithPagination<IssuerLicense>>('/api/v1/issue-license', {params});
+        return this.http.get<ResponseWithPagination<IssuerLicense>>('/api/v1/issue-license', { params });
     }
 }

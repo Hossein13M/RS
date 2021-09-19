@@ -24,14 +24,15 @@ export class OpLossManagementService extends Specification {
     };
 
     private latestMappingSubject = new BehaviorSubject<any>(null);
+
+    constructor(private acs: ApiClientService) {
+        super();
+    }
+
     public _latestMapping = this.latestMappingSubject.asObservable();
 
     get latestMapping(): BehaviorSubject<any> {
         return this.latestMappingSubject.getValue();
-    }
-
-    constructor(private acs: ApiClientService) {
-        super();
     }
 
     getOrganizationsStructure(fc?: FormContainer): Observable<any> {
@@ -57,9 +58,7 @@ export class OpLossManagementService extends Specification {
     }
 
     createOpRiskLoseDetail(data, fc?: FormContainer): Observable<any> {
-        return this.acs
-            .post(OpLossManagementService.OpLoseServiceApi + `/details`, data, fc)
-            .pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
+        return this.acs.post(OpLossManagementService.OpLoseServiceApi + `/details`, data, fc).pipe(tap((mapping) => this.latestMappingSubject.next(mapping)));
     }
 
     getRelatedRisk(lastLossEventId, fc?: FormContainer): Observable<any> {

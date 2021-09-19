@@ -1,128 +1,140 @@
-<div class="page-layout">
-    <app-header pageTitle="تغییرات خلاصه‌ی دفتر">
+<div class='page-layout'>
+    <app-header pageTitle='تغییرات خلاصه‌ی دفتر'>
         <button
-            mat-raised-button
+            (click)='searchCollapse = !searchCollapse'
             [color]="searchCollapse && !(!dataToShow || dataToShow.length == 0) ? '' : 'primary'"
-            (click)="searchCollapse = !searchCollapse"
-            style="padding: 3px 8px 0 8px !important; min-width: unset"
+            mat-raised-button
+            style='padding: 3px 8px 0 8px !important; min-width: unset'
         >
-            <mat-icon class="mat-18">search</mat-icon>
+            <mat-icon class='mat-18'>search</mat-icon>
         </button>
     </app-header>
 
-    <div class="page-content">
-        <div class="gl-back-container" dir="rtl">
-            <div class="fuse-card" *ngIf="searchCollapse || !dataToShow || dataToShow.length === 0" style="margin-bottom: 10px" [@expandCollapse]>
-                <form [formGroup]="form" (submit)="submitForm()">
-                    <div class="contract-form-row-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label> تاریخ دفتر کل ابتدا <span style="color: red">*</span> </mat-label>
-                            <input (click)="start3.open()" matInput formControlName="fromDate" [matDatepicker]="start3" />
-                            <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
+    <div class='page-content'>
+        <div class='gl-back-container' dir='rtl'>
+            <div *ngIf='searchCollapse || !dataToShow || dataToShow.length === 0' [@expandCollapse]
+                 class='fuse-card' style='margin-bottom: 10px'>
+                <form (submit)='submitForm()' [formGroup]='form'>
+                    <div class='contract-form-row-4'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label> تاریخ دفتر کل ابتدا <span style='color: red'>*</span></mat-label>
+                            <input (click)='start3.open()' [matDatepicker]='start3' formControlName='fromDate'
+                                   matInput />
+                            <mat-datepicker-toggle [for]='start3' matSuffix></mat-datepicker-toggle>
                             <mat-datepicker #start3></mat-datepicker>
-                            <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                            <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label> تاریخ دفتر کل انتها <span style="color: red">*</span> </mat-label>
-                            <input (click)="start1.open()" matInput formControlName="toDate" [matDatepicker]="start1" />
-                            <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                        <mat-form-field appearance='outline'>
+                            <mat-label> تاریخ دفتر کل انتها <span style='color: red'>*</span></mat-label>
+                            <input (click)='start1.open()' [matDatepicker]='start1' formControlName='toDate' matInput />
+                            <mat-datepicker-toggle [for]='start1' matSuffix></mat-datepicker-toggle>
                             <mat-datepicker #start1></mat-datepicker>
-                            <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                            <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label> سطح ۰ <span style="color: red">*</span> </mat-label>
-                            <mat-select formControlName="categoryCode" multiple>
+                        <mat-form-field appearance='outline'>
+                            <mat-label> سطح ۰ <span style='color: red'>*</span></mat-label>
+                            <mat-select formControlName='categoryCode' multiple>
                                 <mat-select-trigger>
-                                    <span *ngIf="form.value['categoryCode']?.length > 0"> (+ {{ form.value['categoryCode']?.length }} مورد) </span>
+                                    <span
+                                        *ngIf="form.value['categoryCode']?.length > 0"> (+ {{ form.value['categoryCode']?.length }}
+                                        مورد) </span>
                                 </mat-select-trigger>
 
-                                <mat-option style="text-align: right" *ngFor="let c of glCategories" [value]="c?.categoryLedgerCode">
+                                <mat-option *ngFor='let c of glCategories' [value]='c?.categoryLedgerCode'
+                                            style='text-align: right'>
                                     {{ c?.categoryLedgerCode }}
-                                    <span style="color: #9ea1a9; font-size: 12px">
+                                    <span style='color: #9ea1a9; font-size: 12px'>
                                         {{ c?.categoryLedgerName }}
                                     </span>
                                 </mat-option>
                             </mat-select>
-                            <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                            <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label> سطح ۱ </mat-label>
-                            <mat-select formControlName="groupCode" [disabled]="!form.value.categoryCode" multiple>
+                        <mat-form-field appearance='outline'>
+                            <mat-label> سطح ۱</mat-label>
+                            <mat-select [disabled]='!form.value.categoryCode' formControlName='groupCode' multiple>
                                 <mat-select-trigger>
-                                    <span *ngIf="form.value['groupCode']?.length > 0"> (+ {{ form.value['groupCode']?.length }} مورد) </span>
+                                    <span
+                                        *ngIf="form.value['groupCode']?.length > 0"> (+ {{ form.value['groupCode']?.length }}
+                                        مورد) </span>
                                 </mat-select-trigger>
 
-                                <mat-option style="text-align: right" *ngFor="let gr of glGroups" [value]="gr?.groupLedgerCode">
+                                <mat-option *ngFor='let gr of glGroups' [value]='gr?.groupLedgerCode'
+                                            style='text-align: right'>
                                     {{ gr?.groupLedgerCode }}
-                                    <span style="color: #9ea1a9; font-size: 12px">{{ gr?.groupLedgerName }}</span>
+                                    <span style='color: #9ea1a9; font-size: 12px'>{{ gr?.groupLedgerName }}</span>
                                 </mat-option>
                             </mat-select>
-                            <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                            <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div class="tow-column">
-                        <mat-form-field appearance="outline" fxFlex="21">
-                            <mat-label> سطح ۲ </mat-label>
-                            <mat-select formControlName="generalCode" [disabled]="!form.value.groupCode" multiple>
+                    <div class='tow-column'>
+                        <mat-form-field appearance='outline' fxFlex='21'>
+                            <mat-label> سطح ۲</mat-label>
+                            <mat-select [disabled]='!form.value.groupCode' formControlName='generalCode' multiple>
                                 <mat-select-trigger>
-                                    <span *ngIf="form.value['generalCode']?.length > 0"> (+ {{ form.value['generalCode']?.length }} مورد) </span>
+                                    <span
+                                        *ngIf="form.value['generalCode']?.length > 0"> (+ {{ form.value['generalCode']?.length }}
+                                        مورد) </span>
                                 </mat-select-trigger>
-                                <mat-option style="text-align: right" *ngFor="let ge of glGeneral" [value]="ge?.generalLedgerCode">
+                                <mat-option *ngFor='let ge of glGeneral' [value]='ge?.generalLedgerCode'
+                                            style='text-align: right'>
                                     {{ ge?.generalLedgerCode }}
-                                    <span style="color: #9ea1a9; font-size: 12px">{{ ge?.generalLedgerName }}</span>
+                                    <span style='color: #9ea1a9; font-size: 12px'>{{ ge?.generalLedgerName }}</span>
                                 </mat-option>
                             </mat-select>
-                            <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                            <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
 
-                        <mat-form-field fxFlex="71" appearance="outline">
+                        <mat-form-field appearance='outline' fxFlex='71'>
                             <mat-label>
                                 انتخاب نوع نمایش
-                                <span style="color: red">*</span>
+                                <span style='color: red'>*</span>
                             </mat-label>
                             <mat-chip-list #chipList>
-                                <mat-chip *ngFor="let st of showTypes" (removed)="removeItemFromAutoComplete(st)">
+                                <mat-chip (removed)='removeItemFromAutoComplete(st)' *ngFor='let st of showTypes'>
                                     {{ st }}
                                     <mat-icon matChipRemove>cancel</mat-icon>
                                 </mat-chip>
                                 <input
                                     #showTypeInput
-                                    [formControl]="showTypeCtl"
-                                    [matAutocomplete]="auto"
-                                    [matChipInputFor]="chipList"
-                                    (matChipInputTokenEnd)="addItemFromAutoComplete($event)"
+                                    (matChipInputTokenEnd)='addItemFromAutoComplete($event)'
+                                    [formControl]='showTypeCtl'
+                                    [matAutocomplete]='auto'
+                                    [matChipInputFor]='chipList'
                                 />
                             </mat-chip-list>
-                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                                <mat-option *ngFor="let f of filteredShowTypes | async" [value]="f"> {{ f }} </mat-option>
+                            <mat-autocomplete #auto='matAutocomplete' (optionSelected)='selected($event)'>
+                                <mat-option *ngFor='let f of filteredShowTypes | async'
+                                            [value]='f'> {{ f }} </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
                     </div>
-                    <div class="contract-form-row-4">
-                        <mat-form-field appearance="outline">
-                            <mat-label> درصد تغییر مانده کوچک‌تر از </mat-label>
-                            <input type="number" matInput formControlName="fromPercent" />
+                    <div class='contract-form-row-4'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label> درصد تغییر مانده کوچک‌تر از</mat-label>
+                            <input formControlName='fromPercent' matInput type='number' />
                         </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label> درصد تغییر مانده بزرگ‌تر از </mat-label>
-                            <input type="number" matInput formControlName="toPercent" />
+                        <mat-form-field appearance='outline'>
+                            <mat-label> درصد تغییر مانده بزرگ‌تر از</mat-label>
+                            <input formControlName='toPercent' matInput type='number' />
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline">
-                            <mat-label> مبلغ تغییر مانده کوچک‌تر از </mat-label>
-                            <input type="number" matInput formControlName="fromValue" />
+                        <mat-form-field appearance='outline'>
+                            <mat-label> مبلغ تغییر مانده کوچک‌تر از</mat-label>
+                            <input formControlName='fromValue' matInput type='number' />
                         </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label> مبلغ تغییر مانده بزرگ‌تر از </mat-label>
-                            <input type="number" matInput formControlName="toValue" />
+                        <mat-form-field appearance='outline'>
+                            <mat-label> مبلغ تغییر مانده بزرگ‌تر از</mat-label>
+                            <input formControlName='toValue' matInput type='number' />
                         </mat-form-field>
                     </div>
-                    <div class="m-12">
-                        <button type="submit" [disabled]="form.invalid" color="accent" mat-raised-button>
+                    <div class='m-12'>
+                        <button [disabled]='form.invalid' color='accent' mat-raised-button type='submit'>
                             <mat-icon>trending_up</mat-icon>
                             نمایش
                         </button>
@@ -130,8 +142,8 @@
                 </form>
             </div>
 
-            <div class="fuse-card" *ngIf="dataToShow && dataToShow.length !== 0">
-                <app-table [data]="dataToShow" [columns]="columns"> </app-table>
+            <div *ngIf='dataToShow && dataToShow.length !== 0' class='fuse-card'>
+                <app-table [columns]='columns' [data]='dataToShow'></app-table>
             </div>
         </div>
     </div>

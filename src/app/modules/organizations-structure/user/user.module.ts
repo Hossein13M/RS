@@ -34,7 +34,7 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: UserComponent 
         NgxMatSelectSearchModule,
         ShareModule,
         MatProgressSpinnerModule,
-        HeaderModule
+        HeaderModule,
     ],
     exports: [RouterModule, UserComponent],
     providers: [UserService],

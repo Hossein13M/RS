@@ -1,101 +1,103 @@
-<div class="page-layout" dir="rtl">
-    <app-header pageTitle="اندازه گیری ریسک">
-        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center"></div>
+<div class='page-layout' dir='rtl'>
+    <app-header pageTitle='اندازه گیری ریسک'>
+        <div dir='rtl' fxLayout='row wrap' fxLayoutAlign='center center'></div>
     </app-header>
 
-    <mat-progress-bar mode="indeterminate" *ngIf="!loading" color="warn"></mat-progress-bar>
+    <mat-progress-bar *ngIf='!loading' color='warn' mode='indeterminate'></mat-progress-bar>
 
-    <div fxLayout="column" dir="rtl">
-        <form [formGroup]="form" (submit)="submitForm()" fxLayout="row wrap" fxLayoutGap="20px" class="mt-20">
-            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
-                <mat-form-field appearance="outline" fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
+    <div dir='rtl' fxLayout='column'>
+        <form (submit)='submitForm()' [formGroup]='form' class='mt-20' fxLayout='row wrap' fxLayoutGap='20px'>
+            <div fxFlex='100' fxLayout='row wrap' fxLayoutAlign='center center' fxLayoutGap='20px'>
+                <mat-form-field appearance='outline' fxFlex='25' fxLayout='column' fxLayoutAlign='space-evenly none'>
                     <mat-label>میز / سبد</mat-label>
-                    <mat-select formControlName="owner" multiple>
+                    <mat-select formControlName='owner' multiple>
                         <mat-checkbox
                             #ownerAllOption
-                            class="mat-all-option mat-option"
                             (change)="selectAllHandler(ownerAllOption, 'owner', [{ id: 'T' }, { id: 'M' }])"
                             [checked]="OptionAllState('owner', [{ id: 'T' }, { id: 'M' }]) === 'all'"
                             [indeterminate]="OptionAllState('owner', [{ id: 'T' }, { id: 'M' }]) === 'indeterminate'"
-                            ><span>همه</span></mat-checkbox
+                            class='mat-all-option mat-option'
+                        ><span>همه</span></mat-checkbox
                         >
-                        <mat-option value="T">تمدن</mat-option>
-                        <mat-option value="M">بازارگردانی</mat-option>
+                        <mat-option value='T'>تمدن</mat-option>
+                        <mat-option value='M'>بازارگردانی</mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
+                <mat-form-field appearance='outline' fxFlex='25' fxLayout='column' fxLayoutAlign='space-evenly none'>
                     <mat-label>سطح اطمینان به درصد</mat-label>
-                    <input type="number" value="99" formControlName="confidenceInterval" matInput />
+                    <input formControlName='confidenceInterval' matInput type='number' value='99' />
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" fxLayout="column" fxFlex="25" fxLayoutAlign="space-evenly none">
+                <mat-form-field appearance='outline' fxFlex='25' fxLayout='column' fxLayoutAlign='space-evenly none'>
                     <mat-label>تاریخ</mat-label>
-                    <input matInput class="full-wid" (click)="date.open()" formControlName="date" [matDatepicker]="date" />
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <input (click)='date.open()' [matDatepicker]='date' class='full-wid' formControlName='date'
+                           matInput />
+                    <mat-datepicker-toggle [for]='date' matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #date></mat-datepicker>
-                    <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                    <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                 </mat-form-field>
             </div>
 
-            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
-                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
+            <div fxFlex='100' fxLayout='row wrap' fxLayoutAlign='center center' fxLayoutGap='20px'>
+                <button [disabled]='!form.valid' color='primary' mat-raised-button type='submit'>
                     <mat-icon>search</mat-icon>
                     جستجو
                 </button>
             </div>
         </form>
 
-        <ng-container *ngIf="hasData">
+        <ng-container *ngIf='hasData'>
             <div
-                fxLayout="row"
-                fxLayoutAlign="space-between"
-                fxLayoutGap="20px"
-                fxFlex="100"
-                style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px"
-                class="mx-auto"
+                class='mx-auto'
+                fxFlex='100'
+                fxLayout='row'
+                fxLayoutAlign='space-between'
+                fxLayoutGap='20px'
+                style='width: calc(100% - 20px); padding: 0 10px; margin-top: 20px'
             >
-                <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none">
-                    <app-bar-chart-js [data]="barChart" height="100" dataKey="y" labelKey="x" chartName="توزیع سود و زیان"></app-bar-chart-js>
+                <div fxFlex='100' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <app-bar-chart-js [data]='barChart' chartName='توزیع سود و زیان' dataKey='y' height='100'
+                                      labelKey='x'></app-bar-chart-js>
                 </div>
             </div>
 
             <div
-                fxLayout="row"
-                fxLayoutAlign="space-between"
-                fxLayoutGap="20px"
-                fxFlex="100"
-                style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px"
-                class="mx-auto"
+                class='mx-auto'
+                fxFlex='100'
+                fxLayout='row'
+                fxLayoutAlign='space-between'
+                fxLayoutGap='20px'
+                style='width: calc(100% - 20px); padding: 0 10px; margin-top: 20px'
             >
-                <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none">
-                    <div class="fuse-card">
+                <div fxFlex='50' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <div class='fuse-card'>
                         <label> روند ارزش در معرض خطر </label>
                         <mat-divider></mat-divider>
                         <canvas
+                            [chartType]='chartType'
+                            [colors]='chartColors'
+                            [datasets]='chartDatasets'
+                            [labels]='chartLabels'
+                            [legend]='true'
+                            [options]='chartOptions'
                             baseChart
-                            height="200"
-                            [chartType]="chartType"
-                            [datasets]="chartDatasets"
-                            [labels]="chartLabels"
-                            [colors]="chartColors"
-                            [options]="chartOptions"
-                            [legend]="true"
+                            height='200'
                         >
                         </canvas>
                     </div>
                 </div>
 
-                <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none">
-                    <div class="fuse-card">
+                <div fxFlex='50' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <div class='fuse-card'>
                         <label> ارزش در معرض خطر </label>
                         <app-gauge-chart
-                            [labels]="[{ text: gage }]"
-                            [maxRange]="25"
-                            [minRange]="0"
-                            [handValue]="gage"
-                            [reverse]="true"
-                            style="width: 100%"
+                            [handValue]='gage'
+                            [labels]='[{ text: gage }]'
+                            [maxRange]='25'
+                            [minRange]='0'
+                            [reverse]='true'
+                            style='width: 100%'
                         >
                         </app-gauge-chart>
                     </div>
@@ -103,16 +105,18 @@
             </div>
 
             <div
-                fxLayout="row"
-                fxLayoutAlign="space-between"
-                fxLayoutGap="20px"
-                fxFlex="100"
-                style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px"
-                class="mx-auto"
+                class='mx-auto'
+                fxFlex='100'
+                fxLayout='row'
+                fxLayoutAlign='space-between'
+                fxLayoutGap='20px'
+                style='width: calc(100% - 20px); padding: 0 10px; margin-top: 20px'
             >
-                <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none" class="pb-20 mb-20">
-                    <app-table dir="ltr" [data]="showingData" [columns]="showingDataColumns" [paginationSettings]="{ mode: 'scroll' }"> </app-table>
-                    <app-table dir="ltr" [data]="showingData2" [columns]="showingDataColumns2" [paginationSettings]="{ mode: 'scroll' }"> </app-table>
+                <div class='pb-20 mb-20' fxFlex='100' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <app-table [columns]='showingDataColumns' [data]='showingData' [paginationSettings]="{ mode: 'scroll' }"
+                               dir='ltr'></app-table>
+                    <app-table [columns]='showingDataColumns2' [data]='showingData2' [paginationSettings]="{ mode: 'scroll' }"
+                               dir='ltr'></app-table>
                 </div>
             </div>
         </ng-container>

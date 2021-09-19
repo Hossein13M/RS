@@ -16,7 +16,6 @@ import { Flow } from './contract-flow.model';
 export class ContractFlowComponent implements OnInit {
     public flows: any;
     public pagination = { skip: 0, limit: 100, total: 100 };
-    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'جریان قرارداد', type: 'string', minWidth: '200px' },
@@ -27,7 +26,13 @@ export class ContractFlowComponent implements OnInit {
             type: 'string',
             minWidth: '200px',
         },
-        { id: 'isActive', name: 'وضعیت جریان قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
+        {
+            id: 'isActive',
+            name: 'وضعیت جریان قرارداد',
+            convert: (value) => (value ? 'فعال' : 'غیر فعال'),
+            type: 'string',
+            minWidth: '200px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -57,24 +62,12 @@ export class ContractFlowComponent implements OnInit {
             ],
         },
     ];
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
+
     constructor(private dialog: MatDialog, private flowService: ContractFlowService, private alertService: AlertService, private router: Router) {}
 
     ngOnInit(): void {
         this.getFlows();
-    }
-
-    private getFlows(): void {
-        this.flowService.getFlows({ ...this.pagination, organization: this.organizationCode }).subscribe(
-            (response) => (this.flows = response.items),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
-    private changeFlowStatus(flowId: string): void {
-        this.flowService.changeFlowStatus(flowId).subscribe(
-            () => this.getFlows(),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
     }
 
     public openFlowDialog(dialogType: 'edit' | 'create' | 'manual', flowType?: Flow): void {
@@ -93,6 +86,20 @@ export class ContractFlowComponent implements OnInit {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getFlows();
+    }
+
+    private getFlows(): void {
+        this.flowService.getFlows({ ...this.pagination, organization: this.organizationCode }).subscribe(
+            (response) => (this.flows = response.items),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
+    }
+
+    private changeFlowStatus(flowId: string): void {
+        this.flowService.changeFlowStatus(flowId).subscribe(
+            () => this.getFlows(),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private navigateToFlowBPMNPage(flowId: string): void {

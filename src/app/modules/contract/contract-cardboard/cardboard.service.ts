@@ -10,7 +10,7 @@ import {
     ContractNote,
     DownloadFileSearchParams,
     ElectionUsers,
-    NoteAdd
+    NoteAdd,
 } from './cardboard.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 

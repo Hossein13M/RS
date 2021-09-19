@@ -61,7 +61,7 @@ const routes: Routes = [
         AgFormViewerModule,
         CardboardHistoryModule,
         CardboardNoteModule,
-        HeaderModule
+        HeaderModule,
     ],
     exports: [CardboardListComponent],
 })

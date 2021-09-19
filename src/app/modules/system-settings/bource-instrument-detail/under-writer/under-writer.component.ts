@@ -69,7 +69,12 @@ export class UnderWriterComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUnderWriter(row) },
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editUnderWriter(row),
+                    },
                     { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
                 ],
             },
@@ -90,7 +95,7 @@ export class UnderWriterComponent implements OnInit {
     }
 
     edit(): void {
-        _.assign(this.selectedUnderWriter, this.underWriterForm.value)
+        _.assign(this.selectedUnderWriter, this.underWriterForm.value);
         this.clear();
     }
 

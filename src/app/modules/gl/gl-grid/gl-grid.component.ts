@@ -34,7 +34,11 @@ export class GlGridComponent implements OnInit {
     }
 
     getGridData(): void {
-        const search = { date: UtilityFunctions.convertDateToGregorianFormatForServer(this.form.value), limit: 1000, skip: 0 };
+        const search = {
+            date: UtilityFunctions.convertDateToGregorianFormatForServer(this.form.value),
+            limit: 1000,
+            skip: 0,
+        };
         this.glService.getGlGridData(search).subscribe((res: GlListServerResponse) => (this.data = res.items));
     }
 }

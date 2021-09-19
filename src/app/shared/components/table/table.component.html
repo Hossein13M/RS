@@ -1,28 +1,29 @@
 <!--<div class="table-container" #container (scroll)='scroll($event)'>-->
-<div *ngIf="dataSource">
-    <form [formGroup]="searchForm">
-        <div class="table-container" [ngStyle]="{ height: height }" (scroll)="scroll()" #container>
-            <table mat-table #table [@animateStagger]="{ value: '50' }" [dataSource]="dataSource" class="mat-elevation-z8">
+<div *ngIf='dataSource'>
+    <form [formGroup]='searchForm'>
+        <div #container (scroll)='scroll()' [ngStyle]='{ height: height }' class='table-container'>
+            <table #table [@animateStagger]="{ value: '50' }" [dataSource]='dataSource' class='mat-elevation-z8'
+                   mat-table>
                 <!-- Position Column -->
-                <ng-container matColumnDef="position">
-                    <th mat-header-cell *matHeaderCellDef>#</th>
+                <ng-container matColumnDef='position'>
+                    <th *matHeaderCellDef mat-header-cell>#</th>
 
-                    <td mat-cell *matCellDef="let element; let i = index">
+                    <td *matCellDef='let element; let i = index' mat-cell>
                         <!--                {{(tss.pageEvent.pageSize * tss.pageEvent.currentIndex) + i + 1}}-->
                     </td>
                 </ng-container>
 
                 <!-- Value Column Generator -->
-                <ng-container *ngFor="let col of columns" [matColumnDef]="col.id" [sticky]="col.sticky">
+                <ng-container *ngFor='let col of columns' [matColumnDef]='col.id' [sticky]='col.sticky'>
                     <th
-                        mat-header-cell
-                        [width]="col.width"
-                        [style.width]="col.width"
-                        [style.minWidth]="col.minWidth"
-                        [ngClass]="{ 'text-center': col.headerAlign === 'center' }"
                         *matHeaderCellDef
+                        [ngClass]="{ 'text-center': col.headerAlign === 'center' }"
+                        [style.minWidth]='col.minWidth'
+                        [style.width]='col.width'
+                        [width]='col.width'
+                        mat-header-cell
                     >
-                        <ng-container *ngIf="col && col.type === 'index'"> رده </ng-container>
+                        <ng-container *ngIf="col && col.type === 'index'"> رده</ng-container>
 
                         <!-- Normal Col Header -->
                         <ng-container *ngIf="col && col.type != 'operation'">
@@ -31,38 +32,46 @@
 
                         <!-- Operation Col Header -->
                         <ng-container *ngIf="col && col.type === 'operation'">
-                            <div dir="rtl">
+                            <div dir='rtl'>
                                 <button
-                                    mat-icon-button
-                                    *ngIf="col.showSearchButtons !== false"
+                                    (click)='openSearchBar()'
+                                    *ngIf='col.showSearchButtons !== false'
                                     [color]="showSearchBar ? 'primary' : ''"
-                                    (click)="openSearchBar()"
+                                    mat-icon-button
                                 >
-                                    <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">search</mat-icon>
+                                    <mat-icon class='mat-18 material-icons-outlined' fontSet='material-icons-outlined'>
+                                        search
+                                    </mat-icon>
                                 </button>
 
-                                <button mat-icon-button [matMenuTriggerFor]="saveMenu" *ngIf="col.showExportButtons !== false">
-                                    <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">save</mat-icon>
+                                <button *ngIf='col.showExportButtons !== false' [matMenuTriggerFor]='saveMenu'
+                                        mat-icon-button>
+                                    <mat-icon class='mat-18 material-icons-outlined' fontSet='material-icons-outlined'>
+                                        save
+                                    </mat-icon>
                                 </button>
-                                <mat-menu #saveMenu="matMenu">
-                                    <app-table-save-xls [data]="data" [columns]="columns"></app-table-save-xls>
-                                    <app-table-save-csv [data]="data" [columns]="columns"></app-table-save-csv>
-                                    <app-table-save-pdf [data]="data" [columns]="columns"></app-table-save-pdf>
+                                <mat-menu #saveMenu='matMenu'>
+                                    <app-table-save-xls [columns]='columns' [data]='data'></app-table-save-xls>
+                                    <app-table-save-csv [columns]='columns' [data]='data'></app-table-save-csv>
+                                    <app-table-save-pdf [columns]='columns' [data]='data'></app-table-save-pdf>
                                 </mat-menu>
 
                                 <!--   Header Operations   -->
-                                <ng-container *ngFor="let op of col.headerOperations">
-                                    <button mat-icon-button *ngIf="!op?.raised" [color]="op.color" [matTooltip]="op.name" (click)="doOperationHeader(op)">
-                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op.icon }}</mat-icon>
+                                <ng-container *ngFor='let op of col.headerOperations'>
+                                    <button (click)='doOperationHeader(op)' *ngIf='!op?.raised' [color]='op.color'
+                                            [matTooltip]='op.name' mat-icon-button>
+                                        <mat-icon class='mat-18 material-icons-outlined'
+                                                  fontSet='material-icons-outlined'>{{ op.icon }}</mat-icon>
                                     </button>
                                     <button
+                                        (click)='doOperationHeader(op)'
+                                        *ngIf='op?.raised === true'
+                                        [color]='op.color'
+                                        [matTooltip]='op.name'
                                         mat-raised-button
-                                        *ngIf="op?.raised === true"
-                                        [color]="op.color"
-                                        [matTooltip]="op.name"
-                                        (click)="doOperationHeader(op)"
                                     >
-                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op.icon }}</mat-icon>
+                                        <mat-icon class='mat-18 material-icons-outlined'
+                                                  fontSet='material-icons-outlined'>{{ op.icon }}</mat-icon>
                                     </button>
                                 </ng-container>
                             </div>
@@ -70,13 +79,13 @@
                     </th>
 
                     <td
-                        mat-cell
-                        [width]="col.width"
-                        [style.width]="col.width"
-                        [style.minWidth]="col.minWidth"
+                        (click)='onClick(el)'
+                        *matCellDef='let el; let i = index'
                         [ngClass]="{ 'text-center': col.dataAlign === 'center', clickable: doubleClickAble }"
-                        (click)="onClick(el)"
-                        *matCellDef="let el; let i = index"
+                        [style.minWidth]='col.minWidth'
+                        [style.width]='col.width'
+                        [width]='col.width'
+                        mat-cell
                     >
                         <!-- Index -->
                         <div *ngIf="col.type === 'index'">
@@ -94,15 +103,21 @@
                         </div>
 
                         <!-- Profit -->
-                        <div *ngIf="col.type == 'profit'" class="profit">
-                            <div fxLayout="row wrap" fxLayoutAlign="end center" *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] < 0" class="negative">
+                        <div *ngIf="col.type == 'profit'" class='profit'>
+                            <div *ngIf='col.convert ? col.convert(el[col.id]) : el[col.id] < 0' class='negative'
+                                 fxLayout='row wrap' fxLayoutAlign='end center'>
                                 {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number: '.0-4' }}
-                                <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">arrow_drop_down</mat-icon>
+                                <mat-icon class='mat-18 material-icons-outlined' fontSet='material-icons-outlined'>
+                                    arrow_drop_down
+                                </mat-icon>
                             </div>
 
-                            <div fxLayout="row wrap" fxLayoutAlign="end center" *ngIf="col.convert ? col.convert(el[col.id]) : el[col.id] > 0" class="positive">
+                            <div *ngIf='col.convert ? col.convert(el[col.id]) : el[col.id] > 0' class='positive'
+                                 fxLayout='row wrap' fxLayoutAlign='end center'>
                                 {{ (col.convert ? col.convert(el[col.id]) : el[col.id]) | number: '.0-4' }}
-                                <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">arrow_drop_up</mat-icon>
+                                <mat-icon class='mat-18 material-icons-outlined' fontSet='material-icons-outlined'>
+                                    arrow_drop_up
+                                </mat-icon>
                             </div>
                         </div>
 
@@ -118,33 +133,37 @@
 
                         <!-- Custom -->
                         <div *ngIf="col.type == 'custom' && isTemplateRef(col.cellTemplate)">
-                            <ng-template [ngTemplateOutlet]="col.cellTemplate" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
+                            <ng-template [ngTemplateOutletContext]='{ row: el, col: col, index: 1 }'
+                                         [ngTemplateOutlet]='col.cellTemplate'></ng-template>
                         </div>
 
                         <!-- Operations -->
                         <div *ngIf="col.type == 'operation'">
-                            <div class="cell--operation">
-                                <ng-container *ngFor="let op of el.tableOperation" [ngSwitch]="op.icon">
+                            <div class='cell--operation'>
+                                <ng-container *ngFor='let op of el.tableOperation' [ngSwitch]='op.icon'>
                                     <button
-                                        (click)="doOperation(el, op)"
+                                        (click)='doOperation(el, op)'
                                         *ngSwitchDefault
-                                        [color]="checkColorsType(op.color, el)"
-                                        [matTooltip]="op.name"
+                                        [color]='checkColorsType(op.color, el)'
+                                        [matTooltip]='op.name'
                                         mat-icon-button
                                     >
-                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op.icon }}</mat-icon>
+                                        <mat-icon class='mat-18 material-icons-outlined'
+                                                  fontSet='material-icons-outlined'>{{ op.icon }}</mat-icon>
                                     </button>
                                     <button
-                                        (click)="doOperation(el, op)"
+                                        (click)='doOperation(el, op)'
                                         *ngSwitchCase="'condition'"
-                                        [color]="checkColorsType(op.color, el)"
-                                        [matTooltip]="op.name"
+                                        [color]='checkColorsType(op.color, el)'
+                                        [matTooltip]='op.name'
                                         mat-icon-button
                                     >
-                                        <mat-icon fontSet="material-icons-outlined" class="mat-18 material-icons-outlined">{{ op?.content(el) }}</mat-icon>
+                                        <mat-icon class='mat-18 material-icons-outlined'
+                                                  fontSet='material-icons-outlined'>{{ op?.content(el) }}</mat-icon>
                                     </button>
                                     <div *ngSwitchCase="'template'">
-                                        <ng-template [ngTemplateOutlet]="op?.content" [ngTemplateOutletContext]="{ row: el, col: col, index: 1 }"></ng-template>
+                                        <ng-template [ngTemplateOutletContext]='{ row: el, col: col, index: 1 }'
+                                                     [ngTemplateOutlet]='op?.content'></ng-template>
                                     </div>
                                 </ng-container>
                             </div>
@@ -153,46 +172,47 @@
                 </ng-container>
 
                 <!-- Search Column Generator -->
-                <ng-container *ngFor="let col of columns" [matColumnDef]="col.id + '_search'">
-                    <th mat-header-cell [width]="col.width" [style.minWidth]="col.width" *matHeaderCellDef>
-                        <div *ngIf="col.search" dir="rtl">
+                <ng-container *ngFor='let col of columns' [matColumnDef]="col.id + '_search'">
+                    <th *matHeaderCellDef [style.minWidth]='col.width' [width]='col.width' mat-header-cell>
+                        <div *ngIf='col.search' dir='rtl'>
                             <!-- text -->
-                            <mat-form-field *ngIf="col.search.type == 'text'" appearance="outline" style="width: 100%">
-                                <input matInput [formControlName]="col.id" />
+                            <mat-form-field *ngIf="col.search.type == 'text'" appearance='outline' style='width: 100%'>
+                                <input [formControlName]='col.id' matInput />
                             </mat-form-field>
 
                             <!-- Select -->
-                            <mat-form-field *ngIf="col.search.type == 'select'" appearance="outline" style="width: 100%">
-                                <mat-select [formControlName]="col.id">
-                                    <mat-option [value]=""> همه</mat-option>
+                            <mat-form-field *ngIf="col.search.type == 'select'" appearance='outline'
+                                            style='width: 100%'>
+                                <mat-select [formControlName]='col.id'>
+                                    <mat-option [value]=''> همه</mat-option>
 
-                                    <mat-option *ngFor="let op of col.search.options" [value]="op.value">
+                                    <mat-option *ngFor='let op of col.search.options' [value]='op.value'>
                                         {{ op.name }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
 
                             <!-- Date -->
-                            <mat-form-field *ngIf="col.search.type == 'date'" appearance="outline" style="width: 100%">
+                            <mat-form-field *ngIf="col.search.type == 'date'" appearance='outline' style='width: 100%'>
                                 <mat-label>فیلتر تاریخ</mat-label>
-                                <input matInput [matDatepicker]="picker" [formControlName]="col.id" />
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <input [formControlName]='col.id' [matDatepicker]='picker' matInput />
+                                <mat-datepicker-toggle [for]='picker' matSuffix></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
                             </mat-form-field>
 
                             <!-- DateRange -->
-                            <ng-container *ngIf="col.search.type == 'date_range'" [formGroupName]="col.id">
-                                <mat-form-field appearance="outline" style="width: 100%">
+                            <ng-container *ngIf="col.search.type == 'date_range'" [formGroupName]='col.id'>
+                                <mat-form-field appearance='outline' style='width: 100%'>
                                     <mat-label>از تاریخ</mat-label>
-                                    <input matInput [matDatepicker]="endPicker" formControlName="fromDate" />
-                                    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                    <input [matDatepicker]='endPicker' formControlName='fromDate' matInput />
+                                    <mat-datepicker-toggle [for]='endPicker' matSuffix></mat-datepicker-toggle>
                                     <mat-datepicker #endPicker></mat-datepicker>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" style="width: 100%">
+                                <mat-form-field appearance='outline' style='width: 100%'>
                                     <mat-label>تا تاریخ</mat-label>
-                                    <input matInput [matDatepicker]="startPicker" formControlName="toDate" />
-                                    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                                    <input [matDatepicker]='startPicker' formControlName='toDate' matInput />
+                                    <mat-datepicker-toggle [for]='startPicker' matSuffix></mat-datepicker-toggle>
                                     <mat-datepicker #startPicker></mat-datepicker>
                                 </mat-form-field>
                             </ng-container>
@@ -201,46 +221,47 @@
                 </ng-container>
 
                 <!--    Header Row    -->
-                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" class="header"></tr>
+                <tr *matHeaderRowDef='displayedColumns; sticky: true' class='header' mat-header-row></tr>
 
                 <!--    Search Row    -->
-                <ng-container *ngIf="hasSearch">
-                    <tr mat-header-row *matHeaderRowDef="searchColumns; sticky: true" class="header" [ngClass]="{ 'd-none': !showSearchBar }"></tr>
+                <ng-container *ngIf='hasSearch'>
+                    <tr *matHeaderRowDef='searchColumns; sticky: true' [ngClass]="{ 'd-none': !showSearchBar }" class='header'
+                        mat-header-row></tr>
                 </ng-container>
 
                 <!--    Data Row    -->
                 <tr
-                    id="important"
-                    class="odd: bg-gray-100"
-                    mat-row
-                    *matRowDef="let row; columns: displayedColumns; let i = index"
-                    (click)="selectRow(i)"
-                    [ngClass]="{ 'table-selected': row.tableSelect }"
+                    (click)='selectRow(i)'
+                    *matRowDef='let row; columns: displayedColumns; let i = index'
                     [@animate]="{ value: '*', params: { y: '100%' } }"
+                    [ngClass]="{ 'table-selected': row.tableSelect }"
+                    class='odd: bg-gray-100'
+                    id='important'
+                    mat-row
                 ></tr>
             </table>
         </div>
         <mat-paginator
-            dir="rtl"
-            class="paginator"
-            [style.display]="paginationSettings?.mode === 'local' ? '' : 'none'"
-            [pageSize]="paginationSettings.pageSize ? paginationSettings.pageSize : 5"
-            [pageSizeOptions]="paginationSettings?.pageSizeOptions ? paginationSettings.pageSizeOptions : [5, 10, 25, 100]"
-            showFirstLastButtons
             #localPaginator
+            [pageSizeOptions]='paginationSettings?.pageSizeOptions ? paginationSettings.pageSizeOptions : [5, 10, 25, 100]'
+            [pageSize]='paginationSettings.pageSize ? paginationSettings.pageSize : 5'
+            [style.display]="paginationSettings?.mode === 'local' ? '' : 'none'"
+            class='paginator'
+            dir='rtl'
+            showFirstLastButtons
         >
         </mat-paginator>
 
         <mat-paginator
-            dir="rtl"
-            class="paginator"
-            [style.display]="paginationSettings?.mode === 'backend' ? '' : 'none'"
-            [length]="paginationObject?.total"
-            [pageIndex]="paginationObject?.skip"
-            [pageSize]="paginationObject?.limit"
-            [pageSizeOptions]="paginationSettings?.pageSizeOptions ? paginationSettings.pageSizeOptions : [5, 10, 25, 100]"
-            (page)="paginationControl($event)"
             #backendPaginator
+            (page)='paginationControl($event)'
+            [length]='paginationObject?.total'
+            [pageIndex]='paginationObject?.skip'
+            [pageSizeOptions]='paginationSettings?.pageSizeOptions ? paginationSettings.pageSizeOptions : [5, 10, 25, 100]'
+            [pageSize]='paginationObject?.limit'
+            [style.display]="paginationSettings?.mode === 'backend' ? '' : 'none'"
+            class='paginator'
+            dir='rtl'
         >
         </mat-paginator>
     </form>

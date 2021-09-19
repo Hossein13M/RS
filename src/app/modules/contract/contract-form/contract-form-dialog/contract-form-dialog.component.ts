@@ -12,15 +12,25 @@ import { ContractFormList } from '../contract-form.model';
     styleUrls: ['./contract-form-dialog.component.scss'],
 })
 export class ContractFormDialogComponent implements OnInit {
-    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public contractForm: Array<ContractFormList> = [];
     public pagination = { skip: 0, limit: 5, total: 100 };
-
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '50px' },
         { id: 'name', name: 'نام فرم', type: 'string', minWidth: '50px' },
-        { id: 'createdAt', name: 'تاریخ ساخت', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '50px' },
-        { id: 'isActive', name: 'وضعیت فرم', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '50px' },
+        {
+            id: 'createdAt',
+            name: 'تاریخ ساخت',
+            convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
+            type: 'string',
+            minWidth: '50px',
+        },
+        {
+            id: 'isActive',
+            name: 'وضعیت فرم',
+            convert: (value) => (value ? 'فعال' : 'غیر فعال'),
+            type: 'string',
+            minWidth: '50px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -38,6 +48,7 @@ export class ContractFormDialogComponent implements OnInit {
             ],
         },
     ];
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
 
     constructor(
         private readonly contractFormService: ContractFormService,

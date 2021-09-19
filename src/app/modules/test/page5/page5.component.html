@@ -1,96 +1,96 @@
-<div class="page-layout">
-    <app-header pageTitle="صفحه‌ی ۵ تست">
+<div class='page-layout'>
+    <app-header pageTitle='صفحه‌ی ۵ تست'>
         <div subtitle>
             در این صفحه کامپوننت گیج تست می‌شود.
         </div>
         <div>
-            <button mat-raised-button color="primary" routerLink="/test/list">
+            <button color='primary' mat-raised-button routerLink='/test/list'>
                 بازگشت
             </button>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div fxLayout="row wrap" fxLayoutAlign="center" class="show-case-container">
+    <div class='page-content'>
+        <div class='show-case-container' fxLayout='row wrap' fxLayoutAlign='center'>
 
             <!--      COMPONENT      -->
-            <div class="fuse-card chart" fxFlex="40">
+            <div class='fuse-card chart' fxFlex='40'>
 
-                <app-gauge-chart [labels]="labels"
-                                 [maxRange]="cf.value.maxRange"
-                                 [minRange]="cf.value.minRange"
-                                 [handValue]="cf.value.handValue"
-                                 [reverse]="cf.value.reverse">
+                <app-gauge-chart [handValue]='cf.value.handValue'
+                                 [labels]='labels'
+                                 [maxRange]='cf.value.maxRange'
+                                 [minRange]='cf.value.minRange'
+                                 [reverse]='cf.value.reverse'>
                 </app-gauge-chart>
 
             </div>
 
             <!--      CONTROLLERS      -->
-            <div fxFlex="40" class="fuse-card">
+            <div class='fuse-card' fxFlex='40'>
                 <h2>
                     متغیرها
                 </h2>
 
-                <div fxLayout="row wrap" fxLayoutAlign="start start" dir="rtl" fxLayoutGap="20px" [formGroup]="cf">
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                <div [formGroup]='cf' dir='rtl' fxLayout='row wrap' fxLayoutAlign='start start' fxLayoutGap='20px'>
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             بیشترین
                         </mat-label>
-                        <input formControlName="maxRange"
-                               type="number"
-                               matInput>
+                        <input formControlName='maxRange'
+                               matInput
+                               type='number'>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             کمترین
                         </mat-label>
-                        <input formControlName="minRange"
-                               type="number"
-                               matInput>
+                        <input formControlName='minRange'
+                               matInput
+                               type='number'>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             مقدار
                         </mat-label>
-                        <input formControlName="handValue"
-                               type="number"
-                               matInput>
+                        <input formControlName='handValue'
+                               matInput
+                               type='number'>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             جهت
                         </mat-label>
-                        <mat-select formControlName="reverse">
-                            <mat-option [value]="false">از کم به زیاد</mat-option>
-                            <mat-option [value]="true">از زیاد به کم</mat-option>
+                        <mat-select formControlName='reverse'>
+                            <mat-option [value]='false'>از کم به زیاد</mat-option>
+                            <mat-option [value]='true'>از زیاد به کم</mat-option>
                         </mat-select>
                     </mat-form-field>
 
 
-                    <mat-form-field appearance="outline" fxFlex="400px">
+                    <mat-form-field appearance='outline' fxFlex='400px'>
                         <mat-label>
                             لیبل ۱
                         </mat-label>
-                        <input formControlName="label1"
-                               type="text"
-                               matInput>
+                        <input formControlName='label1'
+                               matInput
+                               type='text'>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="400px">
+                    <mat-form-field appearance='outline' fxFlex='400px'>
                         <mat-label>
                             لیبل ۲
                         </mat-label>
-                        <input formControlName="label2"
-                               type="text"
-                               matInput>
+                        <input formControlName='label2'
+                               matInput
+                               type='text'>
                     </mat-form-field>
                 </div>
 
 
-                <button (click)="randomValue()" color="primary" mat-raised-button>
+                <button (click)='randomValue()' color='primary' mat-raised-button>
                     رندوم
                 </button>
             </div>

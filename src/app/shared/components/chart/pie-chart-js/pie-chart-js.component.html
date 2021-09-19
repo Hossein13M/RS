@@ -1,30 +1,30 @@
-<div *ngIf="data && data.length > 0" class="fuse-card">
-    <span class="header">
+<div *ngIf='data && data.length > 0' class='fuse-card'>
+    <span class='header'>
         <span> {{ chartName }} </span>
 
-        <button mat-icon-button (click)="backToFirstStep()" color="accent">
-            <mat-icon class="mat-18">arrow_back</mat-icon>
+        <button (click)='backToFirstStep()' color='accent' mat-icon-button>
+            <mat-icon class='mat-18'>arrow_back</mat-icon>
         </button>
     </span>
     <mat-divider></mat-divider>
-    <div class="chart">
+    <div class='chart'>
         <canvas
+            (chartClick)='chartClicked($event)'
+            (chartHover)='chartHovered($event)'
+            [chartType]='chartType'
+            [colors]='chartColors'
+            [datasets]='chartDatasets'
+            [labels]='chartLabels'
+            [legend]='true'
+            [options]='chartOptions'
             baseChart
-            id="pieChartJs"
-            height="{{ height }}"
-            [chartType]="chartType"
-            [datasets]="chartDatasets"
-            [labels]="chartLabels"
-            [colors]="chartColors"
-            [options]="chartOptions"
-            [legend]="true"
-            (chartHover)="chartHovered($event)"
-            (chartClick)="chartClicked($event)"
+            height='{{ height }}'
+            id='pieChartJs'
         >
         </canvas>
     </div>
 </div>
 
-<div class="fuse-card no-data" *ngIf="data && data.length == 0">
-    <p style="text-align: center">داده ای موجود نیست</p>
+<div *ngIf='data && data.length == 0' class='fuse-card no-data'>
+    <p style='text-align: center'>داده ای موجود نیست</p>
 </div>

@@ -15,14 +15,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class ComplianceFundService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation complianceFundControllerGetComplianceFund
      */
     static readonly ComplianceFundControllerGetComplianceFundPath = '/api/v1/compliance-fund/{id}';
+    /**
+     * Path part for operation complianceFundControllerDeleteComplianceFund
+     */
+    static readonly ComplianceFundControllerDeleteComplianceFundPath = '/api/v1/compliance-fund/{id}';
+    /**
+     * Path part for operation complianceFundControllerGetComplianceFunds
+     */
+    static readonly ComplianceFundControllerGetComplianceFundsPath = '/api/v1/compliance-fund';
+    /**
+     * Path part for operation complianceFundControllerUpdateComplianceFund
+     */
+    static readonly ComplianceFundControllerUpdateComplianceFundPath = '/api/v1/compliance-fund';
+    /**
+     * Path part for operation complianceFundControllerCreateComplianceFund
+     */
+    static readonly ComplianceFundControllerCreateComplianceFundPath = '/api/v1/compliance-fund';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,11 +79,6 @@ export class ComplianceFundService extends BaseService {
     }
 
     /**
-     * Path part for operation complianceFundControllerDeleteComplianceFund
-     */
-    static readonly ComplianceFundControllerDeleteComplianceFundPath = '/api/v1/compliance-fund/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `complianceFundControllerDeleteComplianceFund()` instead.
      *
@@ -104,19 +115,12 @@ export class ComplianceFundService extends BaseService {
     }
 
     /**
-     * Path part for operation complianceFundControllerGetComplianceFunds
-     */
-    static readonly ComplianceFundControllerGetComplianceFundsPath = '/api/v1/compliance-fund';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `complianceFundControllerGetComplianceFunds()` instead.
      *
      * This method doesn't expect any request body.
      */
-    complianceFundControllerGetComplianceFunds$Response(params?: {
-        complianceId?: number;
-    }): Observable<StrictHttpResponse<Array<ResponseComplianceFundDto>>> {
+    complianceFundControllerGetComplianceFunds$Response(params?: { complianceId?: number }): Observable<StrictHttpResponse<Array<ResponseComplianceFundDto>>> {
         const rb = new RequestBuilder(this.rootUrl, ComplianceFundService.ComplianceFundControllerGetComplianceFundsPath, 'get');
         if (params) {
             rb.query('complianceId', params.complianceId, {});
@@ -147,11 +151,6 @@ export class ComplianceFundService extends BaseService {
             map((r: StrictHttpResponse<Array<ResponseComplianceFundDto>>) => r.body as Array<ResponseComplianceFundDto>)
         );
     }
-
-    /**
-     * Path part for operation complianceFundControllerUpdateComplianceFund
-     */
-    static readonly ComplianceFundControllerUpdateComplianceFundPath = '/api/v1/compliance-fund';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -192,11 +191,6 @@ export class ComplianceFundService extends BaseService {
             map((r: StrictHttpResponse<ResponseComplianceFundDto>) => r.body as ResponseComplianceFundDto)
         );
     }
-
-    /**
-     * Path part for operation complianceFundControllerCreateComplianceFund
-     */
-    static readonly ComplianceFundControllerCreateComplianceFundPath = '/api/v1/compliance-fund';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

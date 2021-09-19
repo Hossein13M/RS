@@ -29,6 +29,19 @@ export class TradeBookShowComponent implements OnInit {
         this.getTradeBookData();
     }
 
+    public paginationControl(): void {
+        this.getTradeBookData();
+    }
+
+    public getTradeBookData(): void {
+        this.hasDataFetched = false;
+        this.tradeBookData.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.tradeBookData.date));
+        this.tradeBookService.getTradeDataByDate({ ...this.tradeBookData, ...this.pagination }).subscribe((response) => {
+            this.pagination.total = response.total;
+            this.data = this.parseData(response);
+        });
+    }
+
     private getDataFromRoute(): void {
         this.route.paramMap.subscribe((map: ParamMap) => {
             this.tradeBookData.organization = map.get('org');
@@ -59,23 +72,15 @@ export class TradeBookShowComponent implements OnInit {
         ];
     }
 
-    public paginationControl(): void {
-        this.getTradeBookData();
-    }
-
-    public getTradeBookData(): void {
-        this.hasDataFetched = false;
-        this.tradeBookData.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.tradeBookData.date));
-        this.tradeBookService.getTradeDataByDate({ ...this.tradeBookData, ...this.pagination }).subscribe((response) => {
-            this.pagination.total = response.total;
-            this.data = this.parseData(response);
-        });
-    }
-
     private parseData(serverResponse: any): Array<TradeDateServerResponse> {
         if (!serverResponse || !serverResponse.items) return;
         serverResponse.items.forEach(
-            (el) => (el.persianDate = new Date(el.transactionDate).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' }))
+            (el) =>
+                (el.persianDate = new Date(el.transactionDate).toLocaleDateString('fa-Ir', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                }))
         );
         return serverResponse.items;
     }

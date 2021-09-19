@@ -29,21 +29,6 @@ export class CardboardConfirmDialogComponent implements OnInit {
         this.getSelectionUsersOnNextStep();
     }
 
-    private getSelectionUsersOnNextStep(): void {
-        const CardboardAction: CardboardAction = {
-            contractId: this.dialogData.contractId,
-            currentStepId: this.dialogData.stepInfo.steps[this.dialogData.stepInfo.steps.length - 1].id,
-            action: 'confirm',
-        };
-        this.cardboardService.getContractCardboardNextStepSelectedUsersList(CardboardAction).subscribe(
-            (response) => {
-                this.nextStepSelectionUsers = response;
-                this.stateType = StateType.PRESENT;
-            },
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
     public onCloseDialog(): void {
         this.dialog.close(false);
     }
@@ -55,13 +40,36 @@ export class CardboardConfirmDialogComponent implements OnInit {
         }
 
         const nextStepSelectedUser = this.nextStepSelectionUsers.length
-            ? { id: this.form.get('user').value, name: this.nextStepSelectionUsers.find((user) => user.userId === this.form.get('user').value).username }
+            ? {
+                  id: this.form.get('user').value,
+                  name: this.nextStepSelectionUsers.find((user) => user.userId === this.form.get('user').value).username,
+              }
             : null;
 
-        this.cardboardService.confirmContractCardboardStep({ contractId: this.dialogData.contractId, nextStepSelectedUser }).subscribe(
-            () => {
-                this.alertService.onSuccess('با موفقیت تایید شد');
-                this.dialog.close(true);
+        this.cardboardService
+            .confirmContractCardboardStep({
+                contractId: this.dialogData.contractId,
+                nextStepSelectedUser,
+            })
+            .subscribe(
+                () => {
+                    this.alertService.onSuccess('با موفقیت تایید شد');
+                    this.dialog.close(true);
+                },
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+            );
+    }
+
+    private getSelectionUsersOnNextStep(): void {
+        const CardboardAction: CardboardAction = {
+            contractId: this.dialogData.contractId,
+            currentStepId: this.dialogData.stepInfo.steps[this.dialogData.stepInfo.steps.length - 1].id,
+            action: 'confirm',
+        };
+        this.cardboardService.getContractCardboardNextStepSelectedUsersList(CardboardAction).subscribe(
+            (response) => {
+                this.nextStepSelectionUsers = response;
+                this.stateType = StateType.PRESENT;
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );

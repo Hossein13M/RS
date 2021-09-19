@@ -18,8 +18,7 @@ export class NavService extends Specification {
     private static getAllEstimatedPrice =
         '/api/v1/fund-nav-user-transaction/estimated-price-instruments?fundNationalCode={fundNationalCodeValue}&searchKey={tickerValue}';
     private static processNavApi = '/api/v1/fund-nav-user-transaction';
-    private static processNAVRunTime =
-        '/api/v1/fund-real-time-nav?fundNationalCode={fundNationalCodeValue}&plannedRate={plannedRateValue}&date={date}';
+    private static processNAVRunTime = '/api/v1/fund-real-time-nav?fundNationalCode={fundNationalCodeValue}&plannedRate={plannedRateValue}&date={date}';
     private static getAssetAndDebitService = '/api/v1/fund-nav-asset-and-debit/{fundNationalId}';
 
     constructor(private apiClientService: ApiClientService) {

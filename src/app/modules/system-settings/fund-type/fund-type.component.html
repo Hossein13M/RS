@@ -1,34 +1,37 @@
-<div class="fuse-card">
-    <div dir="rtl">
+<div class='fuse-card'>
+    <div dir='rtl'>
         <app-table
-            [data]="data"
-            [columns]="column"
+            (searchEvent)='search($event)'
+            [columns]='column'
+            [data]='data'
+            [paginationObject]='pagination'
             [paginationSettings]="{ mode: 'scroll' }"
-            [paginationObject]="pagination"
-            (searchEvent)="search($event)"
-            [status]="status"
-            height="55vh"
+            [status]='status'
+            height='55vh'
         ></app-table>
     </div>
 
-    <div class="container" dir="rtl">
-        <div class="fund-type">
-            <mat-form-field appearance="outline" style="flex-grow: 1">
-                <input matInput class="form-field" [formControl]="fundTypeName" placeholder="نرخ صندوق" required />
+    <div class='container' dir='rtl'>
+        <div class='fund-type'>
+            <mat-form-field appearance='outline' style='flex-grow: 1'>
+                <input [formControl]='fundTypeName' class='form-field' matInput placeholder='نرخ صندوق' required />
             </mat-form-field>
 
-            <div fxLayout="column wrap" fxLayoutGap="5px" fxLayoutAlign="center center" class="setting-btn-container">
-                <button *ngIf="selectedIssuer" fxFlex="100" [disabled]="fundTypeName.invalid" (click)="edit()" color="accent" mat-raised-button>
+            <div class='setting-btn-container' fxLayout='column wrap' fxLayoutAlign='center center' fxLayoutGap='5px'>
+                <button (click)='edit()' *ngIf='selectedIssuer' [disabled]='fundTypeName.invalid' color='accent'
+                        fxFlex='100' mat-raised-button>
                     <mat-icon>edit</mat-icon>
                     ویرایش
                 </button>
 
-                <button *ngIf="selectedIssuer" fxFlex="100" (click)="clear()" style="margin-left: 10px" color="warn" mat-raised-button>
+                <button (click)='clear()' *ngIf='selectedIssuer' color='warn' fxFlex='100' mat-raised-button
+                        style='margin-left: 10px'>
                     <mat-icon>close</mat-icon>
                     برگشت
                 </button>
 
-                <button *ngIf="!selectedIssuer" fxFlex="100" [disabled]="fundTypeName.invalid" (click)="addIssuer()" color="accent" mat-raised-button>
+                <button (click)='addIssuer()' *ngIf='!selectedIssuer' [disabled]='fundTypeName.invalid' color='accent'
+                        fxFlex='100' mat-raised-button>
                     <mat-icon>done</mat-icon>
                     ثبت
                 </button>

@@ -25,14 +25,6 @@ import { TrendChartComponent } from './trend-chart/trend-chart.component';
         LineChartJsComponent,
     ],
     imports: [CommonModule, ChartsModule, MatButtonModule, MatDividerModule, MatIconModule, FlexModule, MatProgressSpinnerModule],
-    exports: [
-        BarChartComponent,
-        BarChartJsComponent,
-        PieChartComponent,
-        PieChartJsComponent,
-        TrendChartComponent,
-        GaugeChartComponent,
-        LineChartJsComponent,
-    ],
+    exports: [BarChartComponent, BarChartJsComponent, PieChartComponent, PieChartJsComponent, TrendChartComponent, GaugeChartComponent, LineChartJsComponent],
 })
 export class ChartModule {}

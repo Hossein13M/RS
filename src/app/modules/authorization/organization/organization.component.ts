@@ -18,10 +18,6 @@ export class OrganizationComponent implements OnInit {
     public waiting = true;
     public organizationData: Array<Organization>;
 
-    private static setActiveOrganization(organization: Organization): void {
-        localStorage.setItem('activeOrganization', JSON.stringify(organization));
-    }
-
     constructor(
         private _fuseConfigService: FuseConfigService,
         private authorizationService: AuthorizationService,
@@ -38,9 +34,19 @@ export class OrganizationComponent implements OnInit {
         };
     }
 
+    private static setActiveOrganization(organization: Organization): void {
+        localStorage.setItem('activeOrganization', JSON.stringify(organization));
+    }
+
     ngOnInit(): void {
         this.initForm();
         this.initActiveOrganizationData(this.authorizationService.decodeToken().userRoles);
+    }
+
+    public onSubmit(): void {
+        if (this.form.invalid) return;
+        OrganizationComponent.setActiveOrganization(this.form.value['organization']);
+        this.redirectToWelcome();
     }
 
     private initForm(): void {
@@ -62,12 +68,6 @@ export class OrganizationComponent implements OnInit {
             OrganizationComponent.setActiveOrganization(this.organizationData[0]);
             this.redirectToWelcome();
         }
-    }
-
-    public onSubmit(): void {
-        if (this.form.invalid) return;
-        OrganizationComponent.setActiveOrganization(this.form.value['organization']);
-        this.redirectToWelcome();
     }
 
     private redirectToWelcome(): void {

@@ -2,13 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import {
-    OrganizationRole,
-    OrganizationStructureModel,
-    OrganizationUnit,
-    Role,
-    Unit
-} from './organization-structure.model';
+import { OrganizationRole, OrganizationStructureModel, OrganizationUnit, Role, Unit } from './organization-structure.model';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
 
 @Injectable()

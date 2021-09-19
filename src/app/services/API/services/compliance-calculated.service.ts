@@ -15,14 +15,22 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class ComplianceCalculatedService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation complianceCalculatedControllerGetFundListComplianceCalculated
      */
     static readonly ComplianceCalculatedControllerGetFundListComplianceCalculatedPath = '/api/v1/compliance-calculated/fund-list';
+    /**
+     * Path part for operation complianceCalculatedControllerGetPiechartComplianceCalculated
+     */
+    static readonly ComplianceCalculatedControllerGetPiechartComplianceCalculatedPath = '/api/v1/compliance-calculated/piechart';
+    /**
+     * Path part for operation complianceCalculatedControllerGetComplianceCalculated
+     */
+    static readonly ComplianceCalculatedControllerGetComplianceCalculatedPath = '/api/v1/compliance-calculated/table';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -31,11 +39,7 @@ export class ComplianceCalculatedService extends BaseService {
      * This method doesn't expect any request body.
      */
     complianceCalculatedControllerGetFundListComplianceCalculated$Response(params?: {}): Observable<StrictHttpResponse<Array<FundListDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            ComplianceCalculatedService.ComplianceCalculatedControllerGetFundListComplianceCalculatedPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, ComplianceCalculatedService.ComplianceCalculatedControllerGetFundListComplianceCalculatedPath, 'get');
         if (params) {
         }
         return this.http
@@ -66,11 +70,6 @@ export class ComplianceCalculatedService extends BaseService {
     }
 
     /**
-     * Path part for operation complianceCalculatedControllerGetPiechartComplianceCalculated
-     */
-    static readonly ComplianceCalculatedControllerGetPiechartComplianceCalculatedPath = '/api/v1/compliance-calculated/piechart';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `complianceCalculatedControllerGetPiechartComplianceCalculated()` instead.
      *
@@ -84,11 +83,7 @@ export class ComplianceCalculatedService extends BaseService {
          */
         date?: string;
     }): Observable<StrictHttpResponse<ComplianceCalculatedPiechartDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            ComplianceCalculatedService.ComplianceCalculatedControllerGetPiechartComplianceCalculatedPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, ComplianceCalculatedService.ComplianceCalculatedControllerGetPiechartComplianceCalculatedPath, 'get');
         if (params) {
             rb.query('fundNationalCode', params.fundNationalCode, {});
             rb.query('date', params.date, {});
@@ -126,11 +121,6 @@ export class ComplianceCalculatedService extends BaseService {
             map((r: StrictHttpResponse<ComplianceCalculatedPiechartDto>) => r.body as ComplianceCalculatedPiechartDto)
         );
     }
-
-    /**
-     * Path part for operation complianceCalculatedControllerGetComplianceCalculated
-     */
-    static readonly ComplianceCalculatedControllerGetComplianceCalculatedPath = '/api/v1/compliance-calculated/table';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

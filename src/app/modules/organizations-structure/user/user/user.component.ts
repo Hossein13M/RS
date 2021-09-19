@@ -72,7 +72,12 @@ export class UserComponent implements OnInit, OnDestroy {
             sticky: true,
             operations: [
                 { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUser(row) },
-                { name: 'فعال‌سازی/غیرفعال‌سازی', icon: 'sync_alt', color: 'accent', operation: ({ row }: any) => this.changeUserStatus(row) },
+                {
+                    name: 'فعال‌سازی/غیرفعال‌سازی',
+                    icon: 'sync_alt',
+                    color: 'accent',
+                    operation: ({ row }: any) => this.changeUserStatus(row),
+                },
             ],
         },
     ];
@@ -90,6 +95,42 @@ export class UserComponent implements OnInit, OnDestroy {
         this.onOrganizationCodeChange();
         this.initSearch();
         this.getUsers([]);
+    }
+
+    public search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
+        Object.keys(searchFilter).forEach((key) => {
+            this.usersSearchForm.controls[key].setValue(searchFilter[key]);
+        });
+        this.getUsers(organizationId, this.usersSearchForm.value);
+    }
+
+    public paginationControl(pageEvent: PaginationChangeType): void {
+        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.getUsers(organizationId);
+    }
+
+    public createUser(): void {
+        const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
+        this.matDialog
+            .open(UserBatchComponent, {
+                data: null,
+            })
+            .afterClosed()
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((result: boolean) => {
+                if (result) this.getUsers(organizationIds);
+            });
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     private organizationsSearchInit(): void {
@@ -117,42 +158,11 @@ export class UserComponent implements OnInit, OnDestroy {
         this.usersSearchForm = this.formBuilder.group({ ...objectFromKeys });
     }
 
-    public search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
-        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
-        Object.keys(searchFilter).forEach((key) => {
-            this.usersSearchForm.controls[key].setValue(searchFilter[key]);
-        });
-        this.getUsers(organizationId, this.usersSearchForm.value);
-    }
-
-    public paginationControl(pageEvent: PaginationChangeType): void {
-        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
-        this.getUsers(organizationId);
-    }
-
     private getUsers(organizationIds: Array<string>, search?: any): void {
         this.userService.getUsers(organizationIds, this.pagination, search).subscribe((response) => {
             this.users = response.items;
             this.pagination.total = response.total;
         });
-    }
-
-    public createUser(): void {
-        const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
-        this.matDialog
-            .open(UserBatchComponent, {
-                data: null,
-            })
-            .afterClosed()
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: boolean) => {
-                if (result) this.getUsers(organizationIds);
-            });
     }
 
     private editUser(user: User): void {
@@ -170,10 +180,5 @@ export class UserComponent implements OnInit, OnDestroy {
 
     private changeUserStatus(user: User): void {
         this.userService.changeUserStatus(user.id).subscribe(() => this.getUsers([]));
-    }
-
-    ngOnDestroy(): void {
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
     }
 }

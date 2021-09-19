@@ -12,12 +12,12 @@ import { GlService } from '../../gl.service';
     styleUrls: ['./gl-pie-chart.component.scss'],
 })
 export class GlPieChartComponent implements OnInit, AfterViewInit {
+    public date;
     private chart;
     private pieSeries;
     private button;
     private drillLevel = [];
     private selectedSlice;
-    public date;
 
     constructor(public dialogRef: MatDialogRef<GlPieChartComponent>, @Inject(MAT_DIALOG_DATA) public data, public glService: GlService) {}
 

@@ -30,7 +30,7 @@ import { HeaderModule } from '../../layout/components/header/header.module';
         LayoutModule,
         MatProgressBarModule,
         PipesModule,
-        HeaderModule
-    ]
+        HeaderModule,
+    ],
 })
 export class NavModule {}

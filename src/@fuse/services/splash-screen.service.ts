@@ -29,6 +29,51 @@ export class FuseSplashScreenService {
     // -----------------------------------------------------------------------------------------------------
 
     /**
+     * Show the splash screen
+     */
+    show(): void {
+        this.player = this._animationBuilder
+            .build([
+                style({
+                    opacity: '0',
+                    zIndex: '99999',
+                }),
+                animate('400ms ease', style({ opacity: '1' })),
+            ])
+            .create(this.splashScreenEl);
+
+        setTimeout(() => {
+            this.player.play();
+        }, 0);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Hide the splash screen
+     */
+    hide(): void {
+        this.player = this._animationBuilder
+            .build([
+                style({ opacity: '1' }),
+                animate(
+                    '400ms ease',
+                    style({
+                        opacity: '0',
+                        zIndex: '-10',
+                    })
+                ),
+            ])
+            .create(this.splashScreenEl);
+
+        setTimeout(() => {
+            this.player.play();
+        }, 0);
+    }
+
+    /**
      * Initialize
      *
      * @private
@@ -51,50 +96,5 @@ export class FuseSplashScreenService {
                     });
                 });
         }
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Show the splash screen
-     */
-    show(): void {
-        this.player = this._animationBuilder
-            .build([
-                style({
-                    opacity: '0',
-                    zIndex: '99999',
-                }),
-                animate('400ms ease', style({ opacity: '1' })),
-            ])
-            .create(this.splashScreenEl);
-
-        setTimeout(() => {
-            this.player.play();
-        }, 0);
-    }
-
-    /**
-     * Hide the splash screen
-     */
-    hide(): void {
-        this.player = this._animationBuilder
-            .build([
-                style({ opacity: '1' }),
-                animate(
-                    '400ms ease',
-                    style({
-                        opacity: '0',
-                        zIndex: '-10',
-                    })
-                ),
-            ])
-            .create(this.splashScreenEl);
-
-        setTimeout(() => {
-            this.player.play();
-        }, 0);
     }
 }

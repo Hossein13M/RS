@@ -26,6 +26,10 @@ export class OrganizationComponent implements OnInit {
         this.isEditMode ? this.editOrganization() : this.addOrganization();
     }
 
+    ngOnInit(): void {
+        this.checkForEditMode();
+    }
+
     private addOrganization(): void {
         this.organizationStructureService.addOrganization(this.form.value).subscribe(
             () => this.dialogRef.close(true),
@@ -39,10 +43,6 @@ export class OrganizationComponent implements OnInit {
             () => this.dialogRef.close(true),
             () => this.alertService.onError('خطایی رخ داده‌است')
         );
-    }
-
-    ngOnInit(): void {
-        this.checkForEditMode();
     }
 
     private checkForEditMode(): void {

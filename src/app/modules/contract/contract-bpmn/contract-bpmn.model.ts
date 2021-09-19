@@ -5,6 +5,7 @@ export interface BpmnStepTool {
     imageLink?: string;
     disabled: boolean;
 }
+
 export interface BPMNButtonForm {
     name: string;
     type: buttonType;

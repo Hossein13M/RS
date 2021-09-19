@@ -39,7 +39,10 @@ export class ContractFinalFormDialogComponent implements OnInit {
         sectionForm.map((section) =>
             Object.keys(section).map((key) => {
                 if (UtilityFunctions.isDate(section[key])) {
-                    this.formInfoArray.push({ key: key, value: UtilityFunctions.convertDateToPersianDateString(new Date(section[key])) });
+                    this.formInfoArray.push({
+                        key: key,
+                        value: UtilityFunctions.convertDateToPersianDateString(new Date(section[key])),
+                    });
                 } else {
                     this.formInfoArray.push({ key: key, value: section[key] });
                 }

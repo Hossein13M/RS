@@ -7,12 +7,6 @@ import { filter } from 'rxjs/operators';
     providedIn: 'root',
 })
 export class FuseProgressBarService {
-    // Private
-    private _bufferValue: BehaviorSubject<number>;
-    private _mode: BehaviorSubject<string>;
-    private _value: BehaviorSubject<number>;
-    private _visible: BehaviorSubject<boolean>;
-
     /**
      * Constructor
      *
@@ -23,9 +17,8 @@ export class FuseProgressBarService {
         this._init();
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
+    // Private
+    private _bufferValue: BehaviorSubject<number>;
 
     /**
      * Buffer value
@@ -34,9 +27,7 @@ export class FuseProgressBarService {
         return this._bufferValue.asObservable();
     }
 
-    setBufferValue(value: number): void {
-        this._bufferValue.next(value);
-    }
+    private _mode: BehaviorSubject<string>;
 
     /**
      * Mode
@@ -45,9 +36,11 @@ export class FuseProgressBarService {
         return this._mode.asObservable();
     }
 
-    setMode(value: 'determinate' | 'indeterminate' | 'buffer' | 'query'): void {
-        this._mode.next(value);
-    }
+    // -----------------------------------------------------------------------------------------------------
+    // @ Accessors
+    // -----------------------------------------------------------------------------------------------------
+
+    private _value: BehaviorSubject<number>;
 
     /**
      * Value
@@ -56,9 +49,7 @@ export class FuseProgressBarService {
         return this._value.asObservable();
     }
 
-    setValue(value: number): void {
-        this._value.next(value);
-    }
+    private _visible: BehaviorSubject<boolean>;
 
     /**
      * Visible
@@ -67,9 +58,39 @@ export class FuseProgressBarService {
         return this._visible.asObservable();
     }
 
+    setBufferValue(value: number): void {
+        this._bufferValue.next(value);
+    }
+
+    setMode(value: 'determinate' | 'indeterminate' | 'buffer' | 'query'): void {
+        this._mode.next(value);
+    }
+
+    setValue(value: number): void {
+        this._value.next(value);
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods
     // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Show the progress bar
+     */
+    show(): void {
+        this._visible.next(true);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Hide the progress bar
+     */
+    hide(): void {
+        this._visible.next(false);
+    }
 
     /**
      * Initialize
@@ -93,23 +114,5 @@ export class FuseProgressBarService {
             .subscribe(() => {
                 this.hide();
             });
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Show the progress bar
-     */
-    show(): void {
-        this._visible.next(true);
-    }
-
-    /**
-     * Hide the progress bar
-     */
-    hide(): void {
-        this._visible.next(false);
     }
 }

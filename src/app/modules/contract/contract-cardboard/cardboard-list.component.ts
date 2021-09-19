@@ -13,12 +13,10 @@ import { StateType } from '#shared/state-type.enum';
     styleUrls: ['./cardboard-list.component.scss'],
 })
 export class CardboardListComponent implements OnInit {
-    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public pagination = { skip: 0, limit: 100, total: 100 };
     public contractCardboard: Array<ContractCardboard> = [];
     public tableData: Array<ContractCardboardTableData> = [];
     public stateType: StateType = StateType.INIT;
-
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '70px' },
         { id: 'name', name: 'نام قرارداد', type: 'string', minWidth: '200px' },
@@ -39,7 +37,13 @@ export class CardboardListComponent implements OnInit {
             type: 'string',
             minWidth: '140px',
         },
-        { id: 'isActive', name: 'فعالیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '140px' },
+        {
+            id: 'isActive',
+            name: 'فعالیت قرارداد',
+            convert: (value) => (value ? 'فعال' : 'غیر فعال'),
+            type: 'string',
+            minWidth: '140px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -57,6 +61,7 @@ export class CardboardListComponent implements OnInit {
             ],
         },
     ];
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
 
     constructor(private readonly router: Router, private readonly cardboardService: CardboardService, private alertService: AlertService) {}
 

@@ -14,8 +14,6 @@ import { AlertService } from '#shared/services/alert.service';
 })
 export class CardboardContractInfoComponent implements OnInit {
     public contractInfo: Contract;
-    private pagination = { skip: 0, limit: 5, total: 100 };
-    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public stateType: StateType = StateType.INIT;
     public form: FormGroup = this.fb.group({
         name: [''],
@@ -23,6 +21,8 @@ export class CardboardContractInfoComponent implements OnInit {
         customer: [''],
         initializerUser: [''],
     });
+    private pagination = { skip: 0, limit: 5, total: 100 };
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
 
     constructor(
         private readonly contractService: ContractService,
@@ -36,7 +36,13 @@ export class CardboardContractInfoComponent implements OnInit {
     }
 
     private getContractInfo(): void {
-        const searchParams = { ...this.pagination, ...{ organization: this.organizationCode, id: this.activatedRoute.snapshot.params.id } };
+        const searchParams = {
+            ...this.pagination,
+            ...{
+                organization: this.organizationCode,
+                id: this.activatedRoute.snapshot.params.id,
+            },
+        };
         this.contractService.getContractsList(searchParams).subscribe(
             (response) => {
                 this.contractInfo = response.items[0];

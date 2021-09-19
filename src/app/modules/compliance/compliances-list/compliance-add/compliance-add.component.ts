@@ -23,13 +23,6 @@ export class ComplianceAddComponent implements OnInit {
         this.initForm();
     }
 
-    private initForm(): void {
-        this.form = this.formBuilder.group({
-            code: [this.dialogData ? this.dialogData.code : '', Validators.required],
-            title: [this.dialogData ? this.dialogData.title : '', Validators.required],
-        });
-    }
-
     public onCreateCompliance(): void {
         this.compliancesService.createCompliance(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
@@ -50,5 +43,12 @@ export class ComplianceAddComponent implements OnInit {
 
     public close(): void {
         this.dialogRef.close(false);
+    }
+
+    private initForm(): void {
+        this.form = this.formBuilder.group({
+            code: [this.dialogData ? this.dialogData.code : '', Validators.required],
+            title: [this.dialogData ? this.dialogData.title : '', Validators.required],
+        });
     }
 }

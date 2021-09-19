@@ -1,13 +1,5 @@
 import { AfterViewInit, Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import {
-    AbstractControl,
-    ControlValueAccessor,
-    FormBuilder,
-    NG_VALIDATORS,
-    NG_VALUE_ACCESSOR,
-    ValidationErrors,
-    Validator
-} from '@angular/forms';
+import { AbstractControl, ControlValueAccessor, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 import { BehaviorSubject } from 'rxjs';
 
@@ -54,6 +46,19 @@ export class SearchSelectComponent implements OnInit, ControlValueAccessor, Vali
     @Input() outputValueForm = 'only-value'; // all only-value
     @Input() valuePropertyName: string;
     @Input() uiPropertyName: string;
+    @Input() searchFn: (searchKey: any, data: SearchSelectDataType) => void;
+    @Input() multi;
+    @Input() showClearButton = true;
+    @Input() required = false;
+    touchedValue = false;
+    searchControl = this.fb.control('');
+    searchResultControl = this.fb.control('');
+    output: BehaviorSubject<any>;
+    isDisabled = false;
+    selected: any;
+    show = true;
+
+    constructor(private fb: FormBuilder) {}
 
     @Input() set list(value: Array<any>) {
         this.data.list = value;
@@ -63,10 +68,6 @@ export class SearchSelectComponent implements OnInit, ControlValueAccessor, Vali
     @Input() set state(value: searchSelectStateType) {
         this.data.state = value;
     }
-
-    @Input() searchFn: (searchKey: any, data: SearchSelectDataType) => void;
-
-    @Input() multi;
 
     @Input() set disabled(value) {
         if (value) {
@@ -78,9 +79,6 @@ export class SearchSelectComponent implements OnInit, ControlValueAccessor, Vali
         }
     }
 
-    @Input() showClearButton = true;
-    @Input() required = false;
-
     @Input() set touched(newTouchValue) {
         if (newTouchValue) {
             this.touchedValue = true;
@@ -90,22 +88,9 @@ export class SearchSelectComponent implements OnInit, ControlValueAccessor, Vali
         }
     }
 
-    touchedValue = false;
-
-    searchControl = this.fb.control('');
-    searchResultControl = this.fb.control('');
-    output: BehaviorSubject<any>;
-    isDisabled = false;
-
-    selected: any;
-
-    show = true;
-
     public onTouched: () => void = () => {};
 
     compareCategoryObjects = (a: any, b: any) => a && b && a[this.valuePropertyName] === b[this.valuePropertyName];
-
-    constructor(private fb: FormBuilder) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes) {
@@ -143,9 +128,7 @@ export class SearchSelectComponent implements OnInit, ControlValueAccessor, Vali
                             this.output.next([]);
                             break;
                         }
-                        this.output.next(
-                            newResult.filter((el) => el?.hasOwnProperty(this.valuePropertyName)).map((el) => el[this.valuePropertyName])
-                        );
+                        this.output.next(newResult.filter((el) => el?.hasOwnProperty(this.valuePropertyName)).map((el) => el[this.valuePropertyName]));
                         break;
                     }
 

@@ -93,12 +93,10 @@ export class FundTypeComponent implements OnInit {
 
     get(search?: any): void {
         this.status = StateType.LOADING;
-        this._fundTypeService
-            .$getFundTypes(search)
-            .subscribe((response) => {
-                this.data = [...response];
-                this.status = StateType.PRESENT;
-            });
+        this._fundTypeService.$getFundTypes(search).subscribe((response) => {
+            this.data = [...response];
+            this.status = StateType.PRESENT;
+        });
         this.initColumns();
     }
 

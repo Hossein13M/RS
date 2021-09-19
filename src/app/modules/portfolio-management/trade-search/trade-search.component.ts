@@ -86,6 +86,59 @@ export class TradeSearchComponent implements OnInit {
         this.submitForm();
     }
 
+    public submitForm(): void {
+        this.stateType = StateType.LOADING;
+        this.searchCollapse = false;
+
+        if (this.form.value.transactionDateStart._d instanceof Date)
+            this.form.get('transactionDateStart').setValue(this.form.value.transactionDateStart.toISOString());
+
+        if (this.form.value.transactionDateEnd._d instanceof Date)
+            this.form.get('transactionDateEnd').setValue(this.form.value.transactionDateEnd.toISOString());
+        // the reason for the above two if codes are that we do not change them if they are iso string
+
+        this.tradeSearchService.searchTrade(this.pagination, this.form.value).subscribe(
+            (r) => {
+                this.pagination.total = r.total;
+                this.parseData(r);
+                this.stateType = StateType.PRESENT;
+            },
+            () => (this.stateType = StateType.FAIL)
+        );
+    }
+
+    public clearFilters(): void {
+        this.form.reset();
+        this.selectedTickersList = [];
+    }
+
+    public removeTicker(ticker: any): void {
+        this.selectedTickersList = this.selectedTickersList.filter((el) => el.id !== ticker.id);
+    }
+
+    public selectTicker(ticker: any): void {
+        const existTicker = this.selectedTickersList.find((el) => el.id === ticker.id);
+        if (!existTicker) this.selectedTickersList.push(ticker);
+    }
+
+    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
+        if (checkbox.checked) {
+            this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
+        } else this.form.controls[controlName].patchValue([]);
+    }
+
+    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
+        const control: AbstractControl = this.form.controls[controlName];
+        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
+        const difference = _.difference(mappedValues, control.value).length;
+        if (difference === 0) {
+            return 'all';
+        } else if (difference === values.length) {
+            return 'none';
+        }
+        return 'indeterminate';
+    }
+
     private getOrganizations() {
         this.tradeSearchService.getOrganizations().subscribe((response) => {
             this.organizations = response;
@@ -134,37 +187,15 @@ export class TradeSearchComponent implements OnInit {
         });
     }
 
-    public submitForm(): void {
-        this.stateType = StateType.LOADING;
-        this.searchCollapse = false;
-
-        if (this.form.value.transactionDateStart._d instanceof Date)
-            this.form.get('transactionDateStart').setValue(this.form.value.transactionDateStart.toISOString());
-
-        if (this.form.value.transactionDateEnd._d instanceof Date)
-            this.form.get('transactionDateEnd').setValue(this.form.value.transactionDateEnd.toISOString());
-        // the reason for the above two if codes are that we do not change them if they are iso string
-
-        this.tradeSearchService.searchTrade(this.pagination, this.form.value).subscribe(
-            (r) => {
-                this.pagination.total = r.total;
-                this.parseData(r);
-                this.stateType = StateType.PRESENT;
-            },
-            () => (this.stateType = StateType.FAIL)
-        );
-    }
-
-    public clearFilters(): void {
-        this.form.reset();
-        this.selectedTickersList = [];
-    }
-
     private parseData(r: any): void {
         if (!r || !r.items) return;
 
         r.items.forEach((el: any) => {
-            el.dateFa = new Date(el.transactionDate).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' });
+            el.dateFa = new Date(el.transactionDate).toLocaleDateString('fa-Ir', {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+            });
         });
 
         this.patchData(r.items);
@@ -173,32 +204,5 @@ export class TradeSearchComponent implements OnInit {
     private patchData(data: any): void {
         this.dataToShow = data;
         this.dataSource = new MatTableDataSource<TableElement>(this.dataToShow);
-    }
-
-    public removeTicker(ticker: any): void {
-        this.selectedTickersList = this.selectedTickersList.filter((el) => el.id !== ticker.id);
-    }
-
-    public selectTicker(ticker: any): void {
-        const existTicker = this.selectedTickersList.find((el) => el.id === ticker.id);
-        if (!existTicker) this.selectedTickersList.push(ticker);
-    }
-
-    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
-        if (checkbox.checked) {
-            this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
-        } else this.form.controls[controlName].patchValue([]);
-    }
-
-    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
-        const control: AbstractControl = this.form.controls[controlName];
-        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
-        const difference = _.difference(mappedValues, control.value).length;
-        if (difference === 0) {
-            return 'all';
-        } else if (difference === values.length) {
-            return 'none';
-        }
-        return 'indeterminate';
     }
 }

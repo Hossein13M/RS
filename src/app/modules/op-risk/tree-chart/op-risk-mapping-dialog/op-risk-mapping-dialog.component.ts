@@ -100,8 +100,7 @@ export class OpRiskMappingDialogComponent implements OnInit {
     // ---------------------------------------- Tree
 
     transformer = (node: TreeChartNode, level: number) => {
-        const flatNode =
-            this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
+        const flatNode = this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
 
         flatNode.id = node.id;
         flatNode.level = level;

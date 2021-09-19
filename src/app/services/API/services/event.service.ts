@@ -17,14 +17,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class EventService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventControllerGetEvents
      */
     static readonly EventControllerGetEventsPath = '/api/v1/event';
+    /**
+     * Path part for operation eventControllerCreateEvent
+     */
+    static readonly EventControllerCreateEventPath = '/api/v1/event';
+    /**
+     * Path part for operation eventControllerUpdateEvent
+     */
+    static readonly EventControllerUpdateEventPath = '/api/v1/event/{id}';
+    /**
+     * Path part for operation eventControllerDeleteEvent
+     */
+    static readonly EventControllerDeleteEventPath = '/api/v1/event/{id}';
+    /**
+     * Path part for operation eventControllerGetEventDetails
+     */
+    static readonly EventControllerGetEventDetailsPath = '/api/v1/event/details';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -71,11 +87,6 @@ export class EventService extends BaseService {
     }
 
     /**
-     * Path part for operation eventControllerCreateEvent
-     */
-    static readonly EventControllerCreateEventPath = '/api/v1/event';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventControllerCreateEvent()` instead.
      *
@@ -108,15 +119,8 @@ export class EventService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventControllerCreateEvent(params: { body: CreateEventDto }): Observable<CreateEventResponseDto> {
-        return this.eventControllerCreateEvent$Response(params).pipe(
-            map((r: StrictHttpResponse<CreateEventResponseDto>) => r.body as CreateEventResponseDto)
-        );
+        return this.eventControllerCreateEvent$Response(params).pipe(map((r: StrictHttpResponse<CreateEventResponseDto>) => r.body as CreateEventResponseDto));
     }
-
-    /**
-     * Path part for operation eventControllerUpdateEvent
-     */
-    static readonly EventControllerUpdateEventPath = '/api/v1/event/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -153,15 +157,8 @@ export class EventService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventControllerUpdateEvent(params: { id: number; body: UpdateEventDto }): Observable<CreateEventResponseDto> {
-        return this.eventControllerUpdateEvent$Response(params).pipe(
-            map((r: StrictHttpResponse<CreateEventResponseDto>) => r.body as CreateEventResponseDto)
-        );
+        return this.eventControllerUpdateEvent$Response(params).pipe(map((r: StrictHttpResponse<CreateEventResponseDto>) => r.body as CreateEventResponseDto));
     }
-
-    /**
-     * Path part for operation eventControllerDeleteEvent
-     */
-    static readonly EventControllerDeleteEventPath = '/api/v1/event/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -198,11 +195,6 @@ export class EventService extends BaseService {
     eventControllerDeleteEvent(params: { id: number }): Observable<void> {
         return this.eventControllerDeleteEvent$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation eventControllerGetEventDetails
-     */
-    static readonly EventControllerGetEventDetailsPath = '/api/v1/event/details';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

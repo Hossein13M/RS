@@ -35,10 +35,7 @@ export class MailComponent implements OnInit {
     activePageTitle;
 
     userInfo;
-
-    toggleSidebar(name): void {
-        this._fuseSidebarService.getSidebar(name).toggleOpen();
-    }
+    isWorking: any;
 
     constructor(
         private snackBar: MatSnackBar,
@@ -46,6 +43,10 @@ export class MailComponent implements OnInit {
         private messageApiService: MessageApiService,
         public dialog: MatDialog
     ) {}
+
+    toggleSidebar(name): void {
+        this._fuseSidebarService.getSidebar(name).toggleOpen();
+    }
 
     deleteMessage(event) {
         if (event.messageType === 0) {
@@ -141,6 +142,4 @@ export class MailComponent implements OnInit {
     handleError(): boolean {
         return false;
     }
-
-    isWorking: any;
 }

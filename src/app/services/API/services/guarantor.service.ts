@@ -16,14 +16,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class GuarantorService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation guarantorControllerGetGuarantor
      */
     static readonly GuarantorControllerGetGuarantorPath = '/api/v1/guarantor/{guarantorId}';
+    /**
+     * Path part for operation guarantorControllerDeleteGuarantor
+     */
+    static readonly GuarantorControllerDeleteGuarantorPath = '/api/v1/guarantor/{guarantorId}';
+    /**
+     * Path part for operation guarantorControllerGetGuarantors
+     */
+    static readonly GuarantorControllerGetGuarantorsPath = '/api/v1/guarantor';
+    /**
+     * Path part for operation guarantorControllerUpdateGuarantor
+     */
+    static readonly GuarantorControllerUpdateGuarantorPath = '/api/v1/guarantor';
+    /**
+     * Path part for operation guarantorControllerCreateGuarantor
+     */
+    static readonly GuarantorControllerCreateGuarantorPath = '/api/v1/guarantor';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -58,15 +74,8 @@ export class GuarantorService extends BaseService {
      * This method doesn't expect any request body.
      */
     guarantorControllerGetGuarantor(params: { guarantorId: number }): Observable<GuarantorDtoWithId> {
-        return this.guarantorControllerGetGuarantor$Response(params).pipe(
-            map((r: StrictHttpResponse<GuarantorDtoWithId>) => r.body as GuarantorDtoWithId)
-        );
+        return this.guarantorControllerGetGuarantor$Response(params).pipe(map((r: StrictHttpResponse<GuarantorDtoWithId>) => r.body as GuarantorDtoWithId));
     }
-
-    /**
-     * Path part for operation guarantorControllerDeleteGuarantor
-     */
-    static readonly GuarantorControllerDeleteGuarantorPath = '/api/v1/guarantor/{guarantorId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -103,11 +112,6 @@ export class GuarantorService extends BaseService {
     guarantorControllerDeleteGuarantor(params: { guarantorId: number }): Observable<void> {
         return this.guarantorControllerDeleteGuarantor$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation guarantorControllerGetGuarantors
-     */
-    static readonly GuarantorControllerGetGuarantorsPath = '/api/v1/guarantor';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -166,11 +170,6 @@ export class GuarantorService extends BaseService {
     }
 
     /**
-     * Path part for operation guarantorControllerUpdateGuarantor
-     */
-    static readonly GuarantorControllerUpdateGuarantorPath = '/api/v1/guarantor';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `guarantorControllerUpdateGuarantor()` instead.
      *
@@ -203,15 +202,8 @@ export class GuarantorService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     guarantorControllerUpdateGuarantor(params: { body: UpdateGuarantorDto }): Observable<GuarantorDtoWithId> {
-        return this.guarantorControllerUpdateGuarantor$Response(params).pipe(
-            map((r: StrictHttpResponse<GuarantorDtoWithId>) => r.body as GuarantorDtoWithId)
-        );
+        return this.guarantorControllerUpdateGuarantor$Response(params).pipe(map((r: StrictHttpResponse<GuarantorDtoWithId>) => r.body as GuarantorDtoWithId));
     }
-
-    /**
-     * Path part for operation guarantorControllerCreateGuarantor
-     */
-    static readonly GuarantorControllerCreateGuarantorPath = '/api/v1/guarantor';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -246,8 +238,6 @@ export class GuarantorService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     guarantorControllerCreateGuarantor(params: { body: GuarantorDto }): Observable<GuarantorDtoWithId> {
-        return this.guarantorControllerCreateGuarantor$Response(params).pipe(
-            map((r: StrictHttpResponse<GuarantorDtoWithId>) => r.body as GuarantorDtoWithId)
-        );
+        return this.guarantorControllerCreateGuarantor$Response(params).pipe(map((r: StrictHttpResponse<GuarantorDtoWithId>) => r.body as GuarantorDtoWithId));
     }
 }

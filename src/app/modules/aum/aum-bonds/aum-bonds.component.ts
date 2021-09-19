@@ -41,8 +41,20 @@ export class AumBondsComponent {
                         data: {
                             title: row.name,
                             columns: [
-                                { name: 'حجم', id: 'volume', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-                                { name: 'ارزش', id: 'value', type: 'price', headerAlign: 'center', dataAlign: 'center' },
+                                {
+                                    name: 'حجم',
+                                    id: 'volume',
+                                    type: 'number',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
+                                {
+                                    name: 'ارزش',
+                                    id: 'value',
+                                    type: 'price',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
                                 { name: 'نام', id: 'name', type: 'string', headerAlign: 'center', dataAlign: 'center' },
                             ],
                             data: row.details,

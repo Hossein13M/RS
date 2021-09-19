@@ -25,7 +25,11 @@ export class GuarantorComponent implements OnInit {
     column: Array<Column>;
     pagination: PaginationModel = { skip: 0, limit: 15, total: 100 };
     status: StateType = StateType.LOADING;
-    public guarantorForm: FormGroup = new FormGroup({ guarantor: new FormControl(''), type: new FormControl(), otc: new FormControl() });
+    public guarantorForm: FormGroup = new FormGroup({
+        guarantor: new FormControl(''),
+        type: new FormControl(),
+        otc: new FormControl(),
+    });
     selectedGuarantor = 0;
 
     constructor(private _guarantorService: GuarantorsService, public formBuilder: FormBuilder) {}

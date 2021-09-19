@@ -26,6 +26,36 @@ export class CompliancesFundComponent implements OnInit {
         this.getComplianceFunds();
     }
 
+    public create(): void {
+        this.matDialog
+            .open(CompliancesFundAddComponent, {
+                panelClass: 'dialog-w60',
+                data: { fund: null, complianceId: this.dialogData.compliance.id },
+            })
+            .afterClosed()
+            .subscribe((response: ComplianceFund) => {
+                if (response) {
+                    this.getComplianceFunds();
+                }
+            });
+    }
+
+    public update(row: any): void {
+        this.matDialog
+            .open(CompliancesFundAddComponent, {
+                panelClass: 'dialog-w60',
+                data: { fund: row, complianceId: this.dialogData.compliance.id },
+            })
+            .afterClosed()
+            .subscribe((response: ComplianceFund) => {
+                if (response) {
+                    this.getComplianceFunds();
+                }
+            });
+    }
+
+    public delete(row: any): void {}
+
     private initColumn(): void {
         this.column = [
             {
@@ -63,34 +93,4 @@ export class CompliancesFundComponent implements OnInit {
             this.data = [...response];
         });
     }
-
-    public create(): void {
-        this.matDialog
-            .open(CompliancesFundAddComponent, {
-                panelClass: 'dialog-w60',
-                data: { fund: null, complianceId: this.dialogData.compliance.id },
-            })
-            .afterClosed()
-            .subscribe((response: ComplianceFund) => {
-                if (response) {
-                    this.getComplianceFunds();
-                }
-            });
-    }
-
-    public update(row: any): void {
-        this.matDialog
-            .open(CompliancesFundAddComponent, {
-                panelClass: 'dialog-w60',
-                data: { fund: row, complianceId: this.dialogData.compliance.id },
-            })
-            .afterClosed()
-            .subscribe((response: ComplianceFund) => {
-                if (response) {
-                    this.getComplianceFunds();
-                }
-            });
-    }
-
-    public delete(row: any): void {}
 }

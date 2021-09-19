@@ -28,7 +28,7 @@ import { HeaderModule } from '../../../layout/components/header/header.module';
         MatTooltipModule,
         MatProgressBarModule,
         PipesModule,
-        HeaderModule
+        HeaderModule,
     ],
     providers: [TradeBookService],
     entryComponents: [TradeBookHistoryComponent],

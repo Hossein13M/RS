@@ -8,14 +8,7 @@ import { PipesModule } from '#shared/pipes/pipes.module';
 
 @NgModule({
     declarations: [CardboardHistoryComponent],
-    imports: [
-        MatCardModule,
-        MatIconModule,
-        MatTooltipModule,
-        CommonModule,
-        PipesModule
-    ],
+    imports: [MatCardModule, MatIconModule, MatTooltipModule, CommonModule, PipesModule],
     exports: [CardboardHistoryComponent],
-
 })
 export class CardboardHistoryModule {}

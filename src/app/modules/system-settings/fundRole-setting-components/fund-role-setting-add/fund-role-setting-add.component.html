@@ -1,84 +1,84 @@
-<div class="dialog-container">
-    <div title="{{title}}"
-         appDialogHeader>
-        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+<div class='dialog-container'>
+    <div appDialogHeader
+         title='{{title}}'>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
     </div>
-    <form [formGroup]="form" class="setting-form-container" dir="rtl">
-        <div class="setting-form-row">
-            <mat-form-field appearance="outline">
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     نام
-                    <span style="color: red">*</span>
+                    <span style='color: red'>*</span>
                 </mat-label>
-                <input formControlName="name" matInput>
+                <input formControlName='name' matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     تلفن
                 </mat-label>
-                <input formControlName="phone" matInput>
+                <input formControlName='phone' matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     آدرس
                 </mat-label>
-                <textarea formControlName="address" matInput>
+                <textarea formControlName='address' matInput>
                 </textarea>
             </mat-form-field>
         </div>
-        <div class="setting-form-row">
-            <mat-form-field appearance="outline">
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     نام نماینده
                 </mat-label>
-                <input formControlName="agentName" matInput>
+                <input formControlName='agentName' matInput>
 
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     تلفن نماینده
                 </mat-label>
-                <input formControlName="agentPhone" matInput>
+                <input formControlName='agentPhone' matInput>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     کد ملی
-                    <span style="color: red">*</span>
+                    <span style='color: red'>*</span>
                 </mat-label>
-                <input formControlName="nationalId" matInput>
+                <input formControlName='nationalId' matInput>
             </mat-form-field>
         </div>
-        <div class="setting-form-row">
-            <mat-form-field appearance="outline">
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     شماره ثبت
-                    <span style="color: red">*</span>
+                    <span style='color: red'>*</span>
                 </mat-label>
-                <input formControlName="regNumber" matInput>
+                <input formControlName='regNumber' matInput>
             </mat-form-field>
-            <mat-form-field class="full-wid" appearance="outline">
+            <mat-form-field appearance='outline' class='full-wid'>
                 <mat-label>
                     تاریخ تاسیس
                 </mat-label>
-                <input (click)="start123.open()" matInput
-                       formControlName="regDate"
-                       [matDatepicker]="start123">
-                <mat-datepicker-toggle matSuffix [for]="start123"></mat-datepicker-toggle>
+                <input (click)='start123.open()' [matDatepicker]='start123'
+                       formControlName='regDate'
+                       matInput>
+                <mat-datepicker-toggle [for]='start123' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #start123></mat-datepicker>
                 <mat-error>
                     وارد کردن این فیلد الزامی است.
                 </mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     ناظر دارد
-                    <span style="color: red">*</span>
+                    <span style='color: red'>*</span>
                 </mat-label>
-                <mat-select formControlName="hasSupervisor">
-                    <mat-option style="text-align: right" [value]="true">
+                <mat-select formControlName='hasSupervisor'>
+                    <mat-option [value]='true' style='text-align: right'>
                         بله
                     </mat-option>
-                    <mat-option style="text-align: right" [value]="false">
+                    <mat-option [value]='false' style='text-align: right'>
                         خیر
                     </mat-option>
                 </mat-select>
@@ -88,14 +88,14 @@
             </mat-form-field>
 
         </div>
-        <div class="setting-form-row">
-            <mat-form-field appearance="outline">
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     نوع نهاد
                 </mat-label>
-                <mat-select formControlName="organizationTypeId">
-                    <mat-option style="text-align: right" *ngFor="let c of orgTypes"
-                                [value]="c?.id">
+                <mat-select formControlName='organizationTypeId'>
+                    <mat-option *ngFor='let c of orgTypes' [value]='c?.id'
+                                style='text-align: right'>
                         {{c?.name}}
                     </mat-option>
                 </mat-select>
@@ -103,18 +103,18 @@
                     وارد کردن این فیلد الزامی است.
                 </mat-error>
             </mat-form-field>
-            <button (click)="addOrgType()" mat-button mat-raised-button
-                    style="background-color: deepskyblue;color: white">
+            <button (click)='addOrgType()' mat-button mat-raised-button
+                    style='background-color: deepskyblue;color: white'>
                 <mat-icon>add</mat-icon>
                 افزودن نهاد
             </button>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     ناظران
                 </mat-label>
-                <mat-select formControlName="organizationSupervisorIds" multiple>
-                    <mat-option style="text-align: right" *ngFor="let c of orgSupervisors"
-                                [value]="c?.id">
+                <mat-select formControlName='organizationSupervisorIds' multiple>
+                    <mat-option *ngFor='let c of orgSupervisors' [value]='c?.id'
+                                style='text-align: right'>
                         {{c?.name}}
                     </mat-option>
                 </mat-select>
@@ -122,24 +122,24 @@
                     وارد کردن این فیلد الزامی است.
                 </mat-error>
             </mat-form-field>
-            <button (click)="addSupervisor()" mat-button mat-raised-button
-                    style="background-color: deepskyblue;color: white">
+            <button (click)='addSupervisor()' mat-button mat-raised-button
+                    style='background-color: deepskyblue;color: white'>
                 <mat-icon>add</mat-icon>
                 افزودن ناظر
             </button>
         </div>
 
 
-        <div class="setting-btn-container">
-            <button (click)="close()" style="margin-left: 10px" color="warn" mat-raised-button>
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
                 <mat-icon>close</mat-icon>
-                 برگشت
+                برگشت
             </button>
-            <button *ngIf="!data" (click)="onCreateBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button (click)='onCreateBranch()' *ngIf='!data' [disabled]='form.invalid' color='accent' mat-raised-button>
                 <mat-icon>done</mat-icon>
                 ثبت
             </button>
-            <button *ngIf="data" (click)="onEditBranch()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button (click)='onEditBranch()' *ngIf='data' [disabled]='form.invalid' color='accent' mat-raised-button>
                 <mat-icon>edit</mat-icon>
                 ویرایش
             </button>

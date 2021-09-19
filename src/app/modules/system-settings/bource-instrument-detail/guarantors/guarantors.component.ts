@@ -72,8 +72,18 @@ export class GuarantorsComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editGuarantor(row) },
-                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.deleteCollate(row) },
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editGuarantor(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.deleteCollate(row),
+                    },
                 ],
             },
         ];

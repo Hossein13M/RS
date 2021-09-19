@@ -22,12 +22,17 @@ export class IssueStartEndDateService {
     constructor(private bourseIssueDate: BourseIssueDateService, private http: HttpClient) {}
 
     getDates(bourseId: number): Observable<Array<BourseIssueDateDto>> {
-        return this.bourseIssueDate.bourseIssueDateControllerGetBourseIssueDates({ bourseId: bourseId, limit: 100 }).pipe(
-            map((res) => {
-                this.Dates.next(res.items);
-                return res.items;
+        return this.bourseIssueDate
+            .bourseIssueDateControllerGetBourseIssueDates({
+                bourseId: bourseId,
+                limit: 100,
             })
-        );
+            .pipe(
+                map((res) => {
+                    this.Dates.next(res.items);
+                    return res.items;
+                })
+            );
     }
 
     addDate(bourseId: number, startDate: string, endDate: string): Observable<void> {

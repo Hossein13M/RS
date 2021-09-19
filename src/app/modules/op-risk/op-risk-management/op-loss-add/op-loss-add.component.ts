@@ -51,7 +51,10 @@ export class OpLossAddComponent implements OnInit {
     }
 
     getLastLossEvents(processId): void {
-        this.opLossManagementService.specificationModel.searchKeyword = { organizationCharts: this.form.value.organizationStructures, processes: processId };
+        this.opLossManagementService.specificationModel.searchKeyword = {
+            organizationCharts: this.form.value.organizationStructures,
+            processes: processId,
+        };
         this.form.value.lastLossEventId = [];
         this.opLossManagementService.getLastLossEvents().subscribe((response) => (this.lastLossEvents = response));
     }

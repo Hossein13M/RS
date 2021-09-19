@@ -1,43 +1,47 @@
-<div class="page-layout">
-    <app-header pageTitle="دفتر معاملات">
-        <div subtitleNormal *ngIf="selectedTradingBook && selectedTradingBook.totalAssets">
+<div class='page-layout'>
+    <app-header pageTitle='دفتر معاملات'>
+        <div *ngIf='selectedTradingBook && selectedTradingBook.totalAssets' subtitleNormal>
             ارزش بازار کل :
             {{ selectedTradingBook.totalAssets | price }}
         </div>
 
-        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center">
-            <button mat-raised-button (click)="showHistory()" color="primary" class="history-btn" type="button" matTooltip="تاریخچه بروزرسانی IPS ها">
-                <mat-icon class="mat-18">history</mat-icon>
+        <div dir='rtl' fxLayout='row wrap' fxLayoutAlign='center center'>
+            <button (click)='showHistory()' class='history-btn' color='primary' mat-raised-button matTooltip='تاریخچه بروزرسانی IPS ها'
+                    type='button'>
+                <mat-icon class='mat-18'>history</mat-icon>
             </button>
 
-            <form [formGroup]="form" dir="rtl">
-                <mat-form-field appearance="outline" class="section">
+            <form [formGroup]='form' dir='rtl'>
+                <mat-form-field appearance='outline' class='section'>
                     <mat-label>شرکت</mat-label>
-                    <mat-select [disabled]="stateType === 'LOADING'" formControlName="tradingBook" (selectionChange)="onTradeBookChange($event.value)">
-                        <mat-option *ngFor="let tradeBook of tradeBooksList" [value]="tradeBook.id"> {{ tradeBook.name }} </mat-option>
+                    <mat-select (selectionChange)='onTradeBookChange($event.value)' [disabled]="stateType === 'LOADING'"
+                                formControlName='tradingBook'>
+                        <mat-option *ngFor='let tradeBook of tradeBooksList'
+                                    [value]='tradeBook.id'> {{ tradeBook.name }} </mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>تاریخ</mat-label>
-                    <input matInput (click)="date.open()" formControlName="date" [matDatepicker]="date" (dateInput)="OnDateChange()" />
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <input (click)='date.open()' (dateInput)='OnDateChange()' [matDatepicker]='date' formControlName='date'
+                           matInput />
+                    <mat-datepicker-toggle [for]='date' matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #date></mat-datepicker>
-                    <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                    <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                 </mat-form-field>
             </form>
         </div>
     </app-header>
-    <mat-progress-bar mode="indeterminate" color="warn" *ngIf="stateType === 'LOADING'"></mat-progress-bar>
+    <mat-progress-bar *ngIf="stateType === 'LOADING'" color='warn' mode='indeterminate'></mat-progress-bar>
 
-    <div class="page-content">
-        <div *ngIf="stateType === 'PRESENT' && !!selectedTradingBook" class="fuse-card">
-            <div style="width: 100%">
-                <app-table [data]="dataSource" [columns]="column" [paginationSettings]="{ mode: 'local' }"> </app-table>
+    <div class='page-content'>
+        <div *ngIf="stateType === 'PRESENT' && !!selectedTradingBook" class='fuse-card'>
+            <div style='width: 100%'>
+                <app-table [columns]='column' [data]='dataSource' [paginationSettings]="{ mode: 'local' }"></app-table>
             </div>
         </div>
 
-        <div fxLayout="row wrap" fxLayoutAlign="center center">
+        <div fxLayout='row wrap' fxLayoutAlign='center center'>
             <p *ngIf="stateType === 'FAIL'">دریافت داده ناموفق بود</p>
             <p *ngIf="stateType === 'PRESENT' && !!!selectedTradingBook">برای مشاهده‌ی دفترها، شرکت را انتخاب کنید</p>
             <p *ngIf="stateType === 'LOADING'">در حال دریافت اطلاعات</p>

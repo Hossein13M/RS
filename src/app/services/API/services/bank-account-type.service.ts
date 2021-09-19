@@ -14,14 +14,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class BankAccountTypeService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bankAccountTypeControllerGetBankAccountType
      */
     static readonly BankAccountTypeControllerGetBankAccountTypePath = '/api/v1/bank-account-type/{bankAccountTypeId}';
+    /**
+     * Path part for operation bankAccountTypeControllerDeleteBankAccountType
+     */
+    static readonly BankAccountTypeControllerDeleteBankAccountTypePath = '/api/v1/bank-account-type/{bankAccountTypeId}';
+    /**
+     * Path part for operation bankAccountTypeControllerGetBankAccountTypes
+     */
+    static readonly BankAccountTypeControllerGetBankAccountTypesPath = '/api/v1/bank-account-type';
+    /**
+     * Path part for operation bankAccountTypeControllerUpdateBankAccountType
+     */
+    static readonly BankAccountTypeControllerUpdateBankAccountTypePath = '/api/v1/bank-account-type';
+    /**
+     * Path part for operation bankAccountTypeControllerCreateBankAccountType
+     */
+    static readonly BankAccountTypeControllerCreateBankAccountTypePath = '/api/v1/bank-account-type';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -62,11 +78,6 @@ export class BankAccountTypeService extends BaseService {
     }
 
     /**
-     * Path part for operation bankAccountTypeControllerDeleteBankAccountType
-     */
-    static readonly BankAccountTypeControllerDeleteBankAccountTypePath = '/api/v1/bank-account-type/{bankAccountTypeId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankAccountTypeControllerDeleteBankAccountType()` instead.
      *
@@ -101,11 +112,6 @@ export class BankAccountTypeService extends BaseService {
     bankAccountTypeControllerDeleteBankAccountType(params: { bankAccountTypeId: number }): Observable<void> {
         return this.bankAccountTypeControllerDeleteBankAccountType$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation bankAccountTypeControllerGetBankAccountTypes
-     */
-    static readonly BankAccountTypeControllerGetBankAccountTypesPath = '/api/v1/bank-account-type';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -156,19 +162,12 @@ export class BankAccountTypeService extends BaseService {
     }
 
     /**
-     * Path part for operation bankAccountTypeControllerUpdateBankAccountType
-     */
-    static readonly BankAccountTypeControllerUpdateBankAccountTypePath = '/api/v1/bank-account-type';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankAccountTypeControllerUpdateBankAccountType()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bankAccountTypeControllerUpdateBankAccountType$Response(params: {
-        body: BankAccountTypeDto;
-    }): Observable<StrictHttpResponse<BankAccountTypeDto>> {
+    bankAccountTypeControllerUpdateBankAccountType$Response(params: { body: BankAccountTypeDto }): Observable<StrictHttpResponse<BankAccountTypeDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankAccountTypeService.BankAccountTypeControllerUpdateBankAccountTypePath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -201,19 +200,12 @@ export class BankAccountTypeService extends BaseService {
     }
 
     /**
-     * Path part for operation bankAccountTypeControllerCreateBankAccountType
-     */
-    static readonly BankAccountTypeControllerCreateBankAccountTypePath = '/api/v1/bank-account-type';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankAccountTypeControllerCreateBankAccountType()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bankAccountTypeControllerCreateBankAccountType$Response(params: {
-        body: CreateBankAccountTypeDto;
-    }): Observable<StrictHttpResponse<BankAccountTypeDto>> {
+    bankAccountTypeControllerCreateBankAccountType$Response(params: { body: CreateBankAccountTypeDto }): Observable<StrictHttpResponse<BankAccountTypeDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankAccountTypeService.BankAccountTypeControllerCreateBankAccountTypePath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

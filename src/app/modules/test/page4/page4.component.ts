@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-    SearchSelectDataType,
-    searchSelectStateType
-} from 'app/shared/components/search-select/search-select.component';
+import { SearchSelectDataType, searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
 import { SearchSelectMockData } from './search-select-mock-data';
 
 @Component({
@@ -19,7 +16,15 @@ export class Page4Component implements OnInit {
     backendData = SearchSelectMockData;
 
     constructor(private fb: FormBuilder) {
-        this.fg = this.fb.group({ testSearchSelect: [{ ticker: 'IRO9PASN4191', symbol: 'ضسان3026' }, [Validators.required]] });
+        this.fg = this.fb.group({
+            testSearchSelect: [
+                {
+                    ticker: 'IRO9PASN4191',
+                    symbol: 'ضسان3026',
+                },
+                [Validators.required],
+            ],
+        });
 
         this.cf = this.fb.group({
             label: ['لیبل', []],

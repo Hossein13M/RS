@@ -19,24 +19,12 @@ import { StateType } from '#shared/state-type.enum';
     styleUrls: ['./contract-bpmn-dialog.component.scss'],
 })
 export class ContractBpmnDialogComponent implements OnInit {
-    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
-    private prevMatSelectValue: ContractFormButtonTypes;
     public users: Array<User> = [];
     public units: Units;
     public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
     public taskStep: 'first' | 'last' | 'other' = 'other';
-    private data: BpmnData = {
-        step: '',
-        flow: '',
-        isNewStep: false,
-        name: '',
-        attributes: [],
-        accessRights: { units: { unit: 0, roles: [] }, users: [], initializer: false },
-    };
-    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public flowDetails: Flow;
     public stateType: StateType = StateType.INIT;
-
     public buttonTypes: Array<{ perName: string; engName: ContractFormButtonTypes; isAvailable: boolean }> = [
         { perName: 'آپلود', engName: 'upload', isAvailable: true },
         { perName: 'دانلود', engName: 'download', isAvailable: true },
@@ -52,10 +40,25 @@ export class ContractBpmnDialogComponent implements OnInit {
     });
     public formTools: Array<BpmnStepTool> = [
         { type: 'button', name: 'دکمه', icon: 'donut_large', disabled: false },
-        { type: 'button', name: 'ابزارهای جدید به زودی', imageLink: '../../../../../assets/images/coming-soon.png', disabled: true },
+        {
+            type: 'button',
+            name: 'ابزارهای جدید به زودی',
+            imageLink: '../../../../../assets/images/coming-soon.png',
+            disabled: true,
+        },
     ];
-
     public formArray: FormArray = this.fb.array([]);
+    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
+    private prevMatSelectValue: ContractFormButtonTypes;
+    private data: BpmnData = {
+        step: '',
+        flow: '',
+        isNewStep: false,
+        name: '',
+        attributes: [],
+        accessRights: { units: { unit: 0, roles: [] }, users: [], initializer: false },
+    };
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public dialogData: { flowId: string; stateId: string; stateName: string; isStateTypeTask: boolean; bpmnProcesses },
@@ -68,13 +71,6 @@ export class ContractBpmnDialogComponent implements OnInit {
         private alertService: AlertService
     ) {}
 
-    private addDefaultButtons() {
-        const acceptButton = this.fb.group({ name: ['تایید'], type: ['accept'], isDefaultButton: [true] });
-        const rejectButton = this.fb.group({ name: ['رد'], type: ['reject'], isDefaultButton: [true] });
-        this.formArray.push(acceptButton);
-        this.formArray.push(rejectButton);
-    }
-
     ngOnInit(): void {
         this.addDefaultButtons();
         this.getOrganizationUsers();
@@ -86,49 +82,8 @@ export class ContractBpmnDialogComponent implements OnInit {
         });
     }
 
-    private addUploadButtonOnFirstTaskAndEndEvent(): void {
-        const firstTaskId = this.dialogData.bpmnProcesses['bpmn:task'][0]['_attributes'].id;
-        const endEvent = this.dialogData.bpmnProcesses['bpmn:endEvent']['_attributes'].id;
-        if (this.dialogData.stateId === firstTaskId || this.dialogData.stateId === endEvent) {
-            this.dialogData.stateId === firstTaskId ? (this.taskStep = 'first') : (this.taskStep = 'last');
-            const uploadButton = this.buttonTypes.find((buttonType) => buttonType.engName === 'upload');
-            if (uploadButton.isAvailable) {
-                this.addTool({ name: 'آپلود', type: 'upload', isDefaultButton: false });
-            }
-        }
-    }
-
     public checkForButtonStateOnTask(buttonType: ContractFormButtonTypes): boolean {
         return (this.taskStep === 'first' || this.taskStep === 'last') && buttonType === 'upload';
-    }
-
-    private getFlowDetails(): void {
-        const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
-        this.flowService.getSingleFlowDetails({ organization: this.organizationCode, id: this.dialogData.flowId, ...pagination }).subscribe((response) => {
-            this.flowDetails = response.items[0];
-            this.stateType = StateType.PRESENT;
-            this.setBaseDataInfo();
-        });
-    }
-
-    private getStepInfo() {
-        this.bpmnService
-            .getBpmnStepInfo({ step: this.dialogData.stateId, flow: this.dialogData.flowId })
-            .subscribe((response) => this.setFormDataInEditMode(response));
-    }
-
-    private setBaseDataInfo() {
-        this.data.name = this.dialogData.stateName;
-        this.data.flow = this.dialogData.flowId;
-        this.data.step = this.dialogData.stateId;
-        this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
-        if (!this.data.isNewStep || !this.dialogData.isStateTypeTask) {
-            this.getStepInfo();
-        } else this.addUploadButtonOnFirstTaskAndEndEvent();
-    }
-
-    private getOrganizationUsers(): any {
-        this.userService.getUsers([`${this.activeOrganizationCode}`]).subscribe((response) => (this.users = response.items));
     }
 
     public submitForm(): void {
@@ -140,35 +95,6 @@ export class ContractBpmnDialogComponent implements OnInit {
             () => this.alertService.onSuccess('افزوده شد'),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
-    }
-
-    private prepareAccessRights() {
-        if (this.form.get('accessRightType').value === 'dynamic') {
-            this.users.map((user) => {
-                if (this.form.get('users').value.includes(user.id)) {
-                    this.data.accessRights.users.push({ userId: user.id, isDefault: false, username: user.fullname });
-                }
-            });
-        } else {
-            this.data.accessRights = {
-                units: {
-                    unit: !!this.form.get('units').value ? this.form.get('units').value[0] : 0,
-                    roles: this.form.get('roles')?.value ?? [],
-                },
-                initializer: this.form.get('initializer').value,
-                users: [],
-            };
-        }
-    }
-
-    private getOrganizationUnits(): void {
-        this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe((response) => (this.units = response));
-    }
-
-    private getRolesOnSpecificUnits(unitId: number): void {
-        this.units.children.map((item) => {
-            if (item.id === unitId) this.rolesOnUnit = item.mappings;
-        });
     }
 
     public detectChanges(event: any, roleIds?: Array<number>) {
@@ -212,30 +138,6 @@ export class ContractBpmnDialogComponent implements OnInit {
         this.buttonTypes[this.buttonTypes.indexOf(removedButtonType)].isAvailable = true;
     }
 
-    private setFormDataInEditMode(response: BpmnData) {
-        this.checkForUnavailableButtons(response);
-        this.form.get('accessRightType').setValue(response.accessRights?.users?.length ? 'dynamic' : 'static');
-        const userIdList = [];
-        this.form.get('initializer').setValue(response.accessRights.initializer);
-        if (response.accessRights?.users?.length) response.accessRights.users.map((user) => userIdList.push(user.userId));
-        if (response.accessRights?.units) this.form.get('units').setValue([response.accessRights.units.unit]);
-        this.form.get('users').setValue(userIdList);
-        if (!!response.accessRights.units) {
-            this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
-        }
-        response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
-        this.addUploadButtonOnFirstTaskAndEndEvent();
-    }
-
-    private checkForUnavailableButtons(responseFromServer: BpmnData): void {
-        let nullButtons = [];
-        this.buttonTypes.map((buttonType) => {
-            responseFromServer.attributes.map((item) => item.type === buttonType.engName && nullButtons.push(item.type));
-        });
-
-        this.buttonTypes.map((buttonType) => (buttonType.isAvailable = !nullButtons.includes(buttonType.engName)));
-    }
-
     public onAccessRightTypeChange(event): void {
         this.form.reset();
         this.form.get('accessRightType').setValue(event.value);
@@ -248,5 +150,120 @@ export class ContractBpmnDialogComponent implements OnInit {
     public onButtonTypeChanges(event): void {
         this.buttonTypes[this.buttonTypes.indexOf(this.buttonTypes.find((item) => item.engName === this.prevMatSelectValue))].isAvailable = true;
         this.buttonTypes[this.buttonTypes.indexOf(this.buttonTypes.find((item) => item.engName === event.value))].isAvailable = false;
+    }
+
+    private addDefaultButtons() {
+        const acceptButton = this.fb.group({ name: ['تایید'], type: ['accept'], isDefaultButton: [true] });
+        const rejectButton = this.fb.group({ name: ['رد'], type: ['reject'], isDefaultButton: [true] });
+        this.formArray.push(acceptButton);
+        this.formArray.push(rejectButton);
+    }
+
+    private addUploadButtonOnFirstTaskAndEndEvent(): void {
+        const firstTaskId = this.dialogData.bpmnProcesses['bpmn:task'][0]['_attributes'].id;
+        const endEvent = this.dialogData.bpmnProcesses['bpmn:endEvent']['_attributes'].id;
+        if (this.dialogData.stateId === firstTaskId || this.dialogData.stateId === endEvent) {
+            this.dialogData.stateId === firstTaskId ? (this.taskStep = 'first') : (this.taskStep = 'last');
+            const uploadButton = this.buttonTypes.find((buttonType) => buttonType.engName === 'upload');
+            if (uploadButton.isAvailable) {
+                this.addTool({ name: 'آپلود', type: 'upload', isDefaultButton: false });
+            }
+        }
+    }
+
+    private getFlowDetails(): void {
+        const pagination: { limit: number; skip: number } = { limit: 100, skip: 0 };
+        this.flowService
+            .getSingleFlowDetails({
+                organization: this.organizationCode,
+                id: this.dialogData.flowId,
+                ...pagination,
+            })
+            .subscribe((response) => {
+                this.flowDetails = response.items[0];
+                this.stateType = StateType.PRESENT;
+                this.setBaseDataInfo();
+            });
+    }
+
+    private getStepInfo() {
+        this.bpmnService
+            .getBpmnStepInfo({ step: this.dialogData.stateId, flow: this.dialogData.flowId })
+            .subscribe((response) => this.setFormDataInEditMode(response));
+    }
+
+    private setBaseDataInfo() {
+        this.data.name = this.dialogData.stateName;
+        this.data.flow = this.dialogData.flowId;
+        this.data.step = this.dialogData.stateId;
+        this.data.isNewStep = !this.flowDetails.states.includes(this.dialogData.stateId);
+        if (!this.data.isNewStep || !this.dialogData.isStateTypeTask) {
+            this.getStepInfo();
+        } else this.addUploadButtonOnFirstTaskAndEndEvent();
+    }
+
+    private getOrganizationUsers(): any {
+        this.userService.getUsers([`${this.activeOrganizationCode}`]).subscribe((response) => (this.users = response.items));
+    }
+
+    private prepareAccessRights() {
+        if (this.form.get('accessRightType').value === 'dynamic') {
+            this.users.map((user) => {
+                if (this.form.get('users').value.includes(user.id)) {
+                    this.data.accessRights.users.push({ userId: user.id, isDefault: false, username: user.fullname });
+                }
+            });
+        } else {
+            this.data.accessRights = {
+                units: {
+                    unit: !!this.form.get('units').value ? this.form.get('units').value[0] : 0,
+                    roles: this.form.get('roles')?.value ?? [],
+                },
+                initializer: this.form.get('initializer').value,
+                users: [],
+            };
+        }
+    }
+
+    private getOrganizationUnits(): void {
+        this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe((response) => (this.units = response));
+    }
+
+    private getRolesOnSpecificUnits(unitId: number): void {
+        this.units.children.map((item) => {
+            if (item.id === unitId) this.rolesOnUnit = item.mappings;
+        });
+    }
+
+    private setFormDataInEditMode(response: BpmnData) {
+        this.checkForUnavailableButtons(response);
+        this.form.get('accessRightType').setValue(response.accessRights?.users?.length ? 'dynamic' : 'static');
+        const userIdList = [];
+        this.form.get('initializer').setValue(response.accessRights.initializer);
+        if (response.accessRights?.users?.length) response.accessRights.users.map((user) => userIdList.push(user.userId));
+        if (response.accessRights?.units) this.form.get('units').setValue([response.accessRights.units.unit]);
+        this.form.get('users').setValue(userIdList);
+        if (!!response.accessRights.units) {
+            this.detectChanges(
+                {
+                    value: {
+                        value: response.accessRights.units.unit,
+                        _checked: true,
+                    },
+                },
+                response.accessRights.units.roles
+            );
+        }
+        response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
+        this.addUploadButtonOnFirstTaskAndEndEvent();
+    }
+
+    private checkForUnavailableButtons(responseFromServer: BpmnData): void {
+        let nullButtons = [];
+        this.buttonTypes.map((buttonType) => {
+            responseFromServer.attributes.map((item) => item.type === buttonType.engName && nullButtons.push(item.type));
+        });
+
+        this.buttonTypes.map((buttonType) => (buttonType.isAvailable = !nullButtons.includes(buttonType.engName)));
     }
 }

@@ -2,10 +2,10 @@ import { isArray } from 'rxjs/internal-compatibility';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
 export class Specification {
-    constructor() {}
-
     public specificationModel: SpecificationModel = { limit: 10, skip: 0, searchKeyword: {} };
     public pageEvent: PageEvent = { currentIndex: 0, pageSize: 10 };
+
+    constructor() {}
 
     public convertDate(date: Date): string {
         return UtilityFunctions.convertDateToGregorianFormatForServer(date);

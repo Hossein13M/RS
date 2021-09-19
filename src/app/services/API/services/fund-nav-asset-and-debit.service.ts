@@ -14,14 +14,18 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class FundNavAssetAndDebitService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation fundNavAssetAndDebitControllerCreateFundNavAssetAndDebit
      */
     static readonly FundNavAssetAndDebitControllerCreateFundNavAssetAndDebitPath = '/api/v1/fund-nav-asset-and-debit';
+    /**
+     * Path part for operation fundNavAssetAndDebitControllerGetFundNavAssetsAndDebits
+     */
+    static readonly FundNavAssetAndDebitControllerGetFundNavAssetsAndDebitsPath = '/api/v1/fund-nav-asset-and-debit/{fundNationalId}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -29,9 +33,7 @@ export class FundNavAssetAndDebitService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    fundNavAssetAndDebitControllerCreateFundNavAssetAndDebit$Response(params: {
-        body: CreateFundNavAssetsAndDebitsDto;
-    }): Observable<StrictHttpResponse<void>> {
+    fundNavAssetAndDebitControllerCreateFundNavAssetAndDebit$Response(params: { body: CreateFundNavAssetsAndDebitsDto }): Observable<StrictHttpResponse<void>> {
         const rb = new RequestBuilder(this.rootUrl, FundNavAssetAndDebitService.FundNavAssetAndDebitControllerCreateFundNavAssetAndDebitPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -58,15 +60,8 @@ export class FundNavAssetAndDebitService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundNavAssetAndDebitControllerCreateFundNavAssetAndDebit(params: { body: CreateFundNavAssetsAndDebitsDto }): Observable<void> {
-        return this.fundNavAssetAndDebitControllerCreateFundNavAssetAndDebit$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.fundNavAssetAndDebitControllerCreateFundNavAssetAndDebit$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation fundNavAssetAndDebitControllerGetFundNavAssetsAndDebits
-     */
-    static readonly FundNavAssetAndDebitControllerGetFundNavAssetsAndDebitsPath = '/api/v1/fund-nav-asset-and-debit/{fundNationalId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -102,9 +97,7 @@ export class FundNavAssetAndDebitService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    fundNavAssetAndDebitControllerGetFundNavAssetsAndDebits(params: {
-        fundNationalId: string;
-    }): Observable<Array<GetFundAssetsAndDebitsResponseDto>> {
+    fundNavAssetAndDebitControllerGetFundNavAssetsAndDebits(params: { fundNationalId: string }): Observable<Array<GetFundAssetsAndDebitsResponseDto>> {
         return this.fundNavAssetAndDebitControllerGetFundNavAssetsAndDebits$Response(params).pipe(
             map((r: StrictHttpResponse<Array<GetFundAssetsAndDebitsResponseDto>>) => r.body as Array<GetFundAssetsAndDebitsResponseDto>)
         );

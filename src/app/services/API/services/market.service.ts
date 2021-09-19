@@ -16,14 +16,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class MarketService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation marketControllerGetMarket
      */
     static readonly MarketControllerGetMarketPath = '/api/v1/market/{marketId}';
+    /**
+     * Path part for operation marketControllerDeleteMarket
+     */
+    static readonly MarketControllerDeleteMarketPath = '/api/v1/market/{marketId}';
+    /**
+     * Path part for operation marketControllerGetMarkets
+     */
+    static readonly MarketControllerGetMarketsPath = '/api/v1/market';
+    /**
+     * Path part for operation marketControllerUpdateMarket
+     */
+    static readonly MarketControllerUpdateMarketPath = '/api/v1/market';
+    /**
+     * Path part for operation marketControllerCreateMarket
+     */
+    static readonly MarketControllerCreateMarketPath = '/api/v1/market';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -62,11 +78,6 @@ export class MarketService extends BaseService {
     }
 
     /**
-     * Path part for operation marketControllerDeleteMarket
-     */
-    static readonly MarketControllerDeleteMarketPath = '/api/v1/market/{marketId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `marketControllerDeleteMarket()` instead.
      *
@@ -101,11 +112,6 @@ export class MarketService extends BaseService {
     marketControllerDeleteMarket(params: { marketId: number }): Observable<void> {
         return this.marketControllerDeleteMarket$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation marketControllerGetMarkets
-     */
-    static readonly MarketControllerGetMarketsPath = '/api/v1/market';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -175,11 +181,6 @@ export class MarketService extends BaseService {
     }
 
     /**
-     * Path part for operation marketControllerUpdateMarket
-     */
-    static readonly MarketControllerUpdateMarketPath = '/api/v1/market';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `marketControllerUpdateMarket()` instead.
      *
@@ -214,11 +215,6 @@ export class MarketService extends BaseService {
     marketControllerUpdateMarket(params: { body: UpdateMarketDto }): Observable<GetMarketDto> {
         return this.marketControllerUpdateMarket$Response(params).pipe(map((r: StrictHttpResponse<GetMarketDto>) => r.body as GetMarketDto));
     }
-
-    /**
-     * Path part for operation marketControllerCreateMarket
-     */
-    static readonly MarketControllerCreateMarketPath = '/api/v1/market';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

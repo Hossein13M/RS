@@ -8,11 +8,7 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { fuseAnimations } from '@fuse/animations';
 import { AlertService } from '#shared/services/alert.service';
 import { Observable, of } from 'rxjs';
-import {
-    stateType,
-    TreeChartFlatNode,
-    TreeChartNode
-} from '../../../modules/op-risk/tree-chart/op-risk-tree-chart/op-risk-tree-chart.types';
+import { stateType, TreeChartFlatNode, TreeChartNode } from '../../../modules/op-risk/tree-chart/op-risk-tree-chart/op-risk-tree-chart.types';
 import { OrganizationStructureService } from '../../../modules/organizations-structure/organization-structure.service';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmDialogComponent } from '#shared/components/confirm-dialog/confirm-dialog.component';
@@ -282,55 +278,67 @@ export class TreeSimpleSelectorComponent implements OnChanges {
 
         this.subMenuState = stateType.LOADING;
         if (this.selectedOrg === 'org-unit') {
-            this.organizationStructureService.addNewOrganizationUnit({ name, parent: parentNode.id, organization: this.organizationCode }).subscribe(
-                (newNodeData) => {
-                    this.subMenuState = stateType.SUCCESS;
-                    const newNode = new TreeChartNode();
-                    newNode.id = newNodeData.id;
-                    newNode.name = newNodeData.name;
-                    newNode.children = [];
-                    newNode.parent = parentNode;
-                    newNode.mappings = [];
-                    this.addChildForm.setValue('');
-                    parentNode.children.push(newNode);
+            this.organizationStructureService
+                .addNewOrganizationUnit({
+                    name,
+                    parent: parentNode.id,
+                    organization: this.organizationCode,
+                })
+                .subscribe(
+                    (newNodeData) => {
+                        this.subMenuState = stateType.SUCCESS;
+                        const newNode = new TreeChartNode();
+                        newNode.id = newNodeData.id;
+                        newNode.name = newNodeData.name;
+                        newNode.children = [];
+                        newNode.parent = parentNode;
+                        newNode.mappings = [];
+                        this.addChildForm.setValue('');
+                        parentNode.children.push(newNode);
 
-                    setTimeout(() => {
-                        this.subMenuState = stateType.PRESENT;
-                        this.refreshData();
-                        this.treeControl.expand(parent);
-                        menu.closeMenu();
-                    }, 500);
-                },
-                () => {
-                    this.subMenuState = stateType.FAILED;
-                    setTimeout(() => (this.subMenuState = stateType.PRESENT), 500);
-                }
-            );
+                        setTimeout(() => {
+                            this.subMenuState = stateType.PRESENT;
+                            this.refreshData();
+                            this.treeControl.expand(parent);
+                            menu.closeMenu();
+                        }, 500);
+                    },
+                    () => {
+                        this.subMenuState = stateType.FAILED;
+                        setTimeout(() => (this.subMenuState = stateType.PRESENT), 500);
+                    }
+                );
         } else {
-            this.organizationStructureService.addNewOrganizationRole({ name, parent: parentNode.id, organization: this.organizationCode }).subscribe(
-                (newNodeData) => {
-                    this.subMenuState = stateType.SUCCESS;
-                    const newNode = new TreeChartNode();
-                    newNode.id = newNodeData.id;
-                    newNode.name = newNodeData.name;
-                    newNode.children = [];
-                    newNode.parent = parentNode;
-                    newNode.mappings = [];
-                    this.addChildForm.setValue('');
-                    parentNode.children.push(newNode);
+            this.organizationStructureService
+                .addNewOrganizationRole({
+                    name,
+                    parent: parentNode.id,
+                    organization: this.organizationCode,
+                })
+                .subscribe(
+                    (newNodeData) => {
+                        this.subMenuState = stateType.SUCCESS;
+                        const newNode = new TreeChartNode();
+                        newNode.id = newNodeData.id;
+                        newNode.name = newNodeData.name;
+                        newNode.children = [];
+                        newNode.parent = parentNode;
+                        newNode.mappings = [];
+                        this.addChildForm.setValue('');
+                        parentNode.children.push(newNode);
 
-                    setTimeout(() => {
-                        this.subMenuState = stateType.PRESENT;
-                        this.refreshData();
-                        this.treeControl.expand(parent);
-                        menu.closeMenu();
-                    }, 500);
-                },
-                () => {
-                    this.subMenuState = stateType.FAILED;
-                    setTimeout(() => (this.subMenuState = stateType.PRESENT), 500);
-                }
-            );
+                        setTimeout(() => {
+                            this.subMenuState = stateType.PRESENT;
+                            this.refreshData();
+                            this.treeControl.expand(parent);
+                            menu.closeMenu();
+                        }, 500);
+                    },
+                    () => {
+                        this.subMenuState = stateType.FAILED;
+                        setTimeout(() => (this.subMenuState = stateType.PRESENT), 500);
+                    }
+                );
         }
     }
 
@@ -425,7 +433,11 @@ export class TreeSimpleSelectorComponent implements OnChanges {
 
         this.dialog.open(OrganizationRoleMappingDialogComponent, {
             panelClass: 'dialog-w80',
-            data: { mappedNode: foundedNode, organizationId: this.organizationId, organizationCode: this.organizationCode },
+            data: {
+                mappedNode: foundedNode,
+                organizationId: this.organizationId,
+                organizationCode: this.organizationCode,
+            },
         });
     }
 
@@ -434,7 +446,10 @@ export class TreeSimpleSelectorComponent implements OnChanges {
 
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             panelClass: 'dialog-w40',
-            data: { title: 'حذف نگاشت', description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟` },
+            data: {
+                title: 'حذف نگاشت',
+                description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟`,
+            },
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {

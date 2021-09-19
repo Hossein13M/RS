@@ -22,6 +22,16 @@ import { HeaderModule } from '../../../layout/components/header/header.module';
         TradeDashboardTrendChartComponent,
         TradeDashboardPieChartComponent,
     ],
-    imports: [CommonModule, TradeDashboardRoutingModule, LayoutModule, FlexModule, MaterialModule, ShareModule, MatProgressSpinnerModule, ChartModule, HeaderModule]
+    imports: [
+        CommonModule,
+        TradeDashboardRoutingModule,
+        LayoutModule,
+        FlexModule,
+        MaterialModule,
+        ShareModule,
+        MatProgressSpinnerModule,
+        ChartModule,
+        HeaderModule,
+    ],
 })
 export class TradeDashboardModule {}

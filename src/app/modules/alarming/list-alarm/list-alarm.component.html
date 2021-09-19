@@ -1,13 +1,13 @@
-<div class="page-layout">
+<div class='page-layout'>
 
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row"
-         fxLayoutAlign.gt-xs="space-between center">
+    <div class='header accent p-16 p-sm-24' fxLayout='column' fxLayout.gt-xs='row' fxLayoutAlign='start'
+         fxLayoutAlign.gt-xs='space-between center'>
 
         <!-- APP TITLE -->
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+        <div fxLayout='row' fxLayoutAlign='start center'>
+            <div class='logo' fxLayout='row' fxLayoutAlign='start center'>
+                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class='logo-text h1'>
                     مدیریت هشدار‌ها
                 </span>
             </div>
@@ -16,70 +16,70 @@
 
     </div>
 
-    <div class="alarm-container">
+    <div class='alarm-container'>
 
-        <div class="fuse-card" dir="rtl">
-            <div class="dropdown">
-                <mat-form-field appearance="outline">
+        <div class='fuse-card' dir='rtl'>
+            <div class='dropdown'>
+                <mat-form-field appearance='outline'>
                     <mat-label>انتخاب ماژول</mat-label>
-                    <mat-select (valueChange)="onModuleChange($event)">
-                        <mat-option [value]="m?.id" *ngFor="let m of modules">{{m?.nameFa}}</mat-option>
+                    <mat-select (valueChange)='onModuleChange($event)'>
+                        <mat-option *ngFor='let m of modules' [value]='m?.id'>{{m?.nameFa}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="grid-container">
+            <div class='grid-container'>
 
-                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                <table [dataSource]='dataSource' class='mat-elevation-z8' mat-table>
                     <!-- Position Column -->
-                    <ng-container matColumnDef="isActive">
-                        <th mat-header-cell *matHeaderCellDef>وضعیت</th>
-                        <td mat-cell *matCellDef="let element"> {{element.isActive | active}} </td>
+                    <ng-container matColumnDef='isActive'>
+                        <th *matHeaderCellDef mat-header-cell>وضعیت</th>
+                        <td *matCellDef='let element' mat-cell> {{element.isActive | active}} </td>
                     </ng-container>
 
                     <!-- Name Column -->
-                    <ng-container matColumnDef="title">
-                        <th mat-header-cell *matHeaderCellDef> عنوان</th>
-                        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                    <ng-container matColumnDef='title'>
+                        <th *matHeaderCellDef mat-header-cell> عنوان</th>
+                        <td *matCellDef='let element' mat-cell> {{element.title}} </td>
                     </ng-container>
                     <!-- Symbol Column -->
-                    <ng-container matColumnDef="type">
-                        <th mat-header-cell *matHeaderCellDef> نوع</th>
-                        <td mat-cell *matCellDef="let element">
+                    <ng-container matColumnDef='type'>
+                        <th *matHeaderCellDef mat-header-cell> نوع</th>
+                        <td *matCellDef='let element' mat-cell>
                             <ng-container *ngIf="element?.type ==='Qualitative'">کیفی</ng-container>
                             <ng-container *ngIf="element?.type ==='Quantitative'">کمی</ng-container>
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef="priority">
-                        <th mat-header-cell *matHeaderCellDef> اولویت</th>
-                        <td mat-cell *matCellDef="let element"> {{element.priority | priority}} </td>
+                    <ng-container matColumnDef='priority'>
+                        <th *matHeaderCellDef mat-header-cell> اولویت</th>
+                        <td *matCellDef='let element' mat-cell> {{element.priority | priority}} </td>
                     </ng-container>
-                    <ng-container matColumnDef="sendEmail">
-                        <th mat-header-cell *matHeaderCellDef> ارسال ایمیل</th>
-                        <td mat-cell *matCellDef="let element"><span *ngIf="element.sendEmail === 1">بله</span>
-                            <span *ngIf="element.sendEmail === 0">خیر</span></td>
+                    <ng-container matColumnDef='sendEmail'>
+                        <th *matHeaderCellDef mat-header-cell> ارسال ایمیل</th>
+                        <td *matCellDef='let element' mat-cell><span *ngIf='element.sendEmail === 1'>بله</span>
+                            <span *ngIf='element.sendEmail === 0'>خیر</span></td>
                     </ng-container>
-                    <ng-container matColumnDef="sendSms">
-                        <th mat-header-cell *matHeaderCellDef> ارسال پیامک</th>
-                        <td mat-cell *matCellDef="let element"><span *ngIf="element.sendSms ===0">خیر</span>
-                            <span *ngIf="element.sendSms === 1">بله</span></td>
+                    <ng-container matColumnDef='sendSms'>
+                        <th *matHeaderCellDef mat-header-cell> ارسال پیامک</th>
+                        <td *matCellDef='let element' mat-cell><span *ngIf='element.sendSms ===0'>خیر</span>
+                            <span *ngIf='element.sendSms === 1'>بله</span></td>
                     </ng-container>
-                    <ng-container matColumnDef="operation">
-                        <th class="operation-header" mat-header-cell *matHeaderCellDef>
+                    <ng-container matColumnDef='operation'>
+                        <th *matHeaderCellDef class='operation-header' mat-header-cell>
                             عملیات
-                            <button (click)="createAlarm(null)" class="add-button" mat-raised-button [color]="'accent'">
+                            <button (click)='createAlarm(null)' [color]="'accent'" class='add-button' mat-raised-button>
                                 <mat-icon>add</mat-icon>
                                 افزودن هشدار جدید
                             </button>
                         </th>
-                        <td mat-cell *matCellDef="let element">
-                            <button (click)="createAlarm(element)"
-                                    mat-raised-button
-                                    color="warn">
+                        <td *matCellDef='let element' mat-cell>
+                            <button (click)='createAlarm(element)'
+                                    color='warn'
+                                    mat-raised-button>
                                 <mat-icon>edit</mat-icon>
                                 ویرایش
                             </button>
-                            <button (click)="openAlarmDetail(element)"
-                                    color="accent"
+                            <button (click)='openAlarmDetail(element)'
+                                    color='accent'
                                     mat-raised-button>
                                 <mat-icon>visibility</mat-icon>
                                 جزئیات
@@ -87,14 +87,14 @@
                         </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <tr *matHeaderRowDef='displayedColumns' mat-header-row></tr>
+                    <tr *matRowDef='let row; columns: displayedColumns;' mat-row></tr>
                 </table>
-                <ng-container *ngIf="dataSource.data.length===0">
+                <ng-container *ngIf='dataSource.data.length===0'>
                     <div
-                        style="display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column">
-                        <img width="140px" height="140px" src='../../../../assets/images/no-data.svg'>
-                        <div style="font-size: 13px;color: #449FDB;margin-top: 7px">ابتدا ماژول مورد نظر را انتخاب کنید.
+                        style='display: flex;align-items: center;justify-content: center;padding: 30px;flex-direction: column'>
+                        <img height='140px' src='../../../../assets/images/no-data.svg' width='140px'>
+                        <div style='font-size: 13px;color: #449FDB;margin-top: 7px'>ابتدا ماژول مورد نظر را انتخاب کنید.
                         </div>
                     </div>
                 </ng-container>

@@ -1,45 +1,48 @@
-<app-header [pageTitle]="title" dir="rtl">
-    <button mat-mini-fab color="primary" (click)="dialogRef.close()">
+<app-header [pageTitle]='title' dir='rtl'>
+    <button (click)='dialogRef.close()' color='primary' mat-mini-fab>
         <mat-icon>close</mat-icon>
     </button>
 </app-header>
-<form class="my-20 mx-auto w-90-p" dir="rtl" fxLayout="row" fxLayoutAlign="space-around center">
-    <div fxFlex="100" *ngIf="operators[0].flowUsers.length !== 0">
-        <h3 class="mb-20">ثبت‌کننده‌های انتخاب‌شده</h3>
+<form class='my-20 mx-auto w-90-p' dir='rtl' fxLayout='row' fxLayoutAlign='space-around center'>
+    <div *ngIf='operators[0].flowUsers.length !== 0' fxFlex='100'>
+        <h3 class='mb-20'>ثبت‌کننده‌های انتخاب‌شده</h3>
         <mat-chip-list>
-            <mat-chip *ngFor="let operator of operators[0].flowUsers" [matTooltip]="operator.firstName" color="accent" selected="true">
+            <mat-chip *ngFor='let operator of operators[0].flowUsers' [matTooltip]='operator.firstName' color='accent'
+                      selected='true'>
                 {{
-                    operator.firstName + operator.lastName
-                        ? operator.firstName + ' ' + operator.lastName
-                        : operator.firstName.length > 6
+                operator.firstName + operator.lastName
+                    ? operator.firstName + ' ' + operator.lastName
+                    : operator.firstName.length > 6
                         ? (operator.firstName | slice: 0:6) + '..'
                         : operator.firstName
                 }}
             </mat-chip>
         </mat-chip-list>
     </div>
-    <div fxFlex="100" *ngIf="operators[1].flowUsers.length !== 0">
-        <h3 class="mb-20">تاییدکننده‌های انتخاب‌شده</h3>
+    <div *ngIf='operators[1].flowUsers.length !== 0' fxFlex='100'>
+        <h3 class='mb-20'>تاییدکننده‌های انتخاب‌شده</h3>
         <mat-chip-list>
-            <mat-chip *ngFor="let operator of operators[1].flowUsers" [matTooltip]="operator.firstName" color="accent" selected="true">
+            <mat-chip *ngFor='let operator of operators[1].flowUsers' [matTooltip]='operator.firstName' color='accent'
+                      selected='true'>
                 {{
-                    operator.firstName + operator.lastName
-                        ? operator.firstName + ' ' + operator.lastName
-                        : operator.firstName.length > 6
+                operator.firstName + operator.lastName
+                    ? operator.firstName + ' ' + operator.lastName
+                    : operator.firstName.length > 6
                         ? (operator.firstName | slice: 0:6) + '..'
                         : operator.firstName
                 }}
             </mat-chip>
         </mat-chip-list>
     </div>
-    <div fxFlex="100" *ngIf="operators[2].flowUsers.length !== 0">
-        <h3 class="mb-20">تصویب‌کننده‌های انتخاب‌شده</h3>
+    <div *ngIf='operators[2].flowUsers.length !== 0' fxFlex='100'>
+        <h3 class='mb-20'>تصویب‌کننده‌های انتخاب‌شده</h3>
         <mat-chip-list>
-            <mat-chip *ngFor="let operator of operators[2].flowUsers" [matTooltip]="operator.firstName" color="accent" selected="true">
+            <mat-chip *ngFor='let operator of operators[2].flowUsers' [matTooltip]='operator.firstName' color='accent'
+                      selected='true'>
                 {{
-                    operator.firstName + operator.lastName
-                        ? operator.firstName + ' ' + operator.lastName
-                        : operator.firstName.length > 6
+                operator.firstName + operator.lastName
+                    ? operator.firstName + ' ' + operator.lastName
+                    : operator.firstName.length > 6
                         ? (operator.firstName | slice: 0:6) + '..'
                         : operator.firstName
                 }}

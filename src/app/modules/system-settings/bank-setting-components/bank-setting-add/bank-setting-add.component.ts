@@ -30,12 +30,6 @@ export class BankSettingAddComponent implements OnInit {
         this.creatForm();
     }
 
-    private creatForm(): void {
-        this.form = this.fb.group({
-            name: [this.data ? this.data.name : '', Validators.required],
-        });
-    }
-
     public onCreateBranch(): void {
         this.bankService.createBankSetting(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
@@ -56,5 +50,11 @@ export class BankSettingAddComponent implements OnInit {
 
     public close(): void {
         this.dialogRef.close(false);
+    }
+
+    private creatForm(): void {
+        this.form = this.fb.group({
+            name: [this.data ? this.data.name : '', Validators.required],
+        });
     }
 }

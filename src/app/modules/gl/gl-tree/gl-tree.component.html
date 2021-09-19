@@ -1,76 +1,80 @@
-<div class="page-layout">
-    <app-header pageTitle="درختواره‌ی خلاصه‌ی دفتر">
-        <div dir="rtl" style="display: flex">
+<div class='page-layout'>
+    <app-header pageTitle='درختواره‌ی خلاصه‌ی دفتر'>
+        <div dir='rtl' style='display: flex'>
             <button
-                *ngIf="matTabGroup.selectedIndex == 0"
-                style="margin-left: 14px; padding-top: 4px; height: 50px; margin-top: 10px"
-                (click)="openChartDialog()"
-                matTooltip="نمودار دایره ای"
+                (click)='openChartDialog()'
+                *ngIf='matTabGroup.selectedIndex == 0'
+                color='primary'
                 mat-raised-button
-                color="primary"
+                matTooltip='نمودار دایره ای'
+                style='margin-left: 14px; padding-top: 4px; height: 50px; margin-top: 10px'
             >
                 <mat-icon>pie_chart</mat-icon>
             </button>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label> تاریخ</mat-label>
-                <input (click)="start3.open()" matInput [formControl]="dateForm" [max]="today" [matDatepicker]="start3" />
-                <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
+                <input (click)='start3.open()' [formControl]='dateForm' [matDatepicker]='start3' [max]='today'
+                       matInput />
+                <mat-datepicker-toggle [for]='start3' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #start3></mat-datepicker>
                 <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
             </mat-form-field>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div class="gl-back-container" dir="rtl">
-            <div class="gl-tree-container fuse-card">
-                <mat-tab-group #matTabGroup style="height: 100%">
-                    <mat-tab label="درختواره">
-                        <div class="tree-parent">
-                            <div class="table-header">
-                                <div fxFlex="45" class="header-item">عنوان سرفصل</div>
-                                <div fxFlex="10" class="header-item">کد سرفصل</div>
-                                <div fxFlex="15" class="header-item">گردش بدهکار</div>
-                                <div fxFlex="15" class="header-item">گردش بستانکار</div>
-                                <div fxFlex="15" class="header-item" style="border-left: unset">مانده</div>
+    <div class='page-content'>
+        <div class='gl-back-container' dir='rtl'>
+            <div class='gl-tree-container fuse-card'>
+                <mat-tab-group #matTabGroup style='height: 100%'>
+                    <mat-tab label='درختواره'>
+                        <div class='tree-parent'>
+                            <div class='table-header'>
+                                <div class='header-item' fxFlex='45'>عنوان سرفصل</div>
+                                <div class='header-item' fxFlex='10'>کد سرفصل</div>
+                                <div class='header-item' fxFlex='15'>گردش بدهکار</div>
+                                <div class='header-item' fxFlex='15'>گردش بستانکار</div>
+                                <div class='header-item' fxFlex='15' style='border-left: unset'>مانده</div>
                             </div>
-                            <div class="table-body">
-                                <div class="table-row" *ngFor="let row of groupObj; let index = index">
+                            <div class='table-body'>
+                                <div *ngFor='let row of groupObj; let index = index' class='table-row'>
                                     <div
+                                        (click)='toggleFoldRow(row, index)'
                                         [ngStyle]="{ 'padding-right': calculateMargin(row.type) }"
-                                        class="table-item"
-                                        (click)="toggleFoldRow(row, index)"
-                                        style="justify-content: flex-start !important; padding-right: 50px; direction: rtl; cursor: pointer"
-                                        fxFlex="45"
+                                        class='table-item'
+                                        fxFlex='45'
+                                        style='justify-content: flex-start !important; padding-right: 50px; direction: rtl; cursor: pointer'
                                     >
                                         <mat-icon
-                                            style="cursor: pointer"
                                             [ngStyle]="{
                                                 transform: row?.isCollapsed === true && row?.type !== 'Detail' ? 'rotate(-90deg)' : 'rotate(0)'
                                             }"
+                                            style='cursor: pointer'
                                         >
                                             {{ row.type === 'Detail' ? '' : 'keyboard_arrow_left' }}
                                         </mat-icon>
                                         {{ row?.name }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="10" [cdkCopyToClipboard]="row?.code">
+                                    <div [cdkCopyToClipboard]='row?.code' class='table-item copy' fxFlex='10'>
                                         {{ row?.code }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="15" [cdkCopyToClipboard]="row?.aggregatedDebitAmount">
+                                    <div [cdkCopyToClipboard]='row?.aggregatedDebitAmount' class='table-item copy'
+                                         fxFlex='15'>
                                         {{ row?.aggregatedDebitAmount | price }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="15" [cdkCopyToClipboard]="row?.aggregatedCreditAmount">
+                                    <div [cdkCopyToClipboard]='row?.aggregatedCreditAmount' class='table-item copy'
+                                         fxFlex='15'>
                                         {{ row?.aggregatedCreditAmount | price }}
                                     </div>
-                                    <div class="table-item copy" fxFlex="15" [cdkCopyToClipboard]="row?.aggregatedRemainedAmount">
+                                    <div [cdkCopyToClipboard]='row?.aggregatedRemainedAmount' class='table-item copy'
+                                         fxFlex='15'>
                                         {{ row?.aggregatedRemainedAmount | price }}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </mat-tab>
-                    <mat-tab label="نمودار روند" class="h-100-p">
+                    <mat-tab class='h-100-p' label='نمودار روند'>
                         <app-gl-chart></app-gl-chart>
                     </mat-tab>
                 </mat-tab-group>

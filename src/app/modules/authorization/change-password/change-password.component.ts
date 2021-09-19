@@ -41,6 +41,13 @@ export class ChangePasswordComponent implements OnInit {
         this.initForm();
     }
 
+    public onSubmit(): void {
+        if (this.form.invalid) return;
+        this.authorizationService.changePassword(this.form.value as ChangePassword).subscribe(() => {
+            this.redirectToLogin();
+        });
+    }
+
     private initForm(): void {
         this.form = this.formBuilder.group({
             newPassword: ['', Validators.required],
@@ -48,13 +55,6 @@ export class ChangePasswordComponent implements OnInit {
         });
 
         this.initConfirmPasswordValidation();
-    }
-
-    public onSubmit(): void {
-        if (this.form.invalid) return;
-        this.authorizationService.changePassword(this.form.value as ChangePassword).subscribe(() => {
-            this.redirectToLogin();
-        });
     }
 
     private redirectToLogin(): void {

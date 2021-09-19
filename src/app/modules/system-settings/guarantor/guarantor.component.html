@@ -1,49 +1,52 @@
-<div class="fuse-card">
-    <div dir="rtl">
+<div class='fuse-card'>
+    <div dir='rtl'>
         <app-table
-            [data]="data"
-            [columns]="column"
-            [paginationSettings]="{ mode: 'scroll' }"
-            [paginationObject]='pagination'
-            (searchEvent)='search($event)'
             (paginationEvent)='paginationControl($event)'
-            [status]="status"
+            (searchEvent)='search($event)'
+            [columns]='column'
+            [data]='data'
+            [paginationObject]='pagination'
+            [paginationSettings]="{ mode: 'scroll' }"
+            [status]='status'
             height='55vh'
         ></app-table>
     </div>
 
-    <div class="container" dir="rtl">
-        <div class="issuer">
-            <form [formGroup]="guarantorForm">
-                <mat-form-field appearance="outline" style="flex-grow: 1">
-                    <input matInput class="form-field" formControlName="guarantor" placeholder="نام ضامن" required />
+    <div class='container' dir='rtl'>
+        <div class='issuer'>
+            <form [formGroup]='guarantorForm'>
+                <mat-form-field appearance='outline' style='flex-grow: 1'>
+                    <input class='form-field' formControlName='guarantor' matInput placeholder='نام ضامن' required />
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" style="flex-grow: 1; min-width: 185px">
+                <mat-form-field appearance='outline' style='flex-grow: 1; min-width: 185px'>
                     <mat-label>بورسی/غیر بورسی</mat-label>
-                    <mat-select formControlName="otc" required>
-                        <mat-option value="0"> بورسی </mat-option>
-                        <mat-option value="1"> غیر بورسی </mat-option>
+                    <mat-select formControlName='otc' required>
+                        <mat-option value='0'> بورسی</mat-option>
+                        <mat-option value='1'> غیر بورسی</mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" style="flex-grow: 1">
-                    <input matInput class="form-field" formControlName="type" placeholder="نوع" required />
+                <mat-form-field appearance='outline' style='flex-grow: 1'>
+                    <input class='form-field' formControlName='type' matInput placeholder='نوع' required />
                 </mat-form-field>
             </form>
 
-            <div fxLayout="column wrap" fxLayoutGap="5px" fxLayoutAlign="center center" class="setting-btn-container">
-                <button *ngIf="selectedGuarantor" [disabled]="guarantorForm.invalid" (click)="edit()" color="accent" mat-raised-button>
+            <div class='setting-btn-container' fxLayout='column wrap' fxLayoutAlign='center center' fxLayoutGap='5px'>
+                <button (click)='edit()' *ngIf='selectedGuarantor' [disabled]='guarantorForm.invalid' color='accent'
+                        mat-raised-button>
                     <mat-icon>edit</mat-icon>
                     ویرایش
                 </button>
 
-                <button *ngIf="selectedGuarantor" (click)="clear()" style="margin-left: 10px" color="warn" mat-raised-button>
+                <button (click)='clear()' *ngIf='selectedGuarantor' color='warn' mat-raised-button
+                        style='margin-left: 10px'>
                     <mat-icon>close</mat-icon>
-                     برگشت
+                    برگشت
                 </button>
 
-                <button *ngIf="!selectedGuarantor" [disabled]="guarantorForm.invalid" (click)="addIssuer()" color="accent" mat-raised-button>
+                <button (click)='addIssuer()' *ngIf='!selectedGuarantor' [disabled]='guarantorForm.invalid'
+                        color='accent' mat-raised-button>
                     <mat-icon>done</mat-icon>
                     ثبت
                 </button>

@@ -17,20 +17,13 @@ import { AlertService } from '#shared/services/alert.service';
 export class UserBatchComponent implements OnInit, OnDestroy {
     public userData: User;
     public form: FormGroup;
-
-    public get userOrganizations(): FormArray {
-        return this.form.get('userRoles') as FormArray;
-    }
-
     public userOrganizationControlsData: Array<{
         organizationsSearchControl: FormControl;
         organizations: Array<Organization>;
         units: Units;
         roles: Array<Roles>;
     }> = [];
-
     private defaultOrganizations: Array<Organization> = [];
-
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
@@ -41,33 +34,13 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         @Inject(MAT_DIALOG_DATA) public passedId: number | null
     ) {}
 
+    public get userOrganizations(): FormArray {
+        return this.form.get('userRoles') as FormArray;
+    }
+
     ngOnInit(): void {
         this.formInit();
         this.defaultOrganizationsInit();
-    }
-
-    private formInit(): void {
-        this.form = this.formBuilder.group({
-            username: [this.userData?.username ?? '', Validators.required],
-            firstname: [this.userData?.firstname ?? '', Validators.required],
-            lastname: [this.userData?.lastname ?? '', Validators.required],
-            nationalCode: [this.userData?.nationalCode ?? '', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-            phoneNumber: [this.userData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
-            email: [this.userData?.email ?? '', [Validators.required, Validators.email]],
-            birthDate: [this.userData?.birthDate ?? '', Validators.required],
-            userRoles: this.formBuilder.array([], [Validators.required]),
-        });
-    }
-
-    private defaultOrganizationsInit(): void {
-        this.userService.getOrganizations().subscribe((response) => {
-            this.defaultOrganizations = response.items;
-            this.userRolesInit();
-        });
-    }
-
-    private userRolesInit(): void {
-        this.isUpdate() ? this.setUserRolesData() : this.addOrganization();
     }
 
     public addOrganization(): void {
@@ -91,17 +64,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         this.onSearchOrganizationSearchChange(this.userOrganizationControlsData.length - 1);
         this.onOrganizationCodeChange(this.userOrganizationControlsData.length - 1);
         // this.onUnitsChange(this.userRoleControlsData.length - 1);
-    }
-
-    private setUserRolesData(): void {
-        this.userService.getUsers([], null, { id: this.passedId }).subscribe((response) => {
-            this.userData = response.items[0];
-            this.formInit();
-            const { userRoles } = this.userData;
-            for (const role of userRoles) {
-                this.addExistingOrganization(role);
-            }
-        });
     }
 
     public addExistingOrganization(userRoles: UserRole): void {
@@ -129,6 +91,68 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             this.onSearchOrganizationSearchChange(this.userOrganizationControlsData.length - 1);
             this.onOrganizationCodeChange(this.userOrganizationControlsData.length - 1);
             this.onUnitsChange(this.userOrganizationControlsData.length - 1);
+        });
+    }
+
+    public deleteOrganization(index: number): void {
+        this.userOrganizationControlsData.splice(index, 1);
+        this.userOrganizations.removeAt(index);
+    }
+
+    public onSubmit(): void {
+        if (this.form.invalid) {
+            this.alertService.onError('لطفا ورودی های خود را چک کنید.');
+            return;
+        }
+
+        this.isUpdate() ? this.updateUser() : this.createUser();
+    }
+
+    public closeDialog(): void {
+        this.dialogRef.close(false);
+    }
+
+    public isUpdate(): boolean {
+        return !!this.passedId;
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
+    private formInit(): void {
+        this.form = this.formBuilder.group({
+            username: [this.userData?.username ?? '', Validators.required],
+            firstname: [this.userData?.firstname ?? '', Validators.required],
+            lastname: [this.userData?.lastname ?? '', Validators.required],
+            nationalCode: [this.userData?.nationalCode ?? '', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+            phoneNumber: [this.userData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
+            email: [this.userData?.email ?? '', [Validators.required, Validators.email]],
+            birthDate: [this.userData?.birthDate ?? '', Validators.required],
+            userRoles: this.formBuilder.array([], [Validators.required]),
+        });
+    }
+
+    private defaultOrganizationsInit(): void {
+        this.userService.getOrganizations().subscribe((response) => {
+            this.defaultOrganizations = response.items;
+            this.userRolesInit();
+        });
+    }
+
+    private userRolesInit(): void {
+        this.isUpdate() ? this.setUserRolesData() : this.addOrganization();
+    }
+
+    private setUserRolesData(): void {
+        this.userService.getUsers([], null, { id: this.passedId }).subscribe((response) => {
+            this.userData = response.items[0];
+            this.formInit();
+            const { userRoles } = this.userData;
+            for (const role of userRoles) {
+                this.addExistingOrganization(role);
+            }
         });
     }
 
@@ -198,20 +222,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         }
     }
 
-    public deleteOrganization(index: number): void {
-        this.userOrganizationControlsData.splice(index, 1);
-        this.userOrganizations.removeAt(index);
-    }
-
-    public onSubmit(): void {
-        if (this.form.invalid) {
-            this.alertService.onError('لطفا ورودی های خود را چک کنید.');
-            return;
-        }
-
-        this.isUpdate() ? this.updateUser() : this.createUser();
-    }
-
     private createUser(): void {
         this.userService.createUser(this.form.value).subscribe(
             () => {
@@ -230,18 +240,5 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             },
             () => this.alertService.onError('لطفا ورودی های خود را چک کنید.')
         );
-    }
-
-    public closeDialog(): void {
-        this.dialogRef.close(false);
-    }
-
-    public isUpdate(): boolean {
-        return !!this.passedId;
-    }
-
-    ngOnDestroy(): void {
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
     }
 }

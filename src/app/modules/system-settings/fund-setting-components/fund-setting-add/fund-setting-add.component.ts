@@ -21,6 +21,9 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
     frequences = [];
     fundRoles: any[] = [];
     fundTypes: any[] = [];
+    public fundRoleMultiFilterCtrl: FormControl = new FormControl();
+    public filteredFundRoleMulti: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
+    private _onDestroy = new Subject<void>();
 
     constructor(
         public dialogRef: MatDialogRef<FundSettingAddComponent>,
@@ -33,10 +36,6 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
         @Inject(MAT_DIALOG_DATA) public data,
         private fb: FormBuilder
     ) {}
-
-    public fundRoleMultiFilterCtrl: FormControl = new FormControl();
-    public filteredFundRoleMulti: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-    private _onDestroy = new Subject<void>();
 
     getFrequences(): void {
         this.frequenceService.getAllFrequences().subscribe((res: any) => (this.frequences = res));
@@ -125,6 +124,15 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
         });
     }
 
+    close(): void {
+        this.dialogRef.close(false);
+    }
+
+    ngOnDestroy(): void {
+        this._onDestroy.next();
+        this._onDestroy.complete();
+    }
+
     private filterFundRoleMulti(): void {
         if (!this.fundRoles) {
             return;
@@ -137,14 +145,5 @@ export class FundSettingAddComponent implements OnInit, OnDestroy {
             search = search.toLowerCase();
         }
         this.filteredFundRoleMulti.next(this.fundRoles.filter((o) => o.name.toLowerCase().indexOf(search) > -1));
-    }
-
-    close(): void {
-        this.dialogRef.close(false);
-    }
-
-    ngOnDestroy(): void {
-        this._onDestroy.next();
-        this._onDestroy.complete();
     }
 }

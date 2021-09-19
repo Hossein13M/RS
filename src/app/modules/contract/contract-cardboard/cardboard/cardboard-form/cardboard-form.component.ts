@@ -36,19 +36,6 @@ export class CardboardFormComponent implements OnInit {
         this.getCardboardInfo();
     }
 
-    private getCardboardInfo(): void {
-        this.cardboardService.getContractCardboardWizard(this.contractId).subscribe(
-            (response) => {
-                this.cardboardInfo = response;
-                // if (Array.isArray(this.cardboardInfo.form)) {
-                //     this.cardboardInfo.form.push({ isDefaultButton: false, name: 'download', type: 'download' });
-                // }
-                this.stateType = StateType.PRESENT;
-            },
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
     public onButtonClick(buttonType: ContractFormButtonTypes): void {
         switch (buttonType) {
             case 'code':
@@ -68,6 +55,68 @@ export class CardboardFormComponent implements OnInit {
             default:
                 this.onStepRejectionDialogOpening();
         }
+    }
+
+    public changeContractStatus(hasContractStatusIsInProgress: boolean) {
+        if (hasContractStatusIsInProgress) {
+            this.dialog
+                .open(CardboardNoteDialogComponent, {
+                    width: '600px',
+                    height: '400px',
+                    panelClass: 'dialog-p-0',
+                    data: {
+                        headerNote: 'آیا می‌خواهید این قرارداد را متوقف کنید؟',
+                        buttonText: 'متوقف کردن قرارداد',
+                        buttonIcon: 'pause_circle_outline',
+                        buttonColor: 'warn',
+                    },
+                })
+                .afterClosed()
+                .subscribe((note: string) => !!note && this.pauseContract(note));
+        } else {
+            this.dialog
+                .open(ConfirmationDialogComponent, { width: '400px', height: '180px', panelClass: 'dialog-p-0' })
+                .afterClosed()
+                .subscribe((hasConfirmed) => hasConfirmed && this.reopenContract());
+        }
+    }
+
+    public openFinalFormDialog(): void {
+        this.router.navigate(['/contract/viewer/' + this.contractId]).finally(() => this.alertService.onInfo('فرم پایانی قرارداد را پر کنید.'));
+    }
+
+    public openUploadDialog(): void {
+        this.dialog
+            .open(CardboardUploadDialogComponent, {
+                width: '600px',
+                height: '570px',
+                panelClass: 'dialog-p-0',
+                data: { contractId: this.contractId, hasSignedFile: this.cardboardInfo.hasSignedFile },
+            })
+            .afterClosed()
+            .subscribe((result: boolean) => result && setTimeout(() => window.location.reload(), 2000));
+    }
+
+    public openDownloadDialog(): void {
+        this.dialog.open(CardboardDownloadDialogComponent, {
+            width: '1000px',
+            height: '600px',
+            panelClass: 'dialog-p-0',
+            data: this.contractId,
+        });
+    }
+
+    private getCardboardInfo(): void {
+        this.cardboardService.getContractCardboardWizard(this.contractId).subscribe(
+            (response) => {
+                this.cardboardInfo = response;
+                // if (Array.isArray(this.cardboardInfo.form)) {
+                //     this.cardboardInfo.form.push({ isDefaultButton: false, name: 'download', type: 'download' });
+                // }
+                this.stateType = StateType.PRESENT;
+            },
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 
     private setContractCode(): void {
@@ -119,30 +168,6 @@ export class CardboardFormComponent implements OnInit {
         );
     }
 
-    public changeContractStatus(hasContractStatusIsInProgress: boolean) {
-        if (hasContractStatusIsInProgress) {
-            this.dialog
-                .open(CardboardNoteDialogComponent, {
-                    width: '600px',
-                    height: '400px',
-                    panelClass: 'dialog-p-0',
-                    data: {
-                        headerNote: 'آیا می‌خواهید این قرارداد را متوقف کنید؟',
-                        buttonText: 'متوقف کردن قرارداد',
-                        buttonIcon: 'pause_circle_outline',
-                        buttonColor: 'warn',
-                    },
-                })
-                .afterClosed()
-                .subscribe((note: string) => !!note && this.pauseContract(note));
-        } else {
-            this.dialog
-                .open(ConfirmationDialogComponent, { width: '400px', height: '180px', panelClass: 'dialog-p-0' })
-                .afterClosed()
-                .subscribe((hasConfirmed) => hasConfirmed && this.reopenContract());
-        }
-    }
-
     private reopenContract(): void {
         this.cardboardService.reopenContract(this.contractId).subscribe(
             () => {
@@ -161,30 +186,5 @@ export class CardboardFormComponent implements OnInit {
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
-    }
-
-    public openFinalFormDialog(): void {
-        this.router.navigate(['/contract/viewer/' + this.contractId]).finally(() => this.alertService.onInfo('فرم پایانی قرارداد را پر کنید.'));
-    }
-
-    public openUploadDialog(): void {
-        this.dialog
-            .open(CardboardUploadDialogComponent, {
-                width: '600px',
-                height: '570px',
-                panelClass: 'dialog-p-0',
-                data: { contractId: this.contractId, hasSignedFile: this.cardboardInfo.hasSignedFile },
-            })
-            .afterClosed()
-            .subscribe((result: boolean) => result && setTimeout(() => window.location.reload(), 2000));
-    }
-
-    public openDownloadDialog(): void {
-        this.dialog.open(CardboardDownloadDialogComponent, {
-            width: '1000px',
-            height: '600px',
-            panelClass: 'dialog-p-0',
-            data: this.contractId,
-        });
     }
 }

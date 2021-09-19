@@ -13,8 +13,8 @@ import { ContractNote } from '../../cardboard.model';
 })
 export class CardboardNoteComponent implements OnInit {
     @Input() contractIdForDialog: string = null;
-    private contractId: string;
     public contractNotes: Array<ContractNote> = [];
+    private contractId: string;
     private currentStepInfo: { id: string; name: string };
 
     constructor(
@@ -27,13 +27,6 @@ export class CardboardNoteComponent implements OnInit {
     ngOnInit(): void {
         this.contractId = !!this.contractIdForDialog ? this.contractIdForDialog : this.activatedRoute.snapshot.params.id;
         this.getNotes();
-    }
-
-    private getNotes(): void {
-        this.cardboardService.getContractNotes(this.contractId).subscribe(
-            (response) => (this.contractNotes = response),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
     }
 
     public onAddNoteClick(): void {
@@ -53,9 +46,19 @@ export class CardboardNoteComponent implements OnInit {
             .subscribe((note: string) => !!note && this.getContractStep(note));
     }
 
+    private getNotes(): void {
+        this.cardboardService.getContractNotes(this.contractId).subscribe(
+            (response) => (this.contractNotes = response),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
+    }
+
     private getContractStep(note: string): void {
         this.cardboardService.getContractCardboardWizard(this.contractId).subscribe((response) => {
-            this.currentStepInfo = { id: response.steps[response.steps.length - 1].id, name: response.steps[response.steps.length - 1].name };
+            this.currentStepInfo = {
+                id: response.steps[response.steps.length - 1].id,
+                name: response.steps[response.steps.length - 1].name,
+            };
             this.addNoteToContract(note);
         });
     }

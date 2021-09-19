@@ -1,20 +1,20 @@
-<div class="page-layout">
-    <app-header pageTitle="نوع قرارداد" class="wp-100">
-        <button mat-stroked-button (click)="openContractTypeDialog('create')">
-            <mat-icon class="mat-18">add</mat-icon>
+<div class='page-layout'>
+    <app-header class='wp-100' pageTitle='نوع قرارداد'>
+        <button (click)="openContractTypeDialog('create')" mat-stroked-button>
+            <mat-icon class='mat-18'>add</mat-icon>
             افزودن نوع قرارداد جدید
         </button>
     </app-header>
 
-    <div class="fuse-card m-40 p-40">
-        <h1 class="wp-100 text-center mb-20">فهرست نوع قراردادها</h1>
-        <div class="container fuse-card">
+    <div class='fuse-card m-40 p-40'>
+        <h1 class='wp-100 text-center mb-20'>فهرست نوع قراردادها</h1>
+        <div class='container fuse-card'>
             <app-table
-                [data]="contractTypes"
-                [columns]="tableColumn"
+                (paginationEvent)='paginationControl($event)'
+                [columns]='tableColumn'
+                [data]='contractTypes'
+                [paginationObject]='pagination'
                 [paginationSettings]="{ mode: 'backend' }"
-                [paginationObject]="pagination"
-                (paginationEvent)="paginationControl($event)"
             ></app-table>
         </div>
     </div>

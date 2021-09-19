@@ -16,19 +16,24 @@ import { ThemePalette } from '@angular/material/core';
 })
 export class CardboardHistoryComponent implements OnInit {
     @Input() contractIdForDialog: string = null;
-    private contractId: string;
     public contractHistory: Array<ContractHistory> = [];
     public tableDataContractHistory: Array<ContractHistoryTableData> = [];
     public pagination = { skip: 0, limit: 100, total: 100 };
     public stateType: StateType = StateType.INIT;
-
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '50px' },
-        { id: 'updatedAt', name: 'تاریخ', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '100px' },
+        {
+            id: 'updatedAt',
+            name: 'تاریخ',
+            convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
+            type: 'string',
+            minWidth: '100px',
+        },
         { id: 'user', name: 'کاربر', type: 'string', minWidth: '200px' },
         { id: 'fromStep', name: 'از گام', type: 'string', minWidth: '100px' },
         { id: 'toStep', name: 'به گام ', type: 'string', minWidth: '100px' },
     ];
+    private contractId: string;
 
     constructor(
         private readonly cardBoardService: CardboardService,
@@ -39,6 +44,20 @@ export class CardboardHistoryComponent implements OnInit {
     ngOnInit(): void {
         this.contractId = !!this.contractIdForDialog ? this.contractIdForDialog : this.activatedRoute.snapshot.params.id;
         this.getContractHistory();
+    }
+
+    public getHistoryStepInfo(contractHistoryStatue: ContractHistory, actionType: 'title' | 'subtitle'): string {
+        let finalText;
+        if (actionType === 'title') {
+            finalText = ContractHistoryIcons.find((item) => item.typePer === contractHistoryStatue.status).titleText;
+        } else {
+            finalText = ` - از ${contractHistoryStatue.fromStep.name} به ${contractHistoryStatue.toStep.name}`;
+        }
+        return finalText;
+    }
+
+    public getProperIcon(contractHistoryItem: ContractHistory, actionType: 'icon' | 'iconColor'): ThemePalette | string {
+        return ContractHistoryIcons.find((item) => item.typePer === contractHistoryItem.status)[actionType];
     }
 
     private getContractHistory(): void {
@@ -58,19 +77,5 @@ export class CardboardHistoryComponent implements OnInit {
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
-    }
-
-    public getHistoryStepInfo(contractHistoryStatue: ContractHistory, actionType: 'title' | 'subtitle'): string {
-        let finalText;
-        if (actionType === 'title') {
-            finalText = ContractHistoryIcons.find((item) => item.typePer === contractHistoryStatue.status).titleText;
-        } else {
-            finalText = ` - از ${contractHistoryStatue.fromStep.name} به ${contractHistoryStatue.toStep.name}`;
-        }
-        return finalText;
-    }
-
-    public getProperIcon(contractHistoryItem: ContractHistory, actionType: 'icon' | 'iconColor'): ThemePalette | string {
-        return ContractHistoryIcons.find((item) => item.typePer === contractHistoryItem.status)[actionType];
     }
 }

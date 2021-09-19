@@ -17,7 +17,13 @@ export class AssetsMonitoringComponent implements OnInit {
     instrumentFormControl: FormControl = new FormControl([], Validators.required);
     haveInstrumentsAchieved: boolean = false;
     instruments: Array<Instrument> = [];
-    assetsMonitoringData: AssetMonitoring = { tableOfAssets: [], totalVolume: 0, totalValue: 0, trendChart: [], pieChart: [] };
+    assetsMonitoringData: AssetMonitoring = {
+        tableOfAssets: [],
+        totalVolume: 0,
+        totalValue: 0,
+        trendChart: [],
+        pieChart: [],
+    };
     loading: boolean = false;
     isSectionShowing: boolean = false;
     dataLoading: boolean = false;
@@ -33,7 +39,12 @@ export class AssetsMonitoringComponent implements OnInit {
             id: 'maturityDate',
             name: 'تاریخ سررسید',
             type: 'date',
-            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+            convert: (value: any) =>
+                new Date(value).toLocaleDateString('fa-Ir', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
         },
         // {
         //     id: 'lastUpdateDate',
@@ -55,15 +66,6 @@ export class AssetsMonitoringComponent implements OnInit {
         this.getAssetsMonitoringDate();
     }
 
-    private prepareDataForAPI(): void {
-        const searchParams: InstrumentSearchParams = {
-            basket: this.form.value.basket,
-            date: UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('date').value),
-        };
-        const fixedSearchParams = this.checkDateForToday(searchParams);
-        this.getInstruments(fixedSearchParams);
-    }
-
     public getAssetsMonitoringDate(): void {
         this.dataLoading = false;
         this.loading = true;
@@ -81,6 +83,35 @@ export class AssetsMonitoringComponent implements OnInit {
             this.loading = false;
             this.assetsMonitoringData = response;
         });
+    }
+
+    public checkForValidationButton(): boolean {
+        return this.form.valid && !this.form.get('date').hasError('required');
+    }
+
+    public searchInstrument = (searchKey, data): void => {
+        data.state = searchSelectStateType.PRESENT;
+        if (!searchKey) {
+            data.list = this.instruments;
+            return;
+        }
+        data.list = this.instruments?.filter((el) => el.symbol?.includes(searchKey));
+    };
+
+    public openIpsHistoryDialog(): void {
+        this.dialog.open(IpsDialogComponent, {
+            width: '1000px',
+            data: { basket: ['T', 'F', 'M'], withDetails: false },
+        });
+    }
+
+    private prepareDataForAPI(): void {
+        const searchParams: InstrumentSearchParams = {
+            basket: this.form.value.basket,
+            date: UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('date').value),
+        };
+        const fixedSearchParams = this.checkDateForToday(searchParams);
+        this.getInstruments(fixedSearchParams);
     }
 
     private checkDateForToday(searchParams: InstrumentSearchParams): InstrumentSearchParams {
@@ -105,22 +136,5 @@ export class AssetsMonitoringComponent implements OnInit {
             this.loading = false;
             this.instruments = response;
         });
-    }
-
-    public checkForValidationButton(): boolean {
-        return this.form.valid && !this.form.get('date').hasError('required');
-    }
-
-    public searchInstrument = (searchKey, data): void => {
-        data.state = searchSelectStateType.PRESENT;
-        if (!searchKey) {
-            data.list = this.instruments;
-            return;
-        }
-        data.list = this.instruments?.filter((el) => el.symbol?.includes(searchKey));
-    };
-
-    public openIpsHistoryDialog(): void {
-        this.dialog.open(IpsDialogComponent, { width: '1000px', data: { basket: ['T', 'F', 'M'], withDetails: false } });
     }
 }

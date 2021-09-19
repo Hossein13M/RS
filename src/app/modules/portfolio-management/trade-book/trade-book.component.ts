@@ -35,6 +35,25 @@ export class TradeBookComponent implements OnInit {
         this.initializeTableColumns();
     }
 
+    public showBook(organizationType: string, ticker: any, pamCode: string): void {
+        const date = new Date(this.form.value.date).getTime();
+        this.router.navigate([`/${PMRoutePrefix}/book`, date, organizationType, ticker, pamCode]).finally();
+    }
+
+    public OnDateChange(): void {
+        this.selectedTradingBook = null;
+        this.getAllTradingBooks();
+    }
+
+    public onTradeBookChange(event: number): void {
+        this.selectedTradingBook = this.tradeBookData[event];
+        this.createTableData(this.tradeBookData[event].details);
+    }
+
+    public showHistory(): void {
+        this.dialog.open(TradeBookHistoryComponent, { panelClass: 'dialog-w50', data: { date: this.form.value.date } });
+    }
+
     private initializeTableColumns(): void {
         this.column = [
             { id: 'row', name: '#', type: 'string' },
@@ -44,7 +63,12 @@ export class TradeBookComponent implements OnInit {
             { id: 'asset', name: 'ارزش بازار', type: 'price' },
             { id: 'brokerName', name: 'کارگزار', type: 'string' },
             { id: 'btt', name: 'بهای تمام شده‌ی کل', type: 'price' },
-            { id: 'btt', name: 'آخرین تاریخ بروزرسانی قیمت', type: 'date', convert: (value: unknown) => (value ? value : '-') },
+            {
+                id: 'btt',
+                name: 'آخرین تاریخ بروزرسانی قیمت',
+                type: 'date',
+                convert: (value: unknown) => (value ? value : '-'),
+            },
             {
                 name: 'عملیات',
                 id: 'operation',
@@ -63,11 +87,6 @@ export class TradeBookComponent implements OnInit {
         ];
     }
 
-    public showBook(organizationType: string, ticker: any, pamCode: string): void {
-        const date = new Date(this.form.value.date).getTime();
-        this.router.navigate([`/${PMRoutePrefix}/book`, date, organizationType, ticker, pamCode]).finally();
-    }
-
     private getAllTradingBooks(): void {
         this.stateType = StateType.LOADING;
         const date = UtilityFunctions.convertDateToGregorianFormatForServer(this.form.value.date);
@@ -80,15 +99,15 @@ export class TradeBookComponent implements OnInit {
                 this.stateType = StateType.PRESENT;
                 this.tradeBookData = result;
                 this.handleTradingBooksDate();
-                result.map((element, index: number) => this.tradeBooksList.push({ id: index, name: element.organization }));
+                result.map((element, index: number) =>
+                    this.tradeBooksList.push({
+                        id: index,
+                        name: element.organization,
+                    })
+                );
             },
             () => (this.stateType = StateType.FAIL)
         );
-    }
-
-    public OnDateChange(): void {
-        this.selectedTradingBook = null;
-        this.getAllTradingBooks();
     }
 
     private handleTradingBooksDate(): void {
@@ -100,23 +119,18 @@ export class TradeBookComponent implements OnInit {
                     if (detail.vwap !== null) date = detail.vwapUpdateDate;
                     if (detail.vwapAdjusted !== null && detail.vwap !== null) date = detail.vwapAdjustedUpdateDate;
                     if (!date) return;
-                    detail.dateFa = new Date(date).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' });
+                    detail.dateFa = new Date(date).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                    });
                 });
             }
         });
     }
 
-    public onTradeBookChange(event: number): void {
-        this.selectedTradingBook = this.tradeBookData[event];
-        this.createTableData(this.tradeBookData[event].details);
-    }
-
     private createTableData(data): void {
         if (!data) return;
         this.dataSource = [...data];
-    }
-
-    public showHistory(): void {
-        this.dialog.open(TradeBookHistoryComponent, { panelClass: 'dialog-w50', data: { date: this.form.value.date } });
     }
 }

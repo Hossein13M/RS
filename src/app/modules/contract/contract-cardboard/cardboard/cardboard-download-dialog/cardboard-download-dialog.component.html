@@ -1,51 +1,53 @@
-<div class="page-layout">
-    <app-header pageTitle="دانلود قرارداد" class="wp-100">
-        <button mat-icon-button matTooltip="بستن" (click)="dialog.close()">
-            <mat-icon class="mat-18">close</mat-icon>
+<div class='page-layout'>
+    <app-header class='wp-100' pageTitle='دانلود قرارداد'>
+        <button (click)='dialog.close()' mat-icon-button matTooltip='بستن'>
+            <mat-icon class='mat-18'>close</mat-icon>
         </button>
     </app-header>
 
-    <div class="fuse-card flex flex-col items-center m-40">
-        <form [formGroup]="form" id="formId" (submit)="onSearchFile()" class="flex justify-evenly w-full mt-5" dir="rtl">
-            <mat-form-field appearance="outline">
+    <div class='fuse-card flex flex-col items-center m-40'>
+        <form (submit)='onSearchFile()' [formGroup]='form' class='flex justify-evenly w-full mt-5' dir='rtl'
+              id='formId'>
+            <mat-form-field appearance='outline'>
                 <mat-label>نام فایل</mat-label>
-                <input matInput formControlName="fileName" />
+                <input formControlName='fileName' matInput />
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>نوع فایل</mat-label>
-                <mat-select formControlName="type">
-                    <mat-option [value]="null">همه</mat-option>
-                    <mat-option value="draft">پیش‌نویس</mat-option>
-                    <mat-option value="unsigned">امضا نشده</mat-option>
-                    <mat-option value="signed">امضا‌ شده</mat-option>
+                <mat-select formControlName='type'>
+                    <mat-option [value]='null'>همه</mat-option>
+                    <mat-option value='draft'>پیش‌نویس</mat-option>
+                    <mat-option value='unsigned'>امضا نشده</mat-option>
+                    <mat-option value='signed'>امضا‌ شده</mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>از تاریخ</mat-label>
-                <input matInput [matDatepicker]="picker2" formControlName="fromDate" />
-                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <input [matDatepicker]='picker2' formControlName='fromDate' matInput />
+                <mat-datepicker-toggle [for]='picker2' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance='outline'>
                 <mat-label>تا تاریخ</mat-label>
-                <input matInput [matDatepicker]="picker" formControlName="toDate" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <input [matDatepicker]='picker' formControlName='toDate' matInput />
+                <mat-datepicker-toggle [for]='picker' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </form>
 
-        <button mat-flat-button color="primary" class="mb-2" form="formId" type="submit">
-            <mat-icon class="mat-18">search</mat-icon>
+        <button class='mb-2' color='primary' form='formId' mat-flat-button type='submit'>
+            <mat-icon class='mat-18'>search</mat-icon>
             <span>جستجوی فایل‌ها</span>
         </button>
     </div>
 
-    <div class="fuse-card m-40 p-40">
-        <div class="container fuse-card">
-            <app-table [data]="filesList" [columns]="tableColumn" [paginationSettings]="{ mode: 'local' }" [paginationObject]="pagination"></app-table>
+    <div class='fuse-card m-40 p-40'>
+        <div class='container fuse-card'>
+            <app-table [columns]='tableColumn' [data]='filesList' [paginationObject]='pagination'
+                       [paginationSettings]="{ mode: 'local' }"></app-table>
         </div>
     </div>
 </div>

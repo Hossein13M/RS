@@ -13,6 +13,39 @@ import { Router } from '@angular/router';
 export class AuthorizationService {
     constructor(private readonly http: HttpClient, private readonly router: Router) {}
 
+    public static storeToken(token: string): void {
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('accessToken', token);
+    }
+
+    public static isUserUnauthorized(user: User): boolean {
+        return user.status === Status.unauthorized;
+    }
+
+    public static checkUserAccess(): Array<FuseNavigation> {
+        const userRoles: Array<string> = [];
+        const authorizedNavigation: Array<FuseNavigation> = [];
+        (JSON.parse(localStorage.getItem('user')) as User).services.split('|').map((userRole) => userRoles.push(userRole));
+        navigation.map((navItem) => {
+            if (userRoles.includes(navItem.id)) {
+                if (!!navItem.children) {
+                    authorizedNavigation.push({
+                        id: navItem.id,
+                        title: navItem.title,
+                        icon: navItem.icon,
+                        type: navItem.type,
+                        children: [],
+                    });
+                    navItem.children.map((navChild) => {
+                        userRoles.includes(navChild.id) && authorizedNavigation.find((pushedItem) => pushedItem.id === navItem.id).children.push(navChild);
+                    });
+                } else authorizedNavigation.push(navItem);
+            }
+        });
+
+        return authorizedNavigation;
+    }
+
     public login(loginInfo: Login): Observable<LoginResponse> {
         return this.http.post<LoginResponse>(`/api/v2/auth/login`, loginInfo);
     }
@@ -22,7 +55,11 @@ export class AuthorizationService {
     }
 
     public getOrganizations(codes: Array<number>): Observable<ResponseWithPagination<Organization>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ limit: 1000, skip: 0, codes });
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({
+            limit: 1000,
+            skip: 0,
+            codes,
+        });
         return this.http.get<ResponseWithPagination<Organization>>(`/api/v1/organization`, { params });
     }
 
@@ -38,15 +75,6 @@ export class AuthorizationService {
         return this.router.navigate(['/login']);
     }
 
-    public static storeToken(token: string): void {
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('accessToken', token);
-    }
-
-    public static isUserUnauthorized(user: User): boolean {
-        return user.status === Status.unauthorized;
-    }
-
     public setUserInfoInLocalStorage(token: LoginResponse): void {
         localStorage.setItem('user', JSON.stringify(this.decodeToken(token)));
     }
@@ -54,23 +82,5 @@ export class AuthorizationService {
     public isAuthenticated(): boolean {
         const user: User = JSON.parse(localStorage.getItem('user')!);
         return !!user ? !(Date.now() / 1000 > user.exp) : false;
-    }
-
-    public static checkUserAccess(): Array<FuseNavigation> {
-        const userRoles: Array<string> = [];
-        const authorizedNavigation: Array<FuseNavigation> = [];
-        (JSON.parse(localStorage.getItem('user')) as User).services.split('|').map((userRole) => userRoles.push(userRole));
-        navigation.map((navItem) => {
-            if (userRoles.includes(navItem.id)) {
-                if (!!navItem.children) {
-                    authorizedNavigation.push({ id: navItem.id, title: navItem.title, icon: navItem.icon, type: navItem.type, children: [] });
-                    navItem.children.map((navChild) => {
-                        userRoles.includes(navChild.id) && authorizedNavigation.find((pushedItem) => pushedItem.id === navItem.id).children.push(navChild);
-                    });
-                } else authorizedNavigation.push(navItem);
-            }
-        });
-
-        return authorizedNavigation;
     }
 }

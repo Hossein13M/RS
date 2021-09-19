@@ -43,20 +43,6 @@ export class TradeBookHistoryComponent implements OnInit {
         this.getTradeBookHistory();
     }
 
-    private initializeTableColumns(): void {
-        this.columns = [
-            { name: 'سبد', id: 'organizationType', type: 'string' },
-            { name: 'نماد', id: 'bourseAccount', type: 'string' },
-            { name: 'کارگزاری', id: 'broker', type: 'string' },
-            {
-                name: 'تاریخ بروزرسانی',
-                id: 'date',
-                type: 'date',
-                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
-            },
-        ];
-    }
-
     public getTradeBookHistory(): void {
         this.tradeBookHistoryService
             .getIpsUpdateHistory({ ...this.searchParams, ...this.pagination })
@@ -71,5 +57,24 @@ export class TradeBookHistoryComponent implements OnInit {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getTradeBookHistory();
+    }
+
+    private initializeTableColumns(): void {
+        this.columns = [
+            { name: 'سبد', id: 'organizationType', type: 'string' },
+            { name: 'نماد', id: 'bourseAccount', type: 'string' },
+            { name: 'کارگزاری', id: 'broker', type: 'string' },
+            {
+                name: 'تاریخ بروزرسانی',
+                id: 'date',
+                type: 'date',
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
+            },
+        ];
     }
 }

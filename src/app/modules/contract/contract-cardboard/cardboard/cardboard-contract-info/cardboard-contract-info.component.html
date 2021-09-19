@@ -1,33 +1,33 @@
-<mat-card class="h-full w-full p-0" *ngIf="stateType === 'PRESENT'">
-    <mat-card-header class="w-full bg-blue-600 m-0 py-3.5">
-        <div class="w-full flex justify-between mx-auto w-full">
-            <h2 class="font-bold text-white">اطلاعات قرارداد:</h2>
+<mat-card *ngIf="stateType === 'PRESENT'" class='h-full w-full p-0'>
+    <mat-card-header class='w-full bg-blue-600 m-0 py-3.5'>
+        <div class='w-full flex justify-between mx-auto w-full'>
+            <h2 class='font-bold text-white'>اطلاعات قرارداد:</h2>
         </div>
     </mat-card-header>
 
-    <mat-card-content class="flex flex-col px-2">
-        <form [formGroup]="form" class="flex flex-col mt-10" dir="rtl">
-            <div class="flex justify-evenly">
-                <mat-form-field appearance="outline">
+    <mat-card-content class='flex flex-col px-2'>
+        <form [formGroup]='form' class='flex flex-col mt-10' dir='rtl'>
+            <div class='flex justify-evenly'>
+                <mat-form-field appearance='outline'>
                     <mat-label>نام قرارداد</mat-label>
-                    <input readonly matInput formControlName="name" type="text" />
+                    <input formControlName='name' matInput readonly type='text' />
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>مشتری قرارداد</mat-label>
-                    <input readonly matInput formControlName="customer" type="text" />
+                    <input formControlName='customer' matInput readonly type='text' />
                 </mat-form-field>
             </div>
 
-            <div class="flex justify-evenly">
-                <mat-form-field appearance="outline">
+            <div class='flex justify-evenly'>
+                <mat-form-field appearance='outline'>
                     <mat-label>تاریخ ساخت</mat-label>
-                    <input matInput readonly formControlName="date" />
+                    <input formControlName='date' matInput readonly />
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>آغازکننده‌ی قرارداد</mat-label>
-                    <input readonly matInput formControlName="initializerUser" type="text" />
+                    <input formControlName='initializerUser' matInput readonly type='text' />
                 </mat-form-field>
             </div>
         </form>

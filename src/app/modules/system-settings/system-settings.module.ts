@@ -94,7 +94,17 @@ import { HeaderModule } from '../../layout/components/header/header.module';
         MarketMakerComponent,
         BourceInstrumentDetailComponent,
     ],
-    imports: [CommonModule, MaterialModule, ShareModule, SystemSettingsRoutingModule, NgxMatSelectSearchModule, LayoutModule, PipesModule, FuseSharedModule, HeaderModule],
+    imports: [
+        CommonModule,
+        MaterialModule,
+        ShareModule,
+        SystemSettingsRoutingModule,
+        NgxMatSelectSearchModule,
+        LayoutModule,
+        PipesModule,
+        FuseSharedModule,
+        HeaderModule,
+    ],
     entryComponents: [
         BranchSettingAddComponent,
         BrokerSettingAddComponent,

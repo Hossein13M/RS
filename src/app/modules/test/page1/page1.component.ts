@@ -23,7 +23,13 @@ export class Page1Component implements OnInit, AfterViewInit {
     ngAfterViewInit(): void {
         this.show = true;
         this.columns = [
-            { name: 'نام', id: 'name', type: 'string', minWidth: '200px', search: { type: 'text', mode: TableSearchMode.LOCAL } },
+            {
+                name: 'نام',
+                id: 'name',
+                type: 'string',
+                minWidth: '200px',
+                search: { type: 'text', mode: TableSearchMode.LOCAL },
+            },
             { name: 'شناسه نماد', id: 'ticker', type: 'string', minWidth: '100px' },
             { name: 'سود/ضرر', id: 'profit', type: 'profit', minWidth: '150px' },
             {
@@ -49,8 +55,20 @@ export class Page1Component implements OnInit, AfterViewInit {
                 },
                 convert: (value: any) => (value === 'active' ? 'فعال' : 'غیر فعال'),
             },
-            { name: 'نام نماد', id: 'symbol', type: 'string', minWidth: '150px', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'محل معامله', id: 'isInBourse', type: 'string', minWidth: '130px', convert: (value: any) => (value ? 'بورس' : 'غیر بورسی') },
+            {
+                name: 'نام نماد',
+                id: 'symbol',
+                type: 'string',
+                minWidth: '150px',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'محل معامله',
+                id: 'isInBourse',
+                type: 'string',
+                minWidth: '130px',
+                convert: (value: any) => (value ? 'بورس' : 'غیر بورسی'),
+            },
             {
                 name: 'زمان معامله',
                 id: 'date',
@@ -58,7 +76,12 @@ export class Page1Component implements OnInit, AfterViewInit {
                 width: '80px',
                 minWidth: '80px',
                 search: { type: 'date', mode: TableSearchMode.LOCAL },
-                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
             },
             {
                 name: 'زمان فروش',
@@ -67,7 +90,12 @@ export class Page1Component implements OnInit, AfterViewInit {
                 width: '80px',
                 minWidth: '80px',
                 search: { type: 'date', mode: TableSearchMode.LOCAL },
-                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
             },
             { name: 'شخصی', id: 'custom1', type: 'custom', cellTemplate: this.mamad },
             {
@@ -79,7 +107,12 @@ export class Page1Component implements OnInit, AfterViewInit {
                 operations: [
                     { name: 'مشاهده', icon: 'visibility', color: 'primary', operation: 'show' },
                     { name: 'ویرایش', icon: 'create', color: 'accent', operation: 'edit' },
-                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row, operationItem }: any) => (operationItem.icon = 'toggle_off') },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row, operationItem }: any) => (operationItem.icon = 'toggle_off'),
+                    },
                 ],
             },
             {
@@ -95,8 +128,20 @@ export class Page1Component implements OnInit, AfterViewInit {
                             title: 'یه دیالوگ تستی',
                             columns: [
                                 { name: 'نام', id: 'name', type: 'string', headerAlign: 'center', dataAlign: 'center' },
-                                { name: 'حجم', id: 'volume', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-                                { name: 'ارزش', id: 'value', type: 'price', headerAlign: 'center', dataAlign: 'center' },
+                                {
+                                    name: 'حجم',
+                                    id: 'volume',
+                                    type: 'number',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
+                                {
+                                    name: 'ارزش',
+                                    id: 'value',
+                                    type: 'price',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
                             ],
                             data: row.details,
                         },
