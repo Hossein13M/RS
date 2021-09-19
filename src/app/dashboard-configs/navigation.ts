@@ -80,11 +80,4 @@ export const navigation: FuseNavigation[] = [
             { id: 'market', type: 'item', url: '/system-settings/market', title: 'لیست اطلاعات بازار', icon: 'subject' },
         ],
     },
-    {
-        id: 'dashboards',
-        title: 'مدیریت سیستم',
-        type: 'collapsable',
-        icon: 'settings',
-        children: [{ id: 'user', title: 'ثبت کاربر', type: 'item', icon: 'accessibility', url: '/user/operator' }],
-    },
 ];
