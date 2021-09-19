@@ -1,6 +1,6 @@
 <ng-container *ngIf="!fuseConfig.layout.sidepanel.hidden && fuseConfig.layout.sidepanel.position === 'left'"> </ng-container>
 
-<div id="main" class="h-screen-minus-toolbar">
+<div id="main">
     <ng-container *ngIf="fuseConfig.layout.toolbar.position === 'above'">
         <ng-container *ngTemplateOutlet="toolbar"></ng-container>
     </ng-container>
@@ -25,7 +25,7 @@
                     <ng-container *ngTemplateOutlet="toolbar"></ng-container>
                 </ng-container>
 
-                <router-outlet class="h-screen-minus-toolbar"></router-outlet>
+                <router-outlet *ngIf="true"></router-outlet>
 
                 <ng-container *ngIf="fuseConfig.layout.footer.position === 'below-static'">
                     <ng-container *ngTemplateOutlet="footer"></ng-container>
@@ -47,6 +47,8 @@
     </ng-container>
 </div>
 
+<ng-container *ngIf="!fuseConfig.layout.sidepanel.hidden && fuseConfig.layout.sidepanel.position === 'right'"> </ng-container>
+<fuse-sidebar class="quick-panel" name="quickPanel" position="right"> </fuse-sidebar>
 <ng-template #toolbar>
     <toolbar
         *ngIf="!fuseConfig.layout.toolbar.hidden"
@@ -58,7 +60,6 @@
     >
     </toolbar>
 </ng-template>
-
 <ng-template #footer>
     <footer
         *ngIf="!fuseConfig.layout.footer.hidden"
@@ -69,7 +70,6 @@
         "
     ></footer>
 </ng-template>
-
 <ng-template #leftNavbar>
     <fuse-sidebar
         *ngIf="!fuseConfig.layout.navbar.hidden"
