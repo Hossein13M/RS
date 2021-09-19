@@ -7,12 +7,13 @@ import { LayoutModule } from '../../../layout/layout.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ContractViewerService } from './contract-viewer.service';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractViewerComponent }];
 
 @NgModule({
     declarations: [ContractViewerComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), AgFormViewerModule, LayoutModule, MatButtonModule, MatIconModule],
+    imports: [CommonModule, RouterModule.forChild(routes), AgFormViewerModule, LayoutModule, MatButtonModule, MatIconModule, HeaderModule],
     exports: [ContractViewerComponent],
     providers: [ContractViewerService],
 })

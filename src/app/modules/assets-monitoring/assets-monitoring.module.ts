@@ -19,6 +19,7 @@ import { AssetsMonitoringRoutingModule } from './assets-monitoring-routing.modul
 import { AssetsMonitoringComponent } from './assets-monitoring.component';
 import { AssetsMonitoringService } from './assets-monitoring.service';
 import { PipesModule } from '#shared/pipes/pipes.module';
+import { HeaderModule } from '../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [AssetsMonitoringComponent],
@@ -40,7 +41,8 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         MatProgressSpinnerModule,
         ChartModule,
         IpsDialogModule,
-        PipesModule
+        PipesModule,
+        HeaderModule
     ],
     providers: [AssetsMonitoringService],
 })

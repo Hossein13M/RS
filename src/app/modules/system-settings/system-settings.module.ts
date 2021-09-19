@@ -48,6 +48,7 @@ import { UnderWriterComponent } from './bource-instrument-detail/under-writer/un
 import { MarketMakerComponent } from './bource-instrument-detail/market-maker/market-maker.component';
 import { BourceInstrumentDetailComponent } from './bource-instrument-detail/bource-instrument-detail.component';
 import { FuseSharedModule } from '../../../@fuse/shared.module';
+import { HeaderModule } from '../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [
@@ -93,7 +94,7 @@ import { FuseSharedModule } from '../../../@fuse/shared.module';
         MarketMakerComponent,
         BourceInstrumentDetailComponent,
     ],
-    imports: [CommonModule, MaterialModule, ShareModule, SystemSettingsRoutingModule, NgxMatSelectSearchModule, LayoutModule, PipesModule, FuseSharedModule],
+    imports: [CommonModule, MaterialModule, ShareModule, SystemSettingsRoutingModule, NgxMatSelectSearchModule, LayoutModule, PipesModule, FuseSharedModule, HeaderModule],
     entryComponents: [
         BranchSettingAddComponent,
         BrokerSettingAddComponent,

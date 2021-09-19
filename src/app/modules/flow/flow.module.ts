@@ -59,6 +59,7 @@ import { SecuritiesInfoComponent } from './forms/tabs/securities-info/securities
 import { SyndicateMembersNamesComponent } from './forms/tabs/syndicate-members-names/syndicate-members-names.component';
 import { VariableFeesInfoComponent } from './forms/tabs/variable-fees-info/variable-fees-info.component';
 import { PipesModule } from '#shared/pipes/pipes.module';
+import { HeaderModule } from '../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [
@@ -123,7 +124,8 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         MatProgressSpinnerModule,
         LayoutModule,
         MatTooltipModule,
-        PipesModule
+        PipesModule,
+        HeaderModule
     ],
     exports: [ReactiveFormsModule, DragDropModule, ShareModule, FormBuilderComponent],
     entryComponents: [

@@ -15,6 +15,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatSelectModule } from '@angular/material/select';
 import { ShareModule } from '#shared/share.module';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: UserComponent }];
 
@@ -32,7 +33,8 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: UserComponent 
         MatSelectModule,
         NgxMatSelectSearchModule,
         ShareModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        HeaderModule
     ],
     exports: [RouterModule, UserComponent],
     providers: [UserService],

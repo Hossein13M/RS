@@ -15,6 +15,7 @@ import { Page3Component } from './page3/page3.component';
 import { Page4Component } from './page4/page4.component';
 import { Page5Component } from './page5/page5.component';
 import { BubbleChartComponent } from './bubble-chart/bubble-chart.component';
+import { HeaderModule } from '../../layout/components/header/header.module';
 
 // Edit This Section To Change Route Prefix
 export const TRoutePrefix = 'test';
@@ -67,6 +68,7 @@ const routes: Routes = [
         ShareModule,
         FlowModule,
         ChartModule,
+        HeaderModule
     ],
     entryComponents: [TableDialogComponent],
 })

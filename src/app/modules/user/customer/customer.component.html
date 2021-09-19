@@ -1,6 +1,4 @@
 <div class="page-layout">
-
-    <!-- HEADER -->
     <app-header pageTitle="مشتری‌ها">
         <button mat-raised-button color="primary" class="submit-button" (click)="newCustomer()">ثبت مشتری</button>
     </app-header>
@@ -11,7 +9,7 @@
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
                         <mat-form-field appearance="fill">
-                            <input matInput class="form-field" [formControl]="searchInput.controls['customerName']" placeholder="نام مشتری"/>
+                            <input matInput class="form-field" [formControl]="searchInput.controls['customerName']" placeholder="نام مشتری" />
                         </mat-form-field>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let customer" fxHide fxShow.gt-sm>
@@ -24,7 +22,7 @@
                 <ng-container matColumnDef="nationalId">
                     <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-sm>
                         <mat-form-field appearance="fill">
-                            <input matInput class="form-field" [formControl]="searchInput.controls['nationalId']" placeholder="شناسه ملی"/>
+                            <input matInput class="form-field" [formControl]="searchInput.controls['nationalId']" placeholder="شناسه ملی" />
                         </mat-form-field>
                     </mat-header-cell>
                     <mat-cell *matCellDef="let customer" fxHide fxShow.gt-sm>

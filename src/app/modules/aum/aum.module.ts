@@ -18,6 +18,7 @@ import { IpsDialogModule } from '#shared/components/ips-dialog/ips-dialog.module
 import { LayoutModule } from '../../layout/layout.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PipesModule } from '#shared/pipes/pipes.module';
+import { HeaderModule } from '../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [
@@ -41,6 +42,7 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         LayoutModule,
         MatProgressBarModule,
         PipesModule,
+        HeaderModule
     ],
     entryComponents: [TableDialogComponent],
 })

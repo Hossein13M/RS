@@ -7,12 +7,13 @@ import { FlexModule } from '@angular/flex-layout';
 import { ShareModule } from '#shared/share.module';
 import { TreeHeaderSelectorModule } from '#shared/components/tree-header-selector/tree-header-selector.module';
 import { TreeSimpleSelectorModule } from '#shared/components/tree-simple-selector/tree-simple-selector.module';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: RolesListComponent }];
 
 @NgModule({
     declarations: [RolesListComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, FlexModule, ShareModule, TreeHeaderSelectorModule, TreeSimpleSelectorModule],
+    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, FlexModule, ShareModule, TreeHeaderSelectorModule, TreeSimpleSelectorModule, HeaderModule],
     exports: [RolesListComponent, RouterModule],
 })
 export class RolesListModule {}

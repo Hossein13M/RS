@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@angular/flex-layout';
 import { OrganizationModule } from '../organization/organization.module';
 import { ShareModule } from '#shared/share.module';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: OrganizationsListComponent }];
 
@@ -23,6 +24,7 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: OrganizationsL
         OrganizationModule,
         ShareModule,
         LayoutModule,
+        HeaderModule
     ],
     exports: [OrganizationsListComponent, RouterModule],
 })
