@@ -3,7 +3,8 @@ import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
-import { navigation } from '../../../app/dashboard-configs/navigation';
+import { FuseNavigation } from '../../types';
+import { AuthorizationService } from '../../../app/modules/authorization/authorization.service';
 
 @Component({
     selector: 'fuse-navigation',
@@ -17,7 +18,7 @@ export class FuseNavigationComponent implements OnInit {
     layout = 'vertical';
 
     @Input()
-    navigation: any;
+    public navigation: Array<FuseNavigation> = [];
 
     // Private
     private _unsubscribeAll: Subject<any>;
@@ -42,13 +43,7 @@ export class FuseNavigationComponent implements OnInit {
     ngOnInit(): void {
         // Load the navigation either from the input or from the service
         // this.navigation = this.navigation || this._fuseNavigationService.getCurrentNavigation();
-        const userRoles = JSON.parse(localStorage.getItem('user')) ?? { role: 'somethingElse' };
-
-        if (userRoles.role === 'assets') {
-            this.navigation = [navigation[2]];
-        } else {
-            this.navigation = navigation;
-        }
+        this.navigation = AuthorizationService.checkUserAccess();
 
         // Subscribe to the current navigation changes
         this._fuseNavigationService.onNavigationItemAdded.pipe(takeUntil(this._unsubscribeAll)).subscribe(() => {

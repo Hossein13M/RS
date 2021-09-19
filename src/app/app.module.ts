@@ -15,13 +15,13 @@ import { SendMailComponent } from './modules/mails/send-mail/send-mail.component
 import { OpRiskModule } from './modules/op-risk/op-risk.module';
 import { PortfolioManagementModule } from './modules/portfolio-management/portfolio-management.module';
 import { TestModule } from './modules/test/test.module';
-import { ApiModule } from './services/API/api.module';
-import { AuthGuard } from './services/auth.guard';
+import { ApiModule } from '#services/API/api.module';
+import { AuthGuard } from '#services/auth.guard';
 import { getFarsiPaginatorIntl } from '#shared/components/table/farsi-paginator-intl';
 import { MaterialModule } from '#shared/material.module';
 import { ShareModule } from '#shared/share.module';
 import { GlModule } from './modules/gl/gl.module';
-import { AlertService } from './services/alert.service';
+import { AlertService } from '#services/alert.service';
 import { AuthorizationModule } from './modules/authorization/authorization.module';
 
 const appRoutes: Routes = [

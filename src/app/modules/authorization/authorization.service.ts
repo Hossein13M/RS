@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import jwtDecode from 'jwt-decode';
+import { navigation } from '../../dashboard-configs/navigation';
+import { FuseNavigation } from '../../../@fuse/types';
 
 @Injectable()
 export class AuthorizationService {
@@ -24,9 +26,7 @@ export class AuthorizationService {
     }
 
     public decodeToken(token?: LoginResponse): User {
-        return token
-            ? ({ role: (jwtDecode(token.accessToken) as User).services, ...jwtDecode(token.accessToken) } as User)
-            : ({ role: '', ...jwtDecode(localStorage.getItem('accessToken')) } as User);
+        return token ? ({ ...jwtDecode(token.accessToken) } as User) : ({ ...jwtDecode(localStorage.getItem('accessToken')) } as User);
     }
 
     public static storeToken(token: string): void {
@@ -40,5 +40,23 @@ export class AuthorizationService {
 
     public setUserInfoInLocalStorage(token: LoginResponse): void {
         localStorage.setItem('user', JSON.stringify(this.decodeToken(token)));
+    }
+
+    public static checkUserAccess(): Array<FuseNavigation> {
+        const userRoles: Array<string> = [];
+        const authorizedNavigation: Array<FuseNavigation> = [];
+        (JSON.parse(localStorage.getItem('user')) as User).services.split('|').map((userRole) => userRoles.push(userRole));
+        navigation.map((navItem) => {
+            if (userRoles.includes(navItem.id)) {
+                if (!!navItem.children) {
+                    authorizedNavigation.push({ id: navItem.id, title: navItem.title, icon: navItem.icon, type: navItem.type, children: [] });
+                    navItem.children.map((navChild) => {
+                        userRoles.includes(navChild.id) && authorizedNavigation.find((pushedItem) => pushedItem.id === navItem.id).children.push(navChild);
+                    });
+                } else authorizedNavigation.push(navItem);
+            }
+        });
+
+        return authorizedNavigation;
     }
 }

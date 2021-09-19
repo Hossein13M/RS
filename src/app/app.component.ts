@@ -8,6 +8,7 @@ import { FuseSplashScreenService } from '@fuse/services/splash-screen.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { navigation } from './dashboard-configs/navigation';
+import { User } from './modules/authorization/auth.model';
 
 @Component({
     selector: 'app',
@@ -37,14 +38,8 @@ export class AppComponent implements OnInit, OnDestroy {
         private _fuseSplashScreenService: FuseSplashScreenService,
         private _platform: Platform
     ) {
-        // Get default navigation
-        const userRoles = JSON.parse(localStorage.getItem('user')) ?? { role: 'somethingElse' };
-
-        if (userRoles.role === 'assets') {
-            this.navigation = [navigation[2]];
-        } else {
-            this.navigation = navigation;
-        }
+        const userRoles = (JSON.parse(localStorage.getItem('user')) as User).services ?? { services: '' };
+        // userRoles === 'assets' ? (this.navigation = [navigation[2]]) : (this.navigation = navigation);
 
         // Register the navigation to the service
         this._fuseNavigationService.register('main', this.navigation);

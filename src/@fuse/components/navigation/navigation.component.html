@@ -1,17 +1,9 @@
-<div class="nav" [ngClass]="{'horizontal':layout === 'horizontal', 'vertical':layout === 'vertical'}">
-
-    <!-- Vertical Navigation Layout -->
+<div class="nav" [ngClass]="{ horizontal: layout === 'horizontal', vertical: layout === 'vertical' }">
     <ng-container *ngIf="layout === 'vertical'">
-
         <ng-container *ngFor="let item of navigation">
-
-            <fuse-nav-vertical-group *ngIf="item.type=='group'" [item]="item"></fuse-nav-vertical-group>
-            <fuse-nav-vertical-collapsable *ngIf="item.type=='collapsable'"
-                                           [item]="item"></fuse-nav-vertical-collapsable>
-            <fuse-nav-vertical-item *ngIf="item.type=='item'" [item]="item"></fuse-nav-vertical-item>
-
+            <fuse-nav-vertical-group *ngIf="item.type == 'group'" [item]="item"></fuse-nav-vertical-group>
+            <fuse-nav-vertical-collapsable *ngIf="item.type == 'collapsable'" [item]="item"></fuse-nav-vertical-collapsable>
+            <fuse-nav-vertical-item *ngIf="item.type == 'item'" [item]="item"></fuse-nav-vertical-item>
         </ng-container>
-
     </ng-container>
-    <!-- / Vertical Navigation Layout -->
 </div>

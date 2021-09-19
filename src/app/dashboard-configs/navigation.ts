@@ -24,9 +24,7 @@ export const navigation: FuseNavigation[] = [
             { id: 'contractCardboard', title: 'کارتابل قرارداد', type: 'item', icon: 'dashboard', url: '/contract/cardboard' },
         ],
     },
-
     { id: 'assets', title: 'دارایی های تحت مدیریت', type: 'item', icon: 'money', url: '/aum' },
-
     { id: 'nav', title: 'ارزش خالص دارایی ها', type: 'item', icon: 'show_chart', exactMatch: true, url: '/nav' },
     { id: 'assetsMonitoring', title: 'پایش دارایی‌ها', type: 'item', icon: 'filter_list', exactMatch: true, url: '/assets-monitoring' },
     {
