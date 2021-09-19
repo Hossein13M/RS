@@ -71,11 +71,11 @@ export class UserComponent implements OnInit, OnDestroy {
             minWidth: '130px',
             sticky: true,
             operations: [
-                { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editUser(row) },
+                { name: 'ویرایش', icon: 'create', color: 'primary', operation: ({ row }: any) => this.editUser(row) },
                 {
                     name: 'فعال‌سازی/غیرفعال‌سازی',
                     icon: 'sync_alt',
-                    color: 'accent',
+                    color: 'primary',
                     operation: ({ row }: any) => this.changeUserStatus(row),
                 },
             ],
@@ -118,14 +118,10 @@ export class UserComponent implements OnInit, OnDestroy {
     public createUser(): void {
         const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
         this.matDialog
-            .open(UserBatchComponent, {
-                data: null,
-            })
+            .open(UserBatchComponent, { data: null, panelClass: 'dialog-p-0' })
             .afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: boolean) => {
-                if (result) this.getUsers(organizationIds);
-            });
+            .subscribe((result: boolean) => result && this.getUsers(organizationIds));
     }
 
     ngOnDestroy(): void {
@@ -168,14 +164,10 @@ export class UserComponent implements OnInit, OnDestroy {
     private editUser(user: User): void {
         const organizationIds: Array<string> = this.organizationsForm.controls['organization'].value;
         this.matDialog
-            .open(UserBatchComponent, {
-                data: user.id,
-            })
+            .open(UserBatchComponent, { data: user.id, panelClass: 'dialog-p-0' })
             .afterClosed()
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((result: boolean) => {
-                if (result) this.getUsers(organizationIds);
-            });
+            .subscribe((result: boolean) => result && this.getUsers(organizationIds));
     }
 
     private changeUserStatus(user: User): void {
