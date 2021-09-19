@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { navigation } from 'app/dashboard-configs/navigation';
-import { AuthenticationService } from 'app/services/authentication.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { User } from '../../../modules/authorization/auth.model';
 import { AuthorizationService } from '../../../modules/authorization/authorization.service';
 import { FuseNavigation } from '../../../../@fuse/types';
+import { AlertService } from '#services/alert.service';
 
 @Component({
     selector: 'toolbar',
@@ -28,7 +26,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
-        private authenticationService: AuthenticationService
+        private authorizationService: AuthorizationService,
+        private readonly alertService: AlertService
     ) {
         this.user = JSON.parse(localStorage.getItem('user'));
 
@@ -62,6 +61,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     }
 
     logout() {
-        this.authenticationService.logout().finally();
+        this.authorizationService.logOut().finally(() => this.alertService.onInfo('شما از نرم‌افزار خارج شدید'));
     }
 }

@@ -3,7 +3,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { AlertService } from 'app/services/alert.service';
-import { AuthenticationService } from 'app/services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorizationService } from '../authorization.service';
 
@@ -21,7 +20,6 @@ export class LoginComponent {
     constructor(
         private fuseConfigService: FuseConfigService,
         private fb: FormBuilder,
-        private Authentication: AuthenticationService,
         private authorizationService: AuthorizationService,
         private alertService: AlertService,
         private router: Router,
