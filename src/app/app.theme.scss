@@ -25,35 +25,35 @@ $fuse-black: (
 );
 
 $fuse-navy: (
-    50: #e4e7f1,
-    100: #bcc4dc,
-    200: #8f9dc5,
-    300: #6275ad,
-    400: #40589c,
-    500: #1e3a8a,
-    600: #1a3482,
-    700: #162c77,
-    800: #12256d,
-    900: #0a185a,
-    A100: #8e9eff,
-    A200: #5b72ff,
-    A400: #2846ff,
-    A700: #0e30ff,
+    50: #e1e4ed,
+    100: #b4bcd3,
+    200: #8390b5,
+    300: #516397,
+    400: #2b4181,
+    500: #06206b,
+    600: #051c63,
+    700: #041858,
+    800: #03134e,
+    900: #020b3c,
+    A100: #727fff,
+    A200: #3f50ff,
+    A400: #0c22ff,
+    A700: #0016f1,
     contrast: (
-        50: $dark-primary-text,
-        100: $dark-primary-text,
-        200: $dark-primary-text,
-        300: $light-primary-text,
-        400: $light-primary-text,
-        500: $light-primary-text,
-        600: $light-primary-text,
-        700: $light-primary-text,
-        800: $light-primary-text,
-        900: $light-primary-text,
-        A100: $dark-primary-text,
-        A200: $light-primary-text,
-        A400: $light-primary-text,
-        A700: $light-primary-text,
+        50: #000000,
+        100: #000000,
+        200: #000000,
+        300: #ffffff,
+        400: #ffffff,
+        500: #ffffff,
+        600: #ffffff,
+        700: #ffffff,
+        800: #ffffff,
+        900: #ffffff,
+        A100: #000000,
+        A200: #ffffff,
+        A400: #ffffff,
+        A700: #ffffff,
     ),
 );
 
@@ -90,6 +90,39 @@ $default-accent-palette: (
     ),
 );
 
+$default-warn-palette: (
+    50: #f1e1e2,
+    100: #ddb4b6,
+    200: #c68285,
+    300: #af4f54,
+    400: #9e2a2f,
+    500: #8d040a,
+    600: #850309,
+    700: #7a0307,
+    800: #700205,
+    900: #5d0103,
+    A100: #ff8e8e,
+    A200: #ff5b5b,
+    A400: #ff2828,
+    A700: #ff0e0e,
+    contrast: (
+        50: #000000,
+        100: #000000,
+        200: #000000,
+        300: #ffffff,
+        400: #ffffff,
+        500: #ffffff,
+        600: #ffffff,
+        700: #ffffff,
+        800: #ffffff,
+        900: #ffffff,
+        A100: #000000,
+        A200: #000000,
+        A400: #ffffff,
+        A700: #ffffff,
+    ),
+);
+
 // Generate Fuse color classes for custom palettes
 $custom_palettes: (
     fuse-white: $fuse-white,
@@ -109,7 +142,7 @@ $typography: mat.define-typography-config(
     $title: mat.define-typography-level(20px, 32px, 600),
     $body-2: mat.define-typography-level(14px, 24px, 600),
     $button: mat.define-typography-level(14px, 14px, 600),
-    $input: mat.define-typography-level(16px, 1.125, 400) // line-height must be unitless !!!,,,,,,,,,,,,,,,
+    $input: mat.define-typography-level(16px, 1.125, 400) // line-height must be unitless !!!,,,,,,,,,,,,,,,,,,,,,,,,
 );
 
 // Setup the typography
@@ -148,7 +181,7 @@ $typography: mat.define-typography-config(
 // Define the primary, accent and warn palettes
 $default-primary-palette: mat.define-palette($fuse-navy);
 $default-accent-palette: mat.define-palette($default-accent-palette);
-$default-warn-palette: mat.define-palette(mat.$red-palette);
+$default-warn-palette: mat.define-palette($default-warn-palette);
 
 // Create the Material theme object
 $theme: mat.define-light-theme($default-primary-palette, $default-accent-palette, $default-warn-palette);
@@ -244,11 +277,11 @@ $mat-primary: (
     200: #6272a4,
     // For slide toggle,
     contrast:
-    (
-        main: $light-primary-text,
-        lighter: $dark-primary-text,
-        darker: $light-primary-text,
-    ),
+        (
+            main: $light-primary-text,
+            lighter: $dark-primary-text,
+            darker: $light-primary-text,
+        ),
 );
 $mat-accent: (
     main: #282a36,
@@ -257,11 +290,11 @@ $mat-accent: (
     200: #282a36,
     // For slide toggle,
     contrast:
-    (
-        main: $light-primary-text,
-        lighter: $dark-primary-text,
-        darker: $light-primary-text,
-    ),
+        (
+            main: $light-primary-text,
+            lighter: $dark-primary-text,
+            darker: $light-primary-text,
+        ),
 );
 
 $mat-warn: (
@@ -271,11 +304,11 @@ $mat-warn: (
     200: #ff5555,
     // For slide toggle,
     contrast:
-    (
-        main: $dark-primary-text,
-        lighter: $dark-primary-text,
-        darker: $light-primary-text,
-    ),
+        (
+            main: $dark-primary-text,
+            lighter: $dark-primary-text,
+            darker: $light-primary-text,
+        ),
 );
 $theme-accent: mat.define-palette($mat-accent, main, lighter, darker);
 $theme-warn: mat.define-palette($mat-warn, main, lighter, darker);

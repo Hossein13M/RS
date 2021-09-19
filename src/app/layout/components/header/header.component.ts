@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fuseAnimations } from '@fuse/animations';
-import { ThemePalette } from '@angular/material/core';
 
 @Component({
     selector: 'app-header',
@@ -10,7 +9,7 @@ import { ThemePalette } from '@angular/material/core';
 })
 export class HeaderComponent implements OnInit {
     @Input() pageTitle: string;
-    @Input() headerColor: ThemePalette = 'primary';
+    @Input() headerColor: string = 'primary-400';
 
     constructor() {}
 
