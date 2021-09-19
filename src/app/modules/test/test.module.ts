@@ -7,7 +7,6 @@ import { ChartModule } from 'app/shared/components/chart/chart.module';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
 import { MaterialModule } from 'app/shared/material.module';
 import { ShareModule } from 'app/shared/share.module';
-import { FlowModule } from '../flow/flow.module';
 import { ListTestPagesComponent } from './list-test-pages/list-test-pages.component';
 import { Page1Component } from './page1/page1.component';
 import { Page2Component } from './page2/page2.component';
@@ -66,9 +65,8 @@ const routes: Routes = [
         RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
         LayoutModule,
         ShareModule,
-        FlowModule,
         ChartModule,
-        HeaderModule
+        HeaderModule,
     ],
     entryComponents: [TableDialogComponent],
 })
