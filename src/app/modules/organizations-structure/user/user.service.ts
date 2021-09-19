@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ResponseWithPagination } from '#shared/models/pagination.model';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
 import { Organization, Roles, Units, User } from './user.model';
 
 @Injectable()
@@ -10,16 +10,10 @@ export class UserService {
     constructor(private http: HttpClient) {}
 
     public getUsers(organization: Array<string>, paginationParams?, searchParams?): Observable<ResponseWithPagination<User>> {
-        let _param = {
-            ...paginationParams,
-            ...searchParams,
-        };
+        let _param = { ...paginationParams, ...searchParams };
 
         if (organization.length > 0) {
-            _param = {
-                organization,
-                ...searchParams,
-            };
+            _param = { organization, ...searchParams };
         }
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ..._param });
 
