@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StateType } from '#shared/state-type.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '#shared/components/confirmation-dialog/confirmation-dialog.component';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { CardboardNoteDialogComponent } from '../cardboard-note-dialog/cardboard-note-dialog.component';
 import { ClipboardService } from 'ngx-clipboard';
 import { CardboardConfirmDialogComponent } from '../cardboard-confirm-dialog/cardboard-confirm-dialog.component';

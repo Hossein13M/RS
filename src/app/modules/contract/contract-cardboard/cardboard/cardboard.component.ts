@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CardboardService } from '../cardboard.service';
 import { CardboardInfo } from '../cardboard.model';
 import { StateType } from '#shared/state-type.enum';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 
 @Component({
     selector: 'app-cardboard',

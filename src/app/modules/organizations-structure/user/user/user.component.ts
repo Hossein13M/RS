@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertService } from '../../../../services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { UserBatchComponent } from './user-batch/user-batch.component';
 import { Organization, User } from '../user.model';
 import { UserService } from '../user.service';

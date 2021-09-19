@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 
 @Component({
     selector: 'app-cardboard-upload-dialog',

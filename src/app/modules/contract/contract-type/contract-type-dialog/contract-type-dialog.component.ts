@@ -7,7 +7,7 @@ import { ContractTypeService } from '../contract-type.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { Roles, Units, User } from '../../../organizations-structure/user/user.model';
 import { ContractForm, ContractType, Form } from '../contract-type.model';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 
 @Component({
     selector: 'app-contract-type-dialog',

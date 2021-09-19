@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { NavService } from 'app/modules/nav/nav.service';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { LocalStorageService } from 'app/services/Base/local-storage.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

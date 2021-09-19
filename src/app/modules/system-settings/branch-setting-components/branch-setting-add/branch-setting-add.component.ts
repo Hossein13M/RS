@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { BankService } from 'app/services/feature-services/bank.service';
 import { BranchSettingService } from 'app/services/feature-services/system-setting-services/branch-setting.service';
 

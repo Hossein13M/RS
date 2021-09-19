@@ -8,7 +8,7 @@ import { ContractFlowService } from '../contract-flow.service';
 import { ContractTypeService } from '../../contract-type/contract-type.service';
 import { Flow } from '../contract-flow.model';
 import { contractDefaultBpmn, contractManualFlowDefaultBPMN } from '../../contract-bpmn/contract-default-bpmn';
-import { AlertService } from '#services/alert.service';
+import { AlertService } from '#shared/alert.service';
 
 @Component({
     selector: 'app-contract-flow-dialog',

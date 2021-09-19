@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/alert.service';
 import { AlarmService } from 'app/services/feature-services/alarm.service';
 import { RiskModuleService } from 'app/services/feature-services/risk-module.service';
 import { AddAlarmComponent } from '../add-alarm/add-alarm.component';
