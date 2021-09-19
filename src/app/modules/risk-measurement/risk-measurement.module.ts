@@ -13,6 +13,7 @@ import { AssetsReturnComponent } from './assets-return/assets-return.component';
 import { RiskMeasurementRoutingModule } from './risk-measurement-routing.module';
 import { RiskMeasuringComponent } from './risk-measuring/risk-measuring.component';
 import { YieldCurveComponent } from './yield-curve/yield-curve.component';
+import { HeaderModule } from '../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [AssetDebitDetailDialogComponent, YieldCurveComponent, AssetsReturnComponent, RiskMeasuringComponent],
@@ -27,6 +28,7 @@ import { YieldCurveComponent } from './yield-curve/yield-curve.component';
         ChartModule,
         LayoutModule,
         MatProgressBarModule,
+        HeaderModule,
     ],
 })
 export class RiskMeasurementModule {}

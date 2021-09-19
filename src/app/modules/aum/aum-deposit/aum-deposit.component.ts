@@ -3,6 +3,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
+import { Column } from '#shared/components/table/table.model';
 
 am4core.useTheme(am4themes_animated);
 
@@ -13,7 +14,7 @@ am4core.useTheme(am4themes_animated);
 })
 export class AumDepositComponent {
     @Input() aumDeposit: any;
-    columns: any;
+    columns: Array<Column>;
 
     constructor(public dialog: MatDialog) {
         this.createColumns();
@@ -32,16 +33,28 @@ export class AumDepositComponent {
             {
                 id: 'rowDetail',
                 type: 'rowDetail',
-                click: (row) => console.log('row clicked once', row),
                 doubleClickable: true,
+                click: (row) => console.log('row clicked once', row),
                 doubleClick: (row) => {
                     const dialogRef = this.dialog.open(TableDialogComponent, {
                         width: '80vw',
                         data: {
                             title: `${row.accountNumber} - ${row.bankName}`,
                             columns: [
-                                { name: 'حجم', id: 'volume', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-                                { name: 'ارزش', id: 'value', type: 'price', headerAlign: 'center', dataAlign: 'center' },
+                                {
+                                    name: 'حجم',
+                                    id: 'volume',
+                                    type: 'number',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
+                                {
+                                    name: 'ارزش',
+                                    id: 'value',
+                                    type: 'price',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
                                 { name: 'نام', id: 'name', type: 'string', headerAlign: 'center', dataAlign: 'center' },
                             ],
                             data: row.details,

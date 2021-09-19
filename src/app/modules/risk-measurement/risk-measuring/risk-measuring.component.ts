@@ -24,23 +24,78 @@ export class RiskMeasuringComponent implements OnInit {
     public chartType = 'line';
     public chartDatasets: Array<any> = [{ data: [], label: '' }];
     public chartLabels: Array<any> = [];
-    public chartColors: Array<any> = [{ backgroundColor: 'transparent', borderColor: this.generateRandomColor(), borderWidth: 1 }];
+    public chartColors: Array<any> = [
+        {
+            backgroundColor: 'transparent',
+            borderColor: this.generateRandomColor(),
+            borderWidth: 1,
+        },
+    ];
     public chartOptions: any = { responsive: true };
 
     showingData = [];
 
     showingDataColumns = [
         { name: 'VaR', id: 'VaR', type: 'number', minWidth: '130px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'Upper bound VaR', id: 'upperBoundVar', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'worstVaR', id: 'worstVaR', type: 'number', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'Provision', id: 'provision', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
+        {
+            name: 'Upper bound VaR',
+            id: 'upperBoundVar',
+            type: 'string',
+            minWidth: '150px',
+            headerAlign: 'center',
+            dataAlign: 'center',
+        },
+        {
+            name: 'worstVaR',
+            id: 'worstVaR',
+            type: 'number',
+            minWidth: '150px',
+            headerAlign: 'center',
+            dataAlign: 'center',
+        },
+        {
+            name: 'Provision',
+            id: 'provision',
+            type: 'number',
+            minWidth: '150px',
+            headerAlign: 'center',
+            dataAlign: 'center',
+        },
     ];
 
     showingDataColumns2 = [
-        { name: 'VaR/سرمایه', id: 'VaR', type: 'number', minWidth: '130px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'Upper bound VaR/سرمایه', id: 'upperBoundVar', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'worst VaR/سرمایه', id: 'worstVaR', type: 'number', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
-        { name: 'Provision/سرمایه', id: 'provision', type: 'string', minWidth: '150px', headerAlign: 'center', dataAlign: 'center' },
+        {
+            name: 'VaR/سرمایه',
+            id: 'VaR',
+            type: 'number',
+            minWidth: '130px',
+            headerAlign: 'center',
+            dataAlign: 'center',
+        },
+        {
+            name: 'Upper bound VaR/سرمایه',
+            id: 'upperBoundVar',
+            type: 'string',
+            minWidth: '150px',
+            headerAlign: 'center',
+            dataAlign: 'center',
+        },
+        {
+            name: 'worst VaR/سرمایه',
+            id: 'worstVaR',
+            type: 'number',
+            minWidth: '150px',
+            headerAlign: 'center',
+            dataAlign: 'center',
+        },
+        {
+            name: 'Provision/سرمایه',
+            id: 'provision',
+            type: 'number',
+            minWidth: '150px',
+            headerAlign: 'center',
+            dataAlign: 'center',
+        },
     ];
     showingData2 = [];
 
@@ -73,25 +128,6 @@ export class RiskMeasuringComponent implements OnInit {
         });
     }
 
-    private createChart(dataArray): void {
-        const labels = [];
-        const data = [];
-        dataArray.forEach((element) => {
-            data.push(element.VaR);
-            const date = new Date(element.date).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-            if (!labels.includes(date)) labels.push(date);
-        });
-        this.chartDatasets[0].data = data;
-        this.chartLabels = labels;
-    }
-
-    private generateRandomColor(): string {
-        const x = Math.floor(Math.random() * 256);
-        const y = Math.floor(Math.random() * 256);
-        const z = Math.floor(Math.random() * 256);
-        return 'rgb(' + x + ',' + y + ',' + z + ')';
-    }
-
     public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
         const control: AbstractControl = this.form.controls[controlName];
         const mappedValues = _.map(_.map(values, key), (value) => value.toString());
@@ -110,5 +146,28 @@ export class RiskMeasuringComponent implements OnInit {
         } else {
             this.form.controls[controlName].patchValue([]);
         }
+    }
+
+    private createChart(dataArray): void {
+        const labels = [];
+        const data = [];
+        dataArray.forEach((element) => {
+            data.push(element.VaR);
+            const date = new Date(element.date).toLocaleDateString('fa-Ir', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            });
+            if (!labels.includes(date)) labels.push(date);
+        });
+        this.chartDatasets[0].data = data;
+        this.chartLabels = labels;
+    }
+
+    private generateRandomColor(): string {
+        const x = Math.floor(Math.random() * 256);
+        const y = Math.floor(Math.random() * 256);
+        const z = Math.floor(Math.random() * 256);
+        return 'rgb(' + x + ',' + y + ',' + z + ')';
     }
 }

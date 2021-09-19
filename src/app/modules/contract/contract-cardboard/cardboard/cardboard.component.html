@@ -1,0 +1,27 @@
+<div *ngIf="stateType === 'PRESENT'" class='page-layout h-full'>
+    <app-header [pageTitle]="'کارتابل قرارداد'" class='wp-100'>
+        <button (click)='navigateToCardboard()' color='warn' mat-stroked-button>
+            <mat-icon class='mat-18'>keyboard_return</mat-icon>
+            بازگشت
+        </button>
+    </app-header>
+
+    <div class='fuse-card mx-40 mt-20 py-20 h-5/6 flex flex-col'>
+        <div class='flex mx-52 items-center py-10' dir='ltr'>
+            <ul class='stepper' dir='ltr'>
+                <li *ngFor='let step of cardboardInfo.steps' class='stepper__item complete'>{{ step.name }}</li>
+            </ul>
+        </div>
+
+        <div class='flex justify-center w-full h-full'>
+            <div class='flex flex-col h-full w-1/2 ml-10'>
+                <app-cardboard-form class='min-height-card mb-20'></app-cardboard-form>
+                <app-cardboard-note class='min-height-card'></app-cardboard-note>
+            </div>
+
+            <div class='height-card w-2/5 mr-10'>
+                <app-cardboard-history></app-cardboard-history>
+            </div>
+        </div>
+    </div>
+</div>

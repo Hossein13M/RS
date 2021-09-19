@@ -1,21 +1,14 @@
-import { formatDate } from '@angular/common';
 import { isArray } from 'rxjs/internal-compatibility';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 export class Specification {
+    public specificationModel: SpecificationModel = { limit: 10, skip: 0, searchKeyword: {} };
+    public pageEvent: PageEvent = { currentIndex: 0, pageSize: 10 };
+
     constructor() {}
 
-    public specificationModel: SpecificationModel = {
-        limit: 10,
-        skip: 0,
-        searchKeyword: {},
-    };
-    public pageEvent: PageEvent = {
-        currentIndex: 0,
-        pageSize: 10,
-    };
-
     public convertDate(date: Date): string {
-        return formatDate(date, 'yyyy-MM-dd', 'en_US');
+        return UtilityFunctions.convertDateToGregorianFormatForServer(date);
     }
 
     public setPageDetailData(res): void {

@@ -1,11 +1,5 @@
+@use '~@angular/material' as mat;
 @import '../../../../@fuse/scss/fuse';
-
-:host ::ng-deep {
-    .mat-form-field-wrapper {
-        padding-bottom: 1.34375em;
-        margin-bottom: -1.34375em;
-    }
-}
 
 .issuer {
     padding: 10px;
@@ -57,7 +51,7 @@
             max-width: 480px;
             border-radius: 28px;
             overflow: hidden;
-            @include mat-elevation(1);
+            @include mat.elevation(1);
 
             .search {
                 width: 100%;

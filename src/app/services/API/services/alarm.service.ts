@@ -16,14 +16,26 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class AlarmService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation alarmControllerGetAlarms
      */
     static readonly AlarmControllerGetAlarmsPath = '/api/v1/alarm';
+    /**
+     * Path part for operation alarmControllerUpdateAlarm
+     */
+    static readonly AlarmControllerUpdateAlarmPath = '/api/v1/alarm';
+    /**
+     * Path part for operation alarmControllerCreateAlarm
+     */
+    static readonly AlarmControllerCreateAlarmPath = '/api/v1/alarm';
+    /**
+     * Path part for operation alarmControllerGetAlarm
+     */
+    static readonly AlarmControllerGetAlarmPath = '/api/v1/alarm/{alarmId}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -66,15 +78,8 @@ export class AlarmService extends BaseService {
      * This method doesn't expect any request body.
      */
     alarmControllerGetAlarms(params?: { limit?: number; skip?: number; moduleId?: any; searchKeyword?: any }): Observable<AlarmListResponseDto> {
-        return this.alarmControllerGetAlarms$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmListResponseDto>) => r.body as AlarmListResponseDto)
-        );
+        return this.alarmControllerGetAlarms$Response(params).pipe(map((r: StrictHttpResponse<AlarmListResponseDto>) => r.body as AlarmListResponseDto));
     }
-
-    /**
-     * Path part for operation alarmControllerUpdateAlarm
-     */
-    static readonly AlarmControllerUpdateAlarmPath = '/api/v1/alarm';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -113,11 +118,6 @@ export class AlarmService extends BaseService {
     }
 
     /**
-     * Path part for operation alarmControllerCreateAlarm
-     */
-    static readonly AlarmControllerCreateAlarmPath = '/api/v1/alarm';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `alarmControllerCreateAlarm()` instead.
      *
@@ -152,11 +152,6 @@ export class AlarmService extends BaseService {
     alarmControllerCreateAlarm(params: { body: CreateAlarmDto }): Observable<AlarmResponseDto> {
         return this.alarmControllerCreateAlarm$Response(params).pipe(map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto));
     }
-
-    /**
-     * Path part for operation alarmControllerGetAlarm
-     */
-    static readonly AlarmControllerGetAlarmPath = '/api/v1/alarm/{alarmId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

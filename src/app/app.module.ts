@@ -10,29 +10,28 @@ import { FuseSharedModule } from '@fuse/shared.module';
 import { AppComponent } from 'app/app.component';
 import { fuseConfig } from 'app/dashboard-configs';
 import { LayoutModule } from 'app/layout/layout.module';
-import { SnotifyModule, SnotifyService, ToastDefaults } from 'ng-snotify';
-import { LoginModule } from './modules/login/login.module';
 import { MessagingModule } from './modules/mails/messaging.module';
 import { SendMailComponent } from './modules/mails/send-mail/send-mail.component';
 import { OpRiskModule } from './modules/op-risk/op-risk.module';
 import { PortfolioManagementModule } from './modules/portfolio-management/portfolio-management.module';
 import { TestModule } from './modules/test/test.module';
-import { ApiModule } from './services/API/api.module';
-import { AuthGuard } from './services/auth.guard';
+import { ApiModule } from '#services/API/api.module';
 import { getFarsiPaginatorIntl } from '#shared/components/table/farsi-paginator-intl';
 import { MaterialModule } from '#shared/material.module';
 import { ShareModule } from '#shared/share.module';
 import { GlModule } from './modules/gl/gl.module';
+import { AlertService } from '#shared/services/alert.service';
+import { AuthorizationModule } from './modules/authorization/authorization.module';
+import { AuthGuard } from '#shared/services/auth.guard';
 
 const appRoutes: Routes = [
     {
         path: 'login',
-        loadChildren: () => import('app/modules/login/login.module').then((m) => m.LoginModule),
+        loadChildren: () => import('app/modules/authorization/authorization.module').then((m) => m.AuthorizationModule),
     },
     {
-        path: 'flow',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('app/modules/flow/flow.module').then((m) => m.FlowModule),
+        path: 'contract',
+        loadChildren: () => import('app/modules/contract/contract.module').then((m) => m.ContractModule),
     },
     {
         path: 'aum',
@@ -64,10 +63,6 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/modules/risk-measurement/risk-measurement.module').then((m) => m.RiskMeasurementModule),
     },
     {
-        path: 'user',
-        loadChildren: () => import('app/modules/user/user.module').then((m) => m.UserModule),
-    },
-    {
         path: 'system-settings',
         loadChildren: () => import('app/modules/system-settings/system-settings.module').then((m) => m.SystemSettingsModule),
     },
@@ -75,10 +70,13 @@ const appRoutes: Routes = [
         path: 'welcome',
         loadChildren: () => import('app/modules/welcome/welcome.module').then((m) => m.WelcomeModule),
     },
-
     {
         path: 'assets-monitoring',
         loadChildren: () => import('app/modules/assets-monitoring/assets-monitoring.module').then((m) => m.AssetsMonitoringModule),
+    },
+    {
+        path: 'organizations-structure',
+        loadChildren: () => import('app/modules/organizations-structure/organization-structure.module').then((m) => m.OrganizationStructureModule),
     },
 ];
 
@@ -86,7 +84,7 @@ const appRoutes: Routes = [
     declarations: [AppComponent],
     imports: [
         FuseNavigationModule,
-        LoginModule,
+        AuthorizationModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
@@ -97,7 +95,6 @@ const appRoutes: Routes = [
         FuseModule.forRoot(fuseConfig),
         FuseProgressBarModule,
         FuseSharedModule,
-        SnotifyModule,
         LayoutModule,
         FuseThemeOptionsModule,
         PortfolioManagementModule,
@@ -107,12 +104,7 @@ const appRoutes: Routes = [
         TestModule, // --> Test Playground
     ],
     bootstrap: [AppComponent],
-    providers: [
-        { provide: 'SnotifyToastConfig', useValue: ToastDefaults },
-        { provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() },
-        SnotifyService,
-        AuthGuard,
-    ],
+    providers: [{ provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() }, AuthGuard, AlertService],
     entryComponents: [SendMailComponent],
 })
 export class AppModule {}

@@ -1,29 +1,17 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import jwtDecode from 'jwt-decode';
 import { BehaviorSubject, EMPTY, Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
-import { AuthenticationService } from '../../authentication.service';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserInfoService {
-    private userInfoSubject: BehaviorSubject<any>;
     public userInfo$: Observable<any>;
-
-    public get userInfo(): any {
-        return this.userInfoSubject.getValue();
-    }
-
-    private userTokenInfoSubject: BehaviorSubject<any>;
     public userTokenInfo$: Observable<any>;
+    private userInfoSubject: BehaviorSubject<any>;
+    private userTokenInfoSubject: BehaviorSubject<any>;
 
-    public get userTokenInfo(): any {
-        return this.userInfoSubject.getValue();
-    }
-
-    constructor(private http: HttpClient, private authenticationService: AuthenticationService) {
+    constructor() {
         this.userInfoSubject = new BehaviorSubject<any>(null);
         this.userInfo$ = this.userInfoSubject.asObservable().pipe(
             switchMap(
@@ -43,15 +31,9 @@ export class UserInfoService {
                 }
             )
         );
-
-        this.authenticationService.userToken$.subscribe((accessToken) => {
-            const userTokenInfo = jwtDecode(accessToken);
-            this.getUserInfo().subscribe();
-            this.userTokenInfoSubject.next(userTokenInfo);
-        });
     }
 
-    getUserInfo(): Observable<any> {
-        return this.http.get('/api/v1/user/details').pipe(tap((res) => this.userInfoSubject.next(res)));
+    public get userInfo(): any {
+        return this.userInfoSubject.getValue();
     }
 }

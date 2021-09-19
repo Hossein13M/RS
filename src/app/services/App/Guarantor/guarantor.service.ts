@@ -3,6 +3,17 @@ import { GuarantorDtoWithId } from 'app/services/API/models';
 import { GuarantorService } from 'app/services/API/services';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+
+export interface Guarantor {
+    guarantor: string;
+    code: string;
+    type: string;
+    otc: number;
+    id: number;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +34,7 @@ export class GuarantorsService {
      **  end inital paging
      */
 
-    constructor(private guarantorService: GuarantorService) {}
+    constructor(private guarantorService: GuarantorService, private http: HttpClient) {}
 
     getGuarantors(searchKeyword?: string): Observable<Array<GuarantorDtoWithId>> {
         let param = {
@@ -143,5 +154,10 @@ export class GuarantorsService {
                 this.guarantorList.next(guarantorList);
             })
         );
+    }
+
+    public $getGuarantor(paginationParams?, searchParams?): Observable<ResponseWithPagination<Guarantor>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get<ResponseWithPagination<Guarantor>>('/api/v1/guarantor', { params });
     }
 }

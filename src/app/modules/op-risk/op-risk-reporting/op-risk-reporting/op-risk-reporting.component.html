@@ -1,104 +1,105 @@
-<div class="page-layout">
-    <app-header pageTitle="گزارش‌های ریسک عملیاتی"> </app-header>
-    <div fxLayout="column wrap" dir="rtl" style="overflow: auto">
-        <div class="fuse-card">
-            <mat-tab-group (selectedTabChange)="changeTab()" mat-stretch-tabs>
-                <mat-tab label="ریسک">
-                    <div style="padding: 10px" fxLayout="column">
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="chart-box" style="margin: 30px 0">
+<div class='page-layout'>
+    <app-header pageTitle='گزارش‌های ریسک عملیاتی'></app-header>
+    <div dir='rtl' fxLayout='column wrap' style='overflow: auto'>
+        <div class='fuse-card'>
+            <mat-tab-group (selectedTabChange)='changeTab()' mat-stretch-tabs>
+                <mat-tab label='ریسک'>
+                    <div fxLayout='column' style='padding: 10px'>
+                        <div class='chart-box' fxLayout='row' fxLayoutAlign='space-between' style='margin: 30px 0'>
                             <app-pie-chart-js
-                                [data]="diversPieChartData"
-                                [chartName]="'محرکه عملیاتی'"
                                 (onDatePicked)="getChildPie($event, 'OPRiskDriver')"
-                                [height]="150"
+                                [chartName]="'محرکه عملیاتی'"
+                                [data]='diversPieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                             <app-pie-chart-js
-                                [data]="levelPieChartData"
-                                [chartName]="'طبقه ریسک'"
                                 (onDatePicked)="getChildPie($event, 'OPRiskLevel')"
-                                [height]="150"
+                                [chartName]="'طبقه ریسک'"
+                                [data]='levelPieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                             <app-pie-chart-js
-                                [data]="recoveryPieChartData"
-                                [chartName]="'پوشش'"
                                 (onDatePicked)="getChildPie($event, 'OPRiskRecovery')"
-                                [height]="150"
+                                [chartName]="'پوشش'"
+                                [data]='recoveryPieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                             <app-pie-chart-js
-                                [data]="losePieChartData"
-                                [chartName]="'زیان'"
                                 (onDatePicked)="getChildPie($event, 'losse')"
-                                [height]="150"
+                                [chartName]="'زیان'"
+                                [data]='losePieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                         </div>
 
                         <mat-divider></mat-divider>
 
-                        <form [formGroup]="barChartSearchForm" fxLayout="row" fxLayoutAlign="space-evenly none" style="margin: 30px 0" fxFlex="100">
-                            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-evenly none">
-                                <div fxLayout="column" fxFlex="300px" fxLayoutAlign="space-evenly none">
-                                    <mat-form-field appearance="outline">
+                        <form [formGroup]='barChartSearchForm' fxFlex='100' fxLayout='row'
+                              fxLayoutAlign='space-evenly none' style='margin: 30px 0'>
+                            <div fxLayout='row' fxLayoutAlign='space-evenly none' fxLayoutGap='20px'>
+                                <div fxFlex='300px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                    <mat-form-field appearance='outline'>
                                         <mat-label>محور افقی</mat-label>
-                                        <mat-select formControlName="xAxis">
-                                            <mat-option *ngFor="let x of xAxis" [value]="x.type">{{ x.titleFA }}</mat-option>
+                                        <mat-select formControlName='xAxis'>
+                                            <mat-option *ngFor='let x of xAxis'
+                                                        [value]='x.type'>{{ x.titleFA }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
-                                <div fxLayout="column" fxFlex="300px" fxLayoutAlign="space-evenly none">
-                                    <mat-form-field appearance="outline">
+                                <div fxFlex='300px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                    <mat-form-field appearance='outline'>
                                         <mat-label>محور عمودی</mat-label>
-                                        <mat-select formControlName="yAxis">
-                                            <mat-option *ngFor="let xs of yAxis" [value]="xs.type">{{ xs.titleFA }}</mat-option>
+                                        <mat-select formControlName='yAxis'>
+                                            <mat-option *ngFor='let xs of yAxis'
+                                                        [value]='xs.type'>{{ xs.titleFA }}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
                             </div>
 
-                            <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-evenly none" style="margin-right: auto">
-                                <div fxLayout="column" fxFlex="100px" fxLayoutAlign="space-evenly none">
-                                    <button
-                                        mat-flat-button
-                                        color="accent"
-                                        [disabled]="barChartSearchForm.invalid"
-                                        (click)="getBarChart('riskBarChartData')"
-                                    >
+                            <div fxLayout='row' fxLayoutAlign='space-evenly none' fxLayoutGap='20px'
+                                 style='margin-right: auto'>
+                                <div fxFlex='100px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                    <button (click)="getBarChart('riskBarChartData')" [disabled]='barChartSearchForm.invalid' color='accent'
+                                            mat-flat-button>
                                         <mat-icon>search</mat-icon>
                                         جستجو
                                     </button>
                                 </div>
-                                <div fxLayout="column" fxFlex="100px" fxLayoutAlign="space-evenly none">
-                                    <button color="warn" mat-stroked-button (click)="riskBarChartData = null">
+                                <div fxFlex='100px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                    <button (click)='riskBarChartData = null' color='warn' mat-stroked-button>
                                         <mat-icon>cancel</mat-icon>
-                                        انصراف
+                                        برگشت
                                     </button>
                                 </div>
                             </div>
                         </form>
 
-                        <div fxLayout="row" fxLayoutAlign="space-evenly none" fxFlex="100" style="margin-top: 30px">
-                            <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none">
-                                <app-bar-chart-js [data]="riskBarChartData" [height]="100"></app-bar-chart-js>
+                        <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none' style='margin-top: 30px'>
+                            <div fxFlex='100' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                <app-bar-chart-js [data]='riskBarChartData' [height]='100'></app-bar-chart-js>
                             </div>
                         </div>
 
                         <mat-divider></mat-divider>
 
-                        <div fxLayout="row" fxLayoutAlign="space-evenly none" fxFlex="100" style="margin-top: 30px">
-                            <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none">
+                        <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none' style='margin-top: 30px'>
+                            <div fxFlex='100' fxLayout='column' fxLayoutAlign='space-evenly none'>
                                 <mat-accordion>
                                     <mat-expansion-panel>
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>گزارش‌گیری ريسك عملياتي</mat-panel-title>
                                         </mat-expansion-panel-header>
-                                        <ul style="list-style: none">
-                                            <li *ngFor="let top of tops">
+                                        <ul style='list-style: none'>
+                                            <li *ngFor='let top of tops'>
                                                 <mat-accordion>
                                                     <mat-expansion-panel>
                                                         <mat-expansion-panel-header>
                                                             <mat-panel-title>{{ top.name }}</mat-panel-title>
                                                         </mat-expansion-panel-header>
                                                         <mat-chip-list>
-                                                            <mat-chip *ngFor="let operator of top.items" color="accent" selected="true">
+                                                            <mat-chip *ngFor='let operator of top.items' color='accent'
+                                                                      selected='true'>
                                                                 {{ operator.titleFA }}
                                                             </mat-chip>
                                                         </mat-chip-list>
@@ -112,104 +113,109 @@
                         </div>
                     </div>
                 </mat-tab>
-                <mat-tab label="زیان">
-                    <div style="padding: 10px" fxLayout="column">
-                        <div fxLayout="row" fxLayoutAlign="space-between" class="chart-box" style="margin: 30px 0">
+                <mat-tab label='زیان'>
+                    <div fxLayout='column' style='padding: 10px'>
+                        <div class='chart-box' fxLayout='row' fxLayoutAlign='space-between' style='margin: 30px 0'>
                             <app-pie-chart-js
-                                [data]="diversPieChartData"
-                                [chartName]="'محرکه عملیاتی'"
                                 (onDatePicked)="getChildPie($event, 'OPRiskDriver')"
-                                [height]="150"
+                                [chartName]="'محرکه عملیاتی'"
+                                [data]='diversPieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                             <app-pie-chart-js
-                                [data]="levelPieChartData"
-                                [chartName]="'طبقه ریسک'"
                                 (onDatePicked)="getChildPie($event, 'OPRiskLevel')"
-                                [height]="150"
+                                [chartName]="'طبقه ریسک'"
+                                [data]='levelPieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                             <app-pie-chart-js
-                                [data]="recoveryPieChartData"
-                                [chartName]="'پوشش'"
                                 (onDatePicked)="getChildPie($event, 'OPRiskRecovery')"
-                                [height]="150"
+                                [chartName]="'پوشش'"
+                                [data]='recoveryPieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                             <app-pie-chart-js
-                                [data]="losePieChartData"
-                                [chartName]="'زیان'"
                                 (onDatePicked)="getChildPie($event, 'losse')"
-                                [height]="150"
+                                [chartName]="'زیان'"
+                                [data]='losePieChartData'
+                                [height]='150'
                             ></app-pie-chart-js>
                         </div>
 
                         <mat-divider></mat-divider>
 
-                        <form [formGroup]="barChartSearchForm" fxLayout="row" fxLayoutAlign="space-evenly none" style="margin: 30px 0" fxFlex="100">
-                            <div fxLayout="row" fxLayoutAlign="space-evenly none" fxFlex="100">
-                                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-evenly none">
-                                    <div fxLayout="column" fxFlex="300px" fxLayoutAlign="space-evenly none">
-                                        <mat-form-field appearance="outline">
+                        <form [formGroup]='barChartSearchForm' fxFlex='100' fxLayout='row'
+                              fxLayoutAlign='space-evenly none' style='margin: 30px 0'>
+                            <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none'>
+                                <div fxLayout='row' fxLayoutAlign='space-evenly none' fxLayoutGap='20px'>
+                                    <div fxFlex='300px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                        <mat-form-field appearance='outline'>
                                             <mat-label>محور افقی</mat-label>
-                                            <mat-select formControlName="xAxis">
-                                                <mat-option *ngFor="let x of xAxis" [value]="x.type">{{ x.titleFA }}</mat-option>
+                                            <mat-select formControlName='xAxis'>
+                                                <mat-option *ngFor='let x of xAxis'
+                                                            [value]='x.type'>{{ x.titleFA }}</mat-option>
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
-                                    <div fxLayout="column" fxFlex="300px" fxLayoutAlign="space-evenly none">
-                                        <mat-form-field appearance="outline">
+                                    <div fxFlex='300px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                        <mat-form-field appearance='outline'>
                                             <mat-label>محور عمودی</mat-label>
-                                            <mat-select formControlName="yAxis">
-                                                <mat-option *ngFor="let xs of yAxis" [value]="xs.type">{{ xs.titleFA }}</mat-option>
+                                            <mat-select formControlName='yAxis'>
+                                                <mat-option *ngFor='let xs of yAxis'
+                                                            [value]='xs.type'>{{ xs.titleFA }}</mat-option>
                                             </mat-select>
                                         </mat-form-field>
                                     </div>
                                 </div>
 
-                                <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-evenly none" style="margin-right: auto">
-                                    <div fxLayout="column" fxFlex="100px" fxLayoutAlign="space-evenly none">
+                                <div fxLayout='row' fxLayoutAlign='space-evenly none' fxLayoutGap='20px'
+                                     style='margin-right: auto'>
+                                    <div fxFlex='100px' fxLayout='column' fxLayoutAlign='space-evenly none'>
                                         <button
-                                            mat-flat-button
-                                            color="accent"
-                                            [disabled]="barChartSearchForm.invalid"
                                             (click)="getBarChart('lossBarChartData')"
+                                            [disabled]='barChartSearchForm.invalid'
+                                            color='accent'
+                                            mat-flat-button
                                         >
                                             <mat-icon>search</mat-icon>
                                             جستجو
                                         </button>
                                     </div>
-                                    <div fxLayout="column" fxFlex="100px" fxLayoutAlign="space-evenly none">
-                                        <button color="warn" mat-stroked-button (click)="lossBarChartData = null">
+                                    <div fxFlex='100px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                        <button (click)='lossBarChartData = null' color='warn' mat-stroked-button>
                                             <mat-icon>cancel</mat-icon>
-                                            انصراف
+                                            برگشت
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </form>
 
-                        <div fxLayout="row" fxLayoutAlign="space-evenly none" fxFlex="100" style="margin-top: 30px">
-                            <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none">
-                                <app-bar-chart-js [data]="lossBarChartData" [height]="100"></app-bar-chart-js>
+                        <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none' style='margin-top: 30px'>
+                            <div fxFlex='100' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                                <app-bar-chart-js [data]='lossBarChartData' [height]='100'></app-bar-chart-js>
                             </div>
                         </div>
 
                         <mat-divider></mat-divider>
 
-                        <div fxLayout="row" fxLayoutAlign="space-evenly none" fxFlex="100" style="margin: 30px">
-                            <div fxLayout="column" fxFlex="100" fxLayoutAlign="space-evenly none">
+                        <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none' style='margin: 30px'>
+                            <div fxFlex='100' fxLayout='column' fxLayoutAlign='space-evenly none'>
                                 <mat-accordion>
                                     <mat-expansion-panel>
                                         <mat-expansion-panel-header>
                                             <mat-panel-title>گزارش‌گیری ريسك عملياتي</mat-panel-title>
                                         </mat-expansion-panel-header>
-                                        <ul style="list-style: none">
-                                            <li *ngFor="let top of tops">
+                                        <ul style='list-style: none'>
+                                            <li *ngFor='let top of tops'>
                                                 <mat-accordion>
                                                     <mat-expansion-panel>
                                                         <mat-expansion-panel-header>
                                                             <mat-panel-title>{{ top.name }}</mat-panel-title>
                                                         </mat-expansion-panel-header>
                                                         <mat-chip-list>
-                                                            <mat-chip *ngFor="let operator of top.items" color="accent" selected="true">
+                                                            <mat-chip *ngFor='let operator of top.items' color='accent'
+                                                                      selected='true'>
                                                                 {{ operator.titleFA }}
                                                             </mat-chip>
                                                         </mat-chip-list>

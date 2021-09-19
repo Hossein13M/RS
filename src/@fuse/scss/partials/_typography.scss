@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 // -----------------------------------------------------------------------------------------------------
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
@@ -44,6 +45,7 @@ html {
     svg {
         text {
         }
+
         tspan {
             font-family: IRANSans !important;
             font-size: 10px;
@@ -106,6 +108,7 @@ h6,
 .h6 {
     font-size: 12px;
 }
+
 input {
     font-family: IRANSans, 'Muli', 'Helvetica Neue', 'Arial', sans-serif;
 }
@@ -343,7 +346,7 @@ strong {
     .entry {
         margin-bottom: 24px;
         padding: 24px 32px;
-        @include mat-elevation(2);
+        @include mat.elevation(2);
 
         > .title {
             display: flex;

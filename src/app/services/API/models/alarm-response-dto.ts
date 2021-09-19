@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { ToUserDto } from './to-user-dto';
+
 export interface AlarmResponseDto {
     description: string;
     id: number;

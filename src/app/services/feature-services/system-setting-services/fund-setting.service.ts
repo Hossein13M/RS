@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
@@ -12,8 +13,9 @@ export class FundSettingService {
         return this.http.get('/api/v1/fund');
     }
 
-    getAllNoPaging(): Observable<any> {
-        return this.http.get('/api/v1/fund');
+    get(searchParams?: any): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...searchParams });
+        return this.http.get('/api/v1/fund', { params });
     }
 
     create(model): Observable<any> {

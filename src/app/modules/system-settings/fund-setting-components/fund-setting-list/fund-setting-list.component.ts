@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -15,7 +15,7 @@ import { FundSettingAddComponent } from '../fund-setting-add/fund-setting-add.co
 })
 export class FundSettingListComponent implements OnInit {
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, public fundSettingService: FundSettingService) {}
@@ -154,7 +154,10 @@ export class FundSettingListComponent implements OnInit {
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) this.fundSettingService.delete(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { AssetReturnService } from './asset-return.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-assets-return',
@@ -21,9 +22,7 @@ export class AssetsReturnComponent implements OnInit {
     public chartDatasets: Array<any> = [];
     public chartLabels: Array<any> = [];
     public chartColors: Array<any> = [];
-    public chartOptions: any = {
-        responsive: true,
-    };
+    public chartOptions: any = { responsive: true };
 
     show = false;
 
@@ -32,13 +31,12 @@ export class AssetsReturnComponent implements OnInit {
     ngOnInit(): void {
         this.searchFormGroup = new FormGroup({ endDate: new FormControl(new Date()) });
         this.get();
-        this.searchFormGroup.valueChanges.subscribe(() => {
-            this.get();
-        });
+        this.searchFormGroup.valueChanges.subscribe(() => this.get());
     }
 
     get(): void {
-        this.assetReturnService.getAssetReturns(this.searchFormGroup.value.endDate).subscribe(
+        const date = UtilityFunctions.convertDateToGregorianFormatForServer(this.searchFormGroup.value.endDate);
+        this.assetReturnService.getAssetReturns(date).subscribe(
             (response) => {
                 this.show = true;
                 this.barChart = response.barchart;
@@ -66,24 +64,16 @@ export class AssetsReturnComponent implements OnInit {
                     labels.push(date);
                 }
             }
-            this.chartDatasets.push({
-                data: data,
-                label: dataArray[i].name,
-            });
-            this.chartColors.push({
-                backgroundColor: 'transparent',
-                borderColor: this.randomColor(),
-                borderWidth: 2,
-            });
+            this.chartDatasets.push({ data: data, label: dataArray[i].name });
+            this.chartColors.push({ backgroundColor: 'transparent', borderColor: this.randomColor(), borderWidth: 2 });
         }
         this.chartLabels = labels;
     }
 
-    randomColor(): any {
+    randomColor(): string {
         const x = Math.floor(Math.random() * 256);
         const y = Math.floor(Math.random() * 256);
         const z = Math.floor(Math.random() * 256);
-        const bgColor = 'rgb(' + x + ',' + y + ',' + z + ')';
-        return bgColor;
+        return 'rgb(' + x + ',' + y + ',' + z + ')';
     }
 }

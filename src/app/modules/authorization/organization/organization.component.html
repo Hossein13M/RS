@@ -1,0 +1,58 @@
+<div class='inner-scroll' fxLayout='row' fxLayoutAlign='start' id='login'>
+    <div fxFlex fxHide fxShow.gt-xs id='login-intro'>
+        <div [@animate]="{ value: '*', params: { scale: '0.2' } }" class='logo'>
+            <img alt='logo' src='../../../../assets/images/logo.png' style='padding: 10px' />
+        </div>
+
+        <!--        <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">-->
+        <!--            به هوشمند ریسک خوش آمدید-->
+        <!--        </div>-->
+
+        <div [@animate]="{ value: '*', params: { delay: '100ms', y: '25px' } }" class='description'>
+            شرکت مدیریت ریسک هوشمند ایرانیان از اسفند ماه 1397 فعالیت خود را در حوزه مدیریت ریسک آغاز کرد. مدیریت ریسک
+            در حوزه­های مختلفی همچون سرمایه­ گذاری،
+            حسابداری تطبیق، حاکمیت شرکتی مدیریت عملکرد، مدیریت و ارزیابی پروژه، هوشمندی کسب و کار و سایر حوزه­­ های مالی
+            و غیر مالی و برای کلیه اشخاص حقوقی و
+            غیرحقوقی اعم از داخلی و خارجی کاربرد دارد و عامل تولید و فروش سیستم ­های نرم ­افزاری مربوط به این حوزه ­ها
+            است.
+        </div>
+
+        <div class='copy-right'>
+            <h5>
+                © 1399 تمامی حقوق متعلق به
+                <a href='https://www.hooshmandrisk.ir' target='__blank__'>شرکت مدیریت ریسک هوشمند ایرانیان</a>
+                می باشد.
+            </h5>
+        </div>
+    </div>
+
+    <div [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }" dir='rtl' fusePerfectScrollbar
+         id='login-form-wrapper'>
+        <div class='w-full' id='login-form'>
+            <div class='logo' fxHide.gt-xs>
+                <img alt='white logo' src='../../../../assets/images/white-logo.png' />
+            </div>
+
+            <div class='title'>سازمان فعال</div>
+
+            <form (ngSubmit)='onSubmit()' [formGroup]='form' class='w-full' name='form' novalidate>
+                <mat-form-field *ngIf='organizationData && organizationData.length > 0' appearance='outline'>
+                    <mat-label>سازمان</mat-label>
+                    <mat-select formControlName='organization' required>
+                        <mat-option *ngFor='let organization of organizationData' [value]='organization'
+                                    class='text-right'>
+                            {{ organization.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint>سازمان مورد نظر خود را انتخاب کنید.</mat-hint>
+                    <mat-error>سازمان الزامی می باشد.</mat-error>
+                </mat-form-field>
+
+                <button [disabled]='form.invalid' class='submit-button' color='primary' mat-raised-button>انتخاب
+                    سازمان
+                </button>
+            </form>
+        </div>
+        <div class='version'></div>
+    </div>
+</div>

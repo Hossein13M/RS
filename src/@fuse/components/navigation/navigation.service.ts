@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, of, Subject } from 'rxjs';
 import * as _ from 'lodash';
 import { FuseNavigationItem } from '@fuse/types';
-import { UserInfoService } from '../../../app/services/App/userInfo/user-info.service';
+import { UserInfoService } from '#services/App/userInfo/user-info.service';
 import { switchMap, take } from 'rxjs/operators';
 
 @Injectable({
@@ -11,15 +11,6 @@ import { switchMap, take } from 'rxjs/operators';
 export class FuseNavigationService {
     onItemCollapsed: Subject<any>;
     onItemCollapseToggled: Subject<any>;
-
-    // Private
-    private _onNavigationChanged: BehaviorSubject<any>;
-    private _onNavigationRegistered: BehaviorSubject<any>;
-    private _onNavigationUnregistered: BehaviorSubject<any>;
-    private _onNavigationItemAdded: BehaviorSubject<any>;
-    private _onNavigationItemUpdated: BehaviorSubject<any>;
-    private _onNavigationItemRemoved: BehaviorSubject<any>;
-
     private _currentNavigationKey: string;
     private _registry: { [key: string]: any } = {};
 
@@ -41,9 +32,8 @@ export class FuseNavigationService {
         this._onNavigationItemRemoved = new BehaviorSubject(null);
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
+    // Private
+    private _onNavigationChanged: BehaviorSubject<any>;
 
     /**
      * Get onNavigationChanged
@@ -53,6 +43,8 @@ export class FuseNavigationService {
     get onNavigationChanged(): Observable<any> {
         return this._onNavigationChanged.asObservable();
     }
+
+    private _onNavigationRegistered: BehaviorSubject<any>;
 
     /**
      * Get onNavigationRegistered
@@ -73,6 +65,8 @@ export class FuseNavigationService {
         );
     }
 
+    private _onNavigationUnregistered: BehaviorSubject<any>;
+
     /**
      * Get onNavigationUnregistered
      *
@@ -81,6 +75,12 @@ export class FuseNavigationService {
     get onNavigationUnregistered(): Observable<any> {
         return this._onNavigationUnregistered.asObservable();
     }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Accessors
+    // -----------------------------------------------------------------------------------------------------
+
+    private _onNavigationItemAdded: BehaviorSubject<any>;
 
     /**
      * Get onNavigationItemAdded
@@ -91,6 +91,8 @@ export class FuseNavigationService {
         return this._onNavigationItemAdded.asObservable();
     }
 
+    private _onNavigationItemUpdated: BehaviorSubject<any>;
+
     /**
      * Get onNavigationItemUpdated
      *
@@ -100,6 +102,8 @@ export class FuseNavigationService {
         return this._onNavigationItemUpdated.asObservable();
     }
 
+    private _onNavigationItemRemoved: BehaviorSubject<any>;
+
     /**
      * Get onNavigationItemRemoved
      *
@@ -108,64 +112,6 @@ export class FuseNavigationService {
     get onNavigationItemRemoved(): Observable<any> {
         return this._onNavigationItemRemoved.asObservable();
     }
-
-    // FIXME: Implement right access management
-    private applyAccessToNavigation(navigation): any {
-        let newNavigation = JSON.parse(JSON.stringify(navigation));
-
-        // -----------------------------------------------------
-        // const labels = [];
-        // const extractNames = (nav: any) => {
-        //     if (!nav || !nav.forEach) {
-        //         return;
-        //     }
-        //     if (nav.forEach) {
-        //         nav?.forEach((el) => {
-        //             if (el.children) {
-        //                 extractNames(el.children);
-        //             }
-        //             labels.push({ id: el.id, url: el?.url });
-        //         });
-        //     } else {
-        //         if (nav.children) {
-        //             extractNames(nav.children);
-        //         }
-        //     }
-        // };
-        // extractNames(newNavigation);
-        // -----------------------------------------------------
-
-        const access = {};
-        this.userInfoService.userInfo?.role?.split('|').forEach((el) => (access[el] = true));
-        const checkAccess = (nav: any): Array<any> => {
-            const out = [];
-            if (nav?.forEach) {
-                nav.forEach((originalEl) => {
-                    const el = JSON.parse(JSON.stringify(originalEl));
-                    if (el?.children) {
-                        el.children = checkAccess(el.children);
-                    }
-                    if (access[el?.id] && el) {
-                        out.push(el);
-                    }
-                });
-            } else {
-                if (nav?.children) {
-                    nav.children = checkAccess(nav.children);
-                }
-                if (access[nav?.id] && nav) {
-                    out.push(nav);
-                }
-            }
-            return out;
-        };
-        newNavigation = checkAccess(newNavigation);
-        return newNavigation;
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
 
     /**
      * Register the given navigation
@@ -199,6 +145,10 @@ export class FuseNavigationService {
             });
         }
     }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
 
     /**
      * Unregister the navigation from the registry
@@ -481,5 +431,59 @@ export class FuseNavigationService {
 
         // Trigger the observable
         this._onNavigationItemRemoved.next(true);
+    }
+
+    // FIXME: Implement right access management
+    private applyAccessToNavigation(navigation): any {
+        let newNavigation = JSON.parse(JSON.stringify(navigation));
+
+        // -----------------------------------------------------
+        // const labels = [];
+        // const extractNames = (nav: any) => {
+        //     if (!nav || !nav.forEach) {
+        //         return;
+        //     }
+        //     if (nav.forEach) {
+        //         nav?.forEach((el) => {
+        //             if (el.children) {
+        //                 extractNames(el.children);
+        //             }
+        //             labels.push({ id: el.id, url: el?.url });
+        //         });
+        //     } else {
+        //         if (nav.children) {
+        //             extractNames(nav.children);
+        //         }
+        //     }
+        // };
+        // extractNames(newNavigation);
+        // -----------------------------------------------------
+
+        const access = {};
+        this.userInfoService.userInfo?.role?.split('|').forEach((el) => (access[el] = true));
+        const checkAccess = (nav: any): Array<any> => {
+            const out = [];
+            if (nav?.forEach) {
+                nav.forEach((originalEl) => {
+                    const el = JSON.parse(JSON.stringify(originalEl));
+                    if (el?.children) {
+                        el.children = checkAccess(el.children);
+                    }
+                    if (access[el?.id] && el) {
+                        out.push(el);
+                    }
+                });
+            } else {
+                if (nav?.children) {
+                    nav.children = checkAccess(nav.children);
+                }
+                if (access[nav?.id] && nav) {
+                    out.push(nav);
+                }
+            }
+            return out;
+        };
+        newNavigation = checkAccess(newNavigation);
+        return newNavigation;
     }
 }

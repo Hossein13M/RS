@@ -13,14 +13,14 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class SubsidiaryLedgerTypeCodesService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation subsidiaryLedgerTypeCodesControllerGetFundSubsidiaryLedgerTypeCodes
      */
     static readonly SubsidiaryLedgerTypeCodesControllerGetFundSubsidiaryLedgerTypeCodesPath = '/api/v1/subsidiary-ledger-type-codes';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -67,10 +67,7 @@ export class SubsidiaryLedgerTypeCodesService extends BaseService {
         searchKey?: string;
     }): Observable<Array<GetFundSubsidiaryLedgerTypeCodesResponseDto>> {
         return this.subsidiaryLedgerTypeCodesControllerGetFundSubsidiaryLedgerTypeCodes$Response(params).pipe(
-            map(
-                (r: StrictHttpResponse<Array<GetFundSubsidiaryLedgerTypeCodesResponseDto>>) =>
-                    r.body as Array<GetFundSubsidiaryLedgerTypeCodesResponseDto>
-            )
+            map((r: StrictHttpResponse<Array<GetFundSubsidiaryLedgerTypeCodesResponseDto>>) => r.body as Array<GetFundSubsidiaryLedgerTypeCodesResponseDto>)
         );
     }
 }

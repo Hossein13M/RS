@@ -7,7 +7,6 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({ providedIn: 'root' })
 export class GlService {
-    constructor(private http: HttpClient) {}
     public glHierarchy: Array<TreeOrderType> = [
         TreeOrderType.Category,
         TreeOrderType.Group,
@@ -15,6 +14,8 @@ export class GlService {
         TreeOrderType.Subsidiary,
         TreeOrderType.Detail,
     ];
+
+    constructor(private http: HttpClient) {}
 
     public getGLLevels(code, type: TreeOrderType): Observable<any> {
         const params: any = {};
@@ -99,5 +100,4 @@ export class GlService {
     public getAllFundTypes(): Observable<any> {
         return this.http.get('/api/v1/fund-type' + '?limit=1000&skip=0');
     }
-
 }

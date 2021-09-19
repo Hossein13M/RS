@@ -1,8 +1,8 @@
-import { formatDate } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TradeDashboardTableService } from './trade-dashboard-table.service';
 import { StateType } from '#shared/state-type.enum';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-dashboard-table',
@@ -13,7 +13,7 @@ import { StateType } from '#shared/state-type.enum';
 export class TradeDashboardTableComponent implements OnInit, OnChanges {
     @Input() date: Date;
     data: Array<any>;
-    columns: Array<any>;
+    columns: Array<{ name: string; id: string; type: string; headerAlign: string; dataAlign: string }>;
     form: FormGroup;
     stateType: StateType = StateType.LOADING;
 
@@ -24,9 +24,31 @@ export class TradeDashboardTableComponent implements OnInit, OnChanges {
         this.getTradeDashboardTable();
     }
 
-    private initializeTableColumns() {
+    ngOnChanges(): void {
+        this.getTradeDashboardTable();
+    }
+
+    getTradeDashboardTable(): void {
+        this.stateType = StateType.LOADING;
+        this.data = null;
+        this.tradeDashboardTableService.getTradeDashboardTable(UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.date))).subscribe(
+            (response) => {
+                this.data = [response];
+                this.stateType = StateType.PRESENT;
+            },
+            () => (this.stateType = StateType.FAIL)
+        );
+    }
+
+    private initializeTableColumns(): void {
         this.columns = [
-            { name: 'ارزش دارایی‌های تمدن', id: 'totalAssets', type: 'price', headerAlign: 'center', dataAlign: 'center' },
+            {
+                name: 'ارزش دارایی‌های تمدن',
+                id: 'totalAssets',
+                type: 'price',
+                headerAlign: 'center',
+                dataAlign: 'center',
+            },
             { name: 'سهام', id: 'stock', type: 'number', headerAlign: 'center', dataAlign: 'center' },
             { name: 'صکوک', id: 'sukuk', type: 'number', headerAlign: 'center', dataAlign: 'center' },
             { name: 'سلف', id: 'forward', type: 'number', headerAlign: 'center', dataAlign: 'center' },
@@ -37,21 +59,5 @@ export class TradeDashboardTableComponent implements OnInit, OnChanges {
             { name: 'اسناد خزانه', id: 'treasury', type: 'number', headerAlign: 'center', dataAlign: 'center' },
             { name: 'وجه نقد', id: 'cash', type: 'number', headerAlign: 'center', dataAlign: 'center' },
         ];
-    }
-
-    ngOnChanges() {
-        this.getTradeDashboardTable();
-    }
-
-    getTradeDashboardTable(): void {
-        this.stateType = StateType.LOADING;
-        this.data = null;
-        this.tradeDashboardTableService.getTradeDashboardTable(formatDate(new Date(this.date), 'yyyy-MM-dd', 'en_US')).subscribe(
-            (response) => {
-                this.data = [response];
-                this.stateType = StateType.PRESENT;
-            },
-            () => (this.stateType = StateType.FAIL)
-        );
     }
 }

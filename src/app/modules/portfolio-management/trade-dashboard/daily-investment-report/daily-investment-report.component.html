@@ -1,26 +1,28 @@
-<div class="container fuse-card" dir="rtl">
-    <div class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl">
-        <h3 class="pr-10">گزارش روزانه‌ی سرمایه‌گزاری‌ها</h3>
+<div class='container fuse-card' dir='rtl'>
+    <div class='header' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center'>
+        <h3 class='pr-10'>گزارش روزانه‌ی سرمایه‌گزاری‌ها</h3>
     </div>
 
     <mat-divider></mat-divider>
 
-    <div class="table-container">
-        <div *ngIf="dailyInvestment.state === 'PRESENT' && dailyInvestment.data && dailyInvestment.data.length > 0" class="table">
+    <div class='table-container'>
+        <div *ngIf="dailyInvestment.state === 'PRESENT' && dailyInvestment.data && dailyInvestment.data.length > 0"
+             class='table'>
             <app-table
-                [data]="dailyInvestment.data"
-                [columns]="columns"
+                (paginationEvent)='pageHandler($event)'
+                [columns]='columns'
+                [data]='dailyInvestment.data'
+                [paginationObject]='pagination'
                 [paginationSettings]="{ mode: 'backend' }"
-                [paginationObj]="pagination"
-                (paginationChange)="pageHandler($event)"
             >
             </app-table>
         </div>
 
-        <div fxLayout="row wrap" fxLayoutAlign="center center" class="full">
+        <div class='full' fxLayout='row wrap' fxLayoutAlign='center center'>
             <mat-spinner *ngIf="dailyInvestment.state === 'LOADING'"></mat-spinner>
             <p *ngIf="dailyInvestment.state === 'FAIL'">دریافت داده ناموفق بود</p>
-            <p *ngIf="dailyInvestment.state === 'PRESENT' && dailyInvestment.data && dailyInvestment.data.length == 0">داده‌ای برای نمایش وجود ندارد</p>
+            <p *ngIf="dailyInvestment.state === 'PRESENT' && dailyInvestment.data && dailyInvestment.data.length == 0">
+                داده‌ای برای نمایش وجود ندارد</p>
         </div>
     </div>
 </div>

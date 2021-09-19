@@ -1,18 +1,18 @@
-<div class="dialog-container">
+<div class='dialog-container'>
     <div [title]="'یادآوری'" appDialogHeader>
-        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
     </div>
-    <form [formGroup]="form" autocomplete="off" class="form-container">
-        <div class="form-row" dir="rtl">
-            <mat-form-field appearance="outline">
+    <form [formGroup]='form' autocomplete='off' class='form-container'>
+        <div class='form-row' dir='rtl'>
+            <mat-form-field appearance='outline'>
                 <mat-label>
                     تاریخ یادآوری
-                    <span style="color: red">*</span>
+                    <span style='color: red'>*</span>
                 </mat-label>
-                <input (click)="start1.open()" matInput formControlName="date"
-                       [matDatepicker]="start1"
+                <input (click)='start1.open()' [matDatepicker]='start1' formControlName='date'
+                       matInput
                 >
-                <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                <mat-datepicker-toggle [for]='start1' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #start1></mat-datepicker>
                 <mat-error>
                     وارد کردن این فیلد الزامی است.
@@ -20,17 +20,17 @@
             </mat-form-field>
         </div>
     </form>
-    <div class="form-btn-container">
-        <button [color]="'accent'"
-                [disabled]="!form.valid"
-                (click)="createReminder()"
+    <div class='form-btn-container'>
+        <button (click)='createReminder()'
+                [color]="'accent'"
+                [disabled]='!form.valid'
                 mat-raised-button>
             ثبت
             <mat-icon>done</mat-icon>
         </button>
-        <button style="margin-left: 10px" [color]="'warn'" [mat-dialog-close]="true"
-                mat-raised-button>
-            انصراف
+        <button [color]="'warn'" [mat-dialog-close]='true' mat-raised-button
+                style='margin-left: 10px'>
+            برگشت
             <mat-icon>close</mat-icon>
         </button>
     </div>

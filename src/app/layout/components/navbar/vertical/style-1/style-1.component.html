@@ -1,43 +1,33 @@
-<div class="navbar-top" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
-    <div class="logo">
-        <img class="logo-icon" src="assets/images/favicon.png" />
-        <img class="logo-text secondary-text" src="assets/images/logo-text.png" />
+<div class='navbar-top primary-900'>
+    <div class='logo flex justify-center'>
+        <img alt='logo-text' class='logo-text secondary-text' src='assets/images/logo-text.png' />
     </div>
 
-    <div class="buttons">
-        <button mat-icon-button class="toggle-sidebar-folded" (click)="toggleSidebarFolded()" fxHide.lt-lg>
-            <mat-icon class="secondary-text">menu</mat-icon>
+    <div class='buttons'>
+        <button (click)='toggleSidebarFolded()' class='toggle-sidebar-folded' fxHide.lt-lg mat-icon-button>
+            <mat-icon class='secondary-text'>menu</mat-icon>
         </button>
 
-        <button mat-icon-button class="toggle-sidebar-opened" (click)="toggleSidebarOpened()" fxHide.gt-md>
-            <mat-icon class="secondary-text">arrow_back</mat-icon>
+        <button (click)='toggleSidebarOpened()' class='toggle-sidebar-opened' fxHide.gt-md mat-icon-button>
+            <mat-icon class='secondary-text'>arrow_back</mat-icon>
         </button>
     </div>
 </div>
 
 <div
-    class="navbar-scroll-container"
-    [ngClass]="fuseConfig.layout.navbar.primaryBackground"
+    [fusePerfectScrollbarOptions]='{ suppressScrollX: true }'
+    [ngClass]='fuseConfig.layout.navbar.primaryBackground'
+    class='navbar-scroll-container'
     fusePerfectScrollbar
-    [fusePerfectScrollbarOptions]="{ suppressScrollX: true }"
 >
-    <!-- <div class="user" fxLayout="column" [ngClass]="fuseConfig.layout.navbar.secondaryBackground">
-
-        <div class="h3 username">{{user?.userRoles[0]?.firstName}}  {{user?.userRoles[0]?.lastName}}</div>
-        <div class="h5 email hint-text mt-8">{{user?.userRoles[0]?.email}}</div>
-        <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
-            <img class="avatar" src="assets/images/Velazquez.jpg">
+    <div class='navbar-content'>
+        <div class='nav-container'>
+            <fuse-navigation class='material2' layout='vertical'></fuse-navigation>
         </div>
 
-    </div> -->
-
-    <div class="navbar-content">
-        <div class="nav-container">
-            <fuse-navigation class="material2" layout="vertical"></fuse-navigation>
-        </div>
-
-        <div class="version primary">
-            {{ version }}
+        <div class='version flex items-center justify-center primary'>
+            <img alt='logo-icon' class='logo-icon' src='assets/images/white-logo-non-text.png' />
+            <span *ngIf='isSideBarOpen'> نسخه‌ی نرم‌افزار: {{ version }}</span>
         </div>
     </div>
 </div>

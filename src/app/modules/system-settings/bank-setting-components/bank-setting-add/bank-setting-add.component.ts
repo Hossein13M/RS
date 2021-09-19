@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AlertService } from 'app/services/alert.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '#shared/services/alert.service';
 import { BankService } from 'app/services/feature-services/bank.service';
 
 @Component({
@@ -11,7 +11,6 @@ import { BankService } from 'app/services/feature-services/bank.service';
 })
 export class BankSettingAddComponent implements OnInit {
     form: FormGroup;
-    banks = [];
     title = '';
 
     constructor(
@@ -31,31 +30,31 @@ export class BankSettingAddComponent implements OnInit {
         this.creatForm();
     }
 
-    creatForm(): void {
-        this.form = this.fb.group({
-            name: [this.data ? this.data.name : '', Validators.required],
-        });
-    }
-
-    onCreateBranch(): void {
-        this.bankService.createBankSetting(this.form.value).subscribe((res) => {
+    public onCreateBranch(): void {
+        this.bankService.createBankSetting(this.form.value).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
         });
     }
 
-    onEditBranch(): void {
+    public onEditBranch(): void {
         const obj = {
             id: this.data['id'],
             name: this.form.get('name').value,
         };
-        this.bankService.updateBankSetting(obj).subscribe((res) => {
+        this.bankService.updateBankSetting(obj).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ویرایش شد');
             this.dialogRef.close(obj);
         });
     }
 
-    close(): void {
+    public close(): void {
         this.dialogRef.close(false);
+    }
+
+    private creatForm(): void {
+        this.form = this.fb.group({
+            name: [this.data ? this.data.name : '', Validators.required],
+        });
     }
 }

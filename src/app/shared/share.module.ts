@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DateAdapter, MatRippleModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
@@ -27,6 +27,8 @@ import { UsualButtonDirective } from './directives/usual-button.directive';
 import { MaterialModule } from './material.module';
 import { MaterialPersianDateAdapter, PERSIAN_DATE_FORMATS } from './material.persian-date.adapter';
 import { PipesModule } from '#shared/pipes/pipes.module';
+import { TableSavePdfComponent } from '#shared/components/table/table-save-pdf/table-save-pdf.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
     declarations: [
@@ -42,6 +44,7 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         TableComponent,
         TableSaveCSVComponent,
         TableSaveXLSComponent,
+        TableSavePdfComponent,
         TableDialogComponent,
         TreeSelectComponent,
         SearchSelectComponent,
@@ -61,7 +64,8 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         NgxMatSelectSearchModule,
         ClipboardModule,
         ChartsModule,
-        PipesModule
+        PipesModule,
+        NgxPrintModule,
     ],
     exports: [
         MailCardComponent,

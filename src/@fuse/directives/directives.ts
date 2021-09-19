@@ -14,12 +14,6 @@ import { FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective } from '@
         FusePerfectScrollbarDirective,
     ],
     imports: [],
-    exports: [
-        FuseIfOnDomDirective,
-        FuseInnerScrollDirective,
-        FuseMatSidenavHelperDirective,
-        FuseMatSidenavTogglerDirective,
-        FusePerfectScrollbarDirective,
-    ],
+    exports: [FuseIfOnDomDirective, FuseInnerScrollDirective, FuseMatSidenavHelperDirective, FuseMatSidenavTogglerDirective, FusePerfectScrollbarDirective],
 })
 export class FuseDirectivesModule {}

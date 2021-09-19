@@ -34,7 +34,7 @@ const routes: Routes = [
         FuseDirectivesModule,
         MatRippleModule,
         NgxMatSelectSearchModule,
-        PipesModule
+        PipesModule,
     ],
     exports: [SendMailComponent],
     entryComponents: [SendMailComponent],

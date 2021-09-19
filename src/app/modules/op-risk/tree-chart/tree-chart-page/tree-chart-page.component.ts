@@ -12,11 +12,11 @@ export class TreeChartPageComponent implements OnInit {
 
     constructor(private route: ActivatedRoute, private tms: TreeMappingService) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.route.paramMap.subscribe((params) => {
             if (!params) return;
             this.selectedChartName = params.get('name');
         });
-        this.tms.getMappingCategory().subscribe();
+        this.tms.getMappingCategory().subscribe(() => {});
     }
 }

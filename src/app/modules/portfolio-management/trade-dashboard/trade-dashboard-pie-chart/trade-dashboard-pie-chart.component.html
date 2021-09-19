@@ -1,11 +1,13 @@
-<div class="container fuse-card">
-    <div class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl">
+<div class='container fuse-card'>
+    <div class='header' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center'>
         <h3>ترکیب ابزار‌ها</h3>
     </div>
     <mat-divider></mat-divider>
-    <div class="pie-chart-content">
-        <app-pie-chart *ngIf="stateType === 'PRESENT'" height="400px" [data]="data" [state]="stateType"> </app-pie-chart>
+    <div class='pie-chart-content'>
+        <app-pie-chart *ngIf="stateType === 'PRESENT'" [data]='data' [state]='stateType' height='400px'></app-pie-chart>
         <mat-spinner *ngIf="stateType === 'LOADING'"></mat-spinner>
-        <div fxLayout="row wrap" fxLayoutAlign="center center" *ngIf="stateType === 'FAIL'">در دریافت داده‌ها مشکلی پیش آمده‌است.</div>
+        <div *ngIf="stateType === 'FAIL'" fxLayout='row wrap' fxLayoutAlign='center center'>در دریافت داده‌ها مشکلی پیش
+            آمده‌است.
+        </div>
     </div>
 </div>

@@ -1,0 +1,36 @@
+<mat-card class='flex flex-col items-center p-0 h-full' dir='rtl'>
+    <mat-card-header class='w-full accent py-3.5'>
+        <div class='flex justify-between w-full items-center text-black'>
+            <h2 class='font-bold'>تایید گام قرارداد</h2>
+
+            <button (click)='onCloseDialog()' mat-icon-button matTooltip='بستن این پنجره'>
+                <mat-icon>clear</mat-icon>
+            </button>
+        </div>
+    </mat-card-header>
+
+    <mat-card-content *ngIf="stateType === 'PRESENT'" class='mt-40 w-full flex flex-col items-center justify-center'>
+        <h3 class='text-center mx-10'>
+            فهرست پایین، همه‌ی کاربرانی که در BPMN برای گام بعدی، دارای دسترسی انتخابی هستند را نمایش می‌دهد، شما
+            می‌توانید با گزینش یکی از این کاربران، به آن
+            کاربر برای گام بعدی قرارداد، دسترسی بدهید
+        </h3>
+        <hr />
+        <form *ngIf='nextStepSelectionUsers.length' [formGroup]='form' class='mt-5'>
+            <mat-form-field appearance='outline'>
+                <mat-label>گزینش کاربر</mat-label>
+                <mat-select formControlName='user' required>
+                    <mat-option *ngFor='let user of nextStepSelectionUsers'
+                                [value]='user.userId'>{{ user.username }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <button (click)='confirmStep()' class='px-10 p-2' color='primary' mat-flat-button>
+            <mat-icon class='mat-18 mx-5'>add</mat-icon>
+            <span>تایید گام قرارداد</span>
+        </button>
+    </mat-card-actions>
+</mat-card>

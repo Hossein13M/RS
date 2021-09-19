@@ -14,14 +14,14 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class CanService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation canControllerCan
      */
     static readonly CanControllerCanPath = '/api/v1/rbac/can';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

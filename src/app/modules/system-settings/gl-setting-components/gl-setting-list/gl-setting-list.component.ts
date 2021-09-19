@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { AfterViewInit, Component, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { GlService } from '../../../gl/gl.service';
 export class GlSettingListComponent implements AfterViewInit {
     searchFormGroup: FormGroup;
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
     @ViewChild('status', { static: false }) statusRef: TemplateRef<any>;
@@ -32,9 +32,15 @@ export class GlSettingListComponent implements AfterViewInit {
 
     initColumns(): void {
         this.column = [
+            { id: 'index', type: 'index' },
             { id: 'symbol', name: 'نماد', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             { id: 'status', name: 'وضعیت', type: 'custom', cellTemplate: this.statusRef },
-            { id: 'glCode', name: 'کد دفتر کل', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            {
+                id: 'glCode',
+                name: 'کد دفتر کل',
+                type: 'string',
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
+            },
             {
                 name: 'عملیات',
                 id: 'operation',
@@ -87,7 +93,10 @@ export class GlSettingListComponent implements AfterViewInit {
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {

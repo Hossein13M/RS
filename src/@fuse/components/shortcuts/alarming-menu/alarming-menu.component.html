@@ -1,13 +1,13 @@
-<div class="alarming">
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon class="mat-18">notifications</mat-icon>
+<div class='alarming'>
+    <button [matMenuTriggerFor]='menu' mat-icon-button>
+        <mat-icon class='mat-18'>notifications</mat-icon>
     </button>
 
-    <mat-menu #menu="matMenu"
-              class="alarm-dialog">
-        <div class="box">
-            <div class="header">
-                <div class="unread-alarm-title">
+    <mat-menu #menu='matMenu'
+              class='alarm-dialog'>
+        <div class='box'>
+            <div class='header'>
+                <div class='unread-alarm-title'>
             <span>
                 هشدارهای خوانده نشده
             </span>
@@ -15,17 +15,17 @@
             </div>
 
 
-            <div class="unread-alarm">
-                <div class="unread-alarm-body" [ngStyle]="{'height': unReadAlarms.length > 0 ? '130px': '40px'}">
-                    <div *ngIf="unReadAlarms.length ===0" class="unread-alarm-item" style="font-size: 12px">
+            <div class='unread-alarm'>
+                <div [ngStyle]="{'height': unReadAlarms.length > 0 ? '130px': '40px'}" class='unread-alarm-body'>
+                    <div *ngIf='unReadAlarms.length ===0' class='unread-alarm-item' style='font-size: 12px'>
                         هیچ موردی وجود ندارد
                     </div>
-                    <div *ngFor="let m of unReadAlarms" class="unread-alarm-item">
+                    <div *ngFor='let m of unReadAlarms' class='unread-alarm-item'>
                         {{m?.title}}
-                        <span style="margin-left: 10px">
-                    <span *ngIf="m?.priority=== 'Critical'" style="color: red" matTooltip="اهمیت بالا">*</span>
-                    <span *ngIf="m?.priority=== 'Warning'" style="color: #449FDB" matTooltip="اهمیت متوسط">*</span>
-                    <span *ngIf="m?.priority=== 'Normal'" style="color: orange" matTooltip="اهمیت کم">*</span>
+                        <span style='margin-left: 10px'>
+                    <span *ngIf="m?.priority=== 'Critical'" matTooltip='اهمیت بالا' style='color: red'>*</span>
+                    <span *ngIf="m?.priority=== 'Warning'" matTooltip='اهمیت متوسط' style='color: #449FDB'>*</span>
+                    <span *ngIf="m?.priority=== 'Normal'" matTooltip='اهمیت کم' style='color: orange'>*</span>
                 </span>
                     </div>
                 </div>
@@ -33,18 +33,18 @@
             </div>
 
 
-            <div class="footer">
-                <div style="display: flex;align-items:center;justify-content: center;">
+            <div class='footer'>
+                <div style='display: flex;align-items:center;justify-content: center;'>
                     <button mat-icon-button
-                            style="margin-right: 10px"
-                            matTooltip="مدیریت هشدار‌ها"
-                            routerLink="/alarming/list">
-                        <mat-icon class="mat-18">settings</mat-icon>
+                            matTooltip='مدیریت هشدار‌ها'
+                            routerLink='/alarming/list'
+                            style='margin-right: 10px'>
+                        <mat-icon class='mat-18'>settings</mat-icon>
                     </button>
                     <button mat-icon-button
-                            matTooltip="مشاهده‌ی همه"
-                            routerLink="/alarming/remindList">
-                        <mat-icon class="mat-18">all_inbox</mat-icon>
+                            matTooltip='مشاهده‌ی همه'
+                            routerLink='/alarming/remindList'>
+                        <mat-icon class='mat-18'>all_inbox</mat-icon>
                     </button>
                 </div>
             </div>

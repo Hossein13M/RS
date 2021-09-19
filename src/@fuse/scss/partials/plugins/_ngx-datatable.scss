@@ -1,26 +1,23 @@
+@use '~@angular/material' as mat;
 // -----------------------------------------------------------------------------------------------------
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
 @mixin ngx-datatable-theme($theme) {
-
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
     ngx-datatable {
-
         &.material {
             background: map-get($background, card);
             color: map-get($foreground, text);
 
             .datatable-header {
-
                 .datatable-header-cell {
                     color: map-get($foreground, secondary-text);
                 }
             }
 
             .datatable-body {
-
                 .datatable-row-wrapper {
                     border-bottom-color: map-get($foreground, divider);
 
@@ -29,7 +26,6 @@
                     }
 
                     .datatable-body-row {
-
                         .datatable-body-cell {
                             color: map-get($foreground, text);
                         }
@@ -41,7 +37,6 @@
                 color: map-get($foreground, secondary-text);
 
                 .datatable-pager {
-
                     a {
                         color: map-get($foreground, secondary-text);
                     }
@@ -49,13 +44,9 @@
             }
 
             &:not(.cell-selection) {
-
                 .datatable-body {
-
                     .datatable-row-wrapper {
-
                         .datatable-body-row {
-
                             &:hover {
                                 background-color: map-get($background, hover);
 
@@ -72,9 +63,8 @@
 }
 
 .ngx-datatable {
-
     &.material {
-        @include mat-elevation(4);
+        @include mat.elevation(4);
 
         .empty-row {
             display: flex;
@@ -125,6 +115,7 @@
                 &:first-child {
                     border-top: 1px solid;
                 }
+
                 .datatable-body-cell {
                     display: inline-flex;
                     align-items: center;
@@ -162,9 +153,7 @@
                     margin: 0 0 0 24px;
 
                     .pager {
-
                         li {
-
                             a {
                                 display: flex;
                                 align-items: center;
@@ -187,7 +176,7 @@
     }
 }
 
-[class*="datatable-icon-"] {
+[class*='datatable-icon-'] {
     font-family: 'material-outline-icons';
     font-weight: normal;
     font-style: normal;
@@ -204,65 +193,65 @@
 }
 
 .datatable-icon-filter:before {
-    content: "filter_list";
+    content: 'filter_list';
 }
 
 .datatable-icon-collapse:before {
-    content: "unfold_less";
+    content: 'unfold_less';
 }
 
 .datatable-icon-expand:before {
-    content: "unfold_more";
+    content: 'unfold_more';
 }
 
 .datatable-icon-close:before {
-    content: "close";
+    content: 'close';
 }
 
 .datatable-icon-up:before {
-    content: "arrow_drop_up";
+    content: 'arrow_drop_up';
 }
 
 .datatable-icon-down:before {
-    content: "arrow_drop_down";
+    content: 'arrow_drop_down';
 }
 
 .datatable-icon-sort:before {
-    content: "sort";
+    content: 'sort';
 }
 
 .datatable-icon-done:before {
-    content: "done";
+    content: 'done';
 }
 
 .datatable-icon-done-all:before {
-    content: "done_all";
+    content: 'done_all';
 }
 
 .datatable-icon-search:before {
-    content: "search";
+    content: 'search';
 }
 
 .datatable-icon-pin:before {
-    content: "lock";
+    content: 'lock';
 }
 
 .datatable-icon-add:before {
-    content: "add";
+    content: 'add';
 }
 
 .datatable-icon-left:before {
-    content: "chevron_left";
+    content: 'chevron_left';
 }
 
 .datatable-icon-right:before {
-    content: "chevron_right";
+    content: 'chevron_right';
 }
 
 .datatable-icon-skip:before {
-    content: "skip_next";
+    content: 'skip_next';
 }
 
 .datatable-icon-prev:before {
-    content: "skip_previous";
+    content: 'skip_previous';
 }

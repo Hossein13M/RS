@@ -1,76 +1,76 @@
-<div class="dialog-container">
+<div class='dialog-container'>
     <div [title]="'جزئیات'" appDialogHeader>
-        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
     </div>
-    <div class="component-detail-container">
-        <div class="component-detail-row">
-            <div class="component-detail-item">
-                <span class="title">
+    <div class='component-detail-container'>
+        <div class='component-detail-row'>
+            <div class='component-detail-item'>
+                <span class='title'>
                     عنوان
                 </span>
-                <span class="value">
+                <span class='value'>
 {{data?.title}}
                 </span>
             </div>
-            <div class="component-detail-item">
-                <span class="title">
+            <div class='component-detail-item'>
+                <span class='title'>
                     تاریخ یادآوری
                 </span>
-                <span class="value">
+                <span class='value'>
 {{data?.reminderDate| convertDate}}
                 </span>
             </div>
         </div>
-        <div class="component-detail-row">
-            <div class="component-detail-item">
-                <span class="title">
+        <div class='component-detail-row'>
+            <div class='component-detail-item'>
+                <span class='title'>
 وضعیت
                 </span>
-                <span class="value">
+                <span class='value'>
 {{data?.status | readStatus}}
                 </span>
             </div>
-            <div class="component-detail-item">
-                <span class="title">
+            <div class='component-detail-item'>
+                <span class='title'>
                     توضیحات                </span>
-                <span class="value">
+                <span class='value'>
 {{data?.description}}
                 </span>
             </div>
         </div>
-        <div class="component-detail-row">
-            <div class="component-detail-item">
-                <span class="title">
+        <div class='component-detail-row'>
+            <div class='component-detail-item'>
+                <span class='title'>
 اولویت
                 </span>
-                <span class="value">
+                <span class='value'>
 {{data?.priority | priority}}
                 </span>
             </div>
-            <div class="component-detail-item">
-                <span class="title">
+            <div class='component-detail-item'>
+                <span class='title'>
 نام ماژول مربوطه
                 </span>
-                <span class="value">
+                <span class='value'>
 {{data?.moduleNameFa}}
                 </span>
             </div>
         </div>
 
-        <div class="component-detail-row">
-            <div class="component-detail-item">
-                <span class="title">
+        <div class='component-detail-row'>
+            <div class='component-detail-item'>
+                <span class='title'>
 تاریخ ارسال
                 </span>
-                <span class="value">
+                <span class='value'>
 {{data?.sentDate | convertDate}}
                 </span>
             </div>
-            <div class="component-detail-item">
-                <span class="title">
+            <div class='component-detail-item'>
+                <span class='title'>
 
                     تاریخ مشاهده                </span>
-                <span class="value">
+                <span class='value'>
 {{data?.viewDate| convertDate}}
                 </span>
             </div>

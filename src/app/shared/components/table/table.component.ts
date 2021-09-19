@@ -1,10 +1,17 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import { PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import { Color, Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import { PaginationModel } from '#shared/models/pagination.model';
+
+enum StateType {
+    'LOADING',
+    'PRESENT',
+    'FAILED',
+}
 
 /**
  * Hoshman Risk's General Table Generator Document
@@ -79,62 +86,33 @@ import { PaginationChangeType, PaginationSetting, TableSearchMode } from './tabl
     animations: [fuseAnimations],
 })
 export class TableComponent implements OnChanges, AfterViewInit {
-    @ViewChild('localPaginator', { static: false }) paginator: MatPaginator;
-    @ViewChild('container', { static: false }) container;
-
+    @ViewChild('localPaginator', { static: false }) localPaginator: MatPaginator;
+    @ViewChild('container', { static: false }) tableContainer;
     @Input() data: Array<any>;
-    @Input() columns: Array<any>;
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Pagination Input
-    // -----------------------------------------------------------------------------------------------------
+    @Input() columns: Array<Column>;
+    @Input() height: string = '100%';
+    @Input() status: StateType;
     @Input() paginationSettings: PaginationSetting;
-    @Input() paginationObj: PaginationChangeType;
-    private _paginationObj: PaginationChangeType = { skip: 0, limit: 5, total: 100 };
-    @Output() paginationChange: EventEmitter<PaginationChangeType>;
-    // -----------------------------------------------------------------------------------------------------
-
-    @Output() searchCall: EventEmitter<any>;
-    @Output() operationCall: EventEmitter<any>;
-
+    @Input() paginationObject: PaginationChangeType;
+    @Output() paginationEvent: EventEmitter<PaginationChangeType>;
+    @Output() searchEvent: EventEmitter<any>;
+    @Output() operationEvent: EventEmitter<any>;
     hasSearch = false;
-
-    // Show Data Table
     displayedColumns: Array<string>;
     searchColumns: Array<string>;
     dataSource: MatTableDataSource<any>;
-    dataToShow: Array<any>;
     lastServerSearch: string;
-
     showSearchBar = false;
-
     searchForm: FormGroup;
-    filter: any;
-
-    rowDetail: any;
+    rowDetail: DetailColumn;
     clickCoolDown = false;
     clickCount = 0;
     doubleClickAble = true;
 
-    // scroll(): void {
-    //     console.log('called');
-    //     try {
-    //         const scrollPosition =
-    //             this.container?.nativeElement.scrollHeight - (this.container?.nativeElement.scrollTop + this.container?.nativeElement.clientHeight);
-    //         if (scrollPosition > 70) {
-    //             this.paginationControl({ pageSize: 10, pageIndex: this.paginationObj.skip });
-    //         } else {
-    //             return;
-    //         }
-    //     } catch (e) {
-    //         console.error('APP-TABLE SCROLL ', e);
-    //     }
-    // }
-
-    constructor(private fb: FormBuilder) {
-        this.searchCall = new EventEmitter<any>();
-        this.operationCall = new EventEmitter<any>();
-        this.paginationChange = new EventEmitter<PaginationChangeType>();
+    constructor(private formBuilder: FormBuilder) {
+        this.searchEvent = new EventEmitter<any>();
+        this.operationEvent = new EventEmitter<any>();
+        this.paginationEvent = new EventEmitter<PaginationChangeType>();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -148,20 +126,20 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
 
         // Check For Row Detail
-        const rowDetailIndex = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
+        const rowDetailIndex: number = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
         if (rowDetailIndex !== -1) {
-            this.rowDetail = this.columns[rowDetailIndex];
-            this.doubleClickAble = !!this.columns[rowDetailIndex].doubleClickable;
+            this.rowDetail = this.columns[rowDetailIndex] as DetailColumn;
+            this.doubleClickAble = !!this.rowDetail.doubleClickable;
             this.columns.splice(rowDetailIndex, 1);
         }
 
         // Create Search FormGroup
         const formItems = {};
-        this.columns.forEach((col, i) => {
+        this.columns.forEach((col) => {
             if (col.search) {
                 this.hasSearch = true;
                 if (col.search.type === 'date_range') {
-                    formItems[col.id] = this.fb.group({
+                    formItems[col.id] = this.formBuilder.group({
                         fromDate: [],
                         toDate: [],
                     });
@@ -170,7 +148,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
                 formItems[col.id] = [''];
             }
         });
-        this.searchForm = this.fb.group(formItems);
+        this.searchForm = this.formBuilder.group(formItems);
 
         this.displayedColumns = [];
         this.displayedColumns = this.displayedColumns.concat(this.columns.map((r) => r.id));
@@ -180,7 +158,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
 
         // add operation to each row
-        const tableOperation = this.columns.find((element) => element.type === 'operation');
+        const tableOperation = this.columns.find((element) => element.type === 'operation') as OperationColumn;
         if (tableOperation && tableOperation?.operations) {
             data?.forEach((element) => (element.tableOperation = [...tableOperation.operations.map((el: any) => ({ ...el }))]));
         }
@@ -191,7 +169,122 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.handleSetLastSearch();
     }
 
-    handleSetLastSearch(): void {
+    ngAfterViewInit(): void {
+        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
+            this.dataSource.paginator = this.localPaginator;
+        }
+    }
+
+    public scroll(): void {
+        if (this.paginationSettings.mode !== 'scroll') return;
+        if (this.status === StateType.LOADING) return;
+        const scrollPosition =
+            this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
+        if (scrollPosition < 90) {
+            this.paginationControl({
+                length: 0,
+                pageSize: this.paginationObject.limit,
+                pageIndex: this.paginationObject.skip + this.paginationObject.limit,
+            });
+        }
+    }
+
+    public paginationControl(pageEvent?: PageEvent): void {
+        const _paginationObject: PaginationModel = { skip: 0, limit: 5, total: 100 };
+        _paginationObject.limit = pageEvent.pageSize;
+        _paginationObject.skip = pageEvent.pageIndex;
+        this.paginationEvent.emit(_paginationObject);
+    }
+
+    public isTemplateRef(obj: any): any {
+        return obj instanceof TemplateRef;
+    }
+
+    public doOperation(row: any, operationItem: any): void {
+        if (!operationItem.operation) {
+            return;
+        }
+
+        if (typeof operationItem.operation === 'string') {
+            this.operationEvent.emit({ row, operation: operationItem.operation });
+        }
+
+        if (typeof operationItem.operation === 'function') {
+            operationItem.operation({ row, operationItem });
+        }
+    }
+
+    public doOperationHeader(operationItem: any): void {
+        if (!operationItem.operation) {
+            return;
+        }
+
+        if (typeof operationItem.operation === 'string') {
+            this.operationEvent.emit({ operationHeader: operationItem.operation });
+        }
+
+        if (typeof operationItem.operation === 'function') {
+            operationItem.operation({ operationItem });
+        }
+    }
+
+    public openSearchBar(): void {
+        this.showSearchBar = !this.showSearchBar;
+    }
+
+    public selectRow(index: number): void {
+        if (index < 0 || !this.data || index > this.data.length) {
+            return;
+        }
+        if (!this.data[index]) return;
+        this.data[index].tableSelect = !this.data[index].tableSelect;
+    }
+
+    public onClick(row: any): void {
+        if (!this.rowDetail || !this.rowDetail.click) {
+            return;
+        }
+
+        if (this.clickCoolDown) {
+            this.clickCount++;
+            return;
+        }
+
+        this.clickCoolDown = true;
+        this.clickCount = 1;
+        setTimeout(() => {
+            this.clickCoolDown = false;
+
+            if (this.clickCount === 1) {
+                this.rowDetail.click(row);
+            } else {
+                this.onDoubleClick(row);
+            }
+
+            this.clickCount = 0;
+        }, 200);
+    }
+
+    public checkColorsType(input: Color | ((row: any) => Color), row: any): Color {
+        if (typeof input === 'string') {
+            return input;
+        } else {
+            return input(row);
+        }
+    }
+
+    public setIndexAccordingToPagination(index: number): number | null {
+        if (!this.localPaginator) return null;
+        if (this.paginationSettings.mode === 'local') {
+            return index + 1 + this.localPaginator.pageIndex * this.localPaginator.pageSize;
+        }
+        if (this.paginationSettings.mode === 'backend') {
+            return index + 1 + this.paginationObject.limit * this.paginationObject.skip;
+        }
+        return null;
+    }
+
+    private handleSetLastSearch(): void {
         try {
             this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
         } catch (e) {
@@ -199,13 +292,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
         }
     }
 
-    ngAfterViewInit(): void {
-        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
-            this.dataSource.paginator = this.paginator;
-        }
-    }
-
-    patchData(data: Array<any>): void {
+    private patchData(data: Array<any>): void {
         this.dataSource = new MatTableDataSource<any>(data);
         this.columns.forEach((col) => {
             if (col.search && col.search.type === 'select' && !col.search.options) {
@@ -245,27 +332,17 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
                 if (Object.keys(serverSearch).length !== 0 && JSON.stringify(serverSearch) !== this.lastServerSearch) {
                     this.lastServerSearch = JSON.stringify(serverSearch);
-                    this.searchCall.emit(serverSearch);
+                    this.searchEvent.emit(serverSearch);
                 }
             });
         }
 
         if (this.paginationSettings?.mode === 'local') {
-            this.dataSource.paginator = this.paginator;
+            this.dataSource.paginator = this.localPaginator;
         }
     }
 
-    paginationControl(pageEvent?: any): void {
-        this._paginationObj.limit = pageEvent.pageSize;
-        this._paginationObj.skip = pageEvent.pageIndex;
-        this.paginationChange.emit(this._paginationObj);
-    }
-
-    isTemplateRef(obj: any): any {
-        return obj instanceof TemplateRef;
-    }
-
-    createSearchFilter(): any {
+    private createSearchFilter(): any {
         return (data: any, filter: string): boolean => {
             let result = true;
             const filterParsed = JSON.parse(filter);
@@ -300,78 +377,11 @@ export class TableComponent implements OnChanges, AfterViewInit {
         };
     }
 
-    numberToEn(inputStr: string): string {
+    private numberToEn(inputStr: string): string {
         return inputStr.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
     }
 
-    doOperation(row: any, operationItem: any): void {
-        if (!operationItem.operation) {
-            return;
-        }
-
-        if (typeof operationItem.operation === 'string') {
-            this.operationCall.emit({ row, operation: operationItem.operation });
-        }
-
-        if (typeof operationItem.operation === 'function') {
-            operationItem.operation({ row, operationItem });
-        }
-    }
-
-    doOperationHeader(operationItem: any): void {
-        if (!operationItem.operation) {
-            return;
-        }
-
-        if (typeof operationItem.operation === 'string') {
-            this.operationCall.emit({ operationHeader: operationItem.operation });
-        }
-
-        if (typeof operationItem.operation === 'function') {
-            operationItem.operation({ operationItem });
-        }
-    }
-
-    openSaveMenu(): void {}
-
-    openSearchBar(): void {
-        this.showSearchBar = !this.showSearchBar;
-    }
-
-    selectRow(index: number): void {
-        if (index < 0 || !this.data || index > this.data.length) {
-            return;
-        }
-
-        this.data[index].tableSelect = !this.data[index].tableSelect;
-    }
-
-    onClick(row: any): void {
-        if (!this.rowDetail || !this.rowDetail.click) {
-            return;
-        }
-
-        if (this.clickCoolDown) {
-            this.clickCount++;
-            return;
-        }
-
-        this.clickCoolDown = true;
-        this.clickCount = 1;
-        setTimeout(() => {
-            this.clickCoolDown = false;
-
-            if (this.clickCount === 1) {
-                this.rowDetail.click(row);
-            } else {
-                this.onDoubleClick(row);
-            }
-
-            this.clickCount = 0;
-        }, 200);
-    }
-
-    onDoubleClick(row: any): void {
+    private onDoubleClick(row: any): void {
         if (!this.rowDetail || !this.rowDetail.doubleClick) {
             return;
         }

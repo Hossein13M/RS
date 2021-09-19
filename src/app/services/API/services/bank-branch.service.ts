@@ -16,14 +16,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class BankBranchService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bankBranchControllerGetBankBranch
      */
     static readonly BankBranchControllerGetBankBranchPath = '/api/v1/bank-branch/{bankBranchId}';
+    /**
+     * Path part for operation bankBranchControllerDeleteBankBranch
+     */
+    static readonly BankBranchControllerDeleteBankBranchPath = '/api/v1/bank-branch/{bankBranchId}';
+    /**
+     * Path part for operation bankBranchControllerGetBankBranches
+     */
+    static readonly BankBranchControllerGetBankBranchesPath = '/api/v1/bank-branch';
+    /**
+     * Path part for operation bankBranchControllerUpdateBankBranch
+     */
+    static readonly BankBranchControllerUpdateBankBranchPath = '/api/v1/bank-branch';
+    /**
+     * Path part for operation bankBranchControllerCreateBankBranch
+     */
+    static readonly BankBranchControllerCreateBankBranchPath = '/api/v1/bank-branch';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -62,11 +78,6 @@ export class BankBranchService extends BaseService {
     }
 
     /**
-     * Path part for operation bankBranchControllerDeleteBankBranch
-     */
-    static readonly BankBranchControllerDeleteBankBranchPath = '/api/v1/bank-branch/{bankBranchId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankBranchControllerDeleteBankBranch()` instead.
      *
@@ -101,11 +112,6 @@ export class BankBranchService extends BaseService {
     bankBranchControllerDeleteBankBranch(params: { bankBranchId: number }): Observable<void> {
         return this.bankBranchControllerDeleteBankBranch$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation bankBranchControllerGetBankBranches
-     */
-    static readonly BankBranchControllerGetBankBranchesPath = '/api/v1/bank-branch';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -167,11 +173,6 @@ export class BankBranchService extends BaseService {
     }
 
     /**
-     * Path part for operation bankBranchControllerUpdateBankBranch
-     */
-    static readonly BankBranchControllerUpdateBankBranchPath = '/api/v1/bank-branch';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankBranchControllerUpdateBankBranch()` instead.
      *
@@ -208,11 +209,6 @@ export class BankBranchService extends BaseService {
             map((r: StrictHttpResponse<UpdateBankBranchDto>) => r.body as UpdateBankBranchDto)
         );
     }
-
-    /**
-     * Path part for operation bankBranchControllerCreateBankBranch
-     */
-    static readonly BankBranchControllerCreateBankBranchPath = '/api/v1/bank-branch';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

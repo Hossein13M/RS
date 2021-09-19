@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ export class MarketSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     pagination = { skip: 0, limit: 5, total: 100 };
     data = [];
-    columns: Array<ColumnModel>;
+    columns: Array<Column>;
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public marketSettingService: MarketSettingService) {}
 
@@ -45,10 +45,30 @@ export class MarketSettingListComponent implements OnInit {
                 },
                 convert: (value: any) => (value === 'T' ? 'تمدن' : value === 'M' ? 'بازارگردانی' : value === 'F' ? 'صندوق' : ''),
             },
-            { name: 'نماد/عنوان صندوق', id: 'symbolORFundTitle', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'کارگزاری', id: 'brokerName', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'کد بورسی', id: 'bourseCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'شناسه ملی', id: 'nationalId', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            {
+                name: 'نماد/عنوان صندوق',
+                id: 'symbolORFundTitle',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'کارگزاری',
+                id: 'brokerName',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'کد بورسی',
+                id: 'bourseCode',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'شناسه ملی',
+                id: 'nationalId',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
             { name: 'کد پم', id: 'pamCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
             {
                 name: 'دریافت داده',
@@ -128,7 +148,10 @@ export class MarketSettingListComponent implements OnInit {
 
     delete(element): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) this.marketSettingService.deleteMarket(element.ticker).subscribe(() => this.get());

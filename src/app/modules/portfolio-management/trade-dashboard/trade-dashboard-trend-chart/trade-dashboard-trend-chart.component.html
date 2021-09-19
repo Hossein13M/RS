@@ -1,15 +1,16 @@
-<div class="container fuse-card">
-    <div class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl">
+<div class='container fuse-card'>
+    <div class='header' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center'>
         <h3>روند ارزش بازار دارایی‌ها</h3>
     </div>
 
     <mat-divider></mat-divider>
 
     <div>
-        <app-trend-chart *ngIf="stateType === 'PRESENT' && (data != undefined || data != null)" convertJalali="true" [height]="'450px'" [data]="data">
+        <app-trend-chart *ngIf="stateType === 'PRESENT' && (data != undefined || data != null)" [data]='data'
+                         [height]="'450px'" convertJalali='true'>
         </app-trend-chart>
         <mat-spinner *ngIf="stateType === 'LOADING'"></mat-spinner>
-        <div *ngIf="stateType === 'FAIL'" fxLayout="row wrap" fxLayoutAlign="center center">دریافت داده ناموفق بود</div>
+        <div *ngIf="stateType === 'FAIL'" fxLayout='row wrap' fxLayoutAlign='center center'>دریافت داده ناموفق بود</div>
         <p *ngIf="stateType === 'PRESENT' && data && data.length == 0">داده‌ای برای نمایش وجود ندارد</p>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <div class="page-layout">
     <!-- HEADER -->
     <app-header pageTitle="لیست بانک‌ها">
-        <button mat-raised-button color="primary" (click)="create()">
+        <button (click)="create()" color="primary" mat-raised-button>
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
@@ -12,16 +12,16 @@
             <div class="setting-panel fuse-card">
                 <div style="width: 100%">
                     <app-table
-                        [data]="data"
+                        (paginationEvent)="paginationControl($event)"
+                        (searchEvent)="search($event)"
                         [columns]="column"
+                        [data]="data"
+                        [paginationObject]="pagination"
                         [paginationSettings]="{ mode: 'backend' }"
-                        [paginationObj]="pagination"
-                        (searchCall)='search($event)'
-                        (paginationChange)="paginationControl($event)"
                     ></app-table>
                     <ng-container *ngIf="data?.length === 0">
                         <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                            <img width="140px" height="140px" src='../../../../../assets/images/no-data.svg' />
+                            <img height="140px" src="../../../../../assets/images/no-data.svg" width="140px" alt="no-data" />
                             <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>

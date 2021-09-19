@@ -1,20 +1,21 @@
-<div [ngClass]="{ 'fuse-card': cardLayout }" fxLayout="column nowrap" fxLayoutAlign="center center">
-    <ng-container *ngIf="cardLayout && chartName">
-        <div class="chart-name">
+<div [ngClass]="{ 'fuse-card': cardLayout }" fxLayout='column nowrap' fxLayoutAlign='center center'>
+    <ng-container *ngIf='cardLayout && chartName'>
+        <div class='chart-name'>
             {{ chartName }}
         </div>
         <mat-divider></mat-divider>
     </ng-container>
 
-    <div [ngStyle]="{ display: state === stateType.PRESENT && data && data.length !== 0 ? 'flex' : 'none' }" dir="ltr" class="full">
-        <div [id]="id" [style.height]="height" [style.width]="width"></div>
+    <div [ngStyle]="{ display: state === stateType.PRESENT && data && data.length !== 0 ? 'flex' : 'none' }" class='full'
+         dir='ltr'>
+        <div [id]='id' [style.height]='height' [style.width]='width'></div>
     </div>
 
-    <div *ngIf="state === stateType.LOADING" class="full">
+    <div *ngIf='state === stateType.LOADING' class='full'>
         <mat-spinner></mat-spinner>
     </div>
 
-    <div *ngIf="state !== stateType.LOADING && (!data || data.length === 0)" class="full">
+    <div *ngIf='state !== stateType.LOADING && (!data || data.length === 0)' class='full'>
         <h3>داده‌ای موجود نیست</h3>
     </div>
 </div>

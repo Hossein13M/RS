@@ -27,6 +27,40 @@ export class GlTreeComponent implements OnInit {
         });
     }
 
+    public toggleFoldRow(selectedRow: any, index: number): void {
+        selectedRow.isCollapsed = !selectedRow.isCollapsed;
+        if (selectedRow.isCollapsed) {
+            this.expandRow(selectedRow, index);
+        } else {
+            const removeList = this.collapseRow(selectedRow, index);
+            this.groupObj = this.groupObj.filter((el) => !removeList.includes(el.code));
+        }
+    }
+
+    public calculateMargin(type: TreeOrderType): string {
+        switch (type) {
+            case TreeOrderType.Category:
+                return '30px';
+            case TreeOrderType.Group:
+                return '70px';
+            case TreeOrderType.General:
+                return '110px';
+            case TreeOrderType.Subsidiary:
+                return '140px';
+            case TreeOrderType.Detail:
+                return '160px';
+            default:
+                return '0';
+        }
+    }
+
+    public openChartDialog(): void {
+        this.matDialog
+            .open(GlPieChartComponent, { panelClass: 'dialog-w60', data: this.glCategories })
+            .afterClosed()
+            .subscribe(() => {});
+    }
+
     private getGlCategory(): void {
         this.glService.getCategoryApi().subscribe((res) => {
             if (res) {
@@ -118,39 +152,5 @@ export class GlTreeComponent implements OnInit {
         }
         removeList = _.compact(removeList);
         return _.uniq(removeList);
-    }
-
-    public toggleFoldRow(selectedRow: any, index: number): void {
-        selectedRow.isCollapsed = !selectedRow.isCollapsed;
-        if (selectedRow.isCollapsed) {
-            this.expandRow(selectedRow, index);
-        } else {
-            const removeList = this.collapseRow(selectedRow, index);
-            this.groupObj = this.groupObj.filter((el) => !removeList.includes(el.code));
-        }
-    }
-
-    public calculateMargin(type: TreeOrderType): string {
-        switch (type) {
-            case TreeOrderType.Category:
-                return '30px';
-            case TreeOrderType.Group:
-                return '70px';
-            case TreeOrderType.General:
-                return '110px';
-            case TreeOrderType.Subsidiary:
-                return '140px';
-            case TreeOrderType.Detail:
-                return '160px';
-            default:
-                return '0';
-        }
-    }
-
-    public openChartDialog(): void {
-        this.matDialog
-            .open(GlPieChartComponent, { panelClass: 'dialog-w60', data: this.glCategories })
-            .afterClosed()
-            .subscribe(() => {});
     }
 }

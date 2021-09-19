@@ -15,14 +15,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class BourseIssueDateService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bourseIssueDateControllerGetBourseIssueDate
      */
     static readonly BourseIssueDateControllerGetBourseIssueDatePath = '/api/v1/bourse-issue-date/{bourseIssueDateId}';
+    /**
+     * Path part for operation bourseIssueDateControllerDeleteBourseIssueDate
+     */
+    static readonly BourseIssueDateControllerDeleteBourseIssueDatePath = '/api/v1/bourse-issue-date/{bourseIssueDateId}';
+    /**
+     * Path part for operation bourseIssueDateControllerGetBourseIssueDates
+     */
+    static readonly BourseIssueDateControllerGetBourseIssueDatesPath = '/api/v1/bourse-issue-date';
+    /**
+     * Path part for operation bourseIssueDateControllerUpdateBourseIssueDate
+     */
+    static readonly BourseIssueDateControllerUpdateBourseIssueDatePath = '/api/v1/bourse-issue-date';
+    /**
+     * Path part for operation bourseIssueDateControllerCreateBourseIssueDate
+     */
+    static readonly BourseIssueDateControllerCreateBourseIssueDatePath = '/api/v1/bourse-issue-date';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,11 +79,6 @@ export class BourseIssueDateService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseIssueDateControllerDeleteBourseIssueDate
-     */
-    static readonly BourseIssueDateControllerDeleteBourseIssueDatePath = '/api/v1/bourse-issue-date/{bourseIssueDateId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseIssueDateControllerDeleteBourseIssueDate()` instead.
      *
@@ -102,11 +113,6 @@ export class BourseIssueDateService extends BaseService {
     bourseIssueDateControllerDeleteBourseIssueDate(params: { bourseIssueDateId: number }): Observable<void> {
         return this.bourseIssueDateControllerDeleteBourseIssueDate$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation bourseIssueDateControllerGetBourseIssueDates
-     */
-    static readonly BourseIssueDateControllerGetBourseIssueDatesPath = '/api/v1/bourse-issue-date';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -153,19 +159,12 @@ export class BourseIssueDateService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseIssueDateControllerUpdateBourseIssueDate
-     */
-    static readonly BourseIssueDateControllerUpdateBourseIssueDatePath = '/api/v1/bourse-issue-date';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseIssueDateControllerUpdateBourseIssueDate()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bourseIssueDateControllerUpdateBourseIssueDate$Response(params: {
-        body: BourseIssueDateDto;
-    }): Observable<StrictHttpResponse<BourseIssueDateDto>> {
+    bourseIssueDateControllerUpdateBourseIssueDate$Response(params: { body: BourseIssueDateDto }): Observable<StrictHttpResponse<BourseIssueDateDto>> {
         const rb = new RequestBuilder(this.rootUrl, BourseIssueDateService.BourseIssueDateControllerUpdateBourseIssueDatePath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -198,19 +197,12 @@ export class BourseIssueDateService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseIssueDateControllerCreateBourseIssueDate
-     */
-    static readonly BourseIssueDateControllerCreateBourseIssueDatePath = '/api/v1/bourse-issue-date';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseIssueDateControllerCreateBourseIssueDate()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bourseIssueDateControllerCreateBourseIssueDate$Response(params: {
-        body: CreateBourseIssueDateDto;
-    }): Observable<StrictHttpResponse<BourseIssueDateDto>> {
+    bourseIssueDateControllerCreateBourseIssueDate$Response(params: { body: CreateBourseIssueDateDto }): Observable<StrictHttpResponse<BourseIssueDateDto>> {
         const rb = new RequestBuilder(this.rootUrl, BourseIssueDateService.BourseIssueDateControllerCreateBourseIssueDatePath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

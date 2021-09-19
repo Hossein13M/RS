@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
 import { NavService } from 'app/modules/nav/nav.service';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { LocalStorageService } from 'app/services/Base/local-storage.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -42,9 +42,8 @@ export class NavMainComponent implements OnInit, OnDestroy {
     navTransactionalMainObject: NavTransactionModel[] = [];
     public filteredBankAccount: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
     public bankAccountFilter: FormControl = new FormControl();
-    private _onDestroy = new Subject<void>();
-
     isWorking: any;
+    private _onDestroy = new Subject<void>();
 
     constructor(public navService: NavService, private AlertService: AlertService, private dialog: MatDialog, private fb: FormBuilder) {}
 
@@ -147,22 +146,6 @@ export class NavMainComponent implements OnInit, OnDestroy {
         return true;
     }
 
-    private filterBankAccount(): void {
-        if (!this.bankAccountList) {
-            return;
-        }
-        // get the search keyword
-        let search = this.bankAccountFilter.value;
-        if (!search) {
-            this.filteredBankAccount.next(this.bankAccountList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        // filter the banks
-        this.filteredBankAccount.next(this.bankAccountList.filter((code) => code.bankName.toLowerCase().indexOf(search) > -1));
-    }
-
     createCodeSarfaslObj(): void {
         let obj;
         if (this.codeSarfaslType.value === 1) {
@@ -211,6 +194,22 @@ export class NavMainComponent implements OnInit, OnDestroy {
             mainObj.push(navTransactionModel);
         }
         LocalStorageService.setNav(mainObj);
+    }
+
+    private filterBankAccount(): void {
+        if (!this.bankAccountList) {
+            return;
+        }
+        // get the search keyword
+        let search = this.bankAccountFilter.value;
+        if (!search) {
+            this.filteredBankAccount.next(this.bankAccountList.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        // filter the banks
+        this.filteredBankAccount.next(this.bankAccountList.filter((code) => code.bankName.toLowerCase().indexOf(search) > -1));
     }
 }
 

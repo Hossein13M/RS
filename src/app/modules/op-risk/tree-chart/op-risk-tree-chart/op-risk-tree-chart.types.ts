@@ -7,21 +7,23 @@ export enum stateType {
 }
 
 export class TreeChartNode {
-    id: number;
-    titleFA: string;
-    parent: TreeChartNode;
-    children: TreeChartNode[];
-    mappings: TreeChartMapping[];
-    mapped: any = null;
+    id?: number;
+    titleFA?: string;
+    parent?: TreeChartNode;
+    children?: TreeChartNode[];
+    mappings?: TreeChartMapping[];
+    mapped?: any = null;
+    name?: string;
 }
 
 export class TreeChartFlatNode {
-    mappings: TreeChartMapping[];
-    expandable: boolean;
-    mapped = false;
-    titleFA: string;
-    level: number;
-    id: number;
+    mappings?: TreeChartMapping[];
+    expandable?: boolean;
+    mapped?: false;
+    titleFA?: string;
+    name?: string;
+    level?: number;
+    id?: number;
 }
 
 export interface TreeChartMapping {

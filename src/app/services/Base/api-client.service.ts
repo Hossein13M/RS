@@ -4,14 +4,14 @@ import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { FuseProgressBarService } from '../../../@fuse/components/progress-bar/progress-bar.service';
 import { FormContainer } from '../../shared/models/FromContainer';
-import { AuthenticationService } from '../authentication.service';
 import { GetAPI } from './Memory';
+import { AuthorizationService } from '../../modules/authorization/authorization.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ApiClientService {
-    constructor(private http: HttpClient, private fps: FuseProgressBarService, private authenticationService: AuthenticationService) {}
+    constructor(private http: HttpClient, private fps: FuseProgressBarService, private authorizationService: AuthorizationService) {}
 
     post<T>(api: string, data: any, component: FormContainer): Observable<T> {
         if (component) {
@@ -70,7 +70,7 @@ export class ApiClientService {
         }
 
         if (err.status === 401) {
-            this.authenticationService.logout();
+            this.authorizationService.logOut().finally();
         }
 
         if (component && component.handleError && component.handleError(err)) {

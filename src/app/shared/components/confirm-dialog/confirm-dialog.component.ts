@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export interface DialogData {
     title: string;
@@ -32,7 +32,7 @@ export interface DialogData {
                     <button mat-raised-button class="mat-warn mr-16" (click)="dialogRef.close(false)">
                         <mat-icon> close</mat-icon>
 
-                        {{ data.rejectLabel ? data.rejectLabel : 'انصراف' }}
+                        {{ data.rejectLabel ? data.rejectLabel : ' برگشت' }}
                     </button>
                 </div>
 

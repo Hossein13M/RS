@@ -15,14 +15,26 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class EventFieldService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventFieldControllerGetEventFields
      */
     static readonly EventFieldControllerGetEventFieldsPath = '/api/v1/event-field';
+    /**
+     * Path part for operation eventFieldControllerCreateEventField
+     */
+    static readonly EventFieldControllerCreateEventFieldPath = '/api/v1/event-field';
+    /**
+     * Path part for operation eventFieldControllerUpdateEventField
+     */
+    static readonly EventFieldControllerUpdateEventFieldPath = '/api/v1/event-field/{id}';
+    /**
+     * Path part for operation eventFieldControllerDeleteEventField
+     */
+    static readonly EventFieldControllerDeleteEventFieldPath = '/api/v1/event-field/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -69,11 +81,6 @@ export class EventFieldService extends BaseService {
     }
 
     /**
-     * Path part for operation eventFieldControllerCreateEventField
-     */
-    static readonly EventFieldControllerCreateEventFieldPath = '/api/v1/event-field';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventFieldControllerCreateEventField()` instead.
      *
@@ -106,15 +113,8 @@ export class EventFieldService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventFieldControllerCreateEventField(params: { body: CreateEventFieldDto }): Observable<GetEventFieldDto> {
-        return this.eventFieldControllerCreateEventField$Response(params).pipe(
-            map((r: StrictHttpResponse<GetEventFieldDto>) => r.body as GetEventFieldDto)
-        );
+        return this.eventFieldControllerCreateEventField$Response(params).pipe(map((r: StrictHttpResponse<GetEventFieldDto>) => r.body as GetEventFieldDto));
     }
-
-    /**
-     * Path part for operation eventFieldControllerUpdateEventField
-     */
-    static readonly EventFieldControllerUpdateEventFieldPath = '/api/v1/event-field/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -122,10 +122,7 @@ export class EventFieldService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventFieldControllerUpdateEventField$Response(params: {
-        id: number;
-        body: UpdateEventFieldDto;
-    }): Observable<StrictHttpResponse<GetEventFieldDto>> {
+    eventFieldControllerUpdateEventField$Response(params: { id: number; body: UpdateEventFieldDto }): Observable<StrictHttpResponse<GetEventFieldDto>> {
         const rb = new RequestBuilder(this.rootUrl, EventFieldService.EventFieldControllerUpdateEventFieldPath, 'put');
         if (params) {
             rb.path('id', params.id, {});
@@ -154,15 +151,8 @@ export class EventFieldService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventFieldControllerUpdateEventField(params: { id: number; body: UpdateEventFieldDto }): Observable<GetEventFieldDto> {
-        return this.eventFieldControllerUpdateEventField$Response(params).pipe(
-            map((r: StrictHttpResponse<GetEventFieldDto>) => r.body as GetEventFieldDto)
-        );
+        return this.eventFieldControllerUpdateEventField$Response(params).pipe(map((r: StrictHttpResponse<GetEventFieldDto>) => r.body as GetEventFieldDto));
     }
-
-    /**
-     * Path part for operation eventFieldControllerDeleteEventField
-     */
-    static readonly EventFieldControllerDeleteEventFieldPath = '/api/v1/event-field/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

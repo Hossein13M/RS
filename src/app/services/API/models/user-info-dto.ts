@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { UserRole } from './user-role';
+
 export interface UserInfoDto {
     mobileNumber: string;
     status: string;

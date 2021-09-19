@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class LocalStorageService {
+    constructor() {}
+
     static setUserInfo(value) {
         localStorage.setItem(LocalStorageValue.userinfo, value);
     }
@@ -19,8 +21,6 @@ export class LocalStorageService {
     public static getNav() {
         return JSON.parse(localStorage.getItem(LocalStorageValue.nav));
     }
-
-    constructor() {}
 }
 
 export enum LocalStorageValue {

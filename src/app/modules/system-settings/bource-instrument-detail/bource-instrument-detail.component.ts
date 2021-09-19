@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { BondsListDto, BourseInstrumentDetailsDto } from 'app/services/API/models';
 import { BanksService } from 'app/services/App/bank/bank.service';
 import { BoursesInstrumentDetailService } from 'app/services/App/BourseInstrumentDetail/bourse-instrument-detail.service';
@@ -190,7 +190,10 @@ export class BourceInstrumentDetailComponent implements OnInit {
         this.ETFTypeSearchKeyword.setValue(this.bondDetail.etfTypeName);
         this.issueLicenseSearchkeyword.setValue(this.bondDetail.issuelicenseName);
         if (this.bondDetail.issuerGoalId) {
-            this.bigForm.get('issuerGoalId').setValue({ id: this.bondDetail.issuerGoalId, name: this.bondDetail.issuerGoalName });
+            this.bigForm.get('issuerGoalId').setValue({
+                id: this.bondDetail.issuerGoalId,
+                name: this.bondDetail.issuerGoalName,
+            });
         }
         // this.underWriterSearchkeyword.setValue(this.bondDetail.underwriterName)
         // this.marketMakerSearchkeyword.setValue(this.bondDetail.markerMakerName)
@@ -316,34 +319,16 @@ export class BourceInstrumentDetailComponent implements OnInit {
                 }, false);
 
             case 'issuelicenseId':
-                return [
-                    2100,
-                    2110,
-                    2130,
-                    2150,
-                    2160,
-                    2320,
-                    2330,
-                    2340,
-                    2350,
-                    2200,
-                    2600,
-                    111000,
-                    112000,
-                    112100,
-                    112200,
-                    112300,
-                    112400,
-                    120000,
-                ].reduce((r, i) => {
-                    if (code === i) {
-                        this.issueLicenseService
-                            .getIssuerLicenses(this.issueLicenseSearchkeyword.value)
-                            .subscribe((res) => (this.issueLicenses = res));
-                        return true;
-                    }
-                    return r;
-                }, false);
+                return [2100, 2110, 2130, 2150, 2160, 2320, 2330, 2340, 2350, 2200, 2600, 111000, 112000, 112100, 112200, 112300, 112400, 120000].reduce(
+                    (r, i) => {
+                        if (code === i) {
+                            this.issueLicenseService.getIssuerLicenses(this.issueLicenseSearchkeyword.value).subscribe((res) => (this.issueLicenses = res));
+                            return true;
+                        }
+                        return r;
+                    },
+                    false
+                );
 
             case 'issuerGoalId':
                 return [
@@ -428,13 +413,10 @@ export class BourceInstrumentDetailComponent implements OnInit {
                 }, false);
 
             case 'cancellationDate':
-                return [111000, 112000, 112100, 112200, 112300, 112400, 131000, 132000, 133000, 134000, 135000, 136000, 137000, 120000].reduce(
-                    (r, i) => {
-                        if (code !== i) return true;
-                        return r;
-                    },
-                    false
-                );
+                return [111000, 112000, 112100, 112200, 112300, 112400, 131000, 132000, 133000, 134000, 135000, 136000, 137000, 120000].reduce((r, i) => {
+                    if (code !== i) return true;
+                    return r;
+                }, false);
 
             case 'marketMakingRate':
                 return [2310, 2311, 2312].reduce((r, i) => {
@@ -601,29 +583,13 @@ export class BourceInstrumentDetailComponent implements OnInit {
                 }, false);
 
             case 'rate':
-                return [
-                    2100,
-                    2110,
-                    2130,
-                    2150,
-                    2160,
-                    2320,
-                    2330,
-                    2340,
-                    2350,
-                    2200,
-                    2600,
-                    111000,
-                    112000,
-                    112100,
-                    112200,
-                    112300,
-                    112400,
-                    120000,
-                ].reduce((r, i) => {
-                    if (code === i) return true;
-                    return r;
-                }, false);
+                return [2100, 2110, 2130, 2150, 2160, 2320, 2330, 2340, 2350, 2200, 2600, 111000, 112000, 112100, 112200, 112300, 112400, 120000].reduce(
+                    (r, i) => {
+                        if (code === i) return true;
+                        return r;
+                    },
+                    false
+                );
 
             case 'registerNumber':
                 return [4100, 4110, 4120, 4130, 4140, 4150, 4160, 4170, 131000, 132000, 133000, 134000, 135000, 136000, 137000].reduce((r, i) => {
@@ -632,29 +598,13 @@ export class BourceInstrumentDetailComponent implements OnInit {
                 }, false);
 
             case 'sponsor':
-                return [
-                    2100,
-                    2110,
-                    2130,
-                    2150,
-                    2160,
-                    2320,
-                    2330,
-                    2340,
-                    2350,
-                    2200,
-                    2600,
-                    111000,
-                    112000,
-                    112100,
-                    112200,
-                    112300,
-                    112400,
-                    120000,
-                ].reduce((r, i) => {
-                    if (code === i) return true;
-                    return r;
-                }, false);
+                return [2100, 2110, 2130, 2150, 2160, 2320, 2330, 2340, 2350, 2200, 2600, 111000, 112000, 112100, 112200, 112300, 112400, 120000].reduce(
+                    (r, i) => {
+                        if (code === i) return true;
+                        return r;
+                    },
+                    false
+                );
 
             case 'underlyingAsset':
                 return [5100, 5110, 5120, 5130, 5140, 5150, 1300, 1400, 1500, 1600, 5200, 5210, 3140].reduce((r, i) => {
@@ -663,13 +613,10 @@ export class BourceInstrumentDetailComponent implements OnInit {
                 }, false);
 
             case 'underwriters':
-                return [2100, 2110, 2130, 2150, 2160, 2320, 2330, 2340, 2350, 2200, 2310, 2311, 2312, 112000, 112100, 112200, 112300, 112400].reduce(
-                    (r, i) => {
-                        if (code === i) return true;
-                        return r;
-                    },
-                    false
-                );
+                return [2100, 2110, 2130, 2150, 2160, 2320, 2330, 2340, 2350, 2200, 2310, 2311, 2312, 112000, 112100, 112200, 112300, 112400].reduce((r, i) => {
+                    if (code === i) return true;
+                    return r;
+                }, false);
 
             case 'value':
                 return [
@@ -746,29 +693,13 @@ export class BourceInstrumentDetailComponent implements OnInit {
                 }, false);
 
             case 'collaterals':
-                return [
-                    2100,
-                    2110,
-                    2130,
-                    2150,
-                    2160,
-                    2320,
-                    2330,
-                    2340,
-                    2350,
-                    2200,
-                    2600,
-                    111000,
-                    112000,
-                    112100,
-                    112200,
-                    112300,
-                    112400,
-                    120000,
-                ].reduce((r, i) => {
-                    if (code === i) return true;
-                    return r;
-                }, false);
+                return [2100, 2110, 2130, 2150, 2160, 2320, 2330, 2340, 2350, 2200, 2600, 111000, 112000, 112100, 112200, 112300, 112400, 120000].reduce(
+                    (r, i) => {
+                        if (code === i) return true;
+                        return r;
+                    },
+                    false
+                );
 
             case 'volume':
                 return [
@@ -831,7 +762,10 @@ export class BourceInstrumentDetailComponent implements OnInit {
     }
 
     openDates(): void {
-        const dialogRef = this.dialog.open(DateComponent, { panelClass: 'dialog-w40', data: { id: this.bondDetail.id } });
+        const dialogRef = this.dialog.open(DateComponent, {
+            panelClass: 'dialog-w40',
+            data: { id: this.bondDetail.id },
+        });
         dialogRef.afterClosed().subscribe((r) => {
             if (r) {
                 this.startDate = r.startDate;
@@ -842,7 +776,10 @@ export class BourceInstrumentDetailComponent implements OnInit {
     }
 
     openUnderWriter(): void {
-        const dialogRef = this.dialog.open(UnderWriterComponent, { panelClass: 'dialog-w40', data: { underwriters: this.bondDetail.underwriters } });
+        const dialogRef = this.dialog.open(UnderWriterComponent, {
+            panelClass: 'dialog-w40',
+            data: { underwriters: this.bondDetail.underwriters },
+        });
         dialogRef.afterClosed().subscribe((r) => {
             this.bigForm.controls['underwriters'].setValue(r);
             this.state = stateType.UPLOAD_WAIT;
@@ -850,7 +787,10 @@ export class BourceInstrumentDetailComponent implements OnInit {
     }
 
     openMarketMaker(): void {
-        const dialogRef = this.dialog.open(MarketMakerComponent, { panelClass: 'dialog-w40', data: { marketMakers: this.bondDetail.marketMakers } });
+        const dialogRef = this.dialog.open(MarketMakerComponent, {
+            panelClass: 'dialog-w40',
+            data: { marketMakers: this.bondDetail.marketMakers },
+        });
         dialogRef.afterClosed().subscribe((r) => {
             this.bigForm.controls['marketMakers'].setValue(r);
             this.state = stateType.UPLOAD_WAIT;

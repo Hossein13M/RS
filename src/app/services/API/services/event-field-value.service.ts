@@ -14,14 +14,18 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class EventFieldValueService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventFieldValueControllerGetEventFields
      */
     static readonly EventFieldValueControllerGetEventFieldsPath = '/api/v1/event-field-value';
+    /**
+     * Path part for operation eventFieldValueControllerCreateEventField
+     */
+    static readonly EventFieldValueControllerCreateEventFieldPath = '/api/v1/event-field-value';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -66,19 +70,12 @@ export class EventFieldValueService extends BaseService {
     }
 
     /**
-     * Path part for operation eventFieldValueControllerCreateEventField
-     */
-    static readonly EventFieldValueControllerCreateEventFieldPath = '/api/v1/event-field-value';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventFieldValueControllerCreateEventField()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventFieldValueControllerCreateEventField$Response(params: {
-        body: CreateEventFieldValueDto;
-    }): Observable<StrictHttpResponse<GetEventFieldValueDto>> {
+    eventFieldValueControllerCreateEventField$Response(params: { body: CreateEventFieldValueDto }): Observable<StrictHttpResponse<GetEventFieldValueDto>> {
         const rb = new RequestBuilder(this.rootUrl, EventFieldValueService.EventFieldValueControllerCreateEventFieldPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

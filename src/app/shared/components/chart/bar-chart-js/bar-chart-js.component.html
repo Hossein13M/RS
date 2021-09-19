@@ -1,18 +1,18 @@
-<div *ngIf="data" class="fuse-card">
+<div *ngIf='data' class='fuse-card'>
     <label> {{ chartName }} </label>
     <mat-divider></mat-divider>
     <canvas
+        (chartClick)='chartClicked($event)'
+        (chartHover)='chartHovered($event)'
+        [chartType]='chartType'
+        [colors]='chartColors'
+        [datasets]='chartDatasets'
+        [labels]='chartLabels'
+        [legend]='true'
+        [options]='chartOptions'
         baseChart
-        height="{{ height }}"
-        [chartType]="chartType"
-        [datasets]="chartDatasets"
-        [labels]="chartLabels"
-        [colors]="chartColors"
-        [options]="chartOptions"
-        [legend]="true"
-        (chartHover)="chartHovered($event)"
-        (chartClick)="chartClicked($event)"
+        height='{{ height }}'
     >
     </canvas>
-    <p *ngIf="data && data.length == 0" class="text-center">داده ای موجود نیست</p>
+    <p *ngIf='data && data.length == 0' class='text-center'>داده ای موجود نیست</p>
 </div>

@@ -6,14 +6,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { fuseAnimations } from '@fuse/animations';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
 import { FormContainer } from 'app/shared/models/FromContainer';
 import { Observable, of } from 'rxjs';
 import { OpRiskMappingDialogComponent } from '../op-risk-mapping-dialog/op-risk-mapping-dialog.component';
 import { OpRiskTreeChartService } from '../op-risk-tree-chart.service';
 import { TreeMappingService } from '../tree-mapping.service';
-import { stateType, TreeChartFlatNode, TreeChartMapping, TreeChartNode } from './op-risk-tree-chart.types.js';
+import { stateType, TreeChartFlatNode, TreeChartMapping, TreeChartNode } from './op-risk-tree-chart.types';
 
 @Component({
     selector: 'app-op-risk-tree-chart',
@@ -341,7 +341,10 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
 
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             panelClass: 'dialog-w40',
-            data: { title: 'حذف نگاشت', description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟` },
+            data: {
+                title: 'حذف نگاشت',
+                description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟`,
+            },
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {

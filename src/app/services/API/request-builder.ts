@@ -23,6 +23,7 @@ class ParameterCodec implements HttpParameterCodec {
         return decodeURIComponent(value);
     }
 }
+
 const ParameterCodecInstance = new ParameterCodec();
 
 /**
@@ -194,11 +195,11 @@ class HeaderParameter extends Parameter {
  * Helper to build http requests from parameters
  */
 export class RequestBuilder {
+    _bodyContent: any | null;
+    _bodyContentType?: string;
     private _path = new Map<string, PathParameter>();
     private _query = new Map<string, QueryParameter>();
     private _header = new Map<string, HeaderParameter>();
-    _bodyContent: any | null;
-    _bodyContentType?: string;
 
     constructor(public rootUrl: string, public operationPath: string, public method: string) {}
 
@@ -276,19 +277,6 @@ export class RequestBuilder {
         }
     }
 
-    private formDataValue(value: any): any {
-        if (value === null || value === undefined) {
-            return null;
-        }
-        if (value instanceof Blob) {
-            return value;
-        }
-        if (typeof value === 'object') {
-            return JSON.stringify(value);
-        }
-        return String(value);
-    }
-
     /**
      * Builds the request with the current set parameters
      */
@@ -340,5 +328,18 @@ export class RequestBuilder {
             responseType: options.responseType,
             reportProgress: options.reportProgress,
         });
+    }
+
+    private formDataValue(value: any): any {
+        if (value === null || value === undefined) {
+            return null;
+        }
+        if (value instanceof Blob) {
+            return value;
+        }
+        if (typeof value === 'object') {
+            return JSON.stringify(value);
+        }
+        return String(value);
     }
 }

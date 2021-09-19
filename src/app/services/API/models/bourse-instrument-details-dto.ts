@@ -3,6 +3,7 @@ import { CollateralsDto } from './collaterals-dto';
 import { GuarantorsDto } from './guarantors-dto';
 import { MarketMakersDto } from './market-makers-dto';
 import { UnderwritersDto } from './underwriters-dto';
+
 export interface BourseInstrumentDetailsDto {
     account?: string;
     bankId?: number;

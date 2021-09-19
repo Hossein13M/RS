@@ -15,14 +15,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class BourseBoardService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bourseBoardControllerGetBourseBoard
      */
     static readonly BourseBoardControllerGetBourseBoardPath = '/api/v1/bourse-board/{bourseBoardId}';
+    /**
+     * Path part for operation bourseBoardControllerDeleteBourseBoard
+     */
+    static readonly BourseBoardControllerDeleteBourseBoardPath = '/api/v1/bourse-board/{bourseBoardId}';
+    /**
+     * Path part for operation bourseBoardControllerGetBourseBoards
+     */
+    static readonly BourseBoardControllerGetBourseBoardsPath = '/api/v1/bourse-board';
+    /**
+     * Path part for operation bourseBoardControllerUpdateBourseBoard
+     */
+    static readonly BourseBoardControllerUpdateBourseBoardPath = '/api/v1/bourse-board';
+    /**
+     * Path part for operation bourseBoardControllerCreateBourseBoard
+     */
+    static readonly BourseBoardControllerCreateBourseBoardPath = '/api/v1/bourse-board';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -57,15 +73,8 @@ export class BourseBoardService extends BaseService {
      * This method doesn't expect any request body.
      */
     bourseBoardControllerGetBourseBoard(params: { bourseBoardId: number }): Observable<BourseBoardDto> {
-        return this.bourseBoardControllerGetBourseBoard$Response(params).pipe(
-            map((r: StrictHttpResponse<BourseBoardDto>) => r.body as BourseBoardDto)
-        );
+        return this.bourseBoardControllerGetBourseBoard$Response(params).pipe(map((r: StrictHttpResponse<BourseBoardDto>) => r.body as BourseBoardDto));
     }
-
-    /**
-     * Path part for operation bourseBoardControllerDeleteBourseBoard
-     */
-    static readonly BourseBoardControllerDeleteBourseBoardPath = '/api/v1/bourse-board/{bourseBoardId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -102,11 +111,6 @@ export class BourseBoardService extends BaseService {
     bourseBoardControllerDeleteBourseBoard(params: { bourseBoardId: number }): Observable<void> {
         return this.bourseBoardControllerDeleteBourseBoard$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation bourseBoardControllerGetBourseBoards
-     */
-    static readonly BourseBoardControllerGetBourseBoardsPath = '/api/v1/bourse-board';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -148,11 +152,6 @@ export class BourseBoardService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseBoardControllerUpdateBourseBoard
-     */
-    static readonly BourseBoardControllerUpdateBourseBoardPath = '/api/v1/bourse-board';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseBoardControllerUpdateBourseBoard()` instead.
      *
@@ -189,11 +188,6 @@ export class BourseBoardService extends BaseService {
             map((r: StrictHttpResponse<UpdateBourseBoardDto>) => r.body as UpdateBourseBoardDto)
         );
     }
-
-    /**
-     * Path part for operation bourseBoardControllerCreateBourseBoard
-     */
-    static readonly BourseBoardControllerCreateBourseBoardPath = '/api/v1/bourse-board';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

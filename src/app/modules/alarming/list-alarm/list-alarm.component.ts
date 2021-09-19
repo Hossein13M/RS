@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { AlarmService } from 'app/services/feature-services/alarm.service';
 import { RiskModuleService } from 'app/services/feature-services/risk-module.service';
 import { AddAlarmComponent } from '../add-alarm/add-alarm.component';
@@ -13,18 +13,13 @@ import { AlarmDetailComponent } from '../alarm-detail/alarm-detail.component';
     styleUrls: ['./list-alarm.component.scss'],
 })
 export class ListAlarmComponent implements OnInit {
-    constructor(
-        private dialog: MatDialog,
-        private AlertService: AlertService,
-        private alarmService: AlarmService,
-        private moduleService: RiskModuleService
-    ) {}
-
     displayedColumns: string[] = ['isActive', 'title', 'type', 'priority', 'sendEmail', 'sendSms', 'operation'];
     dataSource = new MatTableDataSource<any>();
     modules;
     currentModuleId;
     isWorking: any;
+
+    constructor(private dialog: MatDialog, private AlertService: AlertService, private alarmService: AlarmService, private moduleService: RiskModuleService) {}
 
     ngOnInit(): void {
         this.getAllModules();

@@ -16,7 +16,15 @@ export class Page4Component implements OnInit {
     backendData = SearchSelectMockData;
 
     constructor(private fb: FormBuilder) {
-        this.fg = this.fb.group({ testSearchSelect: [{ ticker: 'IRO9PASN4191', symbol: 'ضسان3026' }, [Validators.required]] });
+        this.fg = this.fb.group({
+            testSearchSelect: [
+                {
+                    ticker: 'IRO9PASN4191',
+                    symbol: 'ضسان3026',
+                },
+                [Validators.required],
+            ],
+        });
 
         this.cf = this.fb.group({
             label: ['لیبل', []],

@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, forwardRef, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, Output } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { fuseAnimations } from '@fuse/animations';
@@ -12,33 +12,23 @@ import { Tree, TreeFlatNode, TreeNode } from './tree-select.types';
     templateUrl: './tree-select.component.html',
     styleUrls: ['./tree-select.component.scss'],
     providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => TreeSelectComponent),
-            multi: true,
-        },
-        {
-            provide: NG_VALIDATORS,
-            useExisting: forwardRef(() => TreeSelectComponent),
-            multi: true,
-        },
+        { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TreeSelectComponent), multi: true },
+        { provide: NG_VALIDATORS, useExisting: forwardRef(() => TreeSelectComponent), multi: true },
     ],
     animations: fuseAnimations,
 })
 export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Validator {
     @Input() data;
+    @Input() maxSelect = -1;
     @Input() selectedValueFieldName = 'titleFA';
+    @Output() event = new EventEmitter<any>();
     tree: Tree;
     show = false;
-
     disable = false;
     values: any;
-
     mouseIn: any;
     expandAll = true;
-
     showSelected = false;
-    public onTouched: () => void = () => {};
 
     constructor() {
         this.tree = {
@@ -51,6 +41,8 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
         };
     }
 
+    public onTouched: () => void = () => {};
+
     ngOnChanges(): void {
         if (!this.data) {
             this.show = false;
@@ -60,7 +52,6 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
         this.data.children = this.data.children.sort((a, b) => a.id - b.id);
         const flatNodeMap = new Map<TreeFlatNode, TreeNode>();
         const nestedNodeMap = new Map<TreeNode, TreeFlatNode>();
-        const checklistSelection = this.tree.checklistSelection;
         const transformer = (node: TreeNode, level: number) => {
             let flatNode: TreeFlatNode;
             if (nestedNodeMap.has(node) && nestedNodeMap.get(node).id === node.id) {
@@ -69,7 +60,7 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
                 flatNode = new TreeFlatNode();
             }
             flatNode.id = node.id;
-            flatNode.titleFA = node.titleFA;
+            flatNode.titleFA = node[this.selectedValueFieldName];
             flatNode.level = level;
             flatNode.expandable = !!node.children && node.children.length > 0;
             flatNodeMap.set(flatNode, node);
@@ -100,8 +91,9 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
 
     hasChild = (_: number, nodeData: TreeFlatNode) => nodeData.expandable;
 
-    leafItemSelectionToggle(node: TreeFlatNode, tree: any): void {
+    leafItemSelectionToggle(node: TreeFlatNode, tree: any, value?: any): void {
         tree.checklistSelection.toggle(node);
+        if (value) this.event.emit({ node: node, tree: tree, value: value });
         // if (tree.checklistSelection.isSelected(node)) {
         //     this.selectAllParents(node, tree);
         // }
@@ -230,7 +222,7 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
         for (const child of value) {
             let foundedFlatNode = null;
             for (const [treeNode, flatNode] of this.tree.nestedNodeMap) {
-                if (treeNode.id === child.treeNode.id) {
+                if (treeNode.id === child) {
                     foundedFlatNode = flatNode;
                 }
             }
@@ -261,7 +253,8 @@ export class TreeSelectComponent implements OnChanges, ControlValueAccessor, Val
     }
 
     validate(c: AbstractControl): ValidationErrors | null {
-        return { invalidForm: { valid: false, message: 'Address fields are invalid' } };
+        // return { invalidForm: { valid: false, message: 'Address fields are invalid' } };
+        return null;
     }
 
     mouseLeave(): void {

@@ -1,10 +1,10 @@
 import { PaginationChangeType } from '#shared/components/table/table.model';
 import { StateManager } from '#shared/pipes/stateManager.pipe';
-import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TradeBookHistoryService } from './trade-book-history.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-book-history',
@@ -31,30 +31,16 @@ export class TradeBookHistoryComponent implements OnInit {
     ngOnInit(): void {
         this.initializeTableColumns();
         this.form.valueChanges.subscribe((newFormValue) => {
-            if (newFormValue.date) newFormValue.date = formatDate(new Date(newFormValue.date), 'yyyy-MM-dd', 'en_US');
+            if (newFormValue.date) newFormValue.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(newFormValue.date));
             this.searchParams = newFormValue;
             this.pagination.skip = 0;
             this.getTradeBookHistory();
         });
 
         this.searchParams = this.form.value;
-        if (this.searchParams.date) this.searchParams.date = formatDate(new Date(this.searchParams.date), 'yyyy-MM-dd', 'en_US');
+        if (this.searchParams.date) this.searchParams.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.searchParams.date));
 
         this.getTradeBookHistory();
-    }
-
-    private initializeTableColumns(): void {
-        this.columns = [
-            { name: 'سبد', id: 'organizationType', type: 'string' },
-            { name: 'نماد', id: 'bourseAccount', type: 'string' },
-            { name: 'کارگزاری', id: 'broker', type: 'string' },
-            {
-                name: 'تاریخ بروزرسانی',
-                id: 'date',
-                type: 'date',
-                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
-            },
-        ];
     }
 
     public getTradeBookHistory(): void {
@@ -71,5 +57,24 @@ export class TradeBookHistoryComponent implements OnInit {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getTradeBookHistory();
+    }
+
+    private initializeTableColumns(): void {
+        this.columns = [
+            { name: 'سبد', id: 'organizationType', type: 'string' },
+            { name: 'نماد', id: 'bourseAccount', type: 'string' },
+            { name: 'کارگزاری', id: 'broker', type: 'string' },
+            {
+                name: 'تاریخ بروزرسانی',
+                id: 'date',
+                type: 'date',
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
+            },
+        ];
     }
 }

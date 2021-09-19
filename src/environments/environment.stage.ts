@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    serviceUrl: 'http://stage.management-api.iirms.ir',
+    serviceUrl: 'http://stage.management-api.iirms.ir'
 };

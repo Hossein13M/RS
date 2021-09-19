@@ -1,0 +1,27 @@
+<div class='page-layout'>
+    <app-header class='wp-100' pageTitle='جریان قرارداد'>
+        <div>
+            <button (click)="openFlowDialog('manual')" class='mx-4' color='accent' mat-stroked-button>
+                <mat-icon class='mat-18'>fiber_manual_record</mat-icon>
+                جریان دستی نهاد
+            </button>
+            <button (click)="openFlowDialog('create')" class='mx-4' mat-stroked-button>
+                <mat-icon class='mat-18'>add</mat-icon>
+                افزودن جریان
+            </button>
+        </div>
+    </app-header>
+
+    <div class='fuse-card m-40 p-40'>
+        <h1 class='wp-100 text-center mb-20'>فهرست جریان قراردادها</h1>
+        <div class='container fuse-card'>
+            <app-table
+                (paginationEvent)='paginationControl($event)'
+                [columns]='tableColumn'
+                [data]='flows'
+                [paginationObject]='pagination'
+                [paginationSettings]="{ mode: 'backend' }"
+            ></app-table>
+        </div>
+    </div>
+</div>

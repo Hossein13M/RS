@@ -1,14 +1,10 @@
 @mixin fuse-theme-options-theme($theme) {
-
     $background: map-get($theme, background);
     $foreground: map-get($theme, foreground);
 
     fuse-theme-options {
-
         .theme-options-panel {
-
             form {
-
                 .group {
                     border: 1px solid map-get($foreground, divider);
 

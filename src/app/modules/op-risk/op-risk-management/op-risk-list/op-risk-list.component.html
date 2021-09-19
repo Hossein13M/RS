@@ -1,0 +1,39 @@
+<div class='page-layout' dir='rtl' style='overflow: auto'>
+    <app-header pageTitle='ریسک و زیان عملیاتی'>
+        <div>
+            <a [routerLink]="['add']" class='mx-20' color='primary' mat-raised-button>
+                <mat-icon>add</mat-icon>
+                ایجاد ریسک </a>
+            <a [routerLink]="['loss']" class='mx-20' color='primary' mat-raised-button>
+                <mat-icon>add</mat-icon>
+                ایجاد زیان </a>
+        </div>
+    </app-header>
+
+    <div class='page-content'>
+        <div class='fuse-card mb-20'>
+            <div class='header mr-20 mt-20' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center'
+                 mat-dialog-title>
+                <h1>ریسک و زیان های در جریان</h1>
+            </div>
+
+            <div class='fuse-card data-show' dir='rtl'>
+                <app-table [columns]='columns' [data]='data'
+                           [paginationSettings]="{ mode: 'local', pageSize: 25 }"></app-table>
+            </div>
+        </div>
+
+        <div class='fuse-card'>
+            <div class='header mr-20 mt-20' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center'
+                 mat-dialog-title>
+                <h1>پیشینه‌ی ریسک و زیان ها</h1>
+            </div>
+
+            <div class='fuse-card data-show' dir='rtl'>
+                <app-table (searchEvent)='search($event)' [columns]='columnsHistory'
+                           [data]='dataHistory' [paginationSettings]="{ mode: 'local', pageSize: 25 }">
+                </app-table>
+            </div>
+        </div>
+    </div>
+</div>

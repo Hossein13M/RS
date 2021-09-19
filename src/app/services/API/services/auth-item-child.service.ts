@@ -13,14 +13,18 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class AuthItemChildService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation authItemChildControllerCreateAuthItemChild
      */
     static readonly AuthItemChildControllerCreateAuthItemChildPath = '/api/v1/rbac/assign-auth-item-to-role';
+    /**
+     * Path part for operation authItemChildControllerDeleteAuthItemChild
+     */
+    static readonly AuthItemChildControllerDeleteAuthItemChildPath = '/api/v1/rbac/revoke/{child}/from-role/{parent}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -28,9 +32,7 @@ export class AuthItemChildService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    authItemChildControllerCreateAuthItemChild$Response(params: {
-        body: CreateAuthItemChildDto;
-    }): Observable<StrictHttpResponse<CreateAuthItemChildDto>> {
+    authItemChildControllerCreateAuthItemChild$Response(params: { body: CreateAuthItemChildDto }): Observable<StrictHttpResponse<CreateAuthItemChildDto>> {
         const rb = new RequestBuilder(this.rootUrl, AuthItemChildService.AuthItemChildControllerCreateAuthItemChildPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -61,11 +63,6 @@ export class AuthItemChildService extends BaseService {
             map((r: StrictHttpResponse<CreateAuthItemChildDto>) => r.body as CreateAuthItemChildDto)
         );
     }
-
-    /**
-     * Path part for operation authItemChildControllerDeleteAuthItemChild
-     */
-    static readonly AuthItemChildControllerDeleteAuthItemChildPath = '/api/v1/rbac/revoke/{child}/from-role/{parent}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

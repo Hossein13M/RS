@@ -1,9 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { Observable, of } from 'rxjs';
 import { OpRiskTreeChartService } from '../op-risk-tree-chart.service';
 import { TreeChartFlatNode, TreeChartMapping, TreeChartNode } from '../op-risk-tree-chart/op-risk-tree-chart.types';
@@ -100,8 +100,7 @@ export class OpRiskMappingDialogComponent implements OnInit {
     // ---------------------------------------- Tree
 
     transformer = (node: TreeChartNode, level: number) => {
-        const flatNode =
-            this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
+        const flatNode = this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
 
         flatNode.id = node.id;
         flatNode.level = level;

@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AlertService } from 'app/services/alert.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '#shared/services/alert.service';
 import { OperatorService } from 'app/services/API/services';
 import { searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -16,7 +16,12 @@ import { OpRiskFlowService } from '../op-risk-flow.service';
 export class FlowAddComponent implements OnInit {
     title: string = '';
     operators: Array<Operator>;
-    form: FormGroup = this.fb.group({ stepOne: ['', []], stepTwo: ['', []], stepTree: ['', []], name: ['', [Validators.required]] });
+    form: FormGroup = this.fb.group({
+        stepOne: ['', []],
+        stepTwo: ['', []],
+        stepTree: ['', []],
+        name: ['', [Validators.required]],
+    });
     selectedOperators: Array<SelectedOperators> = [
         { flowUsers: [], id: null, step: 1 },
         { flowUsers: [], id: null, step: 2 },
@@ -32,11 +37,42 @@ export class FlowAddComponent implements OnInit {
         private alertService: AlertService
     ) {}
 
+    private static setSelectedOperatorsValue(selectedOperatorArray: Array<any>): void {
+        selectedOperatorArray.forEach((selectedOperator) => {
+            let tempArray = [];
+            for (const key of selectedOperator) tempArray.push(key.id);
+            selectedOperator.setValue(tempArray, { onlySelf: true });
+        });
+    }
+
     ngOnInit(): void {
         this.checkForEditMode();
         this.getOperators();
         this.createForm();
     }
+
+    public removeOperator(ticker: any, type: number): void {
+        if (type == 1) this.selectedOperators[0].flowUsers = this.selectedOperators[0].flowUsers.filter((el) => el.id !== ticker.id);
+        if (type == 2) this.selectedOperators[1].flowUsers = this.selectedOperators[1].flowUsers.filter((el) => el.id !== ticker.id);
+        if (type == 3) this.selectedOperators[2].flowUsers = this.selectedOperators[2].flowUsers.filter((el) => el.id !== ticker.id);
+        FlowAddComponent.setSelectedOperatorsValue([
+            this.selectedOperators[0].flowUsers,
+            this.selectedOperators[1].flowUsers,
+            this.selectedOperators[2].flowUsers,
+        ]);
+    }
+
+    public submitForm(): void {
+        this.data ? this.onEditFlow() : this.onCreateFlow();
+    }
+
+    public searchFunction = (searchKey, data): void => {
+        data.state = searchSelectStateType.LOADING;
+        setTimeout(() => {
+            data.list = this.operators.filter((el) => el.fullName.includes(searchKey));
+            data.state = searchSelectStateType.PRESENT;
+        }, 500);
+    };
 
     private checkForEditMode(): void {
         this.data ? (this.title = `ویرایش جریان ${this.data.name}`) : (this.title = 'افزودن جریان');
@@ -74,7 +110,6 @@ export class FlowAddComponent implements OnInit {
         data.steps.push({ users: step1 });
         data.steps.push({ users: step2 });
         data.steps.push({ users: step3 });
-        console.log(data);
         this.opRiskFlowService.createOPRiskFlow(data).subscribe(() => {
             this.alertService.onSuccess('با موفقیت ایجاد شد');
             this.dialogRef.close(true);
@@ -105,35 +140,4 @@ export class FlowAddComponent implements OnInit {
             this.operators = response.items;
         });
     }
-
-    public removeOperator(ticker: any, type: number): void {
-        if (type == 1) this.selectedOperators[0].flowUsers = this.selectedOperators[0].flowUsers.filter((el) => el.id !== ticker.id);
-        if (type == 2) this.selectedOperators[1].flowUsers = this.selectedOperators[1].flowUsers.filter((el) => el.id !== ticker.id);
-        if (type == 3) this.selectedOperators[2].flowUsers = this.selectedOperators[2].flowUsers.filter((el) => el.id !== ticker.id);
-        FlowAddComponent.setSelectedOperatorsValue([
-            this.selectedOperators[0].flowUsers,
-            this.selectedOperators[1].flowUsers,
-            this.selectedOperators[2].flowUsers,
-        ]);
-    }
-
-    public submitForm(): void {
-        this.data ? this.onEditFlow() : this.onCreateFlow();
-    }
-
-    private static setSelectedOperatorsValue(selectedOperatorArray: Array<any>): void {
-        selectedOperatorArray.forEach((selectedOperator) => {
-            let tempArray = [];
-            for (const key of selectedOperator) tempArray.push(key.id);
-            selectedOperator.setValue(tempArray, { onlySelf: true });
-        });
-    }
-
-    public searchFunction = (searchKey, data): void => {
-        data.state = searchSelectStateType.LOADING;
-        setTimeout(() => {
-            data.list = this.operators.filter((el) => el.fullName.includes(searchKey));
-            data.state = searchSelectStateType.PRESENT;
-        }, 500);
-    };
 }

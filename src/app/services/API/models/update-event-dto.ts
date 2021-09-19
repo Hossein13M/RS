@@ -2,6 +2,7 @@
 import { EventInformPartyForUpdateEventDto } from './event-inform-party-for-update-event-dto';
 import { EventRelationForUpdateEventDto } from './event-relation-for-update-event-dto';
 import { EventReminderForUpdateEventDto } from './event-reminder-for-update-event-dto';
+
 export interface UpdateEventDto {
     code?: string;
     comment?: string;

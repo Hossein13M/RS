@@ -1,18 +1,18 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
-import { AUMService } from 'app/modules/aum/aum.service';
-import { StateManager } from 'app/shared/pipes/stateManager.pipe';
 import * as _ from 'lodash';
 import { forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
 import { IpsDialogComponent } from '#shared/components/ips-dialog/ips-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+import { AUMService } from 'app/modules/aum/aum.service';
+import { StateManager } from 'app/shared/pipes/stateManager.pipe';
+import { AumData, Baskets, Category, Fund, SearchParams } from './aum-models';
 
 @Component({
     selector: 'app-aum',
@@ -26,7 +26,6 @@ export class AumComponent implements OnInit {
     categories: Array<Category>;
     funds: Array<Fund>;
     form: FormGroup;
-    didAll;
     searchParams: SearchParams = {
         tamadonAssets: false,
         fundNationalCodes: [],
@@ -85,70 +84,8 @@ export class AumComponent implements OnInit {
         });
     }
 
-    private createForm(): void {
-        this.form = this.fb.group({ NL: [[], []], baskets: [[], []], categories: [[], []], date: [], funds: [[], []] });
-    }
-
-    private setFormValueFromParams(): void {
-        const params = this.activatedRoute.snapshot.queryParams;
-        this.checkParamsForBeingArray(params, ['baskets', 'NL', 'categories', 'funds']);
-        this.form.get('date').setValue(new Date(params.date) ?? new Date());
-    }
-
-    private checkParamsForBeingArray(params: Params, paramNameArray: Array<string>): void {
-        paramNameArray.forEach((element) => {
-            Array.isArray(params[element])
-                ? this.form.get(element).patchValue(params[element].map((el) => el))
-                : this.form.get(element).patchValue([params[element]]);
-        });
-    }
-
-    private getAUMBaskets(): Observable<any> {
-        return this.aumService.getAUMBaskets().pipe(tap((response) => (this.baskets = response)));
-    }
-
-    private getAUMCategories(): Observable<any> {
-        return this.aumService.getAUMCategories().pipe(tap((response) => (this.categories = response)));
-    }
-
-    private getAUMFund(): Observable<any> {
-        return this.aumService.getAUMFund(this.form.get('baskets').value).pipe(tap((response) => (this.funds = response)));
-    }
-
-    private addRouterParamsOnFormValueChanges(formValue): void {
-        let newFormValue = { ...formValue };
-        newFormValue = this.removeEmptyOrNullValuesFromForm(newFormValue);
-        let inputDate = new Date(newFormValue?.date);
-        !!inputDate.getDate() ? (newFormValue.date = formatDate(inputDate, 'yyyy-MM-dd', 'en_US')) : delete newFormValue.date;
-        this.router.navigate([], {
-            relativeTo: this.activatedRoute,
-            queryParams: newFormValue,
-            queryParamsHandling: '',
-        });
-    }
-
-    private removeEmptyOrNullValuesFromForm(formValue): void {
-        for (const propName in formValue)
-            if (formValue[propName] === null || formValue[propName] === '' || (formValue[propName][0] === undefined && propName !== 'date'))
-                delete formValue[propName];
-        return formValue;
-    }
-
     public getAUMFundOnBasketChange(): void {
         this.aumService.getAUMFund(this.form.get('baskets').value).subscribe((response) => (this.funds = response));
-    }
-
-    private gatherDataForSearchParams(): void {
-        this.searchParams.tamadonAssets = this.form.get('baskets').value.includes('1');
-        this.searchParams.date = formatDate(this.form.get('date').value, 'yyyy-MM-dd', 'en_US');
-        this.searchParams.listedAssets = this.form.value.NL.includes('0');
-        this.searchParams.nonlistedAssets = this.form.value.NL.includes('1');
-        this.searchParams.bondsAssets = this.form.get('categories').value.includes('1');
-        this.searchParams.stocksAssets = this.form.get('categories').value.includes('2');
-        this.searchParams.fundsAssets = this.form.get('categories').value.includes('4');
-
-        if (this.form.get('baskets').value.includes('2')) this.searchParams.fundNationalCodes = this.form.get('funds').value;
-        else delete this.searchParams.fundNationalCodes;
     }
 
     public submitForm(): void {
@@ -203,18 +140,121 @@ export class AumComponent implements OnInit {
                         }
                         counter++;
                     }
-                }, 200)
+                }, 200);
             });
         }, 200);
     }
 
+    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
+        const control: AbstractControl = this.form.controls[controlName];
+        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
+        const difference = _.difference(mappedValues, control.value).length;
+        if (difference === 0) return 'all';
+        else if (difference === values.length) return 'none';
+        return 'indeterminate';
+    }
+
+    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
+        if (checkbox.checked) {
+            this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
+        } else {
+            this.form.controls[controlName].patchValue([]);
+        }
+
+        if (controlName === 'baskets' && checkbox.checked) {
+            this.getAUMFundOnBasketChange();
+        }
+    }
+
+    public filterCategories(): Array<Category> {
+        let categories = [];
+        if (this.categories) {
+            categories = this.categories.filter((row) => row.id !== 3);
+        }
+        return categories;
+    }
+
+    public openIpsHistoryDialog(): void {
+        this.dialog.open(IpsDialogComponent, {
+            width: '1000px',
+            data: { basket: ['T', 'F', 'M'], withDetails: false },
+        });
+    }
+
+    private createForm(): void {
+        this.form = this.fb.group({ NL: [[], []], baskets: [[], []], categories: [[], []], date: [], funds: [[], []] });
+    }
+
+    private setFormValueFromParams(): void {
+        const params = this.activatedRoute.snapshot.queryParams;
+        this.checkParamsForBeingArray(params, ['baskets', 'NL', 'categories', 'funds']);
+        this.form.get('date').setValue(new Date(params.date) ?? new Date());
+    }
+
+    private checkParamsForBeingArray(params: Params, paramNameArray: Array<string>): void {
+        paramNameArray.forEach((element) => {
+            Array.isArray(params[element])
+                ? this.form.get(element).patchValue(params[element].map((el) => el))
+                : this.form.get(element).patchValue([params[element]]);
+        });
+    }
+
+    private getAUMBaskets(): Observable<any> {
+        return this.aumService.getAUMBaskets().pipe(tap((response) => (this.baskets = response)));
+    }
+
+    private getAUMCategories(): Observable<any> {
+        return this.aumService.getAUMCategories().pipe(tap((response) => (this.categories = response)));
+    }
+
     // *** method for getting data on formSubmit ***
     // *** these methods should be on each component's ngOnInits and each component should have its own route in the next refactor ***
-    private getAumDeposit(): void {
-        this.aumService
-            .getAumDeposit(this.searchParams.tamadonAssets, this.searchParams.date, this.form.get('funds').value)
-            .pipe(StateManager(this.aumData.deposit))
-            .subscribe((result) => (this.aumData.deposit.data = result));
+    // private getAumDeposit(): void {
+    //     this.aumService
+    //         .getAumDeposit(this.searchParams.tamadonAssets, this.searchParams.date, this.form.get('funds').value)
+    //         .pipe(StateManager(this.aumData.deposit))
+    //         .subscribe((result) => (this.aumData.deposit.data = result));
+    // }
+
+    private getAUMFund(): Observable<any> {
+        return this.aumService.getAUMFund(this.form.get('baskets').value).pipe(tap((response) => (this.funds = response)));
+    }
+
+    private addRouterParamsOnFormValueChanges(formValue): void {
+        let newFormValue = { ...formValue };
+        newFormValue = this.removeEmptyOrNullValuesFromForm(newFormValue);
+        const inputDate = new Date(newFormValue?.date);
+        !!inputDate.getDate() ? (newFormValue.date = UtilityFunctions.convertDateToGregorianFormatForServer(inputDate)) : delete newFormValue.date;
+        this.router
+            .navigate([], {
+                relativeTo: this.activatedRoute,
+                queryParams: newFormValue,
+                queryParamsHandling: '',
+            })
+            .finally();
+    }
+
+    private removeEmptyOrNullValuesFromForm(formValue): any {
+        for (const propName in formValue)
+            if (formValue.hasOwnProperty(propName)) {
+                if (formValue[propName] === null || formValue[propName] === '' || (formValue[propName][0] === undefined && propName !== 'date'))
+                    delete formValue[propName];
+            }
+
+        return formValue;
+    }
+
+    private gatherDataForSearchParams(): void {
+        this.searchParams.tamadonAssets = this.form.get('baskets').value.includes('1');
+        this.searchParams.date = UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('date').value);
+        this.searchParams.listedAssets = this.form.value.NL.includes('0');
+        this.searchParams.nonlistedAssets = this.form.value.NL.includes('1');
+        this.searchParams.bondsAssets = this.form.get('categories').value.includes('1');
+        this.searchParams.stocksAssets = this.form.get('categories').value.includes('2');
+        this.searchParams.fundsAssets = this.form.get('categories').value.includes('4');
+
+        if (this.form.get('baskets').value.includes('2')) this.searchParams.fundNationalCodes = this.form.get('funds').value;
+        else delete this.searchParams.fundNationalCodes;
     }
 
     private getAumStock(isNl: boolean = true): Observable<any> {
@@ -258,46 +298,5 @@ export class AumComponent implements OnInit {
             StateManager(this.aumData.etf),
             tap((result) => (this.aumData.etf.data = result))
         );
-    }
-
-    private getAumDepositCertificate(): void {
-        // FIXME: the following method has not been implemented yet!
-        // this.aumService.getAumCertificateDeposit(this.searchParams.date).subscribe((result) => (this.aumCertificateDeposit = result));
-    }
-
-    public OptionAllState(controlName: string, values: Array<any>, key = 'id'): 'all' | 'indeterminate' | 'none' {
-        const control: AbstractControl = this.form.controls[controlName];
-        const mappedValues = _.map(_.map(values, key), (value) => value.toString());
-        const difference = _.difference(mappedValues, control.value).length;
-        if (difference === 0) {
-            return 'all';
-        } else if (difference === values.length) {
-            return 'none';
-        }
-        return 'indeterminate';
-    }
-
-    public selectAllHandler(checkbox: MatCheckbox, controlName: string, values: Array<any>, key = 'id'): void {
-        if (checkbox.checked) {
-            this.form.controls[controlName].setValue(_.map(_.map(values, key), (value) => value.toString()));
-        } else {
-            this.form.controls[controlName].patchValue([]);
-        }
-
-        if (controlName === 'baskets' && checkbox.checked) {
-            this.getAUMFundOnBasketChange();
-        }
-    }
-
-    public filterCategories(): Array<Category> {
-        let categories = [];
-        if (this.categories) {
-            categories = this.categories.filter((row) => row.id !== 3);
-        }
-        return categories;
-    }
-
-    public openIpsHistoryDialog(): void {
-        this.dialog.open(IpsDialogComponent, { width: '1000px', data: { basket: ['T', 'F', 'M'], withDetails: false } });
     }
 }

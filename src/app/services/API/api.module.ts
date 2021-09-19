@@ -1,7 +1,7 @@
 /* tslint:disable */
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
-import { HttpRequestInterceptor } from '../../interceptors/http-request-interceptor.service';
+import { HttpRequestInterceptor } from '#shared/interceptors/http-request-interceptor.service';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AlarmService } from './services/alarm.service';
 import { AssetsService } from './services/assets.service';
@@ -34,15 +34,6 @@ import { EventRepetitionService } from './services/event-repetition.service';
 import { EventTitleFieldService } from './services/event-title-field.service';
 import { EventTitleService } from './services/event-title.service';
 import { EventService } from './services/event.service';
-import { FlowCategoryService } from './services/flow-category.service';
-import { FlowFileService } from './services/flow-file.service';
-import { FlowFormService } from './services/flow-form.service';
-import { FlowHistoryService } from './services/flow-history.service';
-import { FlowInstanceDataService } from './services/flow-instance-data.service';
-import { FlowInstanceService } from './services/flow-instance.service';
-import { FlowNoteService } from './services/flow-note.service';
-import { FlowWizardService } from './services/flow-wizard.service';
-import { FlowService } from './services/flow.service';
 import { FrequenceService } from './services/frequence.service';
 import { FundNavAssetAndDebitService } from './services/fund-nav-asset-and-debit.service';
 import { FundNavUserTransactionService } from './services/fund-nav-user-transaction.service';
@@ -72,8 +63,6 @@ import { SmsService } from './services/sms.service';
 import { StandardGlService } from './services/standard-gl.service';
 import { SubsidiaryLedgerTypeCodesService } from './services/subsidiary-ledger-type-codes.service';
 import { TradeRegistrationService } from './services/trade-registration.service';
-import { UserRoleService } from './services/user-role.service';
-import { UserService } from './services/user.service';
 
 /**
  * Module that provides all services and configuration.
@@ -88,14 +77,8 @@ import { UserService } from './services/user.service';
             useClass: HttpRequestInterceptor,
             multi: true,
         },
-        // {
-        //     provide: HTTP_INTERCEPTORS,
-        //     useClass: HttpResponseInterceptor,
-        //     multi: true
-        // },
+
         AuthService,
-        UserService,
-        UserRoleService,
         OperatorService,
         AuthItemService,
         AuthItemChildService,
@@ -112,15 +95,6 @@ import { UserService } from './services/user.service';
         EventFieldService,
         EventTitleFieldService,
         EventFieldValueService,
-        FlowCategoryService,
-        FlowService,
-        FlowNoteService,
-        FlowFormService,
-        FlowHistoryService,
-        FlowInstanceService,
-        FlowInstanceDataService,
-        FlowWizardService,
-        FlowFileService,
         BankService,
         GuarantorService,
         IssuerService,
@@ -168,6 +142,15 @@ import { UserService } from './services/user.service';
     ],
 })
 export class ApiModule {
+    constructor(@Optional() @SkipSelf() parentModule: ApiModule, @Optional() http: HttpClient) {
+        if (parentModule) {
+            throw new Error('ApiModule is already loaded. Import in your base AppModule only.');
+        }
+        if (!http) {
+            throw new Error('You need to import the HttpClientModule in your AppModule! \n' + 'See also https://github.com/angular/angular/issues/20575');
+        }
+    }
+
     static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ApiModule> {
         return {
             ngModule: ApiModule,
@@ -178,16 +161,5 @@ export class ApiModule {
                 },
             ],
         };
-    }
-
-    constructor(@Optional() @SkipSelf() parentModule: ApiModule, @Optional() http: HttpClient) {
-        if (parentModule) {
-            throw new Error('ApiModule is already loaded. Import in your base AppModule only.');
-        }
-        if (!http) {
-            throw new Error(
-                'You need to import the HttpClientModule in your AppModule! \n' + 'See also https://github.com/angular/angular/issues/20575'
-            );
-        }
     }
 }

@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AlertService } from 'app/services/alert.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AlertService } from '#shared/services/alert.service';
 import { UserInfoService } from 'app/services/App/userInfo/user-info.service';
 import { AlarmService } from 'app/services/feature-services/alarm.service';
 import { OperatorApiService } from 'app/services/feature-services/operator-api.service';
@@ -19,9 +19,10 @@ export class AddAlarmComponent implements OnInit {
     public operatorMultiFilterCtrl: FormControl = new FormControl();
 
     public filteredOperatorsMulti: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
-    private _onDestroy = new Subject<void>();
     operators;
     dialogTitle;
+    isWorking: any;
+    private _onDestroy = new Subject<void>();
 
     constructor(
         public dialogRef: MatDialogRef<AddAlarmComponent>,
@@ -40,20 +41,6 @@ export class AddAlarmComponent implements OnInit {
             this.filteredOperatorsMulti.next(this.operators.slice());
             this.operatorMultiFilterCtrl.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => this.filterOperatorMulti());
         });
-    }
-
-    private filterOperatorMulti() {
-        if (!this.operators) {
-            return;
-        }
-        let search = this.operatorMultiFilterCtrl.value;
-        if (!search) {
-            this.filteredOperatorsMulti.next(this.operators.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        this.filteredOperatorsMulti.next(this.operators.filter((o) => o.fullName.toLowerCase().indexOf(search) > -1));
     }
 
     createForm() {
@@ -115,5 +102,17 @@ export class AddAlarmComponent implements OnInit {
         return false;
     }
 
-    isWorking: any;
+    private filterOperatorMulti() {
+        if (!this.operators) {
+            return;
+        }
+        let search = this.operatorMultiFilterCtrl.value;
+        if (!search) {
+            this.filteredOperatorsMulti.next(this.operators.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        this.filteredOperatorsMulti.next(this.operators.filter((o) => o.fullName.toLowerCase().indexOf(search) > -1));
+    }
 }

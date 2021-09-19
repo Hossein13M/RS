@@ -17,14 +17,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class NewInstrumentService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation newInstrumentControllerGetNewInstruments
      */
     static readonly NewInstrumentControllerGetNewInstrumentsPath = '/api/v1/new-instrument';
+    /**
+     * Path part for operation newInstrumentControllerUpdateNewInstrument
+     */
+    static readonly NewInstrumentControllerUpdateNewInstrumentPath = '/api/v1/new-instrument';
+    /**
+     * Path part for operation newInstrumentControllerCreateNewInstrument
+     */
+    static readonly NewInstrumentControllerCreateNewInstrumentPath = '/api/v1/new-instrument';
+    /**
+     * Path part for operation newInstrumentControllerGetNewInstrument
+     */
+    static readonly NewInstrumentControllerGetNewInstrumentPath = '/api/v1/new-instrument/{ticker}';
+    /**
+     * Path part for operation newInstrumentControllerDeleteMarket
+     */
+    static readonly NewInstrumentControllerDeleteMarketPath = '/api/v1/new-instrument/{ticker}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -102,11 +118,6 @@ export class NewInstrumentService extends BaseService {
     }
 
     /**
-     * Path part for operation newInstrumentControllerUpdateNewInstrument
-     */
-    static readonly NewInstrumentControllerUpdateNewInstrumentPath = '/api/v1/new-instrument';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `newInstrumentControllerUpdateNewInstrument()` instead.
      *
@@ -139,15 +150,8 @@ export class NewInstrumentService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     newInstrumentControllerUpdateNewInstrument(params: { body: UpdateNewInstrumentDto }): Observable<SentSuccessDto> {
-        return this.newInstrumentControllerUpdateNewInstrument$Response(params).pipe(
-            map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto)
-        );
+        return this.newInstrumentControllerUpdateNewInstrument$Response(params).pipe(map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto));
     }
-
-    /**
-     * Path part for operation newInstrumentControllerCreateNewInstrument
-     */
-    static readonly NewInstrumentControllerCreateNewInstrumentPath = '/api/v1/new-instrument';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -188,20 +192,12 @@ export class NewInstrumentService extends BaseService {
     }
 
     /**
-     * Path part for operation newInstrumentControllerGetNewInstrument
-     */
-    static readonly NewInstrumentControllerGetNewInstrumentPath = '/api/v1/new-instrument/{ticker}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `newInstrumentControllerGetNewInstrument()` instead.
      *
      * This method doesn't expect any request body.
      */
-    newInstrumentControllerGetNewInstrument$Response(params: {
-        ticker: string;
-        isInBourse: boolean;
-    }): Observable<StrictHttpResponse<NewInstrumentDto>> {
+    newInstrumentControllerGetNewInstrument$Response(params: { ticker: string; isInBourse: boolean }): Observable<StrictHttpResponse<NewInstrumentDto>> {
         const rb = new RequestBuilder(this.rootUrl, NewInstrumentService.NewInstrumentControllerGetNewInstrumentPath, 'get');
         if (params) {
             rb.path('ticker', params.ticker, {});
@@ -229,15 +225,8 @@ export class NewInstrumentService extends BaseService {
      * This method doesn't expect any request body.
      */
     newInstrumentControllerGetNewInstrument(params: { ticker: string; isInBourse: boolean }): Observable<NewInstrumentDto> {
-        return this.newInstrumentControllerGetNewInstrument$Response(params).pipe(
-            map((r: StrictHttpResponse<NewInstrumentDto>) => r.body as NewInstrumentDto)
-        );
+        return this.newInstrumentControllerGetNewInstrument$Response(params).pipe(map((r: StrictHttpResponse<NewInstrumentDto>) => r.body as NewInstrumentDto));
     }
-
-    /**
-     * Path part for operation newInstrumentControllerDeleteMarket
-     */
-    static readonly NewInstrumentControllerDeleteMarketPath = '/api/v1/new-instrument/{ticker}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

@@ -10,17 +10,7 @@ import { ToolbarComponent } from 'app/layout/components/toolbar/toolbar.componen
 
 @NgModule({
     declarations: [ToolbarComponent],
-    imports: [
-        RouterModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatToolbarModule,
-
-        FuseSharedModule,
-        FuseSearchBarModule,
-        FuseShortcutsModule,
-    ],
+    imports: [RouterModule, MatButtonModule, MatIconModule, MatMenuModule, MatToolbarModule, FuseSharedModule, FuseSearchBarModule, FuseShortcutsModule],
     exports: [ToolbarComponent],
 })
 export class ToolbarModule {}

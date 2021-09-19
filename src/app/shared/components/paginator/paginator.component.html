@@ -1,27 +1,27 @@
-<div class="pagination-component">
-    <div class="pagination-page-select pagination-cons">
-        <mat-select style="width: 100%" (selectionChange)="changeNumber($event)"
-                    [value]="data.pageSize">
-            <mat-option *ngFor="let option of pageSizeOptions" [value]="option">
+<div class='pagination-component'>
+    <div class='pagination-page-select pagination-cons'>
+        <mat-select (selectionChange)='changeNumber($event)' [value]='data.pageSize'
+                    style='width: 100%'>
+            <mat-option *ngFor='let option of pageSizeOptions' [value]='option'>
                 {{option}}
             </mat-option>
         </mat-select>
     </div>
-    <div class="pagination-page pagination-cons" *ngIf="pageText">
+    <div *ngIf='pageText' class='pagination-page pagination-cons'>
         <label>صفحه : </label>
-        <input type="number" [value]="getPageNumber()" (change)="searchTerm$.next($event.target.value)"
-               (input)="searchTerm$.next($event.target.value)">
+        <input (change)='searchTerm$.next($event.target.value)' (input)='searchTerm$.next($event.target.value)' [value]='getPageNumber()'
+               type='number'>
     </div>
-    <div class="pagination-data pagination-cons">
+    <div class='pagination-data pagination-cons'>
         <p>{{(data.currentIndex * data.pageSize + 1)}}{{' تا '}}{{endListNumber()}}{{' از '}}{{data.length }}</p>
     </div>
-    <div class="paginate-buttons pagination-cons" style="text-align: left">
-        <mat-icon (click)="firstPage();$event.stopPropagation()" [ngClass]="{'disabled':data.currentIndex<1}">
+    <div class='paginate-buttons pagination-cons' style='text-align: left'>
+        <mat-icon (click)='firstPage();$event.stopPropagation()' [ngClass]="{'disabled':data.currentIndex<1}">
             last_page
         </mat-icon>
-        <mat-icon (click)="prev();$event.stopPropagation()" [ngClass]="{'disabled':data.currentIndex<1}">chevron_right
+        <mat-icon (click)='prev();$event.stopPropagation()' [ngClass]="{'disabled':data.currentIndex<1}">chevron_right
         </mat-icon>
-        <mat-icon (click)="next();$event.stopPropagation()" [ngClass]="{'disabled':getLast()}">chevron_left</mat-icon>
-        <mat-icon (click)="lastPage();$event.stopPropagation()" [ngClass]="{'disabled':getLast()}">first_page</mat-icon>
+        <mat-icon (click)='next();$event.stopPropagation()' [ngClass]="{'disabled':getLast()}">chevron_left</mat-icon>
+        <mat-icon (click)='lastPage();$event.stopPropagation()' [ngClass]="{'disabled':getLast()}">first_page</mat-icon>
     </div>
 </div>

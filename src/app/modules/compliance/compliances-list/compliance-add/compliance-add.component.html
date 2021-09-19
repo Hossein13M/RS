@@ -1,0 +1,35 @@
+<div class='dialog-container'>
+    <div appDialogHeader title="{{ dialogData ? 'ویرایش' : 'ایجاد' }}">
+        <mat-icon (click)='close()' class='icon-header'>close</mat-icon>
+    </div>
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline' style='width: 87%'>
+                <mat-label>کد</mat-label>
+                <input formControlName='code' matInput type='number' />
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline' style='width: 87%'>
+                <mat-label>نام</mat-label>
+                <input formControlName='title' matInput />
+            </mat-form-field>
+        </div>
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
+                <mat-icon>close</mat-icon>
+                برگشت
+            </button>
+            <button (click)='onCreateCompliance()' *ngIf='!dialogData' [disabled]='form.invalid' color='accent'
+                    mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button (click)='onEditCompliance()' *ngIf='dialogData' [disabled]='form.invalid' color='accent'
+                    mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

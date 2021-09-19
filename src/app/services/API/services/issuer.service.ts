@@ -15,14 +15,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class IssuerService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation issuerControllerGetIssuer
      */
     static readonly IssuerControllerGetIssuerPath = '/api/v1/issuer/{issuerId}';
+    /**
+     * Path part for operation issuerControllerDeleteIssuer
+     */
+    static readonly IssuerControllerDeleteIssuerPath = '/api/v1/issuer/{issuerId}';
+    /**
+     * Path part for operation issuerControllerGetIssuers
+     */
+    static readonly IssuerControllerGetIssuersPath = '/api/v1/issuer';
+    /**
+     * Path part for operation issuerControllerUpdateIssuer
+     */
+    static readonly IssuerControllerUpdateIssuerPath = '/api/v1/issuer';
+    /**
+     * Path part for operation issuerControllerCreateIssuer
+     */
+    static readonly IssuerControllerCreateIssuerPath = '/api/v1/issuer';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -61,11 +77,6 @@ export class IssuerService extends BaseService {
     }
 
     /**
-     * Path part for operation issuerControllerDeleteIssuer
-     */
-    static readonly IssuerControllerDeleteIssuerPath = '/api/v1/issuer/{issuerId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `issuerControllerDeleteIssuer()` instead.
      *
@@ -100,11 +111,6 @@ export class IssuerService extends BaseService {
     issuerControllerDeleteIssuer(params: { issuerId: number }): Observable<void> {
         return this.issuerControllerDeleteIssuer$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation issuerControllerGetIssuers
-     */
-    static readonly IssuerControllerGetIssuersPath = '/api/v1/issuer';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -161,11 +167,6 @@ export class IssuerService extends BaseService {
     }
 
     /**
-     * Path part for operation issuerControllerUpdateIssuer
-     */
-    static readonly IssuerControllerUpdateIssuerPath = '/api/v1/issuer';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `issuerControllerUpdateIssuer()` instead.
      *
@@ -200,11 +201,6 @@ export class IssuerService extends BaseService {
     issuerControllerUpdateIssuer(params: { body: IssuerDto }): Observable<IssuerDto> {
         return this.issuerControllerUpdateIssuer$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
-
-    /**
-     * Path part for operation issuerControllerCreateIssuer
-     */
-    static readonly IssuerControllerCreateIssuerPath = '/api/v1/issuer';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

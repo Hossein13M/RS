@@ -1,0 +1,292 @@
+<div class='page-layout'>
+    <app-header pageTitle='{{ headerTitle }}'>
+        <div fxLayout='row'>
+            <button
+                (click)='riskComponentState === riskComponentStateTypes.Edit ? onEditRisk() : onCreateRisk()'
+                *ngIf='riskComponentState === riskComponentStateTypes.Add || riskComponentState === riskComponentStateTypes.Edit'
+                color='primary'
+                mat-flat-button
+            >
+                <mat-icon>{{ riskComponentState === riskComponentStateTypes.Edit ? 'edit' : 'add' }}</mat-icon>
+                {{ riskComponentState === riskComponentStateTypes.Edit ? 'به‌روز‌رسانی' : 'افزودن' }}
+            </button>
+
+            <a [routerLink]='[backRouteAddress]'>
+                <button color='accent' mat-flat-button>بازگشت
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+            </a>
+        </div>
+    </app-header>
+
+    <div *ngIf="loading && flows.data.length > 0 && flows.state === 'PRESENT'" class='page-content'
+         dir='rtl' fxLayout='column wrap' style='overflow: auto'>
+        <form [formGroup]='form'>
+            <div *ngIf='riskComponentState === riskComponentStateTypes.Show' fxLayout='row'
+                 fxLayoutAlign='center center'>
+                <mat-horizontal-stepper [selectedIndex]='matStepperSelectedIndex' linear>
+                    <mat-step *ngFor='let step of operationRiskHistorySteps'>
+                        <ng-template matStepLabel>
+                            <div>{{ step.action }}</div>
+                            <div>{{ step.username }}</div>
+                            <div>{{ step.createdAt }}</div>
+                        </ng-template>
+                    </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+
+            <div class='fuse-card m-20 p-20'>
+                <h2 class='mt-20'>عنوان و جریان ریسک</h2>
+                <mat-divider class='mb-20'></mat-divider>
+                <div fxLayout='row' fxLayoutAlign='start center' fxLayoutGap='20px'>
+                    <div fxFlex='400px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>عنوان ریسک</mat-label>
+                            <input formControlName='title' matInput required />
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex='300px' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>جریان</mat-label>
+                            <mat-select formControlName='flow' required>
+                                <mat-option *ngFor='let flow of flows.data'
+                                            [value]='flow.flowId'> {{ flow.name }} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class='fuse-card m-20 p-20'>
+                <h2 class='mt-20'>ابعاد ریسک</h2>
+                <mat-divider class='mb-20'></mat-divider>
+                <div class='mt-20' fxLayout='row wrap' fxLayoutAlign='space-around center'>
+                    <div [style.zIndex]='trees[0].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[0].id, 0)' color='primary'
+                                mat-raised-button>{{ trees[0].name }}</button>
+                        <app-tree-select *ngIf='trees[0].data' [data]='trees[0].data'
+                                         class='tree-select' formControlName='organizationCharts'>
+                        </app-tree-select>
+                    </div>
+
+                    <div [style.zIndex]='trees[1].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[1].id, 1)' color='primary'
+                                mat-raised-button>{{ trees[1].name }}</button>
+                        <app-tree-select [data]='trees[1].data' class='tree-select'
+                                         formControlName='owners'></app-tree-select>
+                    </div>
+
+                    <div [style.zIndex]='trees[2].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[2].id, 2)' color='primary'
+                                mat-raised-button>{{ trees[2].name }}</button>
+                        <app-tree-select [data]='trees[2].data' class='tree-select'
+                                         formControlName='processes'></app-tree-select>
+                    </div>
+
+                    <div [style.zIndex]='trees[3].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[3].id, 3)' color='primary'
+                                mat-raised-button>{{ trees[3].name }}</button>
+                        <app-tree-select [data]='trees[3].data' class='tree-select'
+                                         formControlName='businessLines'></app-tree-select>
+                    </div>
+
+                    <div [style.zIndex]='trees[4].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[4].id, 4)' color='primary'
+                                mat-raised-button>{{ trees[4].name }}</button>
+                        <app-tree-select [data]='trees[4].data' class='tree-select'
+                                         formControlName='products'></app-tree-select>
+                    </div>
+
+                    <div [style.zIndex]='trees[5].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[5].id, 5)' color='primary'
+                                mat-raised-button>{{ trees[5].name }}</button>
+                        <app-tree-select [data]='trees[5].data' [maxSelect]='1' class='tree-select'
+                                         formControlName='levels'></app-tree-select>
+                    </div>
+
+                    <mat-divider class='my-20' fxFlex='100' fxLayout='column'></mat-divider>
+
+                    <div fxFlex='30' fxLayout='column'>
+                        <div class='form-container'>
+                            <mat-form-field appearance='outline' style='width: 100%'>
+                                <mat-label>نوع متوسط رخداد</mat-label>
+                                <mat-select formControlName='averageIncomeType' required>
+                                    <mat-option [value]="'daily'">روزانه</mat-option>
+                                    <mat-option [value]="'monthly'">ماهانه</mat-option>
+                                    <mat-option [value]="'annual'">سالانه</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <div class='form-container'>
+                            <mat-form-field appearance='outline'>
+                                <mat-label>میانگین متوسط رخداد</mat-label>
+                                <input formControlName='averageIncome' matInput required type='number' />
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field *ngIf='showParent' appearance='outline'>
+                            <mat-label>رویداد مولد</mat-label>
+                            <mat-select formControlName='parents' multiple>
+                                <mat-option *ngFor='let parent of parents'
+                                            [value]='parent.id'> {{ parent.title }} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class='fuse-card m-20 p-20'>
+                <h2 class='mt-20'>محرکه‌های عملیاتی</h2>
+                <mat-divider class='mb-20'></mat-divider>
+                <div fxLayout='row wrap' fxLayoutAlign='space-around center'>
+                    <div [style.zIndex]='trees[6].zIndex' class='tree-select-container' fxFlex='55' fxFlexAlign='center center'
+                         fxLayout='column'>
+                        <button (click)='getTrees(trees[6].id, 6)' color='primary'
+                                mat-raised-button>{{ trees[6].name }}</button>
+                        <app-tree-select [data]='trees[6].data' class='tree-select' formControlName='drivers'
+                                         required></app-tree-select>
+                    </div>
+
+                    <div class='mt-20' fxFlex='40' fxFlexAlign='center center' fxLayout='column'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>شرح محرکه عملیاتی</mat-label>
+                            <input formControlName='driversDescription' matInput />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class='fuse-card m-20 p-20'>
+                <h2 class='mt-20'>کنترل‌های عملیاتی</h2>
+                <mat-divider class='mb-20'></mat-divider>
+                <div fxLayout='row wrap' fxLayoutAlign='start center'>
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>کنترل های عملیاتی</mat-label>
+                            <mat-select [disabled]='riskComponentState === riskComponentStateTypes.Show' formControlName='control'
+                                        required>
+                                <mat-option [value]="'available'">وجود</mat-option>
+                                <mat-option [value]="'unavailable'">عدم وجود</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div *ngIf="form.get('control').value === 'available'" fxLayout='row wrap'
+                     fxLayoutAlign='space-between center'>
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>نوع کنترل های عملیاتی</mat-label>
+                            <mat-select formControlName='controlType' required>
+                                <mat-option [value]="'preEvent'">پیش رویدادی</mat-option>
+                                <mat-option [value]="'postEvent'">پس رویدادی</mat-option>
+                                <mat-option [value]="'editing'">اصلاحی</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>شرح کنترل عملیاتی</mat-label>
+                            <input formControlName='controlDescription' matInput required />
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>میانگین هزینه کنترل عملیاتی</mat-label>
+                            <input formControlName='controlValue' matInput required type='number' />
+                        </mat-form-field>
+                    </div>
+
+                    <div [style.zIndex]='trees[7].zIndex' class='tree-select-container' fxFlex='45'
+                         fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <button (click)='getTrees(trees[7].id, 7)' color='primary'
+                                mat-raised-button>{{ trees[7].name }}</button>
+                        <app-tree-select [data]='trees[7].data' class='tree-select' formControlName='controlClassification'
+                                         required></app-tree-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class='fuse-card m-20 px-20'>
+                <h2 class='mt-20'>پوشش و زیان‌های عملیاتی</h2>
+                <mat-divider class='mb-20'></mat-divider>
+                <div class='my-20' fxLayout='row wrap' fxLayoutAlign='space-between center'>
+                    <div [style.zIndex]='trees[8].zIndex' class='tree-select-container' fxFlex='40' fxFlexAlign='center center'
+                         fxLayout='column'>
+                        <button (click)='getTrees(trees[8].id, 8)' color='primary'
+                                mat-raised-button>{{ trees[8].name }}</button>
+                        <app-tree-select [data]='trees[8].data' class='tree-select'
+                                         formControlName='recoveries'></app-tree-select>
+                    </div>
+
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>شرح پوشش عملیاتی</mat-label>
+                            <input formControlName='recoveriesDescription' matInput />
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex='20' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>متوسط پوشش عملیاتی</mat-label>
+                            <input formControlName='recoveriesAvg' matInput type='number' />
+                        </mat-form-field>
+                    </div>
+
+                    <div [style.zIndex]='trees[9].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[9].id, 9)' color='primary'
+                                mat-raised-button>{{ trees[9].name }}</button>
+                        <app-tree-select [data]='trees[9].data' class='tree-select'
+                                         formControlName='directLosses'></app-tree-select>
+                    </div>
+
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline' class='py-0'>
+                            <mat-label>شرح زیان مستقیم</mat-label>
+                            <input formControlName='directLossesDescription' matInput />
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex='20' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>متوسط زیان مستقیم</mat-label>
+                            <input formControlName='directLossesAvg' matInput type='number' />
+                        </mat-form-field>
+                    </div>
+
+                    <div [style.zIndex]='trees[10].zIndex' class='tree-select-container' fxFlex='40' fxLayout='column'>
+                        <button (click)='getTrees(trees[10].id, 10)' color='primary'
+                                mat-raised-button>{{ trees[10].name }}</button>
+                        <app-tree-select [data]='trees[10].data' class='tree-select'
+                                         formControlName='inDirectLosses'></app-tree-select>
+                    </div>
+
+                    <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>شرح زیان غیر مستقیم</mat-label>
+                            <input [disabled]='true' formControlName='inDirectLossesDescription' matInput />
+                        </mat-form-field>
+                    </div>
+
+                    <div fxFlex='20' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                        <mat-form-field appearance='outline'>
+                            <mat-label>متوسط زیان غیر مستقیم</mat-label>
+                            <input formControlName='inDirectLossesAvg' matInput type='number' />
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="loading && (!flows || flows.data.length == 0) && flows.state === 'PRESENT'" class='no-flow-error'>
+        <h1>هیچ جریان فعالی برای شما وجود ندارد.</h1>
+    </div>
+</div>

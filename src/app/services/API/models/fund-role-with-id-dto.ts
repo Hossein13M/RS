@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { OrganiztionSupervisorItem } from './organiztion-supervisor-item';
+
 export interface FundRoleWithIdDto {
     address?: string;
     agentName?: string;

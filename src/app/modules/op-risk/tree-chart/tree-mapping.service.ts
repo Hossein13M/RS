@@ -7,9 +7,10 @@ import { HttpClient } from '@angular/common/http';
 export class TreeMappingService {
     private static TreeMappingServiceAPI = '/api/v1/operation-risk/tree-mapping';
     private latestMappingSubject = new BehaviorSubject<any>(null);
-    public _latestMapping = this.latestMappingSubject.asObservable();
 
     constructor(private http: HttpClient) {}
+
+    public _latestMapping = this.latestMappingSubject.asObservable();
 
     get latestMapping(): any {
         return this.latestMappingSubject.getValue();
@@ -24,6 +25,9 @@ export class TreeMappingService {
     }
 
     addMapping(fromId: number, toId: number): Observable<any> {
-        return this.http.post(TreeMappingService.TreeMappingServiceAPI, { mapParent: fromId + '', mapChild: toId + '' });
+        return this.http.post(TreeMappingService.TreeMappingServiceAPI, {
+            mapParent: fromId + '',
+            mapChild: toId + '',
+        });
     }
 }

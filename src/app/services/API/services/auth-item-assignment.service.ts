@@ -13,14 +13,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class AuthItemAssignmentService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation authItemAssignmentControllerCreateAuthItemAssignment
      */
     static readonly AuthItemAssignmentControllerCreateAuthItemAssignmentPath = '/api/v1/rbac/assign-auth-item-to-user';
+    /**
+     * Path part for operation authItemAssignmentControllerDeleteAuthItemAssignment
+     */
+    static readonly AuthItemAssignmentControllerDeleteAuthItemAssignmentPath = '/api/v1/rbac/revoke/{itemName}/from-user/{userId}';
+    /**
+     * Path part for operation authItemAssignmentControllerGetUsersByAuthName
+     */
+    static readonly AuthItemAssignmentControllerGetUsersByAuthNamePath = '/api/v1/rbac/users-by-auth-name/{itemName}';
+    /**
+     * Path part for operation authItemAssignmentControllerGetAssignedAccessesToUser
+     */
+    static readonly AuthItemAssignmentControllerGetAssignedAccessesToUserPath = '/api/v1/rbac/accesses-of-user/{userId}';
+    /**
+     * Path part for operation authItemAssignmentControllerGetInheritedPermissions
+     */
+    static readonly AuthItemAssignmentControllerGetInheritedPermissionsPath = '/api/v1/rbac/inherited-accesses/{itemName}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,20 +79,12 @@ export class AuthItemAssignmentService extends BaseService {
     }
 
     /**
-     * Path part for operation authItemAssignmentControllerDeleteAuthItemAssignment
-     */
-    static readonly AuthItemAssignmentControllerDeleteAuthItemAssignmentPath = '/api/v1/rbac/revoke/{itemName}/from-user/{userId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `authItemAssignmentControllerDeleteAuthItemAssignment()` instead.
      *
      * This method doesn't expect any request body.
      */
-    authItemAssignmentControllerDeleteAuthItemAssignment$Response(params: {
-        itemName: string;
-        userId: string;
-    }): Observable<StrictHttpResponse<void>> {
+    authItemAssignmentControllerDeleteAuthItemAssignment$Response(params: { itemName: string; userId: string }): Observable<StrictHttpResponse<void>> {
         const rb = new RequestBuilder(this.rootUrl, AuthItemAssignmentService.AuthItemAssignmentControllerDeleteAuthItemAssignmentPath, 'delete');
         if (params) {
             rb.path('itemName', params.itemName, {});
@@ -106,11 +114,6 @@ export class AuthItemAssignmentService extends BaseService {
     authItemAssignmentControllerDeleteAuthItemAssignment(params: { itemName: string; userId: string }): Observable<void> {
         return this.authItemAssignmentControllerDeleteAuthItemAssignment$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation authItemAssignmentControllerGetUsersByAuthName
-     */
-    static readonly AuthItemAssignmentControllerGetUsersByAuthNamePath = '/api/v1/rbac/users-by-auth-name/{itemName}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -149,11 +152,6 @@ export class AuthItemAssignmentService extends BaseService {
     }
 
     /**
-     * Path part for operation authItemAssignmentControllerGetAssignedAccessesToUser
-     */
-    static readonly AuthItemAssignmentControllerGetAssignedAccessesToUserPath = '/api/v1/rbac/accesses-of-user/{userId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `authItemAssignmentControllerGetAssignedAccessesToUser()` instead.
      *
@@ -188,11 +186,6 @@ export class AuthItemAssignmentService extends BaseService {
     authItemAssignmentControllerGetAssignedAccessesToUser(params: { userId: number }): Observable<void> {
         return this.authItemAssignmentControllerGetAssignedAccessesToUser$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation authItemAssignmentControllerGetInheritedPermissions
-     */
-    static readonly AuthItemAssignmentControllerGetInheritedPermissionsPath = '/api/v1/rbac/inherited-accesses/{itemName}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

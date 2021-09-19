@@ -1,10 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { FundTypeDto, IssuerDto } from 'app/services/API/models';
-import { FundTypesService } from 'app/services/App/FundType/fund-type.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { FundType, FundTypesService } from 'app/services/App/FundType/fund-type.service';
+import { Column, TableSearchMode } from '#shared/components/table/table.model';
+import { PaginationModel } from '#shared/models/pagination.model';
+import * as _ from 'lodash';
+
+enum StateType {
+    'LOADING',
+    'PRESENT',
+    'FAILED',
+}
 
 @Component({
     selector: 'fund-type',
@@ -13,57 +19,116 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
     animations: fuseAnimations,
 })
 export class FundTypeComponent implements OnInit {
-    fundTypeList: FundTypeDto[] = [];
-    ELEMENT_DATA: FundTypeDto[] = [];
+    searchFormGroup: FormGroup;
+    data: Array<FundType> = [];
+    column: Array<Column>;
+    pagination: PaginationModel = { skip: 0, limit: 15, total: 100 };
+    status: StateType = StateType.LOADING;
+    public fundTypeName: FormControl = new FormControl('');
+    selectedIssuer = 0;
 
-    searchInput: FormControl;
-    public fundTypeName: FormControl;
-    slectedIssuer = 0;
-
-    dialogRef: any;
-    loading = false;
-    dataSource = new MatTableDataSource<FundTypeDto>(this.ELEMENT_DATA);
-    displayedColumns = ['name', 'operation'];
-
-    constructor(private fundTypeService: FundTypesService) {
-        this.searchInput = new FormControl('');
-        this.fundTypeName = new FormControl('');
-    }
+    constructor(private _fundTypeService: FundTypesService, private formBuilder: FormBuilder) {}
 
     ngOnInit(): void {
-        this.fundTypeService.fundTypeList.subscribe((res) => {
-            this.fundTypeList = res;
-            this.ELEMENT_DATA = res;
-            this.dataSource = new MatTableDataSource<IssuerDto>(this.ELEMENT_DATA);
+        this.initColumns();
+        this.initSearch();
+        this.get();
+    }
+
+    initColumns(): void {
+        this.column = [
+            {
+                name: 'نرخ صندوق',
+                id: 'name',
+                type: 'string',
+                search: {
+                    type: 'text',
+                    mode: TableSearchMode.SERVER,
+                },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editIssuer(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.remove(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    initSearch(): void {
+        const mapKeys = _.dropRight(_.map(this.column, 'id'));
+        const objectFromKeys = {};
+        mapKeys.forEach((id) => {
+            objectFromKeys[id] = '';
         });
+        this.searchFormGroup = this.formBuilder.group({
+            ...objectFromKeys,
+        });
+    }
 
-        this.fundTypeService.getFundTypes(this.searchInput.value).subscribe(() => {});
+    search(searchFilter: any): void {
+        if (!searchFilter) {
+            return;
+        }
+        Object.keys(searchFilter).forEach((key) => {
+            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
+        });
+        this.get(this.searchFormGroup.value);
+    }
 
-        this.searchInput.valueChanges
-            .pipe(debounceTime(300), distinctUntilChanged())
-            .subscribe((searchText) => this.fundTypeService.getFundTypes(searchText).subscribe(() => {}));
+    get(search?: any): void {
+        this.status = StateType.LOADING;
+        this._fundTypeService.$getFundTypes(search).subscribe((response) => {
+            this.data = [...response];
+            this.status = StateType.PRESENT;
+        });
+        this.initColumns();
     }
 
     addIssuer(): void {
-        this.fundTypeService.addFundType(this.fundTypeName.value).subscribe(() => {});
+        this._fundTypeService.addFundType(this.fundTypeName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
         this.fundTypeName.reset();
     }
 
     editIssuer(fundType): void {
-        this.slectedIssuer = fundType.id;
+        this.selectedIssuer = fundType.id;
         this.fundTypeName.setValue(fundType.name);
     }
 
     clear(): void {
-        this.slectedIssuer = 0;
+        this.selectedIssuer = 0;
         this.fundTypeName.setValue('');
     }
 
     edit(): void {
-        this.fundTypeService.editFundType(this.slectedIssuer, this.fundTypeName.value).subscribe(() => {});
+        this._fundTypeService.editFundType(this.selectedIssuer, this.fundTypeName.value).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 
     remove(fundType): void {
-        this.fundTypeService.deleteFundType(fundType.id).subscribe(() => {});
+        this._fundTypeService.deleteFundType(fundType.id).subscribe(() => {
+            this.data = [];
+            this.get();
+        });
     }
 }

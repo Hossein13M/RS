@@ -1,7 +1,7 @@
-import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable()
 export class DailyInvestmentReportService {
@@ -10,7 +10,12 @@ export class DailyInvestmentReportService {
     constructor(private http: HttpClient) {}
 
     getDailyInvestmentReport(inputDate: Date, pagination: any): Observable<any> {
-        const date = formatDate(new Date(inputDate), 'yyyy-MM-dd', 'en_US');
-        return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, { params: { ...pagination, date } });
+        const date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(inputDate));
+        return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, {
+            params: {
+                ...pagination,
+                date,
+            },
+        });
     }
 }

@@ -3,6 +3,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
+import { Column } from '#shared/components/table/table.model';
 
 am4core.useTheme(am4themes_animated);
 
@@ -17,7 +18,7 @@ interface AumNlBond {
     styleUrls: ['./aum-nl-bonds.component.scss'],
 })
 export class AumNlBondsComponent {
-    columns: Array<any> = [];
+    columns: Array<Column> = [];
     @Input() aumNlBond: AumNlBond;
 
     constructor(public dialog: MatDialog) {
@@ -42,8 +43,20 @@ export class AumNlBondsComponent {
                         data: {
                             title: row.name,
                             columns: [
-                                { name: 'حجم', id: 'volume', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-                                { name: 'ارزش', id: 'value', type: 'price', headerAlign: 'center', dataAlign: 'center' },
+                                {
+                                    name: 'حجم',
+                                    id: 'volume',
+                                    type: 'number',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
+                                {
+                                    name: 'ارزش',
+                                    id: 'value',
+                                    type: 'price',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
                                 { name: 'نام', id: 'name', type: 'string', headerAlign: 'center', dataAlign: 'center' },
                             ],
                             data: row.details,

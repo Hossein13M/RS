@@ -13,6 +13,22 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./shortcuts.component.scss'],
 })
 export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy {
+    shortcutItems: any[];
+    navigationItems: any[];
+    filteredNavigationItems: any[];
+    searching: boolean;
+    mobileShortcutsPanelActive: boolean;
+    showAlarmDialog = false;
+    @Input()
+    navigation: any;
+    @ViewChild('searchInput')
+    searchInputField;
+    @ViewChild('shortcuts')
+    shortcutsEl: ElementRef;
+    @ViewChild('alarmContainer') alarmContainer: ElementRef;
+    isWorking: any;
+    private _unsubscribeAll: Subject<any>;
+
     constructor(
         private _cookieService: CookieService,
         private _fuseMatchMediaService: FuseMatchMediaService,
@@ -27,21 +43,6 @@ export class FuseShortcutsComponent implements OnInit, AfterViewInit, OnDestroy 
         this._unsubscribeAll = new Subject();
     }
 
-    shortcutItems: any[];
-    navigationItems: any[];
-    filteredNavigationItems: any[];
-    searching: boolean;
-    mobileShortcutsPanelActive: boolean;
-    showAlarmDialog = false;
-    @Input()
-    navigation: any;
-    @ViewChild('searchInput')
-    searchInputField;
-    @ViewChild('shortcuts')
-    shortcutsEl: ElementRef;
-    @ViewChild('alarmContainer') alarmContainer: ElementRef;
-    private _unsubscribeAll: Subject<any>;
-    isWorking: any;
     @HostListener('document:click', ['$event.target'])
     ngOnInit(): void {
         this.filteredNavigationItems = this.navigationItems = this._fuseNavigationService.getFlatNavigation(this.navigation);

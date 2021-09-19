@@ -19,6 +19,8 @@ export class PieChartJsComponent implements OnInit, OnChanges {
     public chartColors: Array<any> = [{ backgroundColor: [], borderColor: [], borderWidth: 2 }];
     public chartOptions: any = { responsive: true };
 
+    constructor() {}
+
     public chartClicked(e: any): void {
         const chart = e.active[0]._chart;
         const activePoints = chart.getElementAtEvent(e.event);
@@ -27,8 +29,6 @@ export class PieChartJsComponent implements OnInit, OnChanges {
     }
 
     public chartHovered(e: any): void {}
-
-    constructor() {}
 
     ngOnInit(): void {}
 

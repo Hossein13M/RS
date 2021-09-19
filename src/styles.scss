@@ -1,16 +1,10 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 // Import Fuse core library
 @import '@fuse/scss/core';
-
-// Import app.theme.scss
 @import 'app/app.theme';
-
-@import '~ng-snotify/styles/material';
-
-//$fa-font-path: "../node_modules/font-awesome/fonts";
-//@import "~font-awesome/scss/font-awesome.scss";nts";
-//@import "~font-awesome/scss/font-awesome.scss";
-@import '~ng-snotify/styles/material';
-
 @import 'app/layout/styles/custom_theme';
 
 @font-face {
@@ -89,15 +83,8 @@
 
 .custom-share-modalbox {
     mat-dialog-container {
-        background-color: none;
         overflow: visible;
     }
-}
-
-material-drawer material-list-item:hover,
-material-list-item:active,
-material-list-item:visited {
-    background-color: #222;
 }
 
 .dialog-w40 {
@@ -148,8 +135,6 @@ mat-error {
     display: none !important;
 }
 
-// TODO: write utils
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -171,4 +156,18 @@ input[type='number'] {
 ::-webkit-scrollbar-thumb {
     background: #2d323e;
     border-radius: 8px !important;
+}
+
+a,
+button {
+    outline: none !important;
+    text-decoration: none !important;
+    color: unset;
+}
+
+.mat-tooltip {
+    max-width: 180px !important;
+    background-color: #0a185a !important;
+    text-align: center !important;
+    font-size: 16px !important;
 }

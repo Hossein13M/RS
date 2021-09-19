@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +17,7 @@ import { InstrumentSettingAddComponent } from '../instrument-setting-add/instrum
 export class InstrumentSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public newInstrumentService: NewInstrumentService) {}
@@ -28,12 +28,71 @@ export class InstrumentSettingListComponent implements OnInit {
         this.get();
     }
 
+    search(searchFilter: any): void {
+        if (!searchFilter) return;
+        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
+        this.get(this.searchFormGroup.value);
+    }
+
+    paginationControl(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.get();
+    }
+
+    get(search?: any): void {
+        this.newInstrumentService.getInstruments(this.pagination, search).subscribe((res: any) => {
+            this.pagination.limit = res.limit;
+            this.pagination.total = res.total;
+            this.data = [...res.items];
+        });
+    }
+
+    add(): void {
+        this.matDialog
+            .open(InstrumentSettingAddComponent, { panelClass: 'dialog-w60', data: null })
+            .afterClosed()
+            .subscribe((response) => {
+                if (response) this.get();
+            });
+    }
+
+    delete(row): void {
+        this.matDialog
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res) {
+                    this.newInstrumentService
+                        .deleteInstrument(row.id, row.isInBourse)
+                        .subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
+                }
+            });
+    }
+
+    edit(row): void {
+        this.matDialog
+            .open(InstrumentSettingAddComponent, { panelClass: 'dialog-w60', data: row })
+            .afterClosed()
+            .subscribe((res) => {
+                if (res) _.assign(row, res);
+            });
+    }
+
     private initColumn(): void {
         this.column = [
             { name: 'نام', id: 'name', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             { name: 'شماره ثبت', id: 'nameEn', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             { name: 'نماد', id: 'symbol', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
-            { name: 'نماد انگلیسی', id: 'symbolEn', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            {
+                name: 'نماد انگلیسی',
+                id: 'symbolEn',
+                type: 'string',
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
+            },
             {
                 name: 'وضعیت',
                 id: 'isActive',
@@ -84,56 +143,5 @@ export class InstrumentSettingListComponent implements OnInit {
         const objectFromKeys = {};
         mapKeys.forEach((id) => (objectFromKeys[id] = ''));
         this.searchFormGroup = this.formBuilder.group({ ...objectFromKeys });
-    }
-
-    search(searchFilter: any): void {
-        if (!searchFilter) return;
-        Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
-        this.get(this.searchFormGroup.value);
-    }
-
-    paginationControl(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
-        this.get();
-    }
-
-    get(search?: any): void {
-        this.newInstrumentService.getInstruments(this.pagination, search).subscribe((res: any) => {
-            this.pagination.limit = res.limit;
-            this.pagination.total = res.total;
-            this.data = [...res.items];
-        });
-    }
-
-    add(): void {
-        this.matDialog
-            .open(InstrumentSettingAddComponent, { panelClass: 'dialog-w60', data: null })
-            .afterClosed()
-            .subscribe((response) => {
-                if (response) this.get();
-            });
-    }
-
-    delete(row): void {
-        this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
-            .afterClosed()
-            .subscribe((res) => {
-                if (res) {
-                    this.newInstrumentService
-                        .deleteInstrument(row.id, row.isInBourse)
-                        .subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));
-                }
-            });
-    }
-
-    edit(row): void {
-        this.matDialog
-            .open(InstrumentSettingAddComponent, { panelClass: 'dialog-w60', data: row })
-            .afterClosed()
-            .subscribe((res) => {
-                if (res) _.assign(row, res);
-            });
     }
 }

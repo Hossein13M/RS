@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { TradeBookService } from '../trade-book.service';
-import { ColumnModel, PaginationChangeType } from '#shared/components/table/table.model';
-import { formatDate } from '@angular/common';
+import { Column } from '#shared/components/table/table.model';
 import { TradeBookData, TradeDateServerResponse } from '../trade-book.model';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-book-show',
@@ -14,7 +14,7 @@ import { TradeBookData, TradeDateServerResponse } from '../trade-book.model';
 })
 export class TradeBookShowComponent implements OnInit {
     data: Array<TradeDateServerResponse> = [];
-    columns: Array<ColumnModel> = [];
+    columns: Array<Column> = [];
     pagination = { skip: 0, limit: 5, total: 100 };
     tradeBookData: TradeBookData = { organization: '', ticker: '', pamCode: '', date: '' };
     persianDate: string;
@@ -27,6 +27,19 @@ export class TradeBookShowComponent implements OnInit {
         this.getDataFromRoute();
         this.initializeTableColumns();
         this.getTradeBookData();
+    }
+
+    public paginationControl(): void {
+        this.getTradeBookData();
+    }
+
+    public getTradeBookData(): void {
+        this.hasDataFetched = false;
+        this.tradeBookData.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.tradeBookData.date));
+        this.tradeBookService.getTradeDataByDate({ ...this.tradeBookData, ...this.pagination }).subscribe((response) => {
+            this.pagination.total = response.total;
+            this.data = this.parseData(response);
+        });
     }
 
     private getDataFromRoute(): void {
@@ -59,23 +72,15 @@ export class TradeBookShowComponent implements OnInit {
         ];
     }
 
-    public paginationControl(pageEvent: PaginationChangeType): void {
-        this.getTradeBookData();
-    }
-
-    public getTradeBookData(): void {
-        this.hasDataFetched = false;
-        this.tradeBookData.date = formatDate(this.tradeBookData.date, 'yyyy-MM-dd', 'en_US');
-        this.tradeBookService.getTradeDataByDate({ ...this.tradeBookData, ...this.pagination }).subscribe((response) => {
-            this.pagination.total = response.total;
-            this.data = this.parseData(response);
-        });
-    }
-
     private parseData(serverResponse: any): Array<TradeDateServerResponse> {
         if (!serverResponse || !serverResponse.items) return;
         serverResponse.items.forEach(
-            (el) => (el.persianDate = new Date(el.transactionDate).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'numeric', day: 'numeric' }))
+            (el) =>
+                (el.persianDate = new Date(el.transactionDate).toLocaleDateString('fa-Ir', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                }))
         );
         return serverResponse.items;
     }

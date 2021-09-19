@@ -1,0 +1,18 @@
+<mat-card class='h-full w-full p-0' dir='rtl'>
+    <mat-card-header class='w-full bg-blue-600 py-3.5'>
+        <div class='flex'>
+            <mat-icon class='mat-18 text-white'>help</mat-icon>
+            <h2 class='font-bold text-white'>آیا مطمئن هستید؟</h2>
+        </div>
+    </mat-card-header>
+    <mat-card-content class='flex justify-evenly mt-40 px-2'>
+        <button (click)='onConfirationDialogClose(true)' class='px-10 p-2' color='accent' mat-flat-button>
+            <mat-icon class='mat-18'>check</mat-icon>
+            <span>بله</span>
+        </button>
+        <button (click)='onConfirationDialogClose(false)' class='px-10 p-2' color='warn' mat-flat-button>
+            <mat-icon class='mat-18'>clear</mat-icon>
+            <span>خیر</span>
+        </button>
+    </mat-card-content>
+</mat-card>

@@ -19,11 +19,11 @@ export class BarChartJsComponent implements OnInit, OnChanges {
     public chartColors: Array<any> = [{ backgroundColor: [], borderColor: [], borderWidth: 2 }];
     public chartOptions: any = { responsive: true };
 
+    constructor() {}
+
     public chartClicked(e: any): void {}
 
     public chartHovered(e: any): void {}
-
-    constructor() {}
 
     ngOnInit(): void {
         if (this.data) this.createChart();

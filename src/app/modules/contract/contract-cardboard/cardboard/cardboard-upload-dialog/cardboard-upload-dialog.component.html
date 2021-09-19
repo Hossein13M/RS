@@ -1,0 +1,70 @@
+<div class='page-layout'>
+    <app-header class='wp-100' pageTitle='آپلود قرارداد'>
+        <button (click)='dialog.close(false)' mat-icon-button matTooltip='بستن'>
+            <mat-icon class='mat-18'>close</mat-icon>
+        </button>
+    </app-header>
+
+    <mat-card class='m-20' dir='rtl'>
+        <form (submit)='submitForm()' [formGroup]='form' id='formId'>
+            <div class='text-center mb-10'>
+                <input
+                    #fileUpload
+                    (change)='uploadFiles($event.target)'
+                    accept='image/*,.pdf,.docx,.docx'
+                    class='d-none'
+                    dir='rtl'
+                    id='uploadFile'
+                    name='uploadedFile'
+                    type='file'
+                />
+                <button
+                    (click)='triggerFileSelect()'
+                    [disableRipple]='true'
+                    class='p-0 w-4/5'
+                    mat-button
+                    matTooltip='گزینش فایل'
+                    matTooltipPosition='below'
+                    type='button'
+                >
+                    <mat-card
+                        class='flex flex-col justify-center items-center bg-gray-100 mx-5 h-5-6 empty-state-section m-0 tool-card p-10'>
+                        <mat-icon class='text-blue-600 text-7xl flex justify-center items-center'
+                                  fontSet='material-icons-outlined'>publish
+                        </mat-icon>
+                    </mat-card>
+                </button>
+            </div>
+            <mat-card-content class='flex flex-col w-full'>
+                <div class='flex justify-around w-full'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>نام فایل</mat-label>
+                        <input formControlName='fileName' matInput required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance='outline'>
+                        <mat-label>نوع فایل</mat-label>
+                        <mat-select formControlName='type' required>
+                            <mat-option value='draft'>پیش‌نویس</mat-option>
+                            <mat-option value='unsigned'>امضا نشده</mat-option>
+                            <mat-option value='signed'>امضا‌ شده</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field appearance='outline' class='mx-32'>
+                    <mat-label>یادداشت</mat-label>
+                    <textarea [required]='this.dialogData.hasSignedFile' formControlName='description'
+                              matInput></textarea>
+                </mat-form-field>
+            </mat-card-content>
+
+            <mat-card-actions class='flex justify-center mb-0'>
+                <button color='primary' form='formId' mat-flat-button type='submit'>
+                    <mat-icon class='mat-18'>publish</mat-icon>
+                    <span>آپلود فایل</span>
+                </button>
+            </mat-card-actions>
+        </form>
+    </mat-card>
+</div>

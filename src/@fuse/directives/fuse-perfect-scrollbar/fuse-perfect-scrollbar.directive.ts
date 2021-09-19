@@ -5,10 +5,7 @@ import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, filter, takeUntil } from 'rxjs/operators';
 import PerfectScrollbar from 'perfect-scrollbar';
 import * as _ from 'lodash';
-import {
-    FusePerfectScrollbarGeometry,
-    FusePerfectScrollbarPosition,
-} from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.interfaces';
+import { FusePerfectScrollbarGeometry, FusePerfectScrollbarPosition } from '@fuse/directives/fuse-perfect-scrollbar/fuse-perfect-scrollbar.interfaces';
 import { FuseConfigService } from '@fuse/services/config.service';
 
 @Directive({
@@ -21,7 +18,6 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
 
     // Private
     private _animation: number | null;
-    private _enabled: boolean | '';
     private _debouncedUpdate: any;
     private _options: any;
     private _unsubscribeAll: Subject<any>;
@@ -49,33 +45,15 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
         this._unsubscribeAll = new Subject();
     }
 
+    private _enabled: boolean | '';
+
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
 
-    /**
-     * Perfect Scrollbar options
-     *
-     * @param value
-     */
-    @Input()
-    set fusePerfectScrollbarOptions(value) {
-        // Merge the options
-        this._options = _.merge({}, this._options, value);
-
-        // Destroy and re-init the PerfectScrollbar to update its options
-        setTimeout(() => {
-            this._destroy();
-        });
-
-        setTimeout(() => {
-            this._init();
-        });
-    }
-
-    get fusePerfectScrollbarOptions(): any {
-        // Return the options
-        return this._options;
+    get enabled(): boolean | '' {
+        // Return the enabled status
+        return this._enabled;
     }
 
     /**
@@ -109,9 +87,29 @@ export class FusePerfectScrollbarDirective implements OnInit, AfterViewInit, OnD
         }
     }
 
-    get enabled(): boolean | '' {
-        // Return the enabled status
-        return this._enabled;
+    get fusePerfectScrollbarOptions(): any {
+        // Return the options
+        return this._options;
+    }
+
+    /**
+     * Perfect Scrollbar options
+     *
+     * @param value
+     */
+    @Input()
+    set fusePerfectScrollbarOptions(value) {
+        // Merge the options
+        this._options = _.merge({}, this._options, value);
+
+        // Destroy and re-init the PerfectScrollbar to update its options
+        setTimeout(() => {
+            this._destroy();
+        });
+
+        setTimeout(() => {
+            this._init();
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------

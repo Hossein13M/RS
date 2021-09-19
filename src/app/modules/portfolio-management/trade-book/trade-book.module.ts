@@ -13,6 +13,7 @@ import { TradeBookComponent } from './trade-book.component';
 import { TradeBookService } from './trade-book.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { PipesModule } from '#shared/pipes/pipes.module';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [TradeBookComponent, TradeBookShowComponent, TradeBookHistoryComponent],
@@ -26,7 +27,8 @@ import { PipesModule } from '#shared/pipes/pipes.module';
         MatProgressSpinnerModule,
         MatTooltipModule,
         MatProgressBarModule,
-        PipesModule
+        PipesModule,
+        HeaderModule,
     ],
     providers: [TradeBookService],
     entryComponents: [TradeBookHistoryComponent],

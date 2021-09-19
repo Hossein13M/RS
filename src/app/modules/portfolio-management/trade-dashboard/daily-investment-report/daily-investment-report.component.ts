@@ -35,6 +35,12 @@ export class DailyInvestmentReportComponent implements OnChanges {
         );
     }
 
+    pageHandler(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.getDailyInvestmentReport();
+    }
+
     private initTableColumns(): void {
         this.columns = [
             { name: 'نماد', id: 'bourseAccount', type: 'string' },
@@ -43,11 +49,5 @@ export class DailyInvestmentReportComponent implements OnChanges {
             { name: 'حجم کل', id: 'totalVolume', type: 'number' },
             { name: 'ارزش کل', id: 'totalValue', type: 'price' },
         ];
-    }
-
-    pageHandler(pageEvent: PaginationChangeType): void {
-        this.pagination.limit = pageEvent.limit;
-        this.pagination.skip = pageEvent.skip;
-        this.getDailyInvestmentReport();
     }
 }

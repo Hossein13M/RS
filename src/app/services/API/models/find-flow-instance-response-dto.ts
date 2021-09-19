@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { FindFlowInstanceFlowIdDto } from './find-flow-instance-flow-id-dto';
+
 export interface FindFlowInstanceResponseDto {
     _id: string;
     allStates: number;

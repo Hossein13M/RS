@@ -10,10 +10,20 @@ import { OpRiskFlowRoutingModule } from './op-risk-flow-routing.module';
 import { OpRiskFlowService } from './op-risk-flow.service';
 import { OpRiskFlowComponent } from './op-risk-flow/op-risk-flow.component';
 import { OpRiskViewComponent } from './op-risk-view/op-risk-view.component';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [OpRiskFlowComponent, FlowAddComponent, OpRiskViewComponent],
-    imports: [CommonModule, LayoutModule, ShareModule, MatProgressSpinnerModule, MatTooltipModule, OpRiskFlowRoutingModule, NgxMatSelectSearchModule],
+    imports: [
+        CommonModule,
+        LayoutModule,
+        ShareModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        OpRiskFlowRoutingModule,
+        NgxMatSelectSearchModule,
+        HeaderModule,
+    ],
     providers: [OpRiskFlowService],
     entryComponents: [FlowAddComponent, OpRiskViewComponent],
 })

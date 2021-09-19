@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
-import { formatDate } from '@angular/common';
 import { GlListItem, GlListServerResponse } from '../gl.model';
 import { GlService } from '../gl.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-gl-grid',
@@ -34,7 +34,11 @@ export class GlGridComponent implements OnInit {
     }
 
     getGridData(): void {
-        const search = { date: formatDate(this.form.value, 'yyyy-MM-dd', 'en_US'), limit: 1000, skip: 0 };
+        const search = {
+            date: UtilityFunctions.convertDateToGregorianFormatForServer(this.form.value),
+            limit: 1000,
+            skip: 0,
+        };
         this.glService.getGlGridData(search).subscribe((res: GlListServerResponse) => (this.data = res.items));
     }
 }

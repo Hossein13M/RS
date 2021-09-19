@@ -1,4 +1,4 @@
-import { ColumnModel, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
+import { Column, PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ import { FundRoleSettingAddComponent } from '../fund-role-setting-add/fund-role-
 export class FundRoleSettingListComponent implements OnInit {
     searchFormGroup: FormGroup;
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
     pagination = { skip: 0, limit: 5, total: 100 };
 
     constructor(private matDialog: MatDialog, private formBuilder: FormBuilder, public fundRoleService: FundRoleService) {}
@@ -31,83 +31,44 @@ export class FundRoleSettingListComponent implements OnInit {
 
     initColumn(): void {
         this.column = [
-            {
-                name: 'نام',
-                id: 'name',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
-            },
-            {
-                name: 'تلفن',
-                id: 'phone',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
-            },
+            { name: 'نام', id: 'name', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            { name: 'تلفن', id: 'phone', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             {
                 name: 'شماره ثبت',
                 id: 'regNumber',
                 type: 'string',
                 minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 name: 'نام نماینده',
                 id: 'agentName',
                 type: 'string',
                 minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 name: 'تلفن نماینده',
                 id: 'agentPhone',
                 type: 'string',
                 minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 name: 'کد ملی',
                 id: 'nationalId',
                 type: 'string',
                 minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
             {
                 name: 'کد ملی',
                 id: 'nationalId',
                 type: 'string',
                 minWidth: '70px',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
             },
-            {
-                name: 'آدرس',
-                id: 'address',
-                type: 'string',
-                search: {
-                    mode: TableSearchMode.SERVER,
-                    type: 'text',
-                },
-            },
+            { name: 'آدرس', id: 'address', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             {
                 name: 'عملیات',
                 id: 'operation',

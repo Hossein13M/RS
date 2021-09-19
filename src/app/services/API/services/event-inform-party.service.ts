@@ -14,14 +14,18 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class EventInformPartyService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventInformPartyControllerFindEventInformParty
      */
     static readonly EventInformPartyControllerFindEventInformPartyPath = '/api/v1/event-inform-party';
+    /**
+     * Path part for operation eventInformPartyControllerCreateEventInformParty
+     */
+    static readonly EventInformPartyControllerCreateEventInformPartyPath = '/api/v1/event-inform-party';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -66,11 +70,6 @@ export class EventInformPartyService extends BaseService {
     }
 
     /**
-     * Path part for operation eventInformPartyControllerCreateEventInformParty
-     */
-    static readonly EventInformPartyControllerCreateEventInformPartyPath = '/api/v1/event-inform-party';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventInformPartyControllerCreateEventInformParty()` instead.
      *
@@ -104,9 +103,7 @@ export class EventInformPartyService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventInformPartyControllerCreateEventInformParty(params: {
-        body: CreateEventInformPartyDto;
-    }): Observable<Array<CreateEventInformPartyResponseDto>> {
+    eventInformPartyControllerCreateEventInformParty(params: { body: CreateEventInformPartyDto }): Observable<Array<CreateEventInformPartyResponseDto>> {
         return this.eventInformPartyControllerCreateEventInformParty$Response(params).pipe(
             map((r: StrictHttpResponse<Array<CreateEventInformPartyResponseDto>>) => r.body as Array<CreateEventInformPartyResponseDto>)
         );

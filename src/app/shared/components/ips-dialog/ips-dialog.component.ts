@@ -1,8 +1,8 @@
-import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { AssetsMonitoringIPSHistory } from '../../../modules/assets-monitoring/assets-monitoring.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { IpsService } from '#shared/components/ips-dialog/ips.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-assets-monitoring-ips-dialog',
@@ -34,13 +34,22 @@ export class IpsDialogComponent implements OnInit {
                 name: 'تاریخ',
                 id: 'date',
                 type: 'date',
-                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
             },
         ];
     }
 
     private getAssetsMonitoringIPSHistory(): void {
-        let searchParams = { basket: this.data.basket, date: formatDate(new Date(), 'yyyy-MM-dd', 'en_US'), withDetails: this.data.withDetails };
+        const searchParams = {
+            basket: this.data.basket,
+            date: UtilityFunctions.convertDateToGregorianFormatForServer(new Date()),
+            withDetails: this.data.withDetails,
+        };
         this.ipsService.getIPSHistory(searchParams).subscribe((response) => {
             this.loading = false;
             this.tableData = response.items;

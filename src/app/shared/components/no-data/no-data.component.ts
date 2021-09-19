@@ -9,6 +9,7 @@ import { StateType } from 'app/shared/state-type.enum';
 export class NoDataComponent implements OnInit {
     @Input('state') state: StateType;
     @Input('dataLength') dataLength: any;
+
     constructor() {}
 
     ngOnInit(): void {}

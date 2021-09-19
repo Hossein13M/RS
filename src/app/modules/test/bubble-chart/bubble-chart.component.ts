@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { bubbleChartData } from './seed';
-import { Color } from 'ng2-charts';
 
 @Component({
     selector: 'app-bubble-chart',
@@ -16,7 +15,7 @@ export class BubbleChartComponent implements OnInit {
             xAxes: [
                 {
                     gridLines: {
-                        display: false
+                        display: false,
                     },
                     scaleLabel: {
                         display: true,

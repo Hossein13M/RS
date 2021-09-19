@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NavService } from 'app/modules/nav/nav.service';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,7 +14,6 @@ import { takeUntil } from 'rxjs/operators';
 export class AssetDebitDetailDialogComponent implements OnInit {
     public filteredSarfaslCode: ReplaySubject<any[]> = new ReplaySubject<any[]>(1);
     public safaslCodeFilter: FormControl = new FormControl();
-    private _onDestroy = new Subject<void>();
     codeSarfaslType = new FormControl();
     codeSarfaslValue = new FormControl();
     codeSarfaslList = [];
@@ -32,9 +31,9 @@ export class AssetDebitDetailDialogComponent implements OnInit {
         // {code: 53, id: '', name: ' ‫موجودی ‫نقد‬‬', type: 'debit'},
         // {code: 27, id: '', name: ' ‫موجودی ‫نقد‬‬', type: 'debit'},
     ];
-
     model?: any;
     isWorking: any;
+    private _onDestroy = new Subject<void>();
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -59,20 +58,6 @@ export class AssetDebitDetailDialogComponent implements OnInit {
         if (index != -1) {
             this.codeSarfaslObj.splice(index, 1);
         } else this.AlertService.onError('خطا‌! لطفا مجدد امتحان کنید');
-    }
-
-    private filterSarfasl() {
-        if (!this.codeSarfaslList) {
-            return;
-        }
-        let search = this.safaslCodeFilter.value;
-        if (!search) {
-            this.filteredSarfaslCode.next(this.codeSarfaslList.slice());
-            return;
-        } else {
-            search = search.toLowerCase();
-        }
-        this.filteredSarfaslCode.next(this.codeSarfaslList.filter((code) => code.title.toLowerCase().indexOf(search) > -1));
     }
 
     getAllCodeSarfasl() {
@@ -126,6 +111,20 @@ export class AssetDebitDetailDialogComponent implements OnInit {
 
     handleError() {
         return true;
+    }
+
+    private filterSarfasl() {
+        if (!this.codeSarfaslList) {
+            return;
+        }
+        let search = this.safaslCodeFilter.value;
+        if (!search) {
+            this.filteredSarfaslCode.next(this.codeSarfaslList.slice());
+            return;
+        } else {
+            search = search.toLowerCase();
+        }
+        this.filteredSarfaslCode.next(this.codeSarfaslList.filter((code) => code.title.toLowerCase().indexOf(search) > -1));
     }
 }
 

@@ -1,4 +1,4 @@
-import { ColumnModel } from '#shared/components/table/table.model';
+import { Column } from '#shared/components/table/table.model';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
@@ -15,7 +15,7 @@ import { BourseBoardSettingAddComponent } from '../bourse-board-setting-add/bour
 })
 export class BourseBoardSettingListComponent implements OnInit {
     data: any = [];
-    column: Array<ColumnModel>;
+    column: Array<Column>;
 
     constructor(private matDialog: MatDialog, private bourseBoardService: BourseBoardService) {}
 

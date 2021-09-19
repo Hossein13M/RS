@@ -1,0 +1,139 @@
+<app-header [pageTitle]="isUpdate() ? 'ویرایش کاربر' : 'افزودن کاربر'" dir="rtl">
+    <button (click)="dialogRef.close()" mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</app-header>
+
+<mat-horizontal-stepper #stepper="matHorizontalStepper" *ngIf="isUpdate() ? userData : true" class="p-12" dir="rtl" linear>
+    <mat-step>
+        <ng-template matStepLabel>اطلاعات پایه</ng-template>
+        <form [formGroup]="form" class="grid grid-cols-3 gap-7 flex-wrap pt-12" dir="rtl">
+            <mat-form-field appearance="outline">
+                <mat-label>نام کاربری</mat-label>
+                <input formControlName="username" matInput required />
+                <mat-hint>نام کاربری باید غیر تکراری باشد.</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>نام</mat-label>
+                <input formControlName="firstname" matInput required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>نام خانوادگی</mat-label>
+                <input formControlName="lastname" matInput required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>کد ملی</mat-label>
+                <input formControlName="nationalCode" matInput required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>شماره همراه</mat-label>
+                <input formControlName="phoneNumber" matInput required />
+                <mat-hint>مثال: 09XXXXXXXXX</mat-hint>
+                <mat-error>شماره همراه باید با 09 شروع شود و 11 رقم باشد.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>ایمیل</mat-label>
+                <input formControlName="email" matInput required />
+                <mat-hint>مثال: example@gmail.com</mat-hint>
+                <mat-error>لطفا ایمیل درستی را وارد کنید.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>تاریخ تولد</mat-label>
+                <input [matDatepicker]="picker" formControlName="birthDate" matInput required />
+                <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <div class="col-span-3">
+                <button color="primary" mat-raised-button matStepperNext>بعدی</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <mat-step [stepControl]="form">
+        <ng-template matStepLabel>چینش سازمانی</ng-template>
+        <form [formGroup]="form" class="mt-12" dir="rtl">
+            <div class="form flex flex-col gap-7 overflow-auto pl-5">
+                <div *ngFor="let groupForm of userOrganizations.controls; let index = index" class="w-full" formArrayName="userRoles">
+                    <div [formGroupName]="index" class="grid grid-cols-2 gap-7">
+                        <div class="col-span-2 flex justify-between align-center">
+                            <h2 class="m-0">چینش سازمانی: {{ index + 1 }}</h2>
+                            <button
+                                (click)="deleteOrganization(index)"
+                                *ngIf="this.userOrganizationControlsData.length > 1"
+                                color="warn"
+                                mat-flat-button
+                                type="button"
+                            >
+                                حذف چینش سازمانی
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>کد پرسنلی</mat-label>
+                            <input formControlName="personnelCode" matInput required />
+                            <mat-error>کد پرسنلی اجباری میباشد.</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>نهاد</mat-label>
+                            <mat-select formControlName="organizationCode" required>
+                                <mat-option>
+                                    <ngx-mat-select-search
+                                        [formControl]="userOrganizationControlsData[index].organizationsSearchControl"
+                                        [noEntriesFoundLabel]="'یافت نشد'"
+                                        [placeholderLabel]="'جستجو'"
+                                        class="text-right"
+                                    ></ngx-mat-select-search>
+                                </mat-option>
+                                <mat-option
+                                    *ngFor="let organize of userOrganizationControlsData[index].organizations"
+                                    [value]="organize.code"
+                                    class="text-right"
+                                >
+                                    {{ organize.name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>نهاد اجباری میباشد.</mat-error>
+                        </mat-form-field>
+
+                        <div *ngIf="userOrganizationControlsData[index].units">
+                            <app-tree-select
+                                [data]="userOrganizationControlsData[index].units"
+                                [maxSelect]="userOrganizationControlsData[index].units.children.length === 0 ? 0 : -1"
+                                formControlName="units"
+                                selectedValueFieldName="name"
+                            ></app-tree-select>
+                        </div>
+
+                        <mat-form-field *ngIf="userOrganizationControlsData[index].roles.length > 0" appearance="outline">
+                            <mat-label>نقش</mat-label>
+                            <mat-select formControlName="roles" multiple required>
+                                <mat-option *ngFor="let role of userOrganizationControlsData[index].roles" [value]="role.id" class="text=right">
+                                    {{ role.name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="groupForm.get('units').hasError('required')">واحد اجباری میباشد. </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button (click)="addOrganization()" class="w-full" color="primary" mat-flat-button type="button">
+                    افزودن چینش سازمانی
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <div class="mt-10">
+                <button class="ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
+                <button (click)="onSubmit()" color="warn" mat-raised-button>ثبت کاربر</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>

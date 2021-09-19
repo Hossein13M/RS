@@ -1,4 +1,5 @@
 import { TemplateRef } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
 
 export enum TableSearchMode {
     'NONE',
@@ -19,37 +20,82 @@ export interface PaginationChangeType {
 }
 
 // Column types
-export type ColumnModel = SimpleColumnModel | OperationColumnModel | CustomColModel;
+export type Column = SimpleColumn | OperationColumn | CustomColumn | DetailColumn | IndexColumn;
 
-interface SimpleColumnModel {
+// export type Color = 'primary' | 'warn' | 'accent';
+export type Color = ThemePalette;
+
+export interface SimpleColumn {
     id: string;
-    name: string;
-    type: 'string' | 'date' | 'price' | 'number' | 'custom' | 'operation';
+    name?: string;
+    type: 'string' | 'index' | 'date' | 'price' | 'date_range' | 'number' | 'custom' | 'operation' | 'rowDetail';
     minWidth?: string;
     sticky?: boolean;
+    showSearchButtons?: boolean;
     search?: {
-        type: 'select' | 'text' | 'date';
+        // Todo: add email search type as well
+        type: 'select' | 'text' | 'date' | 'date_range';
         mode: TableSearchMode;
         options?: Array<{
             value: string | number | boolean;
             name: string | number;
         }>;
     };
+
     convert?(value: any): any;
 }
 
-interface OperationColumnModel extends SimpleColumnModel {
-    type: 'operation';
-    operations: Array<{
-        name: string;
-        icon: string;
-        color: 'primary' | 'warn' | 'accent';
-        // tslint:disable-next-line:variable-name
-        operation({ row }): void;
-    }>;
+export interface DetailColumn extends SimpleColumn {
+    type: 'rowDetail';
+    doubleClickable: boolean;
+
+    click(row): any;
+
+    doubleClick(row): any;
 }
 
-interface CustomColModel extends SimpleColumnModel {
+export interface CustomColumn extends SimpleColumn {
     type: 'custom';
     cellTemplate: TemplateRef<any>;
+}
+
+export interface IndexColumn extends SimpleColumn {
+    type: 'index';
+    id: 'index';
+}
+
+// Operation Section
+export interface OperationColumn extends SimpleColumn {
+    type: 'operation';
+    operations: Array<Operation | OperationWithTemplate | OperationWithCondition>;
+}
+
+interface Operation {
+    name: string;
+    icon: string | 'condition' | 'template' | 'component';
+    color: Color | ((row: any) => Color);
+
+    operation?({ row }): void;
+}
+
+// example: { name: 'ویرایش', icon: 'template', content: this.statusRef, color: 'accent' },
+interface OperationWithTemplate extends Operation {
+    icon: 'template';
+    content: TemplateRef<any>;
+
+    operation?({ row }): void;
+}
+
+/** example:
+ * {
+ *  name: 'ویرایش',
+ *  icon: 'condition',
+ *  content: (row: ResponseOperatorItemDto) => (row.mobileNumber ? 'check_circle_outline' : 'highlight_off'),
+ *  color: 'primary',
+ *  operation: ({ row }: any) => this.editOperator(row),
+ * }
+ */
+interface OperationWithCondition extends Operation {
+    icon: 'condition';
+    content: (row: any) => string;
 }

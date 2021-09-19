@@ -1,0 +1,35 @@
+<div class='dialog-content-wrapper' dir='rtl'>
+    <mat-toolbar class='mat-accent m-0' matDialogTitle>
+        <mat-toolbar-row fxLayout='row' fxLayoutAlign='space-between center'>
+            <span class='title dialog-title'>ثبت حدود برای صندوق ها</span>
+            <button (click)='dialogRef.close()' mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class='toolbar-bottom py-16' fxLayout='column' fxLayoutAlign='center center'>
+            <div class='contact-name mt-8'>{{ dialogData?.compliance?.title }}</div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class='button'>
+        <button (click)='create()' color='primary' mat-raised-button>
+            <mat-icon>add</mat-icon>
+            ایجاد
+        </button>
+    </div>
+    <div style='width: 100%'>
+        <app-table
+            [columns]='column'
+            [data]='data'
+            [paginationSettings]="{ mode: 'local' }"
+        ></app-table>
+        <ng-container *ngIf='data?.length === 0'>
+            <div
+                style='display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column'>
+                <img alt='not found' height='140px' src='../../../../../assets/images/no-data.svg' width='140px' />
+                <div style='font-size: 13px; color: #449fdb; margin-top: 7px'>موردی وجود ندارد</div>
+            </div>
+        </ng-container>
+    </div>
+</div>

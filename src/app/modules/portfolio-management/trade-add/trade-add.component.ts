@@ -1,12 +1,12 @@
 import { PaginationChangeType, TableSearchMode } from '#shared/components/table/table.model';
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { debounceTime } from 'rxjs/operators';
 import { TradeAddService } from './trade-add.service';
 import { Ticker, TradeOrganization } from './trade-add.model';
 import { StateType } from '#shared/state-type.enum';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-add',
@@ -14,7 +14,14 @@ import { StateType } from '#shared/state-type.enum';
     styleUrls: ['./trade-add.component.scss'],
 })
 export class TradeAddComponent implements OnInit {
-    searchFormGroup: FormGroup = this.fb.group({ transactionDate: '', tradeType: '', value: '', volume: '', price: '', comments: '' });
+    searchFormGroup: FormGroup = this.fb.group({
+        transactionDate: '',
+        tradeType: '',
+        value: '',
+        volume: '',
+        price: '',
+        comments: '',
+    });
     tradeRegistrations: Array<TradeOrganization>;
     pagination = { skip: 0, limit: 5, total: 100 };
     organizations: Array<{ organizationName: string; organizationType: string }> = [];
@@ -51,58 +58,6 @@ export class TradeAddComponent implements OnInit {
         this.getTradeRegistration();
     }
 
-    private initializeTableColumn(): void {
-        this.columns = [
-            { name: 'نماد', id: 'symbol', type: 'string' },
-            {
-                name: 'تاریخ معامله',
-                id: 'transactionDate',
-                type: 'string',
-                search: { type: 'date', mode: TableSearchMode.SERVER },
-                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
-            },
-            { name: 'محل معامله', id: 'organisationType', type: 'string', convert: () => 'تمدن' },
-            {
-                name: 'نوع معامله',
-                id: 'tradeType',
-                type: 'string',
-                search: {
-                    type: 'select',
-                    options: [
-                        { name: 'خرید', value: 1 },
-                        { name: 'فروش', value: 2 },
-                    ],
-                    mode: TableSearchMode.SERVER,
-                },
-            },
-            { name: 'ارزش معامله', id: 'value', type: 'price', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'حجم معامله', id: 'volume', type: 'number', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'قیمت معامله', id: 'price', type: 'price', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'توضیحات', id: 'comments', type: 'string', minWidth: '300px', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            {
-                name: 'عملیات',
-                id: 'operation',
-                type: 'operation',
-                minWidth: '130px',
-                sticky: true,
-                operations: [
-                    { name: 'ویرایش', icon: 'edit', color: 'accent', operation: ({ row }: any) => this.editTradeRegistration(row) },
-                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.deleteTradeRegistration(row) },
-                ],
-            },
-        ];
-    }
-
-    private getOrganisations(): void {
-        this.tradeAddService.getOrganizations().subscribe((response) => (this.organizations = response));
-    }
-
-    private getTickers(searchKeyword: string = ''): void {
-        this.tradeAddService.getTickersByKeyword(searchKeyword).subscribe((response) => {
-            this.selectedTicker ? (this.tickers = [this.selectedTicker, ...response.items]) : (this.tickers = response.items);
-        });
-    }
-
     public getTradeRegistration(): void {
         this.tradeAddService.getTradeRegistration(this.pagination).subscribe(
             (response) => {
@@ -132,7 +87,7 @@ export class TradeAddComponent implements OnInit {
     }
 
     public addTradeRegistration(): void {
-        this.form.get('transactionDate').setValue(formatDate(this.form.get('transactionDate').value, 'yyyy-MM-dd', 'en_US'));
+        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('transactionDate').value));
         this.tradeAddService.createTradeRegistration(this.form.value).subscribe(
             () => {
                 this.form.reset();
@@ -151,7 +106,7 @@ export class TradeAddComponent implements OnInit {
     }
 
     public updateTradeRegistration(): void {
-        this.form.get('transactionDate').setValue(formatDate(this.form.get('transactionDate').value, 'yyyy-MM-dd', 'en_US'));
+        this.form.get('transactionDate').setValue(UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('transactionDate').value));
         this.form.value['id'] = this.editTradeId;
 
         this.tradeAddService.updateTradeRegistration(this.form.value).subscribe(
@@ -172,7 +127,8 @@ export class TradeAddComponent implements OnInit {
 
     public search(searchFilter: any): void {
         if (!searchFilter) return;
-        if (searchFilter.transactionDate) searchFilter.transactionDate = formatDate(new Date(searchFilter.transactionDate), 'yyyy-MM-dd', 'en_US');
+        if (searchFilter.transactionDate)
+            searchFilter.transactionDate = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(searchFilter.transactionDate));
         Object.keys(searchFilter).forEach((key) => this.searchFormGroup.controls[key].setValue(searchFilter[key]));
         this.getTradeRegistration();
     }
@@ -181,5 +137,83 @@ export class TradeAddComponent implements OnInit {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getTradeRegistration();
+    }
+
+    private initializeTableColumn(): void {
+        this.columns = [
+            { name: 'نماد', id: 'symbol', type: 'string' },
+            {
+                name: 'تاریخ معامله',
+                id: 'transactionDate',
+                type: 'string',
+                search: { type: 'date', mode: TableSearchMode.SERVER },
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
+            },
+            { name: 'محل معامله', id: 'organisationType', type: 'string', convert: () => 'تمدن' },
+            {
+                name: 'نوع معامله',
+                id: 'tradeType',
+                type: 'string',
+                search: {
+                    type: 'select',
+                    options: [
+                        { name: 'خرید', value: 1 },
+                        { name: 'فروش', value: 2 },
+                    ],
+                    mode: TableSearchMode.SERVER,
+                },
+            },
+            { name: 'ارزش معامله', id: 'value', type: 'price', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            {
+                name: 'حجم معامله',
+                id: 'volume',
+                type: 'number',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            { name: 'قیمت معامله', id: 'price', type: 'price', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            {
+                name: 'توضیحات',
+                id: 'comments',
+                type: 'string',
+                minWidth: '300px',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'ویرایش',
+                        icon: 'edit',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editTradeRegistration(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.deleteTradeRegistration(row),
+                    },
+                ],
+            },
+        ];
+    }
+
+    private getOrganisations(): void {
+        this.tradeAddService.getOrganizations().subscribe((response) => (this.organizations = response));
+    }
+
+    private getTickers(searchKeyword: string = ''): void {
+        this.tradeAddService.getTickersByKeyword(searchKeyword).subscribe((response) => {
+            this.selectedTicker ? (this.tickers = [this.selectedTicker, ...response.items]) : (this.tickers = response.items);
+        });
     }
 }
