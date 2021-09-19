@@ -30,11 +30,6 @@ const appRoutes: Routes = [
         loadChildren: () => import('app/modules/authorization/authorization.module').then((m) => m.AuthorizationModule),
     },
     {
-        path: 'flow',
-        canActivate: [AuthGuard],
-        loadChildren: () => import('app/modules/flow/flow.module').then((m) => m.FlowModule),
-    },
-    {
         path: 'contract',
         loadChildren: () => import('app/modules/contract/contract.module').then((m) => m.ContractModule),
     },
