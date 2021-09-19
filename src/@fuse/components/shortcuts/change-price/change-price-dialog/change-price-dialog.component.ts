@@ -7,9 +7,12 @@ import { PricePipeService } from 'app/shared/pipes/price-pipe.service';
 @Component({
     selector: 'app-change-price-dialog',
     template: `
-        <h2 mat-dialog-title style="text-align: center;margin-top: 20px;font-weight: normal">تغییر نمایش قیمت‌ها</h2>
-        <hr />
-        <div mat-dialog-content class="form-container" dir="rtl" [formGroup]="form">
+        <app-header pageTitle="ویرایش یکای پول" dir="rtl">
+            <button (click)="dialogRef.close()" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </app-header>
+        <div mat-dialog-content class="flex justify-evenly items-center px-0 w-full mt-5" dir="rtl" [formGroup]="form">
             <mat-form-field appearance="outline">
                 <mat-label>یکای پول</mat-label>
                 <mat-select formControlName="unit">
@@ -17,6 +20,7 @@ import { PricePipeService } from 'app/shared/pipes/price-pipe.service';
                     <mat-option value="toman">تومان</mat-option>
                 </mat-select>
             </mat-form-field>
+
             <mat-form-field appearance="outline">
                 <mat-label>مقیاس قیمت‌ها</mat-label>
                 <mat-select formControlName="scale">
@@ -31,18 +35,8 @@ import { PricePipeService } from 'app/shared/pipes/price-pipe.service';
     `,
     styles: [
         `
-            .form-container {
-                display: flex;
-                flex-direction: row;
-                justify-content: flex-start;
-                align-items: center;
-                padding: 0;
-                width: 100%;
-            }
-
             mat-form-field {
                 min-width: 150px;
-                margin: 10px;
             }
         `,
     ],
