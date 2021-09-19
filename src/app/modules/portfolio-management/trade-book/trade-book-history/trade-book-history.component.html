@@ -1,30 +1,34 @@
-<div class="container">
-    <div mat-dialog-title class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl">
+<div class='container'>
+    <div class='header' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center' mat-dialog-title>
         <h1>تاریخچه بروزرسانی IPS‌ها</h1>
 
-        <form [formGroup]="form" dir="rtl">
-            <mat-form-field appearance="fill">
-                <mat-label> تاریخ </mat-label>
-                <input matInput formControlName="date" [max]="today" [matDatepicker]="picker" />
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <form [formGroup]='form' dir='rtl'>
+            <mat-form-field appearance='fill'>
+                <mat-label> تاریخ</mat-label>
+                <input [matDatepicker]='picker' [max]='today' formControlName='date' matInput />
+                <mat-datepicker-toggle [for]='picker' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </form>
     </div>
 
     <div mat-dialog-content>
-        <div class="fuse-card">
+        <div class='fuse-card'>
             <app-table
-                [data]="tradeBook.data"
-                [columns]="columns"
-                [paginationSettings]="{ mode: 'backend' }"
-                [paginationObject]='pagination'
                 (paginationEvent)='pageHandler($event)'
+                [columns]='columns'
+                [data]='tradeBook.data'
+                [paginationObject]='pagination'
+                [paginationSettings]="{ mode: 'backend' }"
             >
             </app-table>
         </div>
 
-        <div *ngIf="tradeBook.state === 'FAIL'" fxLayout="row wrap" fxLayoutAlign="center center">دریافت داده ناموفق بود</div>
-        <div *ngIf="tradeBook.data?.length == 0 && tradeBook.state === 'PRESENT'" class="text-center">داده‌ای برای نمایش وجود ندارد</div>
+        <div *ngIf="tradeBook.state === 'FAIL'" fxLayout='row wrap' fxLayoutAlign='center center'>دریافت داده ناموفق
+            بود
+        </div>
+        <div *ngIf="tradeBook.data?.length == 0 && tradeBook.state === 'PRESENT'" class='text-center'>داده‌ای برای نمایش
+            وجود ندارد
+        </div>
     </div>
 </div>

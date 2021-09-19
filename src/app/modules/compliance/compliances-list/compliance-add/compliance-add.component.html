@@ -1,30 +1,32 @@
-<div class="dialog-container">
-    <div title="{{ dialogData ? 'ویرایش' : 'ایجاد' }}" appDialogHeader>
-        <mat-icon (click)="close()" class="icon-header">close</mat-icon>
+<div class='dialog-container'>
+    <div appDialogHeader title="{{ dialogData ? 'ویرایش' : 'ایجاد' }}">
+        <mat-icon (click)='close()' class='icon-header'>close</mat-icon>
     </div>
-    <form [formGroup]="form" class="setting-form-container" dir="rtl">
-        <div class="setting-form-row">
-            <mat-form-field style="width: 87%" appearance="outline">
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline' style='width: 87%'>
                 <mat-label>کد</mat-label>
-                <input formControlName="code" matInput type="number" />
+                <input formControlName='code' matInput type='number' />
             </mat-form-field>
         </div>
-        <div class="setting-form-row">
-            <mat-form-field style="width: 87%" appearance="outline">
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline' style='width: 87%'>
                 <mat-label>نام</mat-label>
-                <input formControlName="title" matInput />
+                <input formControlName='title' matInput />
             </mat-form-field>
         </div>
-        <div class="setting-btn-container">
-            <button (click)="close()" style="margin-left: 10px" color="warn" mat-raised-button>
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
                 <mat-icon>close</mat-icon>
-                 برگشت
+                برگشت
             </button>
-            <button *ngIf="!dialogData" (click)="onCreateCompliance()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button (click)='onCreateCompliance()' *ngIf='!dialogData' [disabled]='form.invalid' color='accent'
+                    mat-raised-button>
                 <mat-icon>done</mat-icon>
                 ثبت
             </button>
-            <button *ngIf="dialogData" (click)="onEditCompliance()" [disabled]="form.invalid" color="accent" mat-raised-button>
+            <button (click)='onEditCompliance()' *ngIf='dialogData' [disabled]='form.invalid' color='accent'
+                    mat-raised-button>
                 <mat-icon>edit</mat-icon>
                 ویرایش
             </button>

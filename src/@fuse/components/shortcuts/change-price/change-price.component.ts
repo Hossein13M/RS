@@ -24,15 +24,23 @@ import { ChangePriceDialogComponent } from './change-price-dialog/change-price-d
     ],
 })
 export class ChangePriceComponent implements OnInit {
-    constructor(private dialog: MatDialog) {}
     priceUnit = { scale: 0, unit: 'rial' };
     priceUnitScaleString: string = '';
+
+    constructor(private dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.setPriceUnitValue();
     }
 
     ngOnChanges(): void {}
+
+    public openChangePriceDialog(): void {
+        this.dialog
+            .open(ChangePriceDialogComponent, { panelClass: 'dialog-w40' })
+            .afterClosed()
+            .subscribe(() => this.setPriceUnitValue());
+    }
 
     private setPriceUnitValue(): void {
         let localStoragePriceUnit = JSON.parse(localStorage.getItem('priceUnit'));
@@ -55,12 +63,5 @@ export class ChangePriceComponent implements OnInit {
                 this.priceUnitScaleString = 'هزار میلیارد';
                 break;
         }
-    }
-
-    public openChangePriceDialog(): void {
-        this.dialog
-            .open(ChangePriceDialogComponent, { panelClass: 'dialog-w40' })
-            .afterClosed()
-            .subscribe(() => this.setPriceUnitValue());
     }
 }

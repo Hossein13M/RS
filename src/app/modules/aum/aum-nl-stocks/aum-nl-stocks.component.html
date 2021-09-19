@@ -1,7 +1,9 @@
-<div fxLayout="row wrap" style="margin: 10px 0">
-    <app-pie-chart fxFlex="33" height="400px" [data]="aumNlStocks.pieChart" [cardLayout]="true" chartName="نمای کلی"> </app-pie-chart>
+<div fxLayout='row wrap' style='margin: 10px 0'>
+    <app-pie-chart [cardLayout]='true' [data]='aumNlStocks.pieChart' chartName='نمای کلی' fxFlex='33'
+                   height='400px'></app-pie-chart>
 </div>
 
-<div class="fuse-card">
-    <app-table [data]="aumNlStocks.table" [columns]="columns" [paginationSettings]="{ mode: 'local', pageSize: 25 }"> </app-table>
+<div class='fuse-card'>
+    <app-table [columns]='columns' [data]='aumNlStocks.table'
+               [paginationSettings]="{ mode: 'local', pageSize: 25 }"></app-table>
 </div>

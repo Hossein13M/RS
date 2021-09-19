@@ -1,18 +1,18 @@
-<div class="page-layout">
-    <app-header pageTitle="ریز معاملات">
+<div class='page-layout'>
+    <app-header pageTitle='ریز معاملات'>
         <div subtitle>تا تاریخ {{ this.persianDate }}</div>
         <div>
-            <button mat-raised-button color="primary" routerLink="../../../..">دفتر معاملات</button>
+            <button color='primary' mat-raised-button routerLink='../../../..'>دفتر معاملات</button>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div style="width: 100%">
-            <app-table [data]="data" [columns]="columns" [paginationSettings]="{ mode: 'local' }"></app-table>
+    <div class='page-content'>
+        <div style='width: 100%'>
+            <app-table [columns]='columns' [data]='data' [paginationSettings]="{ mode: 'local' }"></app-table>
         </div>
-        <div *ngIf="hasDataFetched" fxLayout="row wrap" fxLayoutAlign="center center">
+        <div *ngIf='hasDataFetched' fxLayout='row wrap' fxLayoutAlign='center center'>
             دریافت داده ناموفق بود
-            <button mat-button class="againBtn" (click)="getTradeBookData()">دریافت دوباره</button>
+            <button (click)='getTradeBookData()' class='againBtn' mat-button>دریافت دوباره</button>
         </div>
     </div>
 </div>

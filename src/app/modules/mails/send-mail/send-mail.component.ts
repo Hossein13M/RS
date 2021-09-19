@@ -60,7 +60,11 @@ export class SendMailComponent implements OnInit, OnDestroy {
     onSubmit(): void {
         this.messageService.createMessage(this.form.value).subscribe(() => {
             this.dialog.close(true);
-            this.snackBar.open('ایمیل ها با موفقیت ارسال شدند', '', { panelClass: 'snack-success', direction: 'rtl', duration: 3000 });
+            this.snackBar.open('ایمیل ها با موفقیت ارسال شدند', '', {
+                panelClass: 'snack-success',
+                direction: 'rtl',
+                duration: 3000,
+            });
         });
     }
 

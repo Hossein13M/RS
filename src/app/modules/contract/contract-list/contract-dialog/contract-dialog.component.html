@@ -1,85 +1,88 @@
-<div class="dialog-content-wrapper flex flex-col h-full">
-    <mat-toolbar matDialogTitle class="mat-accent m-0 text-black">
-        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-            <button mat-icon-button (click)="dialog.close()">
+<div class='dialog-content-wrapper flex flex-col h-full'>
+    <mat-toolbar class='mat-accent m-0 text-black' matDialogTitle>
+        <mat-toolbar-row fxLayout='row' fxLayoutAlign='space-between center'>
+            <button (click)='dialog.close()' mat-icon-button>
                 <mat-icon>close</mat-icon>
             </button>
-            <span class="title dialog-title">{{ title }}</span>
+            <span class='title dialog-title'>{{ title }}</span>
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <div class="p-24 pb-0 m-0 h-full" *ngIf="stateType === 'PRESENT'">
-        <form [formGroup]="form" (submit)="submitForm()" class="flex flex-col justify-between h-full" dir="rtl">
-            <div class="grid grid-cols-3 gap-7">
-                <mat-form-field appearance="outline">
+    <div *ngIf="stateType === 'PRESENT'" class='p-24 pb-0 m-0 h-full'>
+        <form (submit)='submitForm()' [formGroup]='form' class='flex flex-col justify-between h-full' dir='rtl'>
+            <div class='grid grid-cols-3 gap-7'>
+                <mat-form-field appearance='outline'>
                     <mat-label>نام قرارداد</mat-label>
-                    <mat-icon matSuffix class="secondary-text">title</mat-icon>
-                    <input name="name" formControlName="name" matInput required />
-                    <mat-error *ngIf="form.get('name').hasError('required')"> وارد کردن این فیلد الزامی است. </mat-error>
+                    <mat-icon class='secondary-text' matSuffix>title</mat-icon>
+                    <input formControlName='name' matInput name='name' required />
+                    <mat-error *ngIf="form.get('name').hasError('required')"> وارد کردن این فیلد الزامی است.</mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>کد قرارداد</mat-label>
-                    <mat-icon matSuffix class="secondary-text mr-5">font_download</mat-icon>
-                    <input [readonly]="isEditMode" name="name" formControlName="code" matInput dir="ltr" />
-                    <mat-hint *ngIf="isEditMode">کد قرارداد را نمی‌توانید ویرایش کنید.</mat-hint>
-                    <mat-error *ngIf="form.get('code').hasError('pattern')"> تنها حروف و اعداد انگلیسی مجاز است. </mat-error>
+                    <mat-icon class='secondary-text mr-5' matSuffix>font_download</mat-icon>
+                    <input [readonly]='isEditMode' dir='ltr' formControlName='code' matInput name='name' />
+                    <mat-hint *ngIf='isEditMode'>کد قرارداد را نمی‌توانید ویرایش کنید.</mat-hint>
+                    <mat-error *ngIf="form.get('code').hasError('pattern')"> تنها حروف و اعداد انگلیسی مجاز است.
+                    </mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>نوع قرارداد</mat-label>
-                    <mat-select [disabled]="isEditMode" formControlName="contractType" required>
-                        <mat-option class="text=right" *ngFor="let contractType of contractTypes" [value]="contractType._id">
+                    <mat-select [disabled]='isEditMode' formControlName='contractType' required>
+                        <mat-option *ngFor='let contractType of contractTypes' [value]='contractType._id'
+                                    class='text=right'>
                             {{ contractType.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>جریان قرارداد</mat-label>
-                    <mat-select [disabled]="isEditMode" formControlName="flow" required>
-                        <mat-option class="text=right" *ngFor="let flow of flows" [value]="flow._id">
+                    <mat-select [disabled]='isEditMode' formControlName='flow' required>
+                        <mat-option *ngFor='let flow of flows' [value]='flow._id' class='text=right'>
                             {{ flow.name }}
                         </mat-option>
                     </mat-select>
-                    <mat-hint *ngIf="!flows.length">برای نوع قرارداد برگزیده، هیچ جریانی یافت نشد</mat-hint>
+                    <mat-hint *ngIf='!flows.length'>برای نوع قرارداد برگزیده، هیچ جریانی یافت نشد</mat-hint>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>مشتری</mat-label>
-                    <mat-select [disabled]="isEditMode" formControlName="customer" required>
-                        <mat-option class="text=right" *ngFor="let customer of customers" [value]="customer">
+                    <mat-select [disabled]='isEditMode' formControlName='customer' required>
+                        <mat-option *ngFor='let customer of customers' [value]='customer' class='text=right'>
                             {{ customer.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance='outline'>
                     <mat-label>دسته‌بندی قرارداد</mat-label>
-                    <mat-select [disabled]="isEditMode" formControlName="category" required>
-                        <mat-option class="text=right" *ngFor="let contractCategory of contractCategories" [value]="contractCategory.id">
+                    <mat-select [disabled]='isEditMode' formControlName='category' required>
+                        <mat-option *ngFor='let contractCategory of contractCategories' [value]='contractCategory.id'
+                                    class='text=right'>
                             {{ contractCategory.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" *ngIf="isParentContractRequired">
+                <mat-form-field *ngIf='isParentContractRequired' appearance='outline'>
                     <mat-label>قرارداد مرجع</mat-label>
-                    <mat-select [disabled]="isEditMode" formControlName="parentId" required>
-                        <mat-option class="text=right" *ngFor="let contract of contracts" [value]="contract._id">
+                    <mat-select [disabled]='isEditMode' formControlName='parentId' required>
+                        <mat-option *ngFor='let contract of contracts' [value]='contract._id' class='text=right'>
                             {{ contract.name }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
 
-            <div mat-dialog-actions class="m-0 p-16 flex justify-around items-center mt-auto">
-                <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
-                    <mat-icon class="icon-header">{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
+            <div class='m-0 p-16 flex justify-around items-center mt-auto' mat-dialog-actions>
+                <button [disabled]='form.invalid' color='primary' mat-flat-button type='submit'>
+                    <mat-icon class='icon-header'>{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
                     {{ this.isEditMode ? 'ویرایش قرارداد' : 'افزودن قرارداد' }}
                 </button>
-                <button mat-flat-button color="warn" type="button" (click)="dialog.close(false)">
-                    <mat-icon class="icon-header">close</mat-icon>
+                <button (click)='dialog.close(false)' color='warn' mat-flat-button type='button'>
+                    <mat-icon class='icon-header'>close</mat-icon>
                     برگشت
                 </button>
             </div>

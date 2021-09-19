@@ -11,9 +11,10 @@ import { AlertService } from '#shared/services/alert.service';
     styleUrls: ['./contract-viewer.component.scss'],
 })
 export class ContractViewerComponent implements OnInit {
-    private contractId: string;
     public isLoading: boolean = true;
     public formData: FinalForm;
+    private contractId: string;
+
     constructor(
         private readonly cardboardService: CardboardService,
         private readonly activatedRoute: ActivatedRoute,
@@ -27,13 +28,6 @@ export class ContractViewerComponent implements OnInit {
         this.getContractCardboardInfo();
     }
 
-    private getContractCardboardInfo(): void {
-        this.cardboardService.getContractCardboardWizard(this.contractId).subscribe((result) => {
-            this.isLoading = false;
-            this.formData = result.form[0];
-        });
-    }
-
     public navigateToCardboardPage(): void {
         this.router.navigate(['/contract/cardboard']).finally();
     }
@@ -43,5 +37,12 @@ export class ContractViewerComponent implements OnInit {
             () => this.router.navigate(['/contract/contract-list']).finally(() => this.alertService.onSuccess('ثبت شد')),
             () => this.alertService.onError('مشکلی پیش آمده است')
         );
+    }
+
+    private getContractCardboardInfo(): void {
+        this.cardboardService.getContractCardboardWizard(this.contractId).subscribe((result) => {
+            this.isLoading = false;
+            this.formData = result.form[0];
+        });
     }
 }

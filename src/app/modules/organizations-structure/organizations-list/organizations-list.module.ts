@@ -24,7 +24,7 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: OrganizationsL
         OrganizationModule,
         ShareModule,
         LayoutModule,
-        HeaderModule
+        HeaderModule,
     ],
     exports: [OrganizationsListComponent, RouterModule],
 })

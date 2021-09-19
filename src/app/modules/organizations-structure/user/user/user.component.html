@@ -1,44 +1,45 @@
-<div class="page-layout">
-    <app-header pageTitle="مدیریت کاربر">
-        <form [formGroup]="organizationsForm" dir="rtl" class=" rtl  mr-auto  ml-5">
-            <mat-form-field appearance="standard" class=" w-80">
+<div class='page-layout'>
+    <app-header pageTitle='مدیریت کاربر'>
+        <form [formGroup]='organizationsForm' class=' rtl  mr-auto  ml-5' dir='rtl'>
+            <mat-form-field appearance='standard' class=' w-80'>
                 <mat-label>نهاد</mat-label>
-                <mat-select formControlName="organization" multiple required>
+                <mat-select formControlName='organization' multiple required>
                     <ngx-mat-select-search
-                        class=" text-right"
+                        [formControl]='organizationsSearchControl'
                         [noEntriesFoundLabel]="'یافت نشد'"
                         [placeholderLabel]="'جستجو'"
-                        [formControl]="organizationsSearchControl"
+                        class=' text-right'
                     ></ngx-mat-select-search>
-                    <mat-option class=" text-right" [value]="organize?.code" *ngFor="let organize of organizations">
+                    <mat-option *ngFor='let organize of organizations' [value]='organize?.code' class=' text-right'>
                         {{ organize?.name }}
                     </mat-option>
                 </mat-select>
-                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
             </mat-form-field>
         </form>
-        <div dir="rtl">
-            <button mat-flat-button color="primary" type="submit" (click)="createUser()">
+        <div dir='rtl'>
+            <button (click)='createUser()' color='primary' mat-flat-button type='submit'>
                 افزودن کاربر
                 <mat-icon>add</mat-icon>
             </button>
         </div>
     </app-header>
 
-    <div class="page-content">
+    <div class='page-content'>
         <app-table
-            *ngIf="users"
-            [data]="users"
-            [columns]="columns"
+            (paginationEvent)='paginationControl($event)'
+            (searchEvent)='search($event)'
+            *ngIf='users'
+            [columns]='columns'
+            [data]='users'
+            [paginationObject]='pagination'
             [paginationSettings]="{ mode: 'backend' }"
-            [paginationObject]="pagination"
-            (searchEvent)="search($event)"
-            (paginationEvent)="paginationControl($event)"
         ></app-table>
-        <ng-container *ngIf="users?.length === 0">
-            <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                <img width="140px" height="140px" src="../../../../../assets/images/no-data.svg" alt="no-data" />
-                <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
+        <ng-container *ngIf='users?.length === 0'>
+            <div
+                style='display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column'>
+                <img alt='no-data' height='140px' src='../../../../../assets/images/no-data.svg' width='140px' />
+                <div style='font-size: 13px; color: #449fdb; margin-top: 7px'>موردی وجود ندارد</div>
             </div>
         </ng-container>
     </div>

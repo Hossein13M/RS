@@ -15,14 +15,22 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class EventTitleFieldService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventTitleFieldControllerCreateEventTitleField
      */
     static readonly EventTitleFieldControllerCreateEventTitleFieldPath = '/api/v1/event-title-field';
+    /**
+     * Path part for operation eventTitleFieldControllerGetEventTitleFields
+     */
+    static readonly EventTitleFieldControllerGetEventTitleFieldsPath = '/api/v1/event-title-field/{eventTitleId}';
+    /**
+     * Path part for operation eventTitleFieldControllerDeleteEventTitleField
+     */
+    static readonly EventTitleFieldControllerDeleteEventTitleFieldPath = '/api/v1/event-title-field/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -30,9 +38,7 @@ export class EventTitleFieldService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventTitleFieldControllerCreateEventTitleField$Response(params: {
-        body: CreateEventTitleFieldDto;
-    }): Observable<StrictHttpResponse<GetEventTitleFieldDto>> {
+    eventTitleFieldControllerCreateEventTitleField$Response(params: { body: CreateEventTitleFieldDto }): Observable<StrictHttpResponse<GetEventTitleFieldDto>> {
         const rb = new RequestBuilder(this.rootUrl, EventTitleFieldService.EventTitleFieldControllerCreateEventTitleFieldPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -63,11 +69,6 @@ export class EventTitleFieldService extends BaseService {
             map((r: StrictHttpResponse<GetEventTitleFieldDto>) => r.body as GetEventTitleFieldDto)
         );
     }
-
-    /**
-     * Path part for operation eventTitleFieldControllerGetEventTitleFields
-     */
-    static readonly EventTitleFieldControllerGetEventTitleFieldsPath = '/api/v1/event-title-field/{eventTitleId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -106,11 +107,6 @@ export class EventTitleFieldService extends BaseService {
             map((r: StrictHttpResponse<FindEventTitleFieldDto>) => r.body as FindEventTitleFieldDto)
         );
     }
-
-    /**
-     * Path part for operation eventTitleFieldControllerDeleteEventTitleField
-     */
-    static readonly EventTitleFieldControllerDeleteEventTitleFieldPath = '/api/v1/event-title-field/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

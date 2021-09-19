@@ -6,15 +6,10 @@ import { switchMap } from 'rxjs/operators';
     providedIn: 'root',
 })
 export class UserInfoService {
-    private userInfoSubject: BehaviorSubject<any>;
     public userInfo$: Observable<any>;
-
-    public get userInfo(): any {
-        return this.userInfoSubject.getValue();
-    }
-
-    private userTokenInfoSubject: BehaviorSubject<any>;
     public userTokenInfo$: Observable<any>;
+    private userInfoSubject: BehaviorSubject<any>;
+    private userTokenInfoSubject: BehaviorSubject<any>;
 
     constructor() {
         this.userInfoSubject = new BehaviorSubject<any>(null);
@@ -36,5 +31,9 @@ export class UserInfoService {
                 }
             )
         );
+    }
+
+    public get userInfo(): any {
+        return this.userInfoSubject.getValue();
     }
 }

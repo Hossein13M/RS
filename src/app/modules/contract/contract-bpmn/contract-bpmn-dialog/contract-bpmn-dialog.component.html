@@ -1,72 +1,77 @@
-<div class="flex flex-col h-full" dir="rtl">
-    <div class="dialog-content-wrapper flex flex-col">
-        <mat-toolbar matDialogTitle class="mat-primary m-0">
-            <mat-toolbar-row class="flex justify-between items-center">
-                <span class="title dialog-title">پیکربندی {{ dialogData.stateName }} </span>
-                <div class="buttons">
-                    <button mat-icon-button matTooltip="ذخیره" type="submit" form="form">
-                        <mat-icon fontSet="material-icons-outlined">save</mat-icon>
+<div class='flex flex-col h-full' dir='rtl'>
+    <div class='dialog-content-wrapper flex flex-col'>
+        <mat-toolbar class='mat-primary m-0' matDialogTitle>
+            <mat-toolbar-row class='flex justify-between items-center'>
+                <span class='title dialog-title'>پیکربندی {{ dialogData.stateName }} </span>
+                <div class='buttons'>
+                    <button form='form' mat-icon-button matTooltip='ذخیره' type='submit'>
+                        <mat-icon fontSet='material-icons-outlined'>save</mat-icon>
                     </button>
 
-                    <button matTooltip="بستن" mat-icon-button (click)="dialogRef.close()">
-                        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+                    <button (click)='dialogRef.close()' mat-icon-button matTooltip='بستن'>
+                        <mat-icon fontSet='material-icons-outlined'>close</mat-icon>
                     </button>
                 </div>
             </mat-toolbar-row>
         </mat-toolbar>
     </div>
 
-    <mat-progress-bar mode="indeterminate" color="warn" *ngIf="stateType !== 'PRESENT'"></mat-progress-bar>
-    <div class="flex flex-col h-full" *ngIf="stateType === 'PRESENT'">
-        <mat-card class="m-10 p-0">
-            <mat-card-header class="flex justify-center primary m-0 py-3.5">
-                <mat-card-title class="text-white mb-0">دسترسی‌های این گام</mat-card-title>
+    <mat-progress-bar *ngIf="stateType !== 'PRESENT'" color='warn' mode='indeterminate'></mat-progress-bar>
+    <div *ngIf="stateType === 'PRESENT'" class='flex flex-col h-full'>
+        <mat-card class='m-10 p-0'>
+            <mat-card-header class='flex justify-center primary m-0 py-3.5'>
+                <mat-card-title class='text-white mb-0'>دسترسی‌های این گام</mat-card-title>
             </mat-card-header>
-            <mat-card-content class="mt-10 mb-10">
-                <form [formGroup]="form" id="form" (submit)="submitForm()" class="flex flex-col w-full justify-evenly items-center">
+            <mat-card-content class='mt-10 mb-10'>
+                <form (submit)='submitForm()' [formGroup]='form' class='flex flex-col w-full justify-evenly items-center'
+                      id='form'>
                     <mat-radio-group
-                        formControlName="accessRightType"
-                        class="flex justify-around items-center w-full pb-10 mb-10 border-b-2"
-                        (change)="onAccessRightTypeChange($event)"
+                        (change)='onAccessRightTypeChange($event)'
+                        class='flex justify-around items-center w-full pb-10 mb-10 border-b-2'
+                        formControlName='accessRightType'
                     >
-                        <mat-radio-button value="static">دسترسی ثابت</mat-radio-button>
-                        <mat-radio-button value="dynamic" [disabled]="taskStep === 'first'">دسترسی پویا (گزینشی)</mat-radio-button>
+                        <mat-radio-button value='static'>دسترسی ثابت</mat-radio-button>
+                        <mat-radio-button [disabled]="taskStep === 'first'" value='dynamic'>دسترسی پویا (گزینشی)
+                        </mat-radio-button>
                     </mat-radio-group>
 
-                    <div class="flex justify-center items-center">
+                    <div class='flex justify-center items-center'>
                         <div *ngIf="form.get('accessRightType').value === 'dynamic'">
-                            <mat-form-field appearance="outline">
+                            <mat-form-field appearance='outline'>
                                 <mat-label>دسترسی گزینشی کاربران</mat-label>
-                                <mat-select formControlName="users" multiple>
-                                    <mat-option *ngFor="let user of users" [value]="user.id">{{ user.fullname }}</mat-option>
+                                <mat-select formControlName='users' multiple>
+                                    <mat-option *ngFor='let user of users'
+                                                [value]='user.id'>{{ user.fullname }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
 
-                        <div *ngIf="form.get('accessRightType').value === 'static'" class="flex justify-around w-full items-center">
+                        <div *ngIf="form.get('accessRightType').value === 'static'"
+                             class='flex justify-around w-full items-center'>
                             <mat-checkbox
-                                formControlName="initializer"
-                                class="bottom-margin"
-                                [disabled]="taskStep === 'first'"
                                 [checked]="taskStep === 'first'"
+                                [disabled]="taskStep === 'first'"
+                                class='bottom-margin'
+                                formControlName='initializer'
                             >
                                 دسترسی ثبت‌کننده‌ی قرارداد به این گام
                             </mat-checkbox>
 
                             <app-tree-select
+                                (event)='detectChanges($event)'
                                 *ngIf="taskStep !== 'first'"
-                                class="flex items-center mx-40 tree-border bottom-margin"
-                                (event)="detectChanges($event)"
-                                [maxSelect]="1"
-                                [data]="units"
-                                formControlName="units"
-                                selectedValueFieldName="name"
+                                [data]='units'
+                                [maxSelect]='1'
+                                class='flex items-center mx-40 tree-border bottom-margin'
+                                formControlName='units'
+                                selectedValueFieldName='name'
                             ></app-tree-select>
 
-                            <mat-form-field appearance="outline" *ngIf="!!form.get('roles')" class="py-0">
+                            <mat-form-field *ngIf="!!form.get('roles')" appearance='outline' class='py-0'>
                                 <mat-label>نقش‌های این ساختار سازمانی</mat-label>
-                                <mat-select formControlName="roles" multiple>
-                                    <mat-option *ngFor="let role of rolesOnUnit" [value]="role.childId">{{ role.name }}</mat-option>
+                                <mat-select formControlName='roles' multiple>
+                                    <mat-option *ngFor='let role of rolesOnUnit'
+                                                [value]='role.childId'>{{ role.name }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
@@ -74,9 +79,9 @@
                 </form>
             </mat-card-content>
 
-            <mat-card-footer class="text-center mb-2 flex flex-col">
-                <div class="flex justify-center items-center">
-                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+            <mat-card-footer class='text-center mb-2 flex flex-col'>
+                <div class='flex justify-center items-center'>
+                    <mat-icon class='mx-2' fontSet='material-icons-outlined'>help_outline</mat-icon>
                     <p>
                         برای گام نخست، تنها دسترسی
                         <strong>ثبت‌کننده‌ی قرارداد</strong>
@@ -84,71 +89,76 @@
                     </p>
                 </div>
 
-                <div class="flex justify-center items-center">
-                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                <div class='flex justify-center items-center'>
+                    <mat-icon class='mx-2' fontSet='material-icons-outlined'>help_outline</mat-icon>
                     <p>
-                        پس از گزینش <strong>ساختار سازمانی</strong> و سپس گزینش <strong>نقش درون ساختار</strong> می‌توانید به همه‌ی کاربران آن نقش، دسترسی به
+                        پس از گزینش <strong>ساختار سازمانی</strong> و سپس گزینش <strong>نقش درون ساختار</strong>
+                        می‌توانید به همه‌ی کاربران آن نقش، دسترسی به
                         این گام <strong>BPMN</strong> بدهید.
                     </p>
                 </div>
 
-                <div class="flex justify-center items-center">
-                    <mat-icon fontSet="material-icons-outlined" class="mx-2">help_outline</mat-icon>
+                <div class='flex justify-center items-center'>
+                    <mat-icon class='mx-2' fontSet='material-icons-outlined'>help_outline</mat-icon>
                     <p>
-                        فهرست کاربران در <strong>دسترسی گزینشی</strong> کاربرانی است که در <strong>کارتابل قرارداد</strong> می‌توانید از میان آن‌ها به یکی از
+                        فهرست کاربران در <strong>دسترسی گزینشی</strong> کاربرانی است که در <strong>کارتابل
+                        قرارداد</strong> می‌توانید از میان آن‌ها به یکی از
                         کاربران دسترسی به این گام <strong>BPMN</strong> بدهید.
                     </p>
                 </div>
             </mat-card-footer>
         </mat-card>
 
-        <mat-card class="m-10 p-0">
-            <mat-card-header class="flex justify-center primary m-0 py-3.5">
-                <mat-card-title class="text-white mb-0">فرم این گام</mat-card-title>
+        <mat-card class='m-10 p-0'>
+            <mat-card-header class='flex justify-center primary m-0 py-3.5'>
+                <mat-card-title class='text-white mb-0'>فرم این گام</mat-card-title>
             </mat-card-header>
-            <mat-card-content class="my-10 flex mx-3">
-                <div *ngFor="let formArray of formArray.controls; index as index">
-                    <mat-card class="flex flex-col items-center bg-blue-50 mx-2 tool-card">
+            <mat-card-content class='my-10 flex mx-3'>
+                <div *ngFor='let formArray of formArray.controls; index as index'>
+                    <mat-card class='flex flex-col items-center bg-blue-50 mx-2 tool-card'>
                         <mat-card-content>
-                            <form [formGroup]="formArray" class="flex flex-col items-center justify-evenly">
-                                <mat-form-field appearance="outline">
+                            <form [formGroup]='formArray' class='flex flex-col items-center justify-evenly'>
+                                <mat-form-field appearance='outline'>
                                     <mat-label>نوشته‌ی دکمه</mat-label>
                                     <input
-                                        formControlName="name"
                                         [readonly]="formArray.get('isDefaultButton').value || flowDetails.hasActiveContract"
+                                        formControlName='name'
                                         matInput
-                                        type="text"
+                                        type='text'
                                     />
-                                    <mat-hint *ngIf="formArray.get('isDefaultButton').value">نام این دکمه را نمی‌توانید ویرایش کنید</mat-hint>
+                                    <mat-hint *ngIf="formArray.get('isDefaultButton').value">نام این دکمه را نمی‌توانید
+                                        ویرایش کنید
+                                    </mat-hint>
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline">
+                                <mat-form-field appearance='outline'>
                                     <mat-label>نوع دکمه</mat-label>
                                     <mat-select
-                                        formControlName="type"
+                                        (openedChange)='onButtonTypeOpen(formArray)'
+                                        (selectionChange)='onButtonTypeChanges($event)'
                                         [disabled]="formArray.get('isDefaultButton').value || flowDetails.hasActiveContract"
-                                        (openedChange)="onButtonTypeOpen(formArray)"
-                                        (selectionChange)="onButtonTypeChanges($event)"
+                                        formControlName='type'
                                     >
-                                        <mat-option *ngFor="let buttonType of buttonTypes" [value]="buttonType.engName" [disabled]="!buttonType.isAvailable">
+                                        <mat-option *ngFor='let buttonType of buttonTypes' [disabled]='!buttonType.isAvailable'
+                                                    [value]='buttonType.engName'>
                                             {{ buttonType.perName }}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
 
                                 <button
-                                    class="flex mx-auto"
-                                    mat-flat-button
-                                    color="warn"
-                                    (click)="removeTool(formArray, index)"
+                                    (click)='removeTool(formArray, index)'
                                     [disabled]="
                                         formArray.get('isDefaultButton').value ||
                                         flowDetails.hasActiveContract ||
                                         checkForButtonStateOnTask(formArray.get('type').value)
                                     "
+                                    class='flex mx-auto'
+                                    color='warn'
+                                    mat-flat-button
                                 >
                                     <span>پاک کردن این ابزار</span>
-                                    <mat-icon fontSet="material-icons-outlined"> clear </mat-icon>
+                                    <mat-icon fontSet='material-icons-outlined'> clear</mat-icon>
                                 </button>
                             </form>
                         </mat-card-content>
@@ -156,20 +166,23 @@
                 </div>
 
                 <button
-                    mat-button
-                    [disableRipple]="true"
-                    (click)="addTool()"
-                    *ngIf="isAddButtonAvailable()"
+                    (click)='addTool()'
+                    *ngIf='isAddButtonAvailable()'
+                    [disableRipple]='true'
                     [matTooltip]="
                         flowDetails.hasActiveContract
                             ? 'به دلیل این‌که با جریان این BPMN قرارداد ثبت شده، نمی‌توانید فرم آن‌را تغییر دهید.'
                             : 'افزودن دکمه‌ی جدید'
                     "
-                    matTooltipPosition="below"
-                    class="p-0"
+                    class='p-0'
+                    mat-button
+                    matTooltipPosition='below'
                 >
-                    <mat-card class="flex flex-col justify-center items-center bg-gray-100 mx-5 h-5-6 empty-state-section m-0 tool-card">
-                        <mat-icon fontSet="material-icons-outlined" class="text-blue-600 text-7xl flex justify-center items-center">add_circle </mat-icon>
+                    <mat-card
+                        class='flex flex-col justify-center items-center bg-gray-100 mx-5 h-5-6 empty-state-section m-0 tool-card'>
+                        <mat-icon class='text-blue-600 text-7xl flex justify-center items-center'
+                                  fontSet='material-icons-outlined'>add_circle
+                        </mat-icon>
                     </mat-card>
                 </button>
             </mat-card-content>

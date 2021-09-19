@@ -29,41 +29,10 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
         this.createColumns();
     }
 
-    private createColumns(): void {
-        this.columns = [
-            { id: 'index', type: 'index'},
-            { name: 'عنوان جریان', id: 'name', type: 'string', minWidth: '150px', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'وضعیت', id: 'custom1', type: 'custom', cellTemplate: this.toggle },
-            {
-                name: 'عملیات',
-                id: 'operation',
-                type: 'operation',
-                minWidth: '130px',
-                sticky: true,
-                operations: [
-                    { name: 'مشاهده', icon: 'visibility', color: 'primary', operation: ({ row }: any) => this.viewFlow(row.id) },
-                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editFlow(row.id) },
-                ],
-            },
-        ];
-    }
-
     public paginationControl(pageEvent?: any): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.getOpRiskFlows();
-    }
-
-    private getOpRiskFlows(): void {
-        this.opRiskFlowService.getOpFlows(this.pagination).subscribe(
-            (response) => {
-                this.pagination.total = response.total;
-                this.pagination.limit = response.limit;
-                response.items.forEach((value, index) => (response.items[index].positionNumber = index + 1));
-                this.data = response.items;
-            },
-            () => this.alertService.onError('مشکلی در دریافت اطلاعات پیش ‌آمده است.')
-        );
     }
 
     public toggleStatus(row: any): void {
@@ -96,6 +65,53 @@ export class OpRiskFlowComponent implements OnInit, AfterViewInit {
                 .afterClosed()
                 .subscribe((res) => res && this.getOpRiskFlows());
         });
+    }
+
+    private createColumns(): void {
+        this.columns = [
+            { id: 'index', type: 'index' },
+            {
+                name: 'عنوان جریان',
+                id: 'name',
+                type: 'string',
+                minWidth: '150px',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            { name: 'وضعیت', id: 'custom1', type: 'custom', cellTemplate: this.toggle },
+            {
+                name: 'عملیات',
+                id: 'operation',
+                type: 'operation',
+                minWidth: '130px',
+                sticky: true,
+                operations: [
+                    {
+                        name: 'مشاهده',
+                        icon: 'visibility',
+                        color: 'primary',
+                        operation: ({ row }: any) => this.viewFlow(row.id),
+                    },
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editFlow(row.id),
+                    },
+                ],
+            },
+        ];
+    }
+
+    private getOpRiskFlows(): void {
+        this.opRiskFlowService.getOpFlows(this.pagination).subscribe(
+            (response) => {
+                this.pagination.total = response.total;
+                this.pagination.limit = response.limit;
+                response.items.forEach((value, index) => (response.items[index].positionNumber = index + 1));
+                this.data = response.items;
+            },
+            () => this.alertService.onError('مشکلی در دریافت اطلاعات پیش ‌آمده است.')
+        );
     }
 
     private viewFlow(flowId: string | number): void {

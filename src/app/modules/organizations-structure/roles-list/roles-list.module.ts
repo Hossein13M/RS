@@ -13,7 +13,16 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: RolesListCompo
 
 @NgModule({
     declarations: [RolesListComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, FlexModule, ShareModule, TreeHeaderSelectorModule, TreeSimpleSelectorModule, HeaderModule],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        LayoutModule,
+        FlexModule,
+        ShareModule,
+        TreeHeaderSelectorModule,
+        TreeSimpleSelectorModule,
+        HeaderModule,
+    ],
     exports: [RolesListComponent, RouterModule],
 })
 export class RolesListModule {}

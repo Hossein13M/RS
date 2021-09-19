@@ -1,37 +1,39 @@
-<mat-card class="h-full w-full p-0" *ngIf="stateType === 'PRESENT'">
-    <mat-card-header class="w-full bg-blue-900 m-0 py-3.5">
-        <div class="w-full flex justify-between items-center px-5 w-full">
-            <h2 class="font-bold text-white">فرم قرارداد</h2>
+<mat-card *ngIf="stateType === 'PRESENT'" class='h-full w-full p-0'>
+    <mat-card-header class='w-full bg-blue-900 m-0 py-3.5'>
+        <div class='w-full flex justify-between items-center px-5 w-full'>
+            <h2 class='font-bold text-white'>فرم قرارداد</h2>
 
             <button
-                mat-icon-button
-                color="accent"
                 (click)="changeContractStatus(cardboardInfo.status === 'in progress')"
                 [matTooltip]="cardboardInfo.status === 'in progress' ? 'متوقف کردن قرارداد' : 'بازگشایی قرارداد'"
+                color='accent'
+                mat-icon-button
             >
                 <mat-icon>{{ cardboardInfo.status === 'in progress' ? 'pause_circle' : 'play_arrow' }}</mat-icon>
             </button>
         </div>
     </mat-card-header>
-    <mat-card-content class="flex h-1/2 flex-col justify-center px-2">
-        <div class="flex justify-evenly" *ngIf="cardboardInfo.status !== 'final'">
+    <mat-card-content class='flex h-1/2 flex-col justify-center px-2'>
+        <div *ngIf="cardboardInfo.status !== 'final'" class='flex justify-evenly'>
             <button
-                mat-flat-button
-                *ngFor="let button of cardboardInfo.form"
-                [matTooltip]="button.name"
+                (click)='onButtonClick(button.type)'
+                *ngFor='let button of cardboardInfo.form'
                 [color]="button.type === 'accept' ? 'primary' : button.type === 'reject' ? 'warn' : 'accent'"
-                (click)="onButtonClick(button.type)"
+                [matTooltip]='button.name'
+                mat-flat-button
             >
                 {{ button.name }}
             </button>
         </div>
-        <div class="flex justify-center" *ngIf="cardboardInfo.status === 'final'">
-            <button mat-flat-button matTooltip="فرم پایانی قرارداد" color="primary" (click)="openFinalFormDialog()">فرم پایانی قرارداد</button>
+        <div *ngIf="cardboardInfo.status === 'final'" class='flex justify-center'>
+            <button (click)='openFinalFormDialog()' color='primary' mat-flat-button matTooltip='فرم پایانی قرارداد'>فرم
+                پایانی قرارداد
+            </button>
         </div>
     </mat-card-content>
-    <mat-card-footer class="text-center mb-2 flex flex-col">
-        <div class="flex justify-center items-center">
-            <mat-icon fontSet="material-icons-outlined" class="mx-2 cursor-default">help_outline</mat-icon>
+    <mat-card-footer class='text-center mb-2 flex flex-col'>
+        <div class='flex justify-center items-center'>
+            <mat-icon class='mx-2 cursor-default' fontSet='material-icons-outlined'>help_outline</mat-icon>
             <p>
                 این فرم، همان فرمی است که در هنگام ساخت
                 <strong>BPMN</strong>

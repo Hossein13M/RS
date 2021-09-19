@@ -53,7 +53,7 @@ export class OpLossAddDetailComponent implements OnInit, OnDestroy {
         },
         checkFinishingDate: {
             min: null,
-        }
+        },
     };
 
     private _unsubscribeAll: Subscription = new Subscription();
@@ -355,6 +355,12 @@ export class OpLossAddDetailComponent implements OnInit, OnDestroy {
         });
     }
 
+    ngOnDestroy(): void {
+        if (this._unsubscribeAll as Subscription) {
+            this._unsubscribeAll.unsubscribe();
+        }
+    }
+
     private relationalValidation(): void {
         this._unsubscribeAll.add(
             this.form.controls['profileFinishingDate'].valueChanges.subscribe((date) => {
@@ -376,11 +382,5 @@ export class OpLossAddDetailComponent implements OnInit, OnDestroy {
                 this.dateLimit.checkStartingDate.max = new Date(date._d);
             })
         );
-    }
-
-    ngOnDestroy(): void {
-        if (this._unsubscribeAll as Subscription) {
-            this._unsubscribeAll.unsubscribe();
-        }
     }
 }

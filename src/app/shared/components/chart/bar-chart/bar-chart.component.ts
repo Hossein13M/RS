@@ -122,7 +122,14 @@ export class BarChartComponent implements OnDestroy, OnChanges {
 
                     const dx = (dummyData - trueIndex + middle - newMiddle) * delta;
 
-                    barChartSeries.animate({ property: 'dx', to: dx }, barChartSeries.interpolationDuration, barChartSeries.interpolationEasing);
+                    barChartSeries.animate(
+                        {
+                            property: 'dx',
+                            to: dx,
+                        },
+                        barChartSeries.interpolationDuration,
+                        barChartSeries.interpolationEasing
+                    );
                     barChartSeries.bulletsContainer.animate(
                         { property: 'dx', to: dx },
                         barChartSeries.interpolationDuration,

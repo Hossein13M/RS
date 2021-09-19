@@ -62,8 +62,18 @@ export class DateComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({row}: any) => this.editDate(row) },
-                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.deleteDate(row.id) },
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editDate(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.deleteDate(row.id),
+                    },
                 ],
             },
         ];

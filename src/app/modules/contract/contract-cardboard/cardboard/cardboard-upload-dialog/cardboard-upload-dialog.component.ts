@@ -9,7 +9,6 @@ import { AlertService } from '#shared/services/alert.service';
     styleUrls: ['./cardboard-upload-dialog.component.scss'],
 })
 export class CardboardUploadDialogComponent implements OnInit {
-    private uploadedFile;
     public form: FormGroup = this.fb.group({
         contract: [null, Validators.required],
         fileName: [null, Validators.required],
@@ -17,6 +16,8 @@ export class CardboardUploadDialogComponent implements OnInit {
         type: ['draft', Validators.required],
         file: [Validators.required],
     });
+    private uploadedFile;
+
     constructor(
         public dialog: MatDialogRef<CardboardUploadDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public dialogData: { contractId: number; hasSignedFile: boolean },
@@ -33,12 +34,6 @@ export class CardboardUploadDialogComponent implements OnInit {
         this.form.get('file').setValue(this.uploadedFile);
     }
 
-    private setUploadFormBase(): void {
-        this.form.get('contract').setValue(this.dialogData.contractId);
-        this.dialogData.hasSignedFile ? this.form.get('description').setValidators([Validators.required]) : this.form.get('description').setValidators([]);
-        this.form.updateValueAndValidity();
-    }
-
     public submitForm(): void {
         const formData: FormData = new FormData();
         Object.keys(this.form.value).map((key) => formData.append(key, this.form.value[key]));
@@ -48,6 +43,16 @@ export class CardboardUploadDialogComponent implements OnInit {
         } else {
             this.uploadFile(formData);
         }
+    }
+
+    public triggerFileSelect(): void {
+        document.getElementById('uploadFile')?.click();
+    }
+
+    private setUploadFormBase(): void {
+        this.form.get('contract').setValue(this.dialogData.contractId);
+        this.dialogData.hasSignedFile ? this.form.get('description').setValidators([Validators.required]) : this.form.get('description').setValidators([]);
+        this.form.updateValueAndValidity();
     }
 
     private uploadFile(formData: any): void {
@@ -61,9 +66,5 @@ export class CardboardUploadDialogComponent implements OnInit {
             this.dialog.close(true);
         });
         xhr.addEventListener('error', () => this.alertService.onError('مشکلی پیش آمده‌است'));
-    }
-
-    public triggerFileSelect(): void {
-        document.getElementById('uploadFile')?.click();
     }
 }

@@ -144,7 +144,11 @@ export class OrganizationRoleMappingDialogComponent implements OnInit {
 
     addMap(node: any): void {
         this.organizationStructureService
-            .assignRoleToOrganizationUnit({ unitId: node.id, roleId: this.data.mappedNode.id, organization: this.data.organizationCode })
+            .assignRoleToOrganizationUnit({
+                unitId: node.id,
+                roleId: this.data.mappedNode.id,
+                organization: this.data.organizationCode,
+            })
             .subscribe(
                 () => {
                     const foundedNode = this.flatNodeMap.get(node);

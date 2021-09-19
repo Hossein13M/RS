@@ -11,7 +11,15 @@ import { CompliancesFundComponent } from './compliances-list/compliances-fund/co
 import { CompliancesFundAddComponent } from './compliances-list/compliances-fund/compliances-fund-add/compliances-fund-add.component';
 
 @NgModule({
-    declarations: [CompliancesComponent, ComplianceAddComponent, ComplianceFundComponent, CalculatedComplianceComponent, ComplianceAddComponent, CompliancesFundComponent, CompliancesFundAddComponent],
+    declarations: [
+        CompliancesComponent,
+        ComplianceAddComponent,
+        ComplianceFundComponent,
+        CalculatedComplianceComponent,
+        ComplianceAddComponent,
+        CompliancesFundComponent,
+        CompliancesFundAddComponent,
+    ],
     imports: [CommonModule, ComplianceRoutingModule, ShareModule],
     entryComponents: [ComplianceFundComponent, ComplianceAddComponent, CompliancesFundComponent, CompliancesFundAddComponent],
     providers: [CompliancesService],

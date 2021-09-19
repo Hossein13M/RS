@@ -1,11 +1,12 @@
-<div class="header p-16 p-sm-24" [class]="headerColor">
-    <div class="logo">
-        <span class="logo-text h1" [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"> {{ pageTitle }} </span>
-        <div class="subtitle">
-            <ng-content select="[subtitle]"></ng-content>
+<div [class]='headerColor' class='header p-16 p-sm-24'>
+    <div class='logo'>
+        <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }"
+              class='logo-text h1'> {{ pageTitle }} </span>
+        <div class='subtitle'>
+            <ng-content select='[subtitle]'></ng-content>
         </div>
-        <div class="subtitle-normal">
-            <ng-content select="[subtitleNormal]"></ng-content>
+        <div class='subtitle-normal'>
+            <ng-content select='[subtitleNormal]'></ng-content>
         </div>
     </div>
     <ng-content></ng-content>

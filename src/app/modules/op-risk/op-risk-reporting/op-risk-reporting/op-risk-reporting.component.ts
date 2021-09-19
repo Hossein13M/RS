@@ -49,15 +49,6 @@ export class OpRiskReportingComponent implements OnInit {
         this.getCategories();
     }
 
-    private getTops(): void {
-        this.opRiskReportingService.getTops(this.isSelectedTabRisk).subscribe((response) => (this.tops = response));
-    }
-
-    private getAxis(): void {
-        this.opRiskReportingService.getAxis('xAxis').subscribe((response) => (this.xAxis = response));
-        this.opRiskReportingService.getAxis('yAxis').subscribe((response) => (this.yAxis = response));
-    }
-
     public getBarChart(barchartType: string): void {
         this.opRiskReportingService
             .getBarChart(this.barChartSearchForm.value.xAxis, this.barChartSearchForm.value.yAxis, this.isSelectedTabRisk)
@@ -67,6 +58,23 @@ export class OpRiskReportingComponent implements OnInit {
     public changeTab(): void {
         this.isSelectedTabRisk = !this.isSelectedTabRisk;
         this.ngOnInit();
+    }
+
+    public getChildPie(data, tableName): void {
+        let treeNodeId;
+        data == false ? (treeNodeId = this.categories[tableName][0]) : (treeNodeId = data.treeNodeId);
+        this.opRiskReportingService.getPieChart(treeNodeId, this.isSelectedTabRisk, tableName).subscribe((response) => {
+            response.chart.data.length == 0 ? this.AlertService.onError('داده ای یافت نشد') : (this.diversPieChartData = response.chart.data);
+        });
+    }
+
+    private getTops(): void {
+        this.opRiskReportingService.getTops(this.isSelectedTabRisk).subscribe((response) => (this.tops = response));
+    }
+
+    private getAxis(): void {
+        this.opRiskReportingService.getAxis('xAxis').subscribe((response) => (this.xAxis = response));
+        this.opRiskReportingService.getAxis('yAxis').subscribe((response) => (this.yAxis = response));
     }
 
     private getCategories(): void {
@@ -121,14 +129,6 @@ export class OpRiskReportingComponent implements OnInit {
                     }
                 });
             }
-        });
-    }
-
-    public getChildPie(data, tableName): void {
-        let treeNodeId;
-        data == false ? (treeNodeId = this.categories[tableName][0]) : (treeNodeId = data.treeNodeId);
-        this.opRiskReportingService.getPieChart(treeNodeId, this.isSelectedTabRisk, tableName).subscribe((response) => {
-            response.chart.data.length == 0 ? this.AlertService.onError('داده ای یافت نشد') : (this.diversPieChartData = response.chart.data);
         });
     }
 }

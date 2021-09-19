@@ -1,91 +1,96 @@
 <script src='bource-instrument-detail.component.ts'></script>
-<div class="page-layout">
+<div class='page-layout'>
     <!-- HEADER -->
-    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-xs="row" fxLayoutAlign.gt-xs="space-between center">
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
-                <span class="logo-text h1"> ورود اطلاعات ابزار‌ها </span>
+    <div class='header accent p-16 p-sm-24' fxLayout='column' fxLayout.gt-xs='row' fxLayoutAlign='start'
+         fxLayoutAlign.gt-xs='space-between center'>
+        <div fxLayout='row' fxLayoutAlign='start center'>
+            <div class='logo' fxLayout='row' fxLayoutAlign='start center'>
+                <span class='logo-text h1'> ورود اطلاعات ابزار‌ها </span>
             </div>
         </div>
     </div>
 
-    <div wrap dir="rtl" style="flex: 1; width: 100%">
-        <div class="container fuse-card" dir="rtl">
-            <form fxLayout="row wrap" fxLayoutAlign="space-between center" class="title">
-                <mat-form-field fxFlex.lt-md="100" style="min-width: 600px; padding: 15px" appearance="outline">
-                    <mat-select [formControl]="selectedBond" placeholder="ابزارها" [multiple]="false">
+    <div dir='rtl' style='flex: 1; width: 100%' wrap>
+        <div class='container fuse-card' dir='rtl'>
+            <form class='title' fxLayout='row wrap' fxLayoutAlign='space-between center'>
+                <mat-form-field appearance='outline' fxFlex.lt-md='100' style='min-width: 600px; padding: 15px'>
+                    <mat-select [formControl]='selectedBond' [multiple]='false' placeholder='ابزارها'>
                         <ngx-mat-select-search
-                            [clearSearchInput]="false"
-                            style="text-align: right"
+                            [clearSearchInput]='false'
+                            [formControl]='bondSearchkeyword'
                             [noEntriesFoundLabel]="'یافت نشد'"
                             [placeholderLabel]="'جستجو'"
-                            [formControl]="bondSearchkeyword"
+                            style='text-align: right'
                         ></ngx-mat-select-search>
-                        <mat-option style="text-align: right" *ngFor="let bond of bonds" [value]="bond">
-                            <div style="display: flex; justify-content: space-between; align-items: center">
+                        <mat-option *ngFor='let bond of bonds' [value]='bond' style='text-align: right'>
+                            <div style='display: flex; justify-content: space-between; align-items: center'>
                                 <span [ngClass]="{ 'deleted-bond': bond.status == 'deleted' }">
                                     {{ bond?.name }}
                                 </span>
 
-                                <mat-chip class="chips" color="warn" selected *ngIf="bond.status == 'deleted'"> قدیمی حذف شده</mat-chip>
+                                <mat-chip *ngIf="bond.status == 'deleted'" class='chips' color='warn' selected> قدیمی
+                                    حذف شده
+                                </mat-chip>
                             </div>
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <div fxFlex="30" fxFlex.lt-md="50">
+                <div fxFlex='30' fxFlex.lt-md='50'>
                     <h3>تاریخ شروع پذیره نویسی</h3>
-                    <h4 *ngIf="startDate">{{ startDate | convertDate }}</h4>
-                    <h4 *ngIf="!startDate">ثبت نشده</h4>
+                    <h4 *ngIf='startDate'>{{ startDate | convertDate }}</h4>
+                    <h4 *ngIf='!startDate'>ثبت نشده</h4>
                 </div>
 
-                <div fxFlex="30" fxFlex.lt-md="50">
+                <div fxFlex='30' fxFlex.lt-md='50'>
                     <h3>تاریخ پایان پذیره نویسی</h3>
-                    <h4 *ngIf="endDate">{{ endDate | convertDate }}</h4>
-                    <h4 *ngIf="!endDate">ثبت نشده</h4>
+                    <h4 *ngIf='endDate'>{{ endDate | convertDate }}</h4>
+                    <h4 *ngIf='!endDate'>ثبت نشده</h4>
                 </div>
 
                 <button
+                    (click)='save()'
+                    *ngIf='formLoaded'
+                    class='save-changes-btn'
+                    color='accent'
                     mat-raised-button
-                    *ngIf="formLoaded"
-                    class="save-changes-btn"
-                    style="margin-right: auto; margin-left: auto"
-                    color="accent"
-                    (click)="save()"
+                    style='margin-right: auto; margin-left: auto'
                 >
                     ثبت تغییرات
                 </button>
             </form>
         </div>
 
-        <div class="container fuse-card" dir="rtl" *ngIf="formLoaded" [@expandCollapse] style="margin-top: 0px">
-            <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
-                <form [formGroup]="bigForm" class="form" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
-                    <div fxFlex="30" fxFlex.lt-md="80">
-                        <mat-form-field appearance="outline" fxFlex>
+        <div *ngIf='formLoaded' [@expandCollapse] class='container fuse-card' dir='rtl' style='margin-top: 0px'>
+            <div class='p-24 pb-0 m-0' fusePerfectScrollbar mat-dialog-content>
+                <form [formGroup]='bigForm' class='form' fxLayout='row wrap' fxLayoutAlign='center center'
+                      fxLayoutGap='10px'>
+                    <div fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>نام</mat-label>
-                            <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
-                            <input name="name" formControlName="name" matInput />
+                            <mat-icon class='secondary-text' matSuffix>account_circle</mat-icon>
+                            <input formControlName='name' matInput name='name' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('issuerId')">
-                        <mat-form-field class="full-wid" appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('issuerId')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid'>
                             <mat-label>ناشر</mat-label>
-                            <mat-select formControlName="issuerId" [placeholder]="bondDetail.issuerName" [multiple]="false" appearance="outline">
+                            <mat-select [multiple]='false' [placeholder]='bondDetail.issuerName'
+                                        appearance='outline' formControlName='issuerId'>
                                 <ngx-mat-select-search
-                                    [clearSearchInput]="false"
-                                    style="text-align: right"
+                                    [clearSearchInput]='false'
+                                    [formControl]='issuerSearchkeyword'
                                     [noEntriesFoundLabel]="'یافت نشد'"
                                     [placeholderLabel]="'جستجو'"
-                                    [formControl]="issuerSearchkeyword"
+                                    style='text-align: right'
                                 >
                                 </ngx-mat-select-search>
                                 <mat-option
-                                    style="text-align: right"
-                                    *ngFor="let issuer of issuers"
-                                    [value]="issuer.id"
-                                    (click)="bondDetail.issuerName = issuer.name"
+                                    (click)='bondDetail.issuerName = issuer.name'
+                                    *ngFor='let issuer of issuers'
+                                    [value]='issuer.id'
+                                    style='text-align: right'
                                 >
                                     {{ issuer?.name }}
                                 </mat-option>
@@ -93,43 +98,45 @@
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('issueDate')">
-                        <mat-form-field class="full-wid" appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('issueDate')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid'>
                             <mat-label>تاریخ انتشار</mat-label>
-                            <input (click)="start1.open()" matInput formControlName="issueDate" [matDatepicker]="start1" />
-                            <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                            <input (click)='start1.open()' [matDatepicker]='start1' formControlName='issueDate'
+                                   matInput />
+                            <mat-datepicker-toggle [for]='start1' matSuffix></mat-datepicker-toggle>
                             <mat-datepicker #start1></mat-datepicker>
                             <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('maturityDate')">
-                        <mat-form-field class="full-wid" appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('maturityDate')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid'>
                             <mat-label>تاریخ سررسید</mat-label>
-                            <input (click)="start2.open()" matInput formControlName="maturityDate" [matDatepicker]="start2" />
-                            <mat-datepicker-toggle matSuffix [for]="start2"></mat-datepicker-toggle>
+                            <input (click)='start2.open()' [matDatepicker]='start2' formControlName='maturityDate'
+                                   matInput />
+                            <mat-datepicker-toggle [for]='start2' matSuffix></mat-datepicker-toggle>
                             <mat-datepicker #start2></mat-datepicker>
                             <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('cancellationDate')">
-                        <mat-form-field class="full-wid" appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('cancellationDate')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid'>
                             <mat-label>تاریخ لغو پذیرش</mat-label>
-                            <input (click)="start21.open()" matInput formControlName="cancellationDate" [matDatepicker]="start21" />
-                            <mat-datepicker-toggle matSuffix [for]="start21"></mat-datepicker-toggle>
+                            <input (click)='start21.open()' [matDatepicker]='start21' formControlName='cancellationDate'
+                                   matInput />
+                            <mat-datepicker-toggle [for]='start21' matSuffix></mat-datepicker-toggle>
                             <mat-datepicker #start21></mat-datepicker>
                             <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('paymentDay')">
-                        <mat-form-field class="full-wid" appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('paymentDay')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid'>
                             <mat-label>روز پرداخت سود</mat-label>
-                            <mat-select formControlName="paymentDay">
+                            <mat-select formControlName='paymentDay'>
                                 <mat-option
-                                    style="text-align: right"
-                                    *ngFor="
+                                    *ngFor='
                                         let m of [
                                             0,
                                             1,
@@ -164,8 +171,9 @@
                                             30,
                                             31
                                         ]
-                                    "
-                                    [value]="m.toString()"
+                                    '
+                                    [value]='m.toString()'
+                                    style='text-align: right'
                                 >
                                     {{ m == 0 ? 'ندارد' : m }}
                                 </mat-option>
@@ -173,136 +181,140 @@
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('value')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('value')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>ارزش انتشار</mat-label>
-                            <input matInput matInputCommified formControlName="value" type="text" />
+                            <input formControlName='value' matInput matInputCommified type='text' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80">
-                        <mat-form-field appearance="outline">
+                    <div fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline'>
                             <mat-label>
                                 شناسه‌ی نماد
-                                <span style="color: red">*</span>
+                                <span style='color: red'>*</span>
                             </mat-label>
-                            <input type="text" formControlName="ticker" matInput />
+                            <input formControlName='ticker' matInput type='text' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80">
-                        <mat-form-field appearance="outline">
+                    <div fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline'>
                             <mat-label>وضعیت</mat-label>
-                            <mat-select formControlName="status">
-                                <mat-option value="active">فعال</mat-option>
-                                <mat-option value="inactive">غیرفعال</mat-option>
+                            <mat-select formControlName='status'>
+                                <mat-option value='active'>فعال</mat-option>
+                                <mat-option value='inactive'>غیرفعال</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('volume')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('volume')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>حجم انتشار</mat-label>
-                            <input name="volume" formControlName="volume" matInput />
+                            <input formControlName='volume' matInput name='volume' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('basePrice')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('basePrice')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>قیمت پایه</mat-label>
-                            <input name="basePrice" formControlName="basePrice" matInput />
+                            <input formControlName='basePrice' matInput name='basePrice' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('par')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('par')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>قیمت اسمی</mat-label>
-                            <input name="par" formControlName="par" matInput />
+                            <input formControlName='par' matInput name='par' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('exerciseRate')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('exerciseRate')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>قیمت اعمال</mat-label>
-                            <input name="exerciseRate" formControlName="exerciseRate" matInput />
+                            <input formControlName='exerciseRate' matInput name='exerciseRate' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('bankId')">
-                        <mat-form-field class="full-wid" appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('bankId')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid'>
                             <mat-label>بانک</mat-label>
-                            <mat-select formControlName="bankId" [placeholder]="bondDetail?.bankName" [multiple]="false" appearance="outline">
+                            <mat-select [multiple]='false' [placeholder]='bondDetail?.bankName' appearance='outline'
+                                        formControlName='bankId'>
                                 <ngx-mat-select-search
-                                    [clearSearchInput]="false"
-                                    style="text-align: right"
+                                    [clearSearchInput]='false'
+                                    [formControl]='bankSearchkeyword'
                                     [noEntriesFoundLabel]="'یافت نشد'"
                                     [placeholderLabel]="'جستجو'"
-                                    [formControl]="bankSearchkeyword"
+                                    style='text-align: right'
                                 ></ngx-mat-select-search>
-                                <mat-option style="text-align: right" *ngFor="let bank of banks" [value]="bank.id">
+                                <mat-option *ngFor='let bank of banks' [value]='bank.id' style='text-align: right'>
                                     {{ bank?.name }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('callRate')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('callRate')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>نرخ اختیار خرید</mat-label>
-                            <input name="callRate" formControlName="callRate" matInput />
+                            <input formControlName='callRate' matInput name='callRate' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('contractSize')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('contractSize')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>اندازه قرارداد</mat-label>
-                            <input name="contractSize" formControlName="contractSize" matInput />
+                            <input formControlName='contractSize' matInput name='contractSize' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('currency')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('currency')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>نوع ارز</mat-label>
-                            <input name="currency" formControlName="currency" matInput />
+                            <input formControlName='currency' matInput name='currency' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('etfType')">
-                        <mat-form-field class="full-wid" appearance="outline" style="width: 100%">
+                    <div *ngIf="bigForm.value.hasOwnProperty('etfType')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid' style='width: 100%'>
                             <mat-label>نوع ETF</mat-label>
-                            <mat-select formControlName="etfTypeId" [placeholder]="bondDetail.etfTypeName" [multiple]="false" appearance="outline">
+                            <mat-select [multiple]='false' [placeholder]='bondDetail.etfTypeName'
+                                        appearance='outline' formControlName='etfTypeId'>
                                 <ngx-mat-select-search
-                                    [clearSearchInput]="false"
-                                    style="text-align: right"
+                                    [clearSearchInput]='false'
+                                    [formControl]='ETF_TypeSearchkeyword'
                                     [noEntriesFoundLabel]="'یافت نشد'"
                                     [placeholderLabel]="'جستجو'"
-                                    [formControl]="ETF_TypeSearchkeyword"
+                                    style='text-align: right'
                                 >
                                 </ngx-mat-select-search>
-                                <mat-option style="text-align: right" *ngFor="let etfType of etfTypes" [value]="etfType.id">
+                                <mat-option *ngFor='let etfType of etfTypes' [value]='etfType.id'
+                                            style='text-align: right'>
                                     {{ etfType?.name }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('issuelicenseId')">
-                        <mat-form-field class="full-wid" appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('issuelicenseId')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' class='full-wid'>
                             <mat-label>مجوز انتشار</mat-label>
                             <mat-select
-                                formControlName="issuelicenseId"
-                                [placeholder]="bondDetail.issuelicenseName"
-                                [multiple]="false"
-                                appearance="outline"
+                                [multiple]='false'
+                                [placeholder]='bondDetail.issuelicenseName'
+                                appearance='outline'
+                                formControlName='issuelicenseId'
                             >
                                 <ngx-mat-select-search
-                                    [clearSearchInput]="false"
-                                    style="text-align: right"
+                                    [clearSearchInput]='false'
+                                    [formControl]='issueLicenseSearchkeyword'
                                     [noEntriesFoundLabel]="'یافت نشد'"
                                     [placeholderLabel]="'جستجو'"
-                                    [formControl]="issueLicenseSearchkeyword"
+                                    style='text-align: right'
                                 >
                                 </ngx-mat-select-search>
-                                <mat-option style="text-align: right" *ngFor="let issueLicense of issueLicenses" [value]="issueLicense.id">
+                                <mat-option *ngFor='let issueLicense of issueLicenses' [value]='issueLicense.id'
+                                            style='text-align: right'>
                                     {{ issueLicense?.name }}
                                 </mat-option>
                             </mat-select>
@@ -326,101 +338,110 @@
                     <!--                        </mat-form-field>-->
                     <!--                    </div>-->
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('issuerGoalId')">
+                    <div *ngIf="bigForm.value.hasOwnProperty('issuerGoalId')" fxFlex='30' fxFlex.lt-md='80'>
                         <app-search-select
-                            [searchFn]="searchIssueGoal"
-                            formControlName="issuerGoalId"
-                            valuePropertyName="id"
-                            uiPropertyName="name"
-                            placeholder="جستجو‌ی هدف"
-                            label="هدف انتشار"
+                            [searchFn]='searchIssueGoal'
+                            formControlName='issuerGoalId'
+                            label='هدف انتشار'
+                            placeholder='جستجو‌ی هدف'
+                            uiPropertyName='name'
+                            valuePropertyName='id'
                         >
                         </app-search-select>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('margin')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('margin')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>وجه تضمین</mat-label>
-                            <input name="margin" formControlName="margin" matInput />
+                            <input formControlName='margin' matInput name='margin' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('marketMakingRate')">
-                        <mat-form-field appearance="outline" fxFlex appearance="outline">
+                    <div *ngIf="bigForm.value.hasOwnProperty('marketMakingRate')" fxFlex='30' fxFlex.lt-md='80'
+                         fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' appearance='outline' fxFlex>
                             <mat-label>نرخ بازارگردانی</mat-label>
-                            <input name="exerciseRate" formControlName="marketMakingRate" matInput />
+                            <input formControlName='marketMakingRate' matInput name='exerciseRate' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('nationalId')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('nationalId')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>شناسه ی ملی</mat-label>
-                            <input name="nationalId" formControlName="nationalId" matInput />
+                            <input formControlName='nationalId' matInput name='nationalId' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('paymentPeriod')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('paymentPeriod')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>تواتر پرداخت سود</mat-label>
-                            <input name="paymentPeriod" formControlName="paymentPeriod" matInput type="number" />
+                            <input formControlName='paymentPeriod' matInput name='paymentPeriod' type='number' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('putRate')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('putRate')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>نرخ اختیار فروش</mat-label>
-                            <input name="putRate" formControlName="putRate" matInput />
+                            <input formControlName='putRate' matInput name='putRate' />
                         </mat-form-field>
                     </div>
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('rate')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('rate')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>نرخ</mat-label>
-                            <input name="rate" formControlName="rate" matInput />
+                            <input formControlName='rate' matInput name='rate' />
                         </mat-form-field>
                     </div>
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('sponsor')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('sponsor')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>بانی</mat-label>
-                            <input name="sponsor" formControlName="sponsor" matInput />
+                            <input formControlName='sponsor' matInput name='sponsor' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('underlyingAsset')">
-                        <mat-form-field appearance="outline" fxFlex>
+                    <div *ngIf="bigForm.value.hasOwnProperty('underlyingAsset')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-form-field appearance='outline' fxFlex>
                             <mat-label>دارایی پایه</mat-label>
-                            <input name="underlyingAsset" formControlName="underlyingAsset" matInput />
+                            <input formControlName='underlyingAsset' matInput name='underlyingAsset' />
                         </mat-form-field>
                     </div>
 
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('callable')">
-                        <mat-checkbox formControlName="callable"> قابل بازخرید</mat-checkbox>
+                    <div *ngIf="bigForm.value.hasOwnProperty('callable')" fxFlex='30' fxFlex.lt-md='80'>
+                        <mat-checkbox formControlName='callable'> قابل بازخرید</mat-checkbox>
                     </div>
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('convertible')" style="align-self: center">
-                        <mat-checkbox formControlName="convertible"> قابل تبدیل</mat-checkbox>
-                    </div>
-
-                    <div fxFlex="30" fxFlex.lt-md="80" *ngIf="bigForm.value.hasOwnProperty('embeded')" style="align-self: center">
-                        <mat-checkbox formControlName="embeded"> تبعی</mat-checkbox>
+                    <div *ngIf="bigForm.value.hasOwnProperty('convertible')" fxFlex='30' fxFlex.lt-md='80'
+                         style='align-self: center'>
+                        <mat-checkbox formControlName='convertible'> قابل تبدیل</mat-checkbox>
                     </div>
 
-                    <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-around center" fxLayoutGap="10px" class="actions">
-                        <button mat-raised-button *ngIf="bigForm.value.hasOwnProperty('collaterals')" color="primary" (click)="openCollaterals()">
+                    <div *ngIf="bigForm.value.hasOwnProperty('embeded')" fxFlex='30' fxFlex.lt-md='80'
+                         style='align-self: center'>
+                        <mat-checkbox formControlName='embeded'> تبعی</mat-checkbox>
+                    </div>
+
+                    <div class='actions' fxFlex='100' fxLayout='row wrap' fxLayoutAlign='space-around center'
+                         fxLayoutGap='10px'>
+                        <button (click)='openCollaterals()' *ngIf="bigForm.value.hasOwnProperty('collaterals')" color='primary'
+                                mat-raised-button>
                             تغییر وثیقه
                         </button>
 
-                        <button mat-raised-button *ngIf="bigForm.value.hasOwnProperty('marketMakers')" color="primary" (click)="openMarketMaker()">
+                        <button (click)='openMarketMaker()' *ngIf="bigForm.value.hasOwnProperty('marketMakers')" color='primary'
+                                mat-raised-button>
                             تغییر بازارگردان
                         </button>
 
-                        <button mat-raised-button *ngIf="bigForm.value.hasOwnProperty('underwriters')" color="primary" (click)="openUnderWriter()">
+                        <button (click)='openUnderWriter()' *ngIf="bigForm.value.hasOwnProperty('underwriters')" color='primary'
+                                mat-raised-button>
                             تغییر پذیره نویس
                         </button>
 
-                        <button mat-raised-button *ngIf="bigForm.value.hasOwnProperty('guarantors')" color="primary" (click)="openGuarantors()">
+                        <button (click)='openGuarantors()' *ngIf="bigForm.value.hasOwnProperty('guarantors')" color='primary'
+                                mat-raised-button>
                             تغییر ضامن
                         </button>
 
-                        <button mat-raised-button color="primary" (click)="openDates()">تاریخ شروع و پایان پذیره نویسی</button>
+                        <button (click)='openDates()' color='primary' mat-raised-button>تاریخ شروع و پایان پذیره نویسی
+                        </button>
                     </div>
                 </form>
             </div>

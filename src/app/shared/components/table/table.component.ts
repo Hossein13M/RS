@@ -1,28 +1,10 @@
-import {
-    AfterViewInit,
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
-    TemplateRef,
-    ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import {
-    Color,
-    Column,
-    DetailColumn,
-    OperationColumn,
-    PaginationChangeType,
-    PaginationSetting,
-    TableSearchMode
-} from './table.model';
+import { Color, Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
 
 enum StateType {
@@ -187,6 +169,121 @@ export class TableComponent implements OnChanges, AfterViewInit {
         this.handleSetLastSearch();
     }
 
+    ngAfterViewInit(): void {
+        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
+            this.dataSource.paginator = this.localPaginator;
+        }
+    }
+
+    public scroll(): void {
+        if (this.paginationSettings.mode !== 'scroll') return;
+        if (this.status === StateType.LOADING) return;
+        const scrollPosition =
+            this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
+        if (scrollPosition < 90) {
+            this.paginationControl({
+                length: 0,
+                pageSize: this.paginationObject.limit,
+                pageIndex: this.paginationObject.skip + this.paginationObject.limit,
+            });
+        }
+    }
+
+    public paginationControl(pageEvent?: PageEvent): void {
+        const _paginationObject: PaginationModel = { skip: 0, limit: 5, total: 100 };
+        _paginationObject.limit = pageEvent.pageSize;
+        _paginationObject.skip = pageEvent.pageIndex;
+        this.paginationEvent.emit(_paginationObject);
+    }
+
+    public isTemplateRef(obj: any): any {
+        return obj instanceof TemplateRef;
+    }
+
+    public doOperation(row: any, operationItem: any): void {
+        if (!operationItem.operation) {
+            return;
+        }
+
+        if (typeof operationItem.operation === 'string') {
+            this.operationEvent.emit({ row, operation: operationItem.operation });
+        }
+
+        if (typeof operationItem.operation === 'function') {
+            operationItem.operation({ row, operationItem });
+        }
+    }
+
+    public doOperationHeader(operationItem: any): void {
+        if (!operationItem.operation) {
+            return;
+        }
+
+        if (typeof operationItem.operation === 'string') {
+            this.operationEvent.emit({ operationHeader: operationItem.operation });
+        }
+
+        if (typeof operationItem.operation === 'function') {
+            operationItem.operation({ operationItem });
+        }
+    }
+
+    public openSearchBar(): void {
+        this.showSearchBar = !this.showSearchBar;
+    }
+
+    public selectRow(index: number): void {
+        if (index < 0 || !this.data || index > this.data.length) {
+            return;
+        }
+        if (!this.data[index]) return;
+        this.data[index].tableSelect = !this.data[index].tableSelect;
+    }
+
+    public onClick(row: any): void {
+        if (!this.rowDetail || !this.rowDetail.click) {
+            return;
+        }
+
+        if (this.clickCoolDown) {
+            this.clickCount++;
+            return;
+        }
+
+        this.clickCoolDown = true;
+        this.clickCount = 1;
+        setTimeout(() => {
+            this.clickCoolDown = false;
+
+            if (this.clickCount === 1) {
+                this.rowDetail.click(row);
+            } else {
+                this.onDoubleClick(row);
+            }
+
+            this.clickCount = 0;
+        }, 200);
+    }
+
+    public checkColorsType(input: Color | ((row: any) => Color), row: any): Color {
+        if (typeof input === 'string') {
+            return input;
+        } else {
+            return input(row);
+        }
+    }
+
+    public setIndexAccordingToPagination(index: number): number | null {
+        if (!this.localPaginator) return null;
+        if (this.paginationSettings.mode === 'local') {
+            return index + 1 + this.localPaginator.pageIndex * this.localPaginator.pageSize;
+        }
+        if (this.paginationSettings.mode === 'backend') {
+            return index + 1 + this.paginationObject.limit * this.paginationObject.skip;
+        }
+        return null;
+    }
+
     private handleSetLastSearch(): void {
         try {
             this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
@@ -284,122 +381,11 @@ export class TableComponent implements OnChanges, AfterViewInit {
         return inputStr.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
     }
 
-    ngAfterViewInit(): void {
-        if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
-            this.dataSource.paginator = this.localPaginator;
-        }
-    }
-
-    public scroll(): void {
-        if (this.paginationSettings.mode !== 'scroll') return;
-        if (this.status === StateType.LOADING) return;
-        const scrollPosition =
-            this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
-        if (scrollPosition < 90) {
-            this.paginationControl({ length: 0, pageSize: this.paginationObject.limit, pageIndex: this.paginationObject.skip + this.paginationObject.limit });
-        }
-    }
-
-    public paginationControl(pageEvent?: PageEvent): void {
-        const _paginationObject: PaginationModel = { skip: 0, limit: 5, total: 100 };
-        _paginationObject.limit = pageEvent.pageSize;
-        _paginationObject.skip = pageEvent.pageIndex;
-        this.paginationEvent.emit(_paginationObject);
-    }
-
-    public isTemplateRef(obj: any): any {
-        return obj instanceof TemplateRef;
-    }
-
-    public doOperation(row: any, operationItem: any): void {
-        if (!operationItem.operation) {
-            return;
-        }
-
-        if (typeof operationItem.operation === 'string') {
-            this.operationEvent.emit({ row, operation: operationItem.operation });
-        }
-
-        if (typeof operationItem.operation === 'function') {
-            operationItem.operation({ row, operationItem });
-        }
-    }
-
-    public doOperationHeader(operationItem: any): void {
-        if (!operationItem.operation) {
-            return;
-        }
-
-        if (typeof operationItem.operation === 'string') {
-            this.operationEvent.emit({ operationHeader: operationItem.operation });
-        }
-
-        if (typeof operationItem.operation === 'function') {
-            operationItem.operation({ operationItem });
-        }
-    }
-
-    public openSearchBar(): void {
-        this.showSearchBar = !this.showSearchBar;
-    }
-
-    public selectRow(index: number): void {
-        if (index < 0 || !this.data || index > this.data.length) {
-            return;
-        }
-        if (!this.data[index]) return;
-        this.data[index].tableSelect = !this.data[index].tableSelect;
-    }
-
-    public onClick(row: any): void {
-        if (!this.rowDetail || !this.rowDetail.click) {
-            return;
-        }
-
-        if (this.clickCoolDown) {
-            this.clickCount++;
-            return;
-        }
-
-        this.clickCoolDown = true;
-        this.clickCount = 1;
-        setTimeout(() => {
-            this.clickCoolDown = false;
-
-            if (this.clickCount === 1) {
-                this.rowDetail.click(row);
-            } else {
-                this.onDoubleClick(row);
-            }
-
-            this.clickCount = 0;
-        }, 200);
-    }
-
     private onDoubleClick(row: any): void {
         if (!this.rowDetail || !this.rowDetail.doubleClick) {
             return;
         }
 
         this.rowDetail.doubleClick(row);
-    }
-
-    public checkColorsType(input: Color | ((row: any) => Color), row: any): Color {
-        if (typeof input === 'string') {
-            return input;
-        } else {
-            return input(row);
-        }
-    }
-
-    public setIndexAccordingToPagination(index: number): number | null {
-        if (!this.localPaginator) return null;
-        if (this.paginationSettings.mode === 'local') {
-            return index + 1 + (this.localPaginator.pageIndex * this.localPaginator.pageSize);
-        }
-        if (this.paginationSettings.mode === 'backend') {
-            return index + 1 + (this.paginationObject.limit * this.paginationObject.skip)
-        }
-        return null;
     }
 }

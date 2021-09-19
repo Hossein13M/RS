@@ -11,9 +11,9 @@ import { AlertService } from '#shared/services/alert.service';
     styleUrls: ['./cardboard.component.scss'],
 })
 export class CardboardComponent implements OnInit {
-    private contractId: string;
     public cardboardInfo: CardboardInfo;
     public stateType: StateType = StateType.INIT;
+    private contractId: string;
 
     constructor(
         private readonly router: Router,

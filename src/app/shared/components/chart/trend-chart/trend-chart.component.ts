@@ -86,6 +86,12 @@ export class TrendChartComponent implements OnInit, OnDestroy {
         }
     }
 
+    ngOnDestroy(): void {
+        if (this.trendChart) {
+            this.trendChart.dispose();
+        }
+    }
+
     private deleteInvalidDates(data: Array<any>, dateName: string): Array<any> {
         data = data.filter((el) => el[dateName] !== 'Invalid Date');
         return data;
@@ -94,11 +100,5 @@ export class TrendChartComponent implements OnInit, OnDestroy {
     private convertValueType(data: Array<any>, valueName: string, valueType: string): Array<any> {
         data.forEach((el) => (el[valueName] = PricePipe.convertPrice(el[valueName])));
         return data;
-    }
-
-    ngOnDestroy(): void {
-        if (this.trendChart) {
-            this.trendChart.dispose();
-        }
     }
 }

@@ -142,6 +142,15 @@ import { TradeRegistrationService } from './services/trade-registration.service'
     ],
 })
 export class ApiModule {
+    constructor(@Optional() @SkipSelf() parentModule: ApiModule, @Optional() http: HttpClient) {
+        if (parentModule) {
+            throw new Error('ApiModule is already loaded. Import in your base AppModule only.');
+        }
+        if (!http) {
+            throw new Error('You need to import the HttpClientModule in your AppModule! \n' + 'See also https://github.com/angular/angular/issues/20575');
+        }
+    }
+
     static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ApiModule> {
         return {
             ngModule: ApiModule,
@@ -152,14 +161,5 @@ export class ApiModule {
                 },
             ],
         };
-    }
-
-    constructor(@Optional() @SkipSelf() parentModule: ApiModule, @Optional() http: HttpClient) {
-        if (parentModule) {
-            throw new Error('ApiModule is already loaded. Import in your base AppModule only.');
-        }
-        if (!http) {
-            throw new Error('You need to import the HttpClientModule in your AppModule! \n' + 'See also https://github.com/angular/angular/issues/20575');
-        }
     }
 }

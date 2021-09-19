@@ -1,12 +1,13 @@
-<div class="page-layout">
-    <app-header pageTitle="نمایش فرم نهایی" class="wp-100">
-        <button mat-stroked-button color="accent" (click)="navigateToCardboardPage()">
-            <mat-icon class="mat-18">keyboard_return</mat-icon>
+<div class='page-layout'>
+    <app-header class='wp-100' pageTitle='نمایش فرم نهایی'>
+        <button (click)='navigateToCardboardPage()' color='accent' mat-stroked-button>
+            <mat-icon class='mat-18'>keyboard_return</mat-icon>
             بازگشت به کارتابل قراردادها
         </button>
     </app-header>
 
-    <div class="fuse-card" *ngIf="!isLoading">
-        <lib-ag-form-viewer dir="ltr" [formInfo]="formData" [dateLocale]="'fa-IR'" (emittedFormViewerInfo)="handleFormViewerInfo($event)"></lib-ag-form-viewer>
+    <div *ngIf='!isLoading' class='fuse-card'>
+        <lib-ag-form-viewer (emittedFormViewerInfo)='handleFormViewerInfo($event)' [dateLocale]="'fa-IR'" [formInfo]='formData'
+                            dir='ltr'></lib-ag-form-viewer>
     </div>
 </div>

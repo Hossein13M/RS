@@ -1,36 +1,37 @@
-<div class="page-layout">
-    <app-header pageTitle="قراردادها" class="wp-100">
-        <button mat-stroked-button (click)="openContractDialog('create')">
-            <mat-icon class="mat-18">add</mat-icon>
+<div class='page-layout'>
+    <app-header class='wp-100' pageTitle='قراردادها'>
+        <button (click)="openContractDialog('create')" mat-stroked-button>
+            <mat-icon class='mat-18'>add</mat-icon>
             افزودن قرارداد
         </button>
     </app-header>
 
-    <div class="fuse-card m-40 p-40">
-        <h1 class="wp-100 text-center mb-20">فهرست قراردادها</h1>
+    <div class='fuse-card m-40 p-40'>
+        <h1 class='wp-100 text-center mb-20'>فهرست قراردادها</h1>
 
-        <form [formGroup]="form" class="flex justify-around items-center" dir="rtl">
-            <mat-form-field (change)="checkIsActiveFormControl()" appearance="outline">
+        <form [formGroup]='form' class='flex justify-around items-center' dir='rtl'>
+            <mat-form-field (change)='checkIsActiveFormControl()' appearance='outline'>
                 <mat-label>نام قرارداد</mat-label>
-                <mat-icon matSuffix class="secondary-text">keyboard</mat-icon>
-                <input name="name" formControlName="name" matInput />
+                <mat-icon class='secondary-text' matSuffix>keyboard</mat-icon>
+                <input formControlName='name' matInput name='name' />
             </mat-form-field>
 
-            <mat-button-toggle-group (change)="checkIsActiveFormControl($event)" formControlName="isActive" class="flex justify-center items-center h-1/4">
-                <mat-button-toggle [disabled]="true" appearance="legacy">وضعیت قرارداد</mat-button-toggle>
-                <mat-button-toggle value="all" appearance="standard">همه</mat-button-toggle>
-                <mat-button-toggle [value]="true">تنها فعال‌ها</mat-button-toggle>
-                <mat-button-toggle [value]="false">تنها‌ غیرفعال‌ها</mat-button-toggle>
+            <mat-button-toggle-group (change)='checkIsActiveFormControl($event)' class='flex justify-center items-center h-1/4'
+                                     formControlName='isActive'>
+                <mat-button-toggle [disabled]='true' appearance='legacy'>وضعیت قرارداد</mat-button-toggle>
+                <mat-button-toggle appearance='standard' value='all'>همه</mat-button-toggle>
+                <mat-button-toggle [value]='true'>تنها فعال‌ها</mat-button-toggle>
+                <mat-button-toggle [value]='false'>تنها‌ غیرفعال‌ها</mat-button-toggle>
             </mat-button-toggle-group>
         </form>
 
-        <div class="container fuse-card mt-10">
+        <div class='container fuse-card mt-10'>
             <app-table
-                [data]="contracts"
-                [columns]="tableColumn"
+                (paginationEvent)='paginationControl($event)'
+                [columns]='tableColumn'
+                [data]='contracts'
+                [paginationObject]='pagination'
                 [paginationSettings]="{ mode: 'backend' }"
-                [paginationObject]="pagination"
-                (paginationEvent)="paginationControl($event)"
             ></app-table>
         </div>
     </div>

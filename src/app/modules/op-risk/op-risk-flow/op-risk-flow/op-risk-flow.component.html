@@ -1,26 +1,27 @@
-<div class="page-layout">
-    <app-header pageTitle="جریان‌ها">
-        <button mat-raised-button color="primary" (click)="createFlow()">
+<div class='page-layout'>
+    <app-header pageTitle='جریان‌ها'>
+        <button (click)='createFlow()' color='primary' mat-raised-button>
             <mat-icon>add</mat-icon>
             افزودن
         </button>
     </app-header>
 
-    <div class="page-content">
-        <div class="fuse-card data-show">
+    <div class='page-content'>
+        <div class='fuse-card data-show'>
             <app-table
-                [data]="data"
-                [columns]="columns"
-                [paginationSettings]="{ mode: 'backend' }"
-                [paginationObject]='pagination'
                 (paginationEvent)='paginationControl($event)'
+                [columns]='columns'
+                [data]='data'
+                [paginationObject]='pagination'
+                [paginationSettings]="{ mode: 'backend' }"
             >
             </app-table>
         </div>
     </div>
 
-    <ng-template let-row="row" #toggle>
-        <button [disabled]="row.isActiveState && row.isActiveState !== stateType.PRESENT" mat-button (click)="toggleStatus(row)">
+    <ng-template #toggle let-row='row'>
+        <button (click)='toggleStatus(row)' [disabled]='row.isActiveState && row.isActiveState !== stateType.PRESENT'
+                mat-button>
             <mat-icon [color]="row.isActive ? 'accent' : 'warn'" [matTooltip]="row.isActive ? 'فعال' : 'غیرفعال'">
                 {{ row.isActive ? 'toggle_on' : 'toggle_off' }}
             </mat-icon>

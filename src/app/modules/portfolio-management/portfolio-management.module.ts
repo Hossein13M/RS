@@ -43,16 +43,46 @@ export class PortfolioManagementModule {
                 icon: 'shopping_basket',
                 type: 'collapsable',
                 children: [
-                    { id: 'trade-book-dashboard', title: 'پیشخوان', icon: 'view_agenda', type: 'item', url: `/${PMRoutePrefix}/dashboard` },
-                    { id: 'trade-book', title: 'دفتر معاملاتی', icon: 'book', type: 'item', url: `/${PMRoutePrefix}/book` },
-                    { id: 'complianceCalc', title: 'جستجوی معاملات', icon: 'find_in_page', type: 'item', url: `/${PMRoutePrefix}/search` },
-                    { icon: 'library_add', id: 'trade-add', title: 'افزودن دستی معاملات', type: 'item', url: `/${PMRoutePrefix}/trade-add` },
+                    {
+                        id: 'trade-book-dashboard',
+                        title: 'پیشخوان',
+                        icon: 'view_agenda',
+                        type: 'item',
+                        url: `/${PMRoutePrefix}/dashboard`,
+                    },
+                    {
+                        id: 'trade-book',
+                        title: 'دفتر معاملاتی',
+                        icon: 'book',
+                        type: 'item',
+                        url: `/${PMRoutePrefix}/book`,
+                    },
+                    {
+                        id: 'complianceCalc',
+                        title: 'جستجوی معاملات',
+                        icon: 'find_in_page',
+                        type: 'item',
+                        url: `/${PMRoutePrefix}/search`,
+                    },
+                    {
+                        icon: 'library_add',
+                        id: 'trade-add',
+                        title: 'افزودن دستی معاملات',
+                        type: 'item',
+                        url: `/${PMRoutePrefix}/trade-add`,
+                    },
                 ],
             };
             if (this.fuseNavigationService.getNavigationItem('marketRisk')) {
                 this.fuseNavigationService.addNavigationItem(customFunctionNavItem, 'marketRisk');
             } else {
-                const marketRisk = { id: 'marketRisk', title: 'ریسک بازار', icon: 'bar_chart', type: 'collapsable', children: [customFunctionNavItem] };
+                const marketRisk = {
+                    id: 'marketRisk',
+                    title: 'ریسک بازار',
+                    icon: 'bar_chart',
+                    type: 'collapsable',
+                    children: [customFunctionNavItem],
+                };
                 this.fuseNavigationService.addNavigationItem(marketRisk, 'end');
             }
         });

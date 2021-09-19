@@ -41,8 +41,20 @@ export class AumDepositComponent {
                         data: {
                             title: `${row.accountNumber} - ${row.bankName}`,
                             columns: [
-                                { name: 'حجم', id: 'volume', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-                                { name: 'ارزش', id: 'value', type: 'price', headerAlign: 'center', dataAlign: 'center' },
+                                {
+                                    name: 'حجم',
+                                    id: 'volume',
+                                    type: 'number',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
+                                {
+                                    name: 'ارزش',
+                                    id: 'value',
+                                    type: 'price',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
                                 { name: 'نام', id: 'name', type: 'string', headerAlign: 'center', dataAlign: 'center' },
                             ],
                             data: row.details,

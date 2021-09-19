@@ -19,9 +19,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     hiddenNavbar: boolean;
     public navigation: Array<FuseNavigation> = [];
     userStatusOptions: any[];
-
-    private _unsubscribeAll: Subject<any>;
     user;
+    private _unsubscribeAll: Subject<any>;
 
     constructor(
         private _fuseConfigService: FuseConfigService,

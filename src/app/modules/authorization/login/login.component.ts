@@ -14,7 +14,10 @@ import { AuthorizationService } from '../authorization.service';
     animations: fuseAnimations,
 })
 export class LoginComponent {
-    public loginForm: FormGroup = this.fb.group({ username: [null, [Validators.required]], password: [null, Validators.required] });
+    public loginForm: FormGroup = this.fb.group({
+        username: [null, [Validators.required]],
+        password: [null, Validators.required],
+    });
     public loading: boolean = false;
 
     constructor(
@@ -26,12 +29,6 @@ export class LoginComponent {
         private activatedRoute: ActivatedRoute
     ) {
         this.configureFuseService();
-    }
-
-    private configureFuseService(): void {
-        this.fuseConfigService.config = {
-            layout: { navbar: { hidden: true }, toolbar: { hidden: true }, footer: { hidden: true }, sidepanel: { hidden: true } },
-        };
     }
 
     public login(): void {
@@ -50,6 +47,17 @@ export class LoginComponent {
                 this.alertService.onError('ورود موفقیت آمیز نبود.');
             }
         );
+    }
+
+    private configureFuseService(): void {
+        this.fuseConfigService.config = {
+            layout: {
+                navbar: { hidden: true },
+                toolbar: { hidden: true },
+                footer: { hidden: true },
+                sidepanel: { hidden: true },
+            },
+        };
     }
 
     private redirectToChangePassword(): void {

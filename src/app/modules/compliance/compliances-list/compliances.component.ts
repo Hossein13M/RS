@@ -125,7 +125,7 @@ export class CompliancesComponent implements OnInit {
     update(row): void {
         this._matDialog
             .open(ComplianceAddComponent, {
-                    panelClass: 'dialog-w60',
+                panelClass: 'dialog-w60',
                 data: row,
             })
             .afterClosed()

@@ -45,10 +45,30 @@ export class MarketSettingListComponent implements OnInit {
                 },
                 convert: (value: any) => (value === 'T' ? 'تمدن' : value === 'M' ? 'بازارگردانی' : value === 'F' ? 'صندوق' : ''),
             },
-            { name: 'نماد/عنوان صندوق', id: 'symbolORFundTitle', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'کارگزاری', id: 'brokerName', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'کد بورسی', id: 'bourseCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
-            { name: 'شناسه ملی', id: 'nationalId', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
+            {
+                name: 'نماد/عنوان صندوق',
+                id: 'symbolORFundTitle',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'کارگزاری',
+                id: 'brokerName',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'کد بورسی',
+                id: 'bourseCode',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
+            {
+                name: 'شناسه ملی',
+                id: 'nationalId',
+                type: 'string',
+                search: { type: 'text', mode: TableSearchMode.SERVER },
+            },
             { name: 'کد پم', id: 'pamCode', type: 'string', search: { type: 'text', mode: TableSearchMode.SERVER } },
             {
                 name: 'دریافت داده',
@@ -128,7 +148,10 @@ export class MarketSettingListComponent implements OnInit {
 
     delete(element): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) this.marketSettingService.deleteMarket(element.ticker).subscribe(() => this.get());

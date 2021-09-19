@@ -15,7 +15,6 @@ import { AlertService } from '#shared/services/alert.service';
     styleUrls: ['./contract-type-dialog.component.scss'],
 })
 export class ContractTypeDialogComponent implements OnInit {
-    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public rolesOnUnit: Array<Array<{ childId: number; id: number; name: string }>> = [];
     public title: string;
     public isEditMode: boolean = false;
@@ -25,7 +24,7 @@ export class ContractTypeDialogComponent implements OnInit {
     public units: Units;
     public contractTypeForms: Array<ContractForm> = [];
     public selectedRolesInUnits: Array<{ unit: number; roles: Array<number> }> = [{ unit: null, roles: [null] }];
-    private unitFormArrayItems: FormArray;
+    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public form: FormGroup = this.fb.group({
         name: [null, Validators.required],
         keyword: [null, [Validators.required, Validators.pattern(/^[a-zA-Z]*$/)]],
@@ -35,6 +34,7 @@ export class ContractTypeDialogComponent implements OnInit {
         roles: [null, Validators.required],
         units: this.fb.array([]),
     });
+    private unitFormArrayItems: FormArray;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: ContractType,
@@ -45,10 +45,81 @@ export class ContractTypeDialogComponent implements OnInit {
         public dialog: MatDialogRef<ContractTypeDialogComponent>
     ) {}
 
+    static removeEmptyStatesFromForm(form: Form): Form {
+        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.users)) delete form.users;
+        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.roles)) delete form.roles;
+        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.units)) delete form.units;
+        return form;
+    }
+
     ngOnInit(): void {
         this.checkForEditMode();
         this.getComponentDataFromServer();
     }
+
+    public submitForm(): void {
+        const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
+
+        if (this.form.value.units) {
+            data.units.map((item) => {
+                if (Array.isArray(item.unit)) item.unit = item.unit[0];
+            });
+        }
+
+        if (this.isEditMode) {
+            const editData = { ...data, id: this.data._id };
+            this.contractService.editContractType(editData).subscribe(
+                () => this.dialog.close(true),
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+            );
+
+            return;
+        }
+
+        this.contractService.createContractType(data).subscribe(
+            () => this.dialog.close(true),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
+    }
+
+    public rolesBasedOnUnits(): FormArray {
+        return this.form.get('units') as FormArray;
+    }
+
+    public addNewRolesBasedOnUnits(data?: { unit: Array<number>; roles: Array<number> }): FormGroup {
+        return data
+            ? this.fb.group({ unit: [data.unit], roles: [data.roles] })
+            : this.fb.group({
+                  unit: null,
+                  roles: null,
+              });
+    }
+
+    public addUnitRolesToFormArray(data?: { unit: number; roles: Array<number> }, index?: number): void {
+        if (data) {
+            this.unitFormArrayItems = this.form.get('units') as FormArray;
+            this.unitFormArrayItems.push(this.addNewRolesBasedOnUnits({ unit: [data.unit], roles: data.roles }));
+            this.getRolesOnSpecificUnits(data.unit, index);
+        } else {
+            this.unitFormArrayItems = this.form.get('units') as FormArray;
+            this.unitFormArrayItems.push(this.addNewRolesBasedOnUnits());
+        }
+    }
+
+    public removeItemFromUnitFormArray(index: number) {
+        this.rolesBasedOnUnits().removeAt(index);
+    }
+
+    public detectChanges(event: any, index) {
+        event.value._checked ? this.getRolesOnSpecificUnits(event.value.value, index) : (this.rolesOnUnit[index] = []);
+    }
+
+    public searchUser = (searchKey, data): void => {
+        setTimeout(() => {
+            data.list = this.users.filter((el) => el.fullname.includes(searchKey));
+            data.state = searchSelectStateType.PRESENT;
+        }, 500);
+    };
 
     private getComponentDataFromServer(): void {
         this.getOrganizationUsers();
@@ -120,57 +191,6 @@ export class ContractTypeDialogComponent implements OnInit {
         );
     }
 
-    public submitForm(): void {
-        const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
-
-        if (this.form.value.units) {
-            data.units.map((item) => {
-                if (Array.isArray(item.unit)) item.unit = item.unit[0];
-            });
-        }
-
-        if (this.isEditMode) {
-            const editData = { ...data, id: this.data._id };
-            this.contractService.editContractType(editData).subscribe(
-                () => this.dialog.close(true),
-                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-            );
-
-            return;
-        }
-
-        this.contractService.createContractType(data).subscribe(
-            () => this.dialog.close(true),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
-    static removeEmptyStatesFromForm(form: Form): Form {
-        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.users)) delete form.users;
-        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.roles)) delete form.roles;
-        if (!UtilityFunctions.checkValueForNotBeingAnEmptyArray(form.units)) delete form.units;
-        return form;
-    }
-
-    public rolesBasedOnUnits(): FormArray {
-        return this.form.get('units') as FormArray;
-    }
-
-    public addNewRolesBasedOnUnits(data?: { unit: Array<number>; roles: Array<number> }): FormGroup {
-        return data ? this.fb.group({ unit: [data.unit], roles: [data.roles] }) : this.fb.group({ unit: null, roles: null });
-    }
-
-    public addUnitRolesToFormArray(data?: { unit: number; roles: Array<number> }, index?: number): void {
-        if (data) {
-            this.unitFormArrayItems = this.form.get('units') as FormArray;
-            this.unitFormArrayItems.push(this.addNewRolesBasedOnUnits({ unit: [data.unit], roles: data.roles }));
-            this.getRolesOnSpecificUnits(data.unit, index);
-        } else {
-            this.unitFormArrayItems = this.form.get('units') as FormArray;
-            this.unitFormArrayItems.push(this.addNewRolesBasedOnUnits());
-        }
-    }
-
     private getRolesOnSpecificUnits(unitId: number, index: number): void {
         this.units.children.map((item) => {
             if (item.id === unitId) {
@@ -178,19 +198,4 @@ export class ContractTypeDialogComponent implements OnInit {
             }
         });
     }
-
-    public removeItemFromUnitFormArray(index: number) {
-        this.rolesBasedOnUnits().removeAt(index);
-    }
-
-    public detectChanges(event: any, index) {
-        event.value._checked ? this.getRolesOnSpecificUnits(event.value.value, index) : (this.rolesOnUnit[index] = []);
-    }
-
-    public searchUser = (searchKey, data): void => {
-        setTimeout(() => {
-            data.list = this.users.filter((el) => el.fullname.includes(searchKey));
-            data.state = searchSelectStateType.PRESENT;
-        }, 500);
-    };
 }

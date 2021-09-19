@@ -1,23 +1,23 @@
-<div class="page-layout">
-    <app-header pageTitle="صفحه‌ی ۱ تست">
+<div class='page-layout'>
+    <app-header pageTitle='صفحه‌ی ۱ تست'>
         <div subtitle>در این صفحه ویژگی‌های جدید تست می‌شود.</div>
         <div>
-            <button mat-raised-button color="primary" routerLink="/test/list">بازگشت</button>
+            <button color='primary' mat-raised-button routerLink='/test/list'>بازگشت</button>
         </div>
     </app-header>
 
-    <app-table *ngIf="show"
-               [data]="data"
-               [columns]="columns"
-               [paginationSettings]="{mode:'local'}"
+    <app-table (operationEvent)='operation($event)'
                (searchEvent)='search($event)'
-               (operationEvent)='operation($event)'>
+               *ngIf='show'
+               [columns]='columns'
+               [data]='data'
+               [paginationSettings]="{mode:'local'}">
     </app-table>
 
-    <ng-template let-row="row" let-index="index" let-col="col" #mamad>
-        <button mat-button (click)="toggleRowStatus(row)">
-            <mat-icon *ngIf="row.isInBourse">delete</mat-icon>
-            <mat-icon *ngIf="!row.isInBourse">add</mat-icon>
+    <ng-template #mamad let-col='col' let-index='index' let-row='row'>
+        <button (click)='toggleRowStatus(row)' mat-button>
+            <mat-icon *ngIf='row.isInBourse'>delete</mat-icon>
+            <mat-icon *ngIf='!row.isInBourse'>add</mat-icon>
         </button>
     </ng-template>
 </div>

@@ -35,7 +35,7 @@ const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractListCo
         CardboardHistoryModule,
         CardboardNoteModule,
         MatChipsModule,
-        HeaderModule
+        HeaderModule,
     ],
     providers: [ContractService, ContractViewerService],
     entryComponents: [ContractDialogComponent],

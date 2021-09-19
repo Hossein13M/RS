@@ -71,8 +71,18 @@ export class CollaterallsComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editCollateral(row) },
-                    { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.deleteCollate(row) },
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editCollateral(row),
+                    },
+                    {
+                        name: 'حذف',
+                        icon: 'delete',
+                        color: 'warn',
+                        operation: ({ row }: any) => this.deleteCollate(row),
+                    },
                 ],
             },
         ];

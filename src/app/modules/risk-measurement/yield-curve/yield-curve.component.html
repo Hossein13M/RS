@@ -1,47 +1,48 @@
-<div class="page-layout" dir="rtl">
-    <app-header pageTitle="منحنی بازده">
-        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center">
-            <form [formGroup]="form" dir="rtl">
-                <mat-form-field appearance="outline">
+<div class='page-layout' dir='rtl'>
+    <app-header pageTitle='منحنی بازده'>
+        <div dir='rtl' fxLayout='row wrap' fxLayoutAlign='center center'>
+            <form [formGroup]='form' dir='rtl'>
+                <mat-form-field appearance='outline'>
                     <mat-label>تاریخ</mat-label>
-                    <input matInput class="full-wid" (click)="date.open()" formControlName="date" [matDatepicker]="date" [max]="today" />
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <input (click)='date.open()' [matDatepicker]='date' [max]='today' class='full-wid' formControlName='date'
+                           matInput />
+                    <mat-datepicker-toggle [for]='date' matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #date></mat-datepicker>
-                    <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                    <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                 </mat-form-field>
             </form>
         </div>
     </app-header>
 
-    <div fxLayout="column" dir="rtl">
-        <ng-container *ngIf="show">
+    <div dir='rtl' fxLayout='column'>
+        <ng-container *ngIf='show'>
             <div
-                fxLayout="row"
-                fxLayoutAlign="space-between"
-                fxLayoutGap="20px"
-                fxFlex="100"
-                style="width: calc(100% - 20px); padding: 0 10px; margin-top: 20px"
+                fxFlex='100'
+                fxLayout='row'
+                fxLayoutAlign='space-between'
+                fxLayoutGap='20px'
+                style='width: calc(100% - 20px); padding: 0 10px; margin-top: 20px'
             >
-                <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none">
+                <div fxFlex='50' fxLayout='column' fxLayoutAlign='space-evenly none'>
                     <app-line-chart-js
-                        [data]="yieldCurveData"
-                        height="100"
-                        dataKey="value"
-                        labelKey="yearToMaturity"
-                        chartName="منحنی بازده"
+                        [data]='yieldCurveData'
+                        chartName='منحنی بازده'
+                        dataKey='value'
+                        height='100'
+                        labelKey='yearToMaturity'
                     ></app-line-chart-js>
                 </div>
 
-                <div fxLayout="column" fxFlex="50" fxLayoutAlign="space-evenly none">
+                <div fxFlex='50' fxLayout='column' fxLayoutAlign='space-evenly none'>
                     <app-line-chart-js
-                        *ngIf="gapData"
-                        [data]="gapData"
-                        height="100"
-                        dataKey="value"
-                        labelKey="yearToMaturity"
-                        chartName="شکاف اعتباری شرکتی"
+                        *ngIf='gapData'
+                        [data]='gapData'
+                        chartName='شکاف اعتباری شرکتی'
+                        dataKey='value'
+                        height='100'
+                        labelKey='yearToMaturity'
                     ></app-line-chart-js>
-                    <div *ngIf="!gapData" class="fuse-card">
+                    <div *ngIf='!gapData' class='fuse-card'>
                         <label> شکاف اعتباری شرکتی </label>
                         <mat-divider></mat-divider>
                         <p>داده ای موجود نیست</p>
@@ -49,13 +50,15 @@
                 </div>
             </div>
 
-            <div class="fuse-card" dir="rtl" style="margin: 20px; height: calc(100vh - 570px); overflow: auto">
-                <app-table style="width: 100%" [data]="showingData" [columns]="columns" [paginationSettings]="{ mode: 'local' }"> </app-table>
+            <div class='fuse-card' dir='rtl' style='margin: 20px; height: calc(100vh - 570px); overflow: auto'>
+                <app-table [columns]='columns' [data]='showingData' [paginationSettings]="{ mode: 'local' }"
+                           style='width: 100%'></app-table>
 
-                <ng-container *ngIf="showingData && showingData.length === 0">
-                    <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
-                        <img width="140px" height="140px" src="../../../../assets/images/no-data.svg" />
-                        <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
+                <ng-container *ngIf='showingData && showingData.length === 0'>
+                    <div
+                        style='display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column'>
+                        <img height='140px' src='../../../../assets/images/no-data.svg' width='140px' />
+                        <div style='font-size: 13px; color: #449fdb; margin-top: 7px'>موردی وجود ندارد</div>
                     </div>
                 </ng-container>
             </div>

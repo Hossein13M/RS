@@ -12,11 +12,7 @@ import { LocalStorageService } from 'app/services/Base/local-storage.service';
 export class NavProcessDetailDialogComponent implements OnInit {
     isWorking: any;
 
-    constructor(
-        @Inject(MAT_DIALOG_DATA) public data,
-        private navService: NavService,
-        public dialogRef: MatDialogRef<NavProcessDetailDialogComponent>
-    ) {}
+    constructor(@Inject(MAT_DIALOG_DATA) public data, private navService: NavService, public dialogRef: MatDialogRef<NavProcessDetailDialogComponent>) {}
 
     processRunTime(): void {
         this.navService.processNAVRuntime(this.data.fundId, this.data.plannedRate, null).subscribe(() => {});

@@ -71,7 +71,11 @@ export class PieChartComponent implements OnInit, AfterViewInit, OnDestroy, OnCh
 
         this.drillLevels = [];
         this.chart = am4core.create(this.id, am4charts.PieChart);
-        this.chart.numberFormatter.numberFormat = { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 };
+        this.chart.numberFormatter.numberFormat = {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        };
         this.chart.rtl = true;
         this.chart.data = data;
         this.pieSeries = this.chart.series.push(new am4charts.PieSeries());

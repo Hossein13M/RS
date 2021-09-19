@@ -15,14 +15,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class InstrumentGlMappingService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation instrumentGlMappingControllerGetInstrumentGlMapping
      */
     static readonly InstrumentGlMappingControllerGetInstrumentGlMappingPath = '/api/v1/inst-gl-mapping/{instrumentGLMappingId}';
+    /**
+     * Path part for operation instrumentGlMappingControllerDeleteInstrumentGlMapping
+     */
+    static readonly InstrumentGlMappingControllerDeleteInstrumentGlMappingPath = '/api/v1/inst-gl-mapping/{instrumentGLMappingId}';
+    /**
+     * Path part for operation instrumentGlMappingControllerGetInstrumentsGlMapping
+     */
+    static readonly InstrumentGlMappingControllerGetInstrumentsGlMappingPath = '/api/v1/inst-gl-mapping';
+    /**
+     * Path part for operation instrumentGlMappingControllerUpdateInstrumentGlMapping
+     */
+    static readonly InstrumentGlMappingControllerUpdateInstrumentGlMappingPath = '/api/v1/inst-gl-mapping';
+    /**
+     * Path part for operation instrumentGlMappingControllerCreateInstrumentGlMapping
+     */
+    static readonly InstrumentGlMappingControllerCreateInstrumentGlMappingPath = '/api/v1/inst-gl-mapping';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -30,9 +46,7 @@ export class InstrumentGlMappingService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    instrumentGlMappingControllerGetInstrumentGlMapping$Response(params: {
-        instrumentGLMappingId: number;
-    }): Observable<StrictHttpResponse<InstGlMappingDto>> {
+    instrumentGlMappingControllerGetInstrumentGlMapping$Response(params: { instrumentGLMappingId: number }): Observable<StrictHttpResponse<InstGlMappingDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentGlMappingService.InstrumentGlMappingControllerGetInstrumentGlMappingPath, 'get');
         if (params) {
             rb.path('instrumentGLMappingId', params.instrumentGLMappingId, {});
@@ -63,11 +77,6 @@ export class InstrumentGlMappingService extends BaseService {
             map((r: StrictHttpResponse<InstGlMappingDto>) => r.body as InstGlMappingDto)
         );
     }
-
-    /**
-     * Path part for operation instrumentGlMappingControllerDeleteInstrumentGlMapping
-     */
-    static readonly InstrumentGlMappingControllerDeleteInstrumentGlMappingPath = '/api/v1/inst-gl-mapping/{instrumentGLMappingId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -102,15 +111,8 @@ export class InstrumentGlMappingService extends BaseService {
      * This method doesn't expect any request body.
      */
     instrumentGlMappingControllerDeleteInstrumentGlMapping(params: { instrumentGLMappingId: number }): Observable<void> {
-        return this.instrumentGlMappingControllerDeleteInstrumentGlMapping$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.instrumentGlMappingControllerDeleteInstrumentGlMapping$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation instrumentGlMappingControllerGetInstrumentsGlMapping
-     */
-    static readonly InstrumentGlMappingControllerGetInstrumentsGlMappingPath = '/api/v1/inst-gl-mapping';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -169,19 +171,12 @@ export class InstrumentGlMappingService extends BaseService {
     }
 
     /**
-     * Path part for operation instrumentGlMappingControllerUpdateInstrumentGlMapping
-     */
-    static readonly InstrumentGlMappingControllerUpdateInstrumentGlMappingPath = '/api/v1/inst-gl-mapping';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `instrumentGlMappingControllerUpdateInstrumentGlMapping()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    instrumentGlMappingControllerUpdateInstrumentGlMapping$Response(params: {
-        body: InstGlMappingDto;
-    }): Observable<StrictHttpResponse<InstGlMappingDto>> {
+    instrumentGlMappingControllerUpdateInstrumentGlMapping$Response(params: { body: InstGlMappingDto }): Observable<StrictHttpResponse<InstGlMappingDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentGlMappingService.InstrumentGlMappingControllerUpdateInstrumentGlMappingPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -212,11 +207,6 @@ export class InstrumentGlMappingService extends BaseService {
             map((r: StrictHttpResponse<InstGlMappingDto>) => r.body as InstGlMappingDto)
         );
     }
-
-    /**
-     * Path part for operation instrumentGlMappingControllerCreateInstrumentGlMapping
-     */
-    static readonly InstrumentGlMappingControllerCreateInstrumentGlMappingPath = '/api/v1/inst-gl-mapping';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

@@ -44,8 +44,20 @@ export class OpRiskModule {
                 icon: 'beach_access',
                 type: 'collapsable',
                 children: [
-                    { id: 'opRiskTreeChart', title: 'درختواره', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/tree-chart` },
-                    { id: 'opRiskFlow', title: 'جریان', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/flow` },
+                    {
+                        id: 'opRiskTreeChart',
+                        title: 'درختواره',
+                        icon: 'clear_all',
+                        type: 'item',
+                        url: `/${ORRoutePrefix}/tree-chart`,
+                    },
+                    {
+                        id: 'opRiskFlow',
+                        title: 'جریان',
+                        icon: 'clear_all',
+                        type: 'item',
+                        url: `/${ORRoutePrefix}/flow`,
+                    },
                     {
                         id: 'OpRiskManagement',
                         title: 'مدیریت ریسک',
@@ -54,7 +66,13 @@ export class OpRiskModule {
                         type: 'item',
                         url: `/${ORRoutePrefix}/management`,
                     },
-                    { id: 'OpRiskReporting', title: 'گزارش‌های ریسک عملیاتی', icon: 'clear_all', type: 'item', url: `/${ORRoutePrefix}/reporting` },
+                    {
+                        id: 'OpRiskReporting',
+                        title: 'گزارش‌های ریسک عملیاتی',
+                        icon: 'clear_all',
+                        type: 'item',
+                        url: `/${ORRoutePrefix}/reporting`,
+                    },
                     {
                         id: 'OpRiskReporting',
                         title: 'ریسک و زیان‌های ثبت شده',

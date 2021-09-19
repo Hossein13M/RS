@@ -9,6 +9,7 @@ import { ThemePalette } from '@angular/material/core';
 })
 export class CardboardNoteDialogComponent {
     public note: string;
+
     constructor(
         private dialog: MatDialogRef<CardboardNoteDialogComponent>,
         @Inject(MAT_DIALOG_DATA)

@@ -1,19 +1,19 @@
-<div class="page-layout">
-    <app-header pageTitle="جدول خلاصه دفتر">
-        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
-            <mat-form-field appearance="outline">
-                <mat-label> تاریخ </mat-label>
-                <input (click)="start3.open()" [formControl]="form" [matDatepicker]="start3" [max]="today" matInput />
-                <mat-datepicker-toggle matSuffix [for]="start3"></mat-datepicker-toggle>
+<div class='page-layout'>
+    <app-header pageTitle='جدول خلاصه دفتر'>
+        <div dir='rtl' fxLayout='row wrap' fxLayoutAlign='center center' fxLayoutGap='20px'>
+            <mat-form-field appearance='outline'>
+                <mat-label> تاریخ</mat-label>
+                <input (click)='start3.open()' [formControl]='form' [matDatepicker]='start3' [max]='today' matInput />
+                <mat-datepicker-toggle [for]='start3' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #start3></mat-datepicker>
-                <mat-error> وارد کردن این فیلد الزامی است. </mat-error>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
             </mat-form-field>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div class="fuse-card" dir="rtl">
-            <app-table [data]="data" [columns]="columns"> </app-table>
+    <div class='page-content'>
+        <div class='fuse-card' dir='rtl'>
+            <app-table [columns]='columns' [data]='data'></app-table>
         </div>
     </div>
 </div>

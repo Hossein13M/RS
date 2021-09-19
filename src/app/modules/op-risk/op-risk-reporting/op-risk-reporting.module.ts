@@ -23,7 +23,7 @@ import { HeaderModule } from '../../../layout/components/header/header.module';
         ShareModule,
         ChartsModule,
         ChartModule,
-        HeaderModule
-    ]
+        HeaderModule,
+    ],
 })
 export class OpRiskReportingModule {}

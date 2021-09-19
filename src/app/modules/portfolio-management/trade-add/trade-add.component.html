@@ -1,93 +1,102 @@
-<div class="page-layout">
-    <app-header pageTitle="افزودن دستی معاملات"> </app-header>
+<div class='page-layout'>
+    <app-header pageTitle='افزودن دستی معاملات'></app-header>
 
-    <div class="fuse-card pb-40" fxLayout="row wrap" fxLayoutAlign="space-evenly center" dir="rtl">
-        <form [formGroup]="form" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" dir="rtl">
-            <mat-form-field appearance="outline" fxFlex="25">
-                <mat-label> میز / سبد </mat-label>
-                <mat-select formControlName="organizationType" [disabled]="!organizations">
-                    <mat-option *ngFor="let organization of organizations" [value]="organization.organizationType">
+    <div class='fuse-card pb-40' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-evenly center'>
+        <form [formGroup]='form' dir='rtl' fxFlex='100' fxLayout='row wrap' fxLayoutAlign='start center'>
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> میز / سبد</mat-label>
+                <mat-select [disabled]='!organizations' formControlName='organizationType'>
+                    <mat-option *ngFor='let organization of organizations' [value]='organization.organizationType'>
                         {{ organization.organizationName }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="25">
-                <mat-label> تاریخ معامله </mat-label>
-                <input matInput [matDatepicker]="transactionDatePicker" [max]="today" placeholder="انتخاب تاریخ" formControlName="transactionDate" />
-                <mat-datepicker-toggle matSuffix [for]="transactionDatePicker"></mat-datepicker-toggle>
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> تاریخ معامله</mat-label>
+                <input [matDatepicker]='transactionDatePicker' [max]='today' formControlName='transactionDate' matInput
+                       placeholder='انتخاب تاریخ' />
+                <mat-datepicker-toggle [for]='transactionDatePicker' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #transactionDatePicker></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field class="full-wid" appearance="outline" fxFlex="25">
-                <mat-label> نماد </mat-label>
-                <mat-select formControlName="ticker" multiple="false" style="text-align: right">
+            <mat-form-field appearance='outline' class='full-wid' fxFlex='25'>
+                <mat-label> نماد</mat-label>
+                <mat-select formControlName='ticker' multiple='false' style='text-align: right'>
                     <ngx-mat-select-search
-                        style="text-align: right"
+                        [formControl]='tickerFormControl'
                         [noEntriesFoundLabel]="'یافت نشد'"
                         [placeholderLabel]="'جستجو'"
-                        [formControl]="tickerFormControl"
+                        style='text-align: right'
                     >
                     </ngx-mat-select-search>
-                    <mat-option style="text-align: right" *ngFor="let ticker of tickers" (click)="selectedTicker = ticker" [value]="ticker.ticker">
+                    <mat-option (click)='selectedTicker = ticker' *ngFor='let ticker of tickers'
+                                [value]='ticker.ticker' style='text-align: right'>
                         {{ ticker?.name }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="25">
-                <mat-label> نوع معامله </mat-label>
-                <mat-select formControlName="tradeType">
-                    <mat-option *ngFor="let tradeType of tradeTypes" [value]="tradeType.value">
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> نوع معامله</mat-label>
+                <mat-select formControlName='tradeType'>
+                    <mat-option *ngFor='let tradeType of tradeTypes' [value]='tradeType.value'>
                         {{ tradeType.name }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="25">
-                <mat-label> ارزش معامله </mat-label>
-                <input matInput type="number" formControlName="value" />
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> ارزش معامله</mat-label>
+                <input formControlName='value' matInput type='number' />
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="25">
-                <mat-label> حجم معامله </mat-label>
-                <input matInput type="number" formControlName="volume" />
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> حجم معامله</mat-label>
+                <input formControlName='volume' matInput type='number' />
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="25">
-                <mat-label> قیمت معامله </mat-label>
-                <input matInput type="number" formControlName="price" />
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> قیمت معامله</mat-label>
+                <input formControlName='price' matInput type='number' />
             </mat-form-field>
 
-            <mat-form-field *ngIf="form.value.organizationType === 'T' || form.value.organizationType === 'تمدن'" appearance="outline" fxFlex="25">
-                <mat-label> کد پم </mat-label>
-                <input matInput type="text" formControlName="pamCode" />
+            <mat-form-field *ngIf="form.value.organizationType === 'T' || form.value.organizationType === 'تمدن'"
+                            appearance='outline' fxFlex='25'>
+                <mat-label> کد پم</mat-label>
+                <input formControlName='pamCode' matInput type='text' />
             </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="100">
-                <mat-label> توضیحات </mat-label>
-                <textarea matInput formControlName="comments"></textarea>
+            <mat-form-field appearance='outline' fxFlex='100'>
+                <mat-label> توضیحات</mat-label>
+                <textarea formControlName='comments' matInput></textarea>
             </mat-form-field>
         </form>
 
-        <button mat-stroked-button *ngIf="!editTradeId" color="primary" (click)="addTradeRegistration()" [disabled]="form.invalid">افزودن</button>
-        <button mat-stroked-button *ngIf="editTradeId" color="warn" (click)="cancelEdit()" class="add-btn">برگشت</button>
-        <button mat-stroked-button *ngIf="editTradeId" color="accent" (click)="updateTradeRegistration()" class="add-btn">بروزرسانی</button>
+        <button (click)='addTradeRegistration()' *ngIf='!editTradeId' [disabled]='form.invalid' color='primary'
+                mat-stroked-button>افزودن
+        </button>
+        <button (click)='cancelEdit()' *ngIf='editTradeId' class='add-btn' color='warn' mat-stroked-button>برگشت
+        </button>
+        <button (click)='updateTradeRegistration()' *ngIf='editTradeId' class='add-btn' color='accent'
+                mat-stroked-button>بروزرسانی
+        </button>
     </div>
 
-    <div class="fuse-card">
+    <div class='fuse-card'>
         <app-table
-            [data]="tradeRegistrations"
-            [columns]="columns"
+            (paginationEvent)='paginationControl($event)'
+            [columns]='columns'
+            [data]='tradeRegistrations'
+            [paginationObject]='pagination'
             [paginationSettings]="{ mode: 'backend' }"
-            [paginationObject]="pagination"
-            (paginationEvent)="paginationControl($event)"
         >
         </app-table>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="center center" class="text-center">
+    <div class='text-center' fxLayout='row wrap' fxLayoutAlign='center center'>
         <p *ngIf="stateType === 'FAIL'">دریافت داده ناموفق بود</p>
-        <p *ngIf="tradeRegistrations && tradeRegistrations.length == 0 && stateType === 'PRESENT'">داده‌ای برای نمایش وجود ندارد</p>
+        <p *ngIf="tradeRegistrations && tradeRegistrations.length == 0 && stateType === 'PRESENT'">داده‌ای برای نمایش
+            وجود ندارد</p>
     </div>
 </div>

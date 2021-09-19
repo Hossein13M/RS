@@ -35,7 +35,11 @@ export class UserService {
     }
 
     public getOrganizations(searchKeyword?: string): Observable<ResponseWithPagination<Organization>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ limit: 20, skip: 0, name: searchKeyword ? searchKeyword : '' });
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({
+            limit: 20,
+            skip: 0,
+            name: searchKeyword ? searchKeyword : '',
+        });
         return this.http.get<ResponseWithPagination<Organization>>('/api/v1/organization', { params });
     }
 
@@ -45,7 +49,10 @@ export class UserService {
     }
 
     public getOrganizationRoles(organizationCode: number, organizationUnits?: Array<number>): Observable<Array<Roles>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes: [organizationCode], organizationUnits });
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({
+            organizationCodes: [organizationCode],
+            organizationUnits,
+        });
         return this.http.get<Array<Roles>>(`/api/v1/organization-role`, { params });
     }
 

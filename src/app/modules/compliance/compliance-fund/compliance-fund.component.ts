@@ -71,22 +71,21 @@ export class ComplianceFundComponent implements OnInit {
         this.compliance.controls['up'].setValue(complianceFund.up);
         this.compliance.controls['down'].setValue(complianceFund.down);
     }
+
     clear() {
         this.slectedCompliance = false;
         this.compliance.controls['fund'].setValue({ name: null, id: null });
         this.compliance.controls['up'].setValue(null);
         this.compliance.controls['down'].setValue(null);
     }
+
     edit() {
         this.complianceFundsService
-            .editcomplianceFunds(
-                this.compliance.controls['fund'].value.id,
-                this.compliance.controls['up'].value,
-                this.compliance.controls['down'].value
-            )
+            .editcomplianceFunds(this.compliance.controls['fund'].value.id, this.compliance.controls['up'].value, this.compliance.controls['down'].value)
             .subscribe((res) => {});
         this.clear();
     }
+
     deleteFund(id: number) {
         this.complianceFundsService.deleteComplianceFund(id).subscribe((res) => {});
     }

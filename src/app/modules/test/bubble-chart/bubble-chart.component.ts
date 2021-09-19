@@ -15,7 +15,7 @@ export class BubbleChartComponent implements OnInit {
             xAxes: [
                 {
                     gridLines: {
-                        display: false
+                        display: false,
                     },
                     scaleLabel: {
                         display: true,

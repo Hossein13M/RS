@@ -41,13 +41,16 @@ export interface SimpleColumn {
             name: string | number;
         }>;
     };
+
     convert?(value: any): any;
 }
 
 export interface DetailColumn extends SimpleColumn {
     type: 'rowDetail';
     doubleClickable: boolean;
+
     click(row): any;
+
     doubleClick(row): any;
 }
 
@@ -71,6 +74,7 @@ interface Operation {
     name: string;
     icon: string | 'condition' | 'template' | 'component';
     color: Color | ((row: any) => Color);
+
     operation?({ row }): void;
 }
 
@@ -78,6 +82,7 @@ interface Operation {
 interface OperationWithTemplate extends Operation {
     icon: 'template';
     content: TemplateRef<any>;
+
     operation?({ row }): void;
 }
 

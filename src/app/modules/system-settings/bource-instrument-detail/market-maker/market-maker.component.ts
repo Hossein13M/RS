@@ -74,7 +74,12 @@ export class MarketMakerComponent implements OnInit {
                 minWidth: '130px',
                 sticky: true,
                 operations: [
-                    { name: 'ویرایش', icon: 'create', color: 'accent', operation: ({ row }: any) => this.editMarketMaker(row) },
+                    {
+                        name: 'ویرایش',
+                        icon: 'create',
+                        color: 'accent',
+                        operation: ({ row }: any) => this.editMarketMaker(row),
+                    },
                     { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => this.delete(row) },
                 ],
             },

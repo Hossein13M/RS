@@ -16,14 +16,22 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class InstrumentTypeService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation instrumentTypeControllerGetInstrumentTypes
      */
     static readonly InstrumentTypeControllerGetInstrumentTypesPath = '/api/v1/instrument-type';
+    /**
+     * Path part for operation instrumentTypeControllerUpdateInstrumentType
+     */
+    static readonly InstrumentTypeControllerUpdateInstrumentTypePath = '/api/v1/instrument-type';
+    /**
+     * Path part for operation instrumentTypeControllerGetInstrumentType
+     */
+    static readonly InstrumentTypeControllerGetInstrumentTypePath = '/api/v1/instrument-type/{ticker}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,20 +71,11 @@ export class InstrumentTypeService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    instrumentTypeControllerGetInstrumentTypes(params?: {
-        limit?: number;
-        skip?: number;
-        searchKeyword?: any;
-    }): Observable<InstrumentTypeListResponseDto> {
+    instrumentTypeControllerGetInstrumentTypes(params?: { limit?: number; skip?: number; searchKeyword?: any }): Observable<InstrumentTypeListResponseDto> {
         return this.instrumentTypeControllerGetInstrumentTypes$Response(params).pipe(
             map((r: StrictHttpResponse<InstrumentTypeListResponseDto>) => r.body as InstrumentTypeListResponseDto)
         );
     }
-
-    /**
-     * Path part for operation instrumentTypeControllerUpdateInstrumentType
-     */
-    static readonly InstrumentTypeControllerUpdateInstrumentTypePath = '/api/v1/instrument-type';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -117,20 +116,12 @@ export class InstrumentTypeService extends BaseService {
     }
 
     /**
-     * Path part for operation instrumentTypeControllerGetInstrumentType
-     */
-    static readonly InstrumentTypeControllerGetInstrumentTypePath = '/api/v1/instrument-type/{ticker}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `instrumentTypeControllerGetInstrumentType()` instead.
      *
      * This method doesn't expect any request body.
      */
-    instrumentTypeControllerGetInstrumentType$Response(params: {
-        ticker: string;
-        isInBourse: boolean;
-    }): Observable<StrictHttpResponse<InstrumentTypeDto>> {
+    instrumentTypeControllerGetInstrumentType$Response(params: { ticker: string; isInBourse: boolean }): Observable<StrictHttpResponse<InstrumentTypeDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentTypeService.InstrumentTypeControllerGetInstrumentTypePath, 'get');
         if (params) {
             rb.path('ticker', params.ticker, {});

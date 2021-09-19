@@ -18,7 +18,12 @@ export class AumEtfComponent implements OnInit {
         { id: 'totalValue', name: 'ارزش کل', type: 'price' },
         { id: 'totalVolume', name: 'حجم کل', type: 'number' },
         { id: 'percentOfTotal', name: 'درصد از کل دارایی', type: 'number' },
-        { id: 'placeOfTransaction', name: 'محل معامله', type: 'string', search: { type: 'select', mode: TableSearchMode.LOCAL } },
+        {
+            id: 'placeOfTransaction',
+            name: 'محل معامله',
+            type: 'string',
+            search: { type: 'select', mode: TableSearchMode.LOCAL },
+        },
     ];
     isTableShowing: boolean = false;
 
@@ -34,7 +39,14 @@ export class AumEtfComponent implements OnInit {
             return item?.value ? item?.value : 0;
         };
 
-        this.aumEtf.columnSet.forEach((column: string, i: number) => this.tableColumn.push({ id: column, name: column, type: 'price', convert }));
+        this.aumEtf.columnSet.forEach((column: string, i: number) =>
+            this.tableColumn.push({
+                id: column,
+                name: column,
+                type: 'price',
+                convert,
+            })
+        );
         this.tableColumn.push({ name: 'عملیات', id: 'operation', type: 'operation' });
 
         this.tableColumn.push({
@@ -44,7 +56,14 @@ export class AumEtfComponent implements OnInit {
             doubleClickable: true,
             doubleClick: (row) => {
                 const data = [];
-                Object.keys(row).forEach((colName) => this.aumEtf.columnSet.includes(colName) && data.push({ ...row[colName], name: colName }));
+                Object.keys(row).forEach(
+                    (colName) =>
+                        this.aumEtf.columnSet.includes(colName) &&
+                        data.push({
+                            ...row[colName],
+                            name: colName,
+                        })
+                );
 
                 const dialogRef = this.dialog.open(TableDialogComponent, {
                     width: '80vw',

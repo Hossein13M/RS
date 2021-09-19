@@ -159,6 +159,19 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     /**
+     * Toggle sidebar open
+     *
+     * @param key
+     */
+    toggleSidebarOpen(key): void {
+        this._fuseSidebarService.getSidebar(key).toggleOpen();
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
      * Reset the form values based on the
      * selected layout style
      *
@@ -307,18 +320,5 @@ export class FuseThemeOptionsComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Toggle sidebar open
-     *
-     * @param key
-     */
-    toggleSidebarOpen(key): void {
-        this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 }

@@ -1,10 +1,10 @@
-<div class="dialog-container">
+<div class='dialog-container'>
     <div [title]="'پاک کردن'" appDialogHeader>
-        <mat-icon (click)="this.dialogRef.close()" class="icon-header">close</mat-icon>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
     </div>
     <div>{{ data?.title }}</div>
-    <div mat-dialog-actions class="pt-24">
-        <button mat-raised-button class="mat-accent mr-16" (click)="dialogRef.close(true)">تایید</button>
-        <button mat-button class="mat-warn mr-16" (click)="dialogRef.close(false)">برگشت</button>
+    <div class='pt-24' mat-dialog-actions>
+        <button (click)='dialogRef.close(true)' class='mat-accent mr-16' mat-raised-button>تایید</button>
+        <button (click)='dialogRef.close(false)' class='mat-warn mr-16' mat-button>برگشت</button>
     </div>
 </div>

@@ -15,7 +15,7 @@ export class FundSettingService {
 
     get(searchParams?: any): Observable<any> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...searchParams });
-        return this.http.get('/api/v1/fund', {params});
+        return this.http.get('/api/v1/fund', { params });
     }
 
     create(model): Observable<any> {

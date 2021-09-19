@@ -154,7 +154,10 @@ export class FundSettingListComponent implements OnInit {
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) this.fundSettingService.delete(row.id).subscribe(() => (this.data = this.data.filter((el) => el.id !== row.id)));

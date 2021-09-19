@@ -2,14 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { GlService } from 'app/modules/gl/gl.service';
-import {
-    GlCategoryModel,
-    GlDetailModel,
-    GlGeneralModel,
-    GlGroupModel,
-    GlSubsidiaryModel,
-    TreeOrderType
-} from '../../gl.model';
+import { GlCategoryModel, GlDetailModel, GlGeneralModel, GlGroupModel, GlSubsidiaryModel, TreeOrderType } from '../../gl.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({

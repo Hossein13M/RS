@@ -341,7 +341,10 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
 
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             panelClass: 'dialog-w40',
-            data: { title: 'حذف نگاشت', description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟` },
+            data: {
+                title: 'حذف نگاشت',
+                description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟`,
+            },
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {

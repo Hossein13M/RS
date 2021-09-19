@@ -1,12 +1,13 @@
-<div class="page-layout">
-    <app-header pageTitle="فرم‌ساز" class="wp-100">
-        <button mat-stroked-button color="accent" (click)="openContractFormDialog()">
-            <mat-icon class="mat-18">list</mat-icon>
+<div class='page-layout'>
+    <app-header class='wp-100' pageTitle='فرم‌ساز'>
+        <button (click)='openContractFormDialog()' color='accent' mat-stroked-button>
+            <mat-icon class='mat-18'>list</mat-icon>
             فهرست فرم‌ها
         </button>
     </app-header>
 
-    <div class="fuse-card">
-        <lib-ag-form-builder dir="ltr" class="demo-wrapper" (emittedFormInfo)="handleFormInfo($event)"></lib-ag-form-builder>
+    <div class='fuse-card'>
+        <lib-ag-form-builder (emittedFormInfo)='handleFormInfo($event)' class='demo-wrapper'
+                             dir='ltr'></lib-ag-form-builder>
     </div>
 </div>

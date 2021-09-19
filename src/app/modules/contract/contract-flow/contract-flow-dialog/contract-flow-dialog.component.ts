@@ -43,46 +43,6 @@ export class ContractFlowDialogComponent implements OnInit {
         this.getContractTypes();
     }
 
-    private checkForEditMode(): void {
-        this.isEditMode = !!this.data.flowData;
-        if (this.data.isManualDialog) {
-            this.title = 'جریان دستی نهاد';
-            this.setDataForManualFlow();
-        } else this.isEditMode ? (this.title = 'ویرایش جریان قرارداد') : (this.title = 'افزودن جریان قرارداد');
-    }
-
-    private setDataForEditMode(): void {
-        this.form.get('name').setValue(this.data.flowData.name);
-        this.form.get('isManual').setValue(this.data.flowData.isManual);
-        this.form.get('contractTypes').setValue(this.data.flowData.contractTypes);
-        this.form.addControl('id', new FormControl(this.data.flowData._id, Validators.required));
-    }
-
-    private setDataForManualFlow(): void {
-        const organizationName = UtilityFunctions.getActiveOrganizationName();
-        this.form.get('name').setValue(`جریان دستی نهاد ${organizationName}`);
-        this.form.get('isManual').setValue(true);
-        this.flowService.getFlows({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code'), isManual: true }).subscribe(
-            (response) => {
-                this.form.get('contractTypes').setValue(response.items[0].contractTypes);
-                this.data.flowData = response.items[0];
-                this.form.addControl('id', new FormControl(response.items[0]._id, Validators.required));
-            },
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
-    private getContractTypes(): void {
-        this.contractService.getContractTypes({ ...this.pagination, organization: UtilityFunctions.getActiveOrganizationInfo('code') }).subscribe(
-            (response) => {
-                this.contractTypes = response.items;
-                this.pagination.total = response.total;
-                if (this.isEditMode) this.setDataForEditMode();
-            },
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
     public submitForm(): void {
         const data = this.form.value;
         if (!this.isEditMode) {
@@ -104,5 +64,56 @@ export class ContractFlowDialogComponent implements OnInit {
             (response) => this.dialog.close({ isEditMode: false, flowId: response._id }),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
+    }
+
+    private checkForEditMode(): void {
+        this.isEditMode = !!this.data.flowData;
+        if (this.data.isManualDialog) {
+            this.title = 'جریان دستی نهاد';
+            this.setDataForManualFlow();
+        } else this.isEditMode ? (this.title = 'ویرایش جریان قرارداد') : (this.title = 'افزودن جریان قرارداد');
+    }
+
+    private setDataForEditMode(): void {
+        this.form.get('name').setValue(this.data.flowData.name);
+        this.form.get('isManual').setValue(this.data.flowData.isManual);
+        this.form.get('contractTypes').setValue(this.data.flowData.contractTypes);
+        this.form.addControl('id', new FormControl(this.data.flowData._id, Validators.required));
+    }
+
+    private setDataForManualFlow(): void {
+        const organizationName = UtilityFunctions.getActiveOrganizationName();
+        this.form.get('name').setValue(`جریان دستی نهاد ${organizationName}`);
+        this.form.get('isManual').setValue(true);
+        this.flowService
+            .getFlows({
+                ...this.pagination,
+                organization: UtilityFunctions.getActiveOrganizationInfo('code'),
+                isManual: true,
+            })
+            .subscribe(
+                (response) => {
+                    this.form.get('contractTypes').setValue(response.items[0].contractTypes);
+                    this.data.flowData = response.items[0];
+                    this.form.addControl('id', new FormControl(response.items[0]._id, Validators.required));
+                },
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+            );
+    }
+
+    private getContractTypes(): void {
+        this.contractService
+            .getContractTypes({
+                ...this.pagination,
+                organization: UtilityFunctions.getActiveOrganizationInfo('code'),
+            })
+            .subscribe(
+                (response) => {
+                    this.contractTypes = response.items;
+                    this.pagination.total = response.total;
+                    if (this.isEditMode) this.setDataForEditMode();
+                },
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+            );
     }
 }

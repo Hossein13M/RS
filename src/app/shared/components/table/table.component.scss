@@ -30,12 +30,14 @@ form {
         box-shadow: none;
         overflow-y: auto;
         text-align: right;
+
         tr,
         th,
         td {
             &:first-child {
                 padding-right: 40px;
             }
+
             text-align: right;
         }
 

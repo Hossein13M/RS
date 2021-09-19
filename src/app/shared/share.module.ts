@@ -65,7 +65,7 @@ import { NgxPrintModule } from 'ngx-print';
         ClipboardModule,
         ChartsModule,
         PipesModule,
-        NgxPrintModule
+        NgxPrintModule,
     ],
     exports: [
         MailCardComponent,

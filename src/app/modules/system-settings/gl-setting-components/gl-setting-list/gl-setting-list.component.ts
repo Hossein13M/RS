@@ -32,10 +32,15 @@ export class GlSettingListComponent implements AfterViewInit {
 
     initColumns(): void {
         this.column = [
-            {id: 'index', type: 'index'},
+            { id: 'index', type: 'index' },
             { id: 'symbol', name: 'نماد', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
             { id: 'status', name: 'وضعیت', type: 'custom', cellTemplate: this.statusRef },
-            { id: 'glCode', name: 'کد دفتر کل', type: 'string', search: { mode: TableSearchMode.SERVER, type: 'text' } },
+            {
+                id: 'glCode',
+                name: 'کد دفتر کل',
+                type: 'string',
+                search: { mode: TableSearchMode.SERVER, type: 'text' },
+            },
             {
                 name: 'عملیات',
                 id: 'operation',
@@ -88,7 +93,10 @@ export class GlSettingListComponent implements AfterViewInit {
 
     delete(row): void {
         this.matDialog
-            .open(ConfirmDialogComponent, { panelClass: 'dialog-w40', data: { title: 'آیا از حذف این مورد اطمینان دارید؟' } })
+            .open(ConfirmDialogComponent, {
+                panelClass: 'dialog-w40',
+                data: { title: 'آیا از حذف این مورد اطمینان دارید؟' },
+            })
             .afterClosed()
             .subscribe((res) => {
                 if (res) {

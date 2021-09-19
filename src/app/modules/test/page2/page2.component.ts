@@ -225,7 +225,12 @@ export class Page2Component implements OnInit {
     cf: FormGroup;
 
     constructor(private fb: FormBuilder) {
-        this.cf = this.fb.group({ chartName: ['نام چارت', []], cardLayout: [true, []], height: ['300px', []], showLabel: [false, []] });
+        this.cf = this.fb.group({
+            chartName: ['نام چارت', []],
+            cardLayout: [true, []],
+            height: ['300px', []],
+            showLabel: [false, []],
+        });
     }
 
     ngOnInit(): void {}

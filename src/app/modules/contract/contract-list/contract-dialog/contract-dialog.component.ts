@@ -17,7 +17,6 @@ import { StateType } from '#shared/state-type.enum';
     styleUrls: ['./contract-dialog.component.scss'],
 })
 export class ContractDialogComponent implements OnInit {
-    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public stateType: StateType = StateType.INIT;
     public isEditMode: boolean = false;
     public title: string = 'افزودن قرارداد';
@@ -32,6 +31,16 @@ export class ContractDialogComponent implements OnInit {
         { name: 'الحاقیه', id: 2 },
         { name: 'متمم', id: 3 },
     ];
+    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
+    public form: FormGroup = this.fb.group({
+        name: ['', Validators.required],
+        organization: [this.activeOrganizationCode, Validators.required],
+        customer: [null, Validators.required],
+        category: [1, Validators.required],
+        code: [null],
+        contractType: [null, Validators.required],
+        flow: ['', Validators.required],
+    });
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: Contract,
@@ -42,16 +51,6 @@ export class ContractDialogComponent implements OnInit {
         private flowService: ContractFlowService,
         public dialog: MatDialogRef<ContractDialogComponent>
     ) {}
-
-    public form: FormGroup = this.fb.group({
-        name: ['', Validators.required],
-        organization: [this.activeOrganizationCode, Validators.required],
-        customer: [null, Validators.required],
-        category: [1, Validators.required],
-        code: [null],
-        contractType: [null, Validators.required],
-        flow: ['', Validators.required],
-    });
 
     ngOnInit(): void {
         this.getData().then(() => {
@@ -69,6 +68,10 @@ export class ContractDialogComponent implements OnInit {
                 this.form.addControl('parentId', new FormControl(null, Validators.required));
             }
         });
+    }
+
+    public submitForm(): void {
+        this.isEditMode ? this.editContract() : this.createContract();
     }
 
     private async getData(): Promise<any> {
@@ -93,10 +96,16 @@ export class ContractDialogComponent implements OnInit {
     }
 
     private getContractTypes(): void {
-        this.contractTypeService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode, getByUserId: true }).subscribe(
-            (response) => (this.contractTypes = response.items),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
+        this.contractTypeService
+            .getContractTypes({
+                ...this.pagination,
+                organization: this.activeOrganizationCode,
+                getByUserId: true,
+            })
+            .subscribe(
+                (response) => (this.contractTypes = response.items),
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+            );
     }
 
     private getContracts(): void {
@@ -108,7 +117,11 @@ export class ContractDialogComponent implements OnInit {
 
     private getFlows(): void {
         this.flowService
-            .getFlows({ ...this.pagination, organization: this.activeOrganizationCode, contractTypes: [this.form.get('contractType').value] })
+            .getFlows({
+                ...this.pagination,
+                organization: this.activeOrganizationCode,
+                contractTypes: [this.form.get('contractType').value],
+            })
             .subscribe(
                 (response) => (this.flows = response.items),
                 (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور')),
@@ -127,10 +140,6 @@ export class ContractDialogComponent implements OnInit {
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
-    }
-
-    public submitForm(): void {
-        this.isEditMode ? this.editContract() : this.createContract();
     }
 
     private editContract(): void {

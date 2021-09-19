@@ -15,14 +15,26 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class TradeRegistrationService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation tradeRegistrationControllerSearchTrade
      */
     static readonly TradeRegistrationControllerSearchTradePath = '/api/v1/trade-registration';
+    /**
+     * Path part for operation tradeRegistrationControllerUpdateTrade
+     */
+    static readonly TradeRegistrationControllerUpdateTradePath = '/api/v1/trade-registration';
+    /**
+     * Path part for operation tradeRegistrationControllerCreateTrade
+     */
+    static readonly TradeRegistrationControllerCreateTradePath = '/api/v1/trade-registration';
+    /**
+     * Path part for operation tradeRegistrationControllerDeleteTrade
+     */
+    static readonly TradeRegistrationControllerDeleteTradePath = '/api/v1/trade-registration/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -136,11 +148,6 @@ export class TradeRegistrationService extends BaseService {
     }
 
     /**
-     * Path part for operation tradeRegistrationControllerUpdateTrade
-     */
-    static readonly TradeRegistrationControllerUpdateTradePath = '/api/v1/trade-registration';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `tradeRegistrationControllerUpdateTrade()` instead.
      *
@@ -177,11 +184,6 @@ export class TradeRegistrationService extends BaseService {
     }
 
     /**
-     * Path part for operation tradeRegistrationControllerCreateTrade
-     */
-    static readonly TradeRegistrationControllerCreateTradePath = '/api/v1/trade-registration';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `tradeRegistrationControllerCreateTrade()` instead.
      *
@@ -216,11 +218,6 @@ export class TradeRegistrationService extends BaseService {
     tradeRegistrationControllerCreateTrade(params: { body: CreateTradeDto }): Observable<void> {
         return this.tradeRegistrationControllerCreateTrade$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation tradeRegistrationControllerDeleteTrade
-     */
-    static readonly TradeRegistrationControllerDeleteTradePath = '/api/v1/trade-registration/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

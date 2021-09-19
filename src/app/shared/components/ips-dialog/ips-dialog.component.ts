@@ -24,12 +24,22 @@ export class IpsDialogComponent implements OnInit {
     private initiateColumns(): void {
         this.columns = [
             { name: 'سبد', id: 'organizationType', type: 'string' },
-            { name: 'کارگزاری', id: 'broker', type: 'string', convert: (value: string | null) => (value ? value : '-') },
+            {
+                name: 'کارگزاری',
+                id: 'broker',
+                type: 'string',
+                convert: (value: string | null) => (value ? value : '-'),
+            },
             {
                 name: 'تاریخ',
                 id: 'date',
                 type: 'date',
-                convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
             },
         ];
     }

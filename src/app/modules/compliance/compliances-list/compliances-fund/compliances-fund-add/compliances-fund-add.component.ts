@@ -16,22 +16,13 @@ export class CompliancesFundAddComponent implements OnInit {
     constructor(
         public dialogRef: MatDialogRef<CompliancesFundAddComponent>,
         private compliancesService: CompliancesService,
-        @Inject(MAT_DIALOG_DATA) public dialogData: { fund: ComplianceFund, complianceId: number },
+        @Inject(MAT_DIALOG_DATA) public dialogData: { fund: ComplianceFund; complianceId: number },
         private formBuilder: FormBuilder,
         private alertService: AlertService
     ) {}
 
     ngOnInit(): void {
         this.initForm();
-    }
-
-    private initForm(): void {
-        // TODO: fundName should not be string it should be a select box from fund entity this whole CRUD does not work
-        this.form = this.formBuilder.group({
-            fundName: [this.dialogData.fund ? this.dialogData.fund.fundName : ''],
-            down: [this.dialogData.fund ? this.dialogData.fund.down : '', Validators.required],
-            up: [this.dialogData.fund ? this.dialogData.fund.up : '', Validators.required],
-        });
     }
 
     updateFund(): void {
@@ -58,5 +49,14 @@ export class CompliancesFundAddComponent implements OnInit {
 
     public close(): void {
         this.dialogRef.close(null);
+    }
+
+    private initForm(): void {
+        // TODO: fundName should not be string it should be a select box from fund entity this whole CRUD does not work
+        this.form = this.formBuilder.group({
+            fundName: [this.dialogData.fund ? this.dialogData.fund.fundName : ''],
+            down: [this.dialogData.fund ? this.dialogData.fund.down : '', Validators.required],
+            up: [this.dialogData.fund ? this.dialogData.fund.up : '', Validators.required],
+        });
     }
 }

@@ -13,13 +13,6 @@ import { RejectOpRiskComponent } from '../reject-op-risk/reject-op-risk.componen
     styleUrls: ['./op-risk-list.component.scss'],
 })
 export class OpRiskListComponent implements OnInit {
-    constructor(
-        private dialog: MatDialog,
-        private opRiskManagementService: OpRiskManagementService,
-        private opLossManagementService: OpLossManagementService,
-        private alertService: AlertService,
-        private router: Router
-    ) {}
     data: any;
     columns = [
         { name: 'عنوان', id: 'title', type: 'string', minWidth: '130px' },
@@ -36,7 +29,12 @@ export class OpRiskListComponent implements OnInit {
             id: 'createdAt',
             type: 'string',
             minWidth: '150px',
-            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+            convert: (value: any) =>
+                new Date(value).toLocaleDateString('fa-Ir', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
         },
         { name: 'کاربر ثبت کننده', id: 'submittedBy', type: 'string', minWidth: '130px', sticky: true },
         {
@@ -67,7 +65,11 @@ export class OpRiskListComponent implements OnInit {
                         else {
                             this.router
                                 .navigate(['/op-risk/management/loss/detail'], {
-                                    queryParams: { lastLossEventId: row.lastLossEventId, opId: row.opLossId, view: true },
+                                    queryParams: {
+                                        lastLossEventId: row.lastLossEventId,
+                                        opId: row.opLossId,
+                                        view: true,
+                                    },
                                 })
                                 .finally();
                         }
@@ -114,7 +116,6 @@ export class OpRiskListComponent implements OnInit {
             ],
         },
     ];
-
     dataHistory: any;
     columnsHistory = [
         { name: 'عنوان', id: 'title', type: 'string', minWidth: '130px' },
@@ -123,7 +124,12 @@ export class OpRiskListComponent implements OnInit {
             id: 'createdAt',
             type: 'string',
             minWidth: '150px',
-            convert: (value: any) => new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' }),
+            convert: (value: any) =>
+                new Date(value).toLocaleDateString('fa-Ir', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }),
             search: { type: 'date_range', mode: TableSearchMode.SERVER },
         },
         { name: 'سازنده', id: 'submittedBy', type: 'string', minWidth: '130px', sticky: true },
@@ -192,9 +198,21 @@ export class OpRiskListComponent implements OnInit {
         },
     ];
 
+    constructor(
+        private dialog: MatDialog,
+        private opRiskManagementService: OpRiskManagementService,
+        private opLossManagementService: OpLossManagementService,
+        private alertService: AlertService,
+        private router: Router
+    ) {}
+
     ngOnInit(): void {
         this.getActiveOPRiskWorkFlows();
         this.getHistory();
+    }
+
+    public search(filter: any): void {
+        if (filter.createdAt.fromDate || filter.createdAt.toDate) this.getHistory();
     }
 
     private getActiveOPRiskWorkFlows(): void {
@@ -220,9 +238,5 @@ export class OpRiskListComponent implements OnInit {
             .open(RejectOpRiskComponent, { panelClass: 'dialog-w50', data: { id: id, type: type } })
             .afterClosed()
             .subscribe((res) => res && this.getActiveOPRiskWorkFlows());
-    }
-
-    public search(filter: any): void {
-        if (filter.createdAt.fromDate || filter.createdAt.toDate) this.getHistory();
     }
 }

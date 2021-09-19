@@ -14,14 +14,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class OrganiztionSupervisorService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation organiztionSupervisorControllerGetOrganiztionSupervisor
      */
     static readonly OrganiztionSupervisorControllerGetOrganiztionSupervisorPath = '/api/v1/organization-supervisor/{id}';
+    /**
+     * Path part for operation organiztionSupervisorControllerDeleteOrganiztionSupervisor
+     */
+    static readonly OrganiztionSupervisorControllerDeleteOrganiztionSupervisorPath = '/api/v1/organization-supervisor/{id}';
+    /**
+     * Path part for operation organiztionSupervisorControllerGetOrganiztionSupervisors
+     */
+    static readonly OrganiztionSupervisorControllerGetOrganiztionSupervisorsPath = '/api/v1/organization-supervisor';
+    /**
+     * Path part for operation organiztionSupervisorControllerUpdateOrganiztionSupervisor
+     */
+    static readonly OrganiztionSupervisorControllerUpdateOrganiztionSupervisorPath = '/api/v1/organization-supervisor';
+    /**
+     * Path part for operation organiztionSupervisorControllerCreateOrganiztionSupervisor
+     */
+    static readonly OrganiztionSupervisorControllerCreateOrganiztionSupervisorPath = '/api/v1/organization-supervisor';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -29,9 +45,7 @@ export class OrganiztionSupervisorService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    organiztionSupervisorControllerGetOrganiztionSupervisor$Response(params: {
-        id: number;
-    }): Observable<StrictHttpResponse<OrganiztionSupervisorDto>> {
+    organiztionSupervisorControllerGetOrganiztionSupervisor$Response(params: { id: number }): Observable<StrictHttpResponse<OrganiztionSupervisorDto>> {
         const rb = new RequestBuilder(this.rootUrl, OrganiztionSupervisorService.OrganiztionSupervisorControllerGetOrganiztionSupervisorPath, 'get');
         if (params) {
             rb.path('id', params.id, {});
@@ -64,22 +78,13 @@ export class OrganiztionSupervisorService extends BaseService {
     }
 
     /**
-     * Path part for operation organiztionSupervisorControllerDeleteOrganiztionSupervisor
-     */
-    static readonly OrganiztionSupervisorControllerDeleteOrganiztionSupervisorPath = '/api/v1/organization-supervisor/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `organiztionSupervisorControllerDeleteOrganiztionSupervisor()` instead.
      *
      * This method doesn't expect any request body.
      */
     organiztionSupervisorControllerDeleteOrganiztionSupervisor$Response(params: { id: number }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            OrganiztionSupervisorService.OrganiztionSupervisorControllerDeleteOrganiztionSupervisorPath,
-            'delete'
-        );
+        const rb = new RequestBuilder(this.rootUrl, OrganiztionSupervisorService.OrganiztionSupervisorControllerDeleteOrganiztionSupervisorPath, 'delete');
         if (params) {
             rb.path('id', params.id, {});
         }
@@ -105,15 +110,8 @@ export class OrganiztionSupervisorService extends BaseService {
      * This method doesn't expect any request body.
      */
     organiztionSupervisorControllerDeleteOrganiztionSupervisor(params: { id: number }): Observable<void> {
-        return this.organiztionSupervisorControllerDeleteOrganiztionSupervisor$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.organiztionSupervisorControllerDeleteOrganiztionSupervisor$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation organiztionSupervisorControllerGetOrganiztionSupervisors
-     */
-    static readonly OrganiztionSupervisorControllerGetOrganiztionSupervisorsPath = '/api/v1/organization-supervisor';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -156,11 +154,6 @@ export class OrganiztionSupervisorService extends BaseService {
     }
 
     /**
-     * Path part for operation organiztionSupervisorControllerUpdateOrganiztionSupervisor
-     */
-    static readonly OrganiztionSupervisorControllerUpdateOrganiztionSupervisorPath = '/api/v1/organization-supervisor';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `organiztionSupervisorControllerUpdateOrganiztionSupervisor()` instead.
      *
@@ -169,11 +162,7 @@ export class OrganiztionSupervisorService extends BaseService {
     organiztionSupervisorControllerUpdateOrganiztionSupervisor$Response(params: {
         body: OrganiztionSupervisorDto;
     }): Observable<StrictHttpResponse<OrganiztionSupervisorDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            OrganiztionSupervisorService.OrganiztionSupervisorControllerUpdateOrganiztionSupervisorPath,
-            'put'
-        );
+        const rb = new RequestBuilder(this.rootUrl, OrganiztionSupervisorService.OrganiztionSupervisorControllerUpdateOrganiztionSupervisorPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
         }
@@ -205,11 +194,6 @@ export class OrganiztionSupervisorService extends BaseService {
     }
 
     /**
-     * Path part for operation organiztionSupervisorControllerCreateOrganiztionSupervisor
-     */
-    static readonly OrganiztionSupervisorControllerCreateOrganiztionSupervisorPath = '/api/v1/organization-supervisor';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `organiztionSupervisorControllerCreateOrganiztionSupervisor()` instead.
      *
@@ -218,11 +202,7 @@ export class OrganiztionSupervisorService extends BaseService {
     organiztionSupervisorControllerCreateOrganiztionSupervisor$Response(params: {
         body: CreateOrganiztionSupervisorDto;
     }): Observable<StrictHttpResponse<OrganiztionSupervisorDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            OrganiztionSupervisorService.OrganiztionSupervisorControllerCreateOrganiztionSupervisorPath,
-            'post'
-        );
+        const rb = new RequestBuilder(this.rootUrl, OrganiztionSupervisorService.OrganiztionSupervisorControllerCreateOrganiztionSupervisorPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
         }
@@ -247,9 +227,7 @@ export class OrganiztionSupervisorService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    organiztionSupervisorControllerCreateOrganiztionSupervisor(params: {
-        body: CreateOrganiztionSupervisorDto;
-    }): Observable<OrganiztionSupervisorDto> {
+    organiztionSupervisorControllerCreateOrganiztionSupervisor(params: { body: CreateOrganiztionSupervisorDto }): Observable<OrganiztionSupervisorDto> {
         return this.organiztionSupervisorControllerCreateOrganiztionSupervisor$Response(params).pipe(
             map((r: StrictHttpResponse<OrganiztionSupervisorDto>) => r.body as OrganiztionSupervisorDto)
         );

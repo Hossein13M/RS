@@ -27,8 +27,20 @@ export class CardboardDownloadDialogComponent implements OnInit {
             type: 'string',
             minWidth: '50px',
         },
-        { id: 'createdAt', name: 'تاریخ ساخت', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '50px' },
-        { id: 'isActive', name: 'وضعیت فرم', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '50px' },
+        {
+            id: 'createdAt',
+            name: 'تاریخ ساخت',
+            convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
+            type: 'string',
+            minWidth: '50px',
+        },
+        {
+            id: 'isActive',
+            name: 'وضعیت فرم',
+            convert: (value) => (value ? 'فعال' : 'غیر فعال'),
+            type: 'string',
+            minWidth: '50px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -55,15 +67,17 @@ export class CardboardDownloadDialogComponent implements OnInit {
         private readonly fb: FormBuilder
     ) {}
 
-    ngOnInit(): void {
-        this.getFilesList();
+    static convertFileTypeToPersian(fileTypeEngName: string): string {
+        const fileTypes: Array<{ perName: string; engName: string }> = [
+            { perName: 'امضا شده', engName: 'signed' },
+            { perName: 'امضا نشده', engName: 'unsigned' },
+            { perName: 'پیش‌نویس', engName: 'draft' },
+        ];
+        return fileTypes.find((fileType) => fileType.engName === fileTypeEngName).perName;
     }
 
-    private getFilesList(searchParams?: DownloadFileSearchParams): void {
-        this.cardBoardService.getDownloadedFilesList(searchParams ? searchParams : { contract: this.contractId }).subscribe(
-            (response) => (this.filesList = response),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
+    ngOnInit(): void {
+        this.getFilesList();
     }
 
     public onSearchFile(): void {
@@ -76,15 +90,18 @@ export class CardboardDownloadDialogComponent implements OnInit {
     }
 
     public downloadFile(fileName: string, url: string): void {
-        this.cardBoardService.downloadCounterTrigger({ contract: this.contractId, fileName: fileName }).subscribe(() => window.open(url, '_blank'));
+        this.cardBoardService
+            .downloadCounterTrigger({
+                contract: this.contractId,
+                fileName: fileName,
+            })
+            .subscribe(() => window.open(url, '_blank'));
     }
 
-    static convertFileTypeToPersian(fileTypeEngName: string): string {
-        const fileTypes: Array<{ perName: string; engName: string }> = [
-            { perName: 'امضا شده', engName: 'signed' },
-            { perName: 'امضا نشده', engName: 'unsigned' },
-            { perName: 'پیش‌نویس', engName: 'draft' },
-        ];
-        return fileTypes.find((fileType) => fileType.engName === fileTypeEngName).perName;
+    private getFilesList(searchParams?: DownloadFileSearchParams): void {
+        this.cardBoardService.getDownloadedFilesList(searchParams ? searchParams : { contract: this.contractId }).subscribe(
+            (response) => (this.filesList = response),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 }

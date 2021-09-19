@@ -11,6 +11,11 @@ export class DailyInvestmentReportService {
 
     getDailyInvestmentReport(inputDate: Date, pagination: any): Observable<any> {
         const date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(inputDate));
-        return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, { params: { ...pagination, date } });
+        return this.http.get(DailyInvestmentReportService.DailyInvestmentReportAPI, {
+            params: {
+                ...pagination,
+                date,
+            },
+        });
     }
 }

@@ -27,7 +27,7 @@ $violet: $base0E;
 $magenta: $base0F;
 
 $code-font-family: Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console', 'Lucida Sans Typewriter', 'DejaVu Sans Mono',
-    'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'Courier New', Courier, monospace;
+'Bitstream Vera Sans Mono', 'Liberation Mono', 'Nimbus Mono L', 'Courier New', Courier, monospace;
 $code-font-size: 14px;
 $code-line-height: 1.6;
 $code-background: $base00;
@@ -179,6 +179,7 @@ $code-color-punctuation: $code-color-fade !default;
         &.string {
             color: $code-color-string;
         }
+
         &.attr-name {
             color: $code-color-attr-name;
         }
@@ -201,9 +202,11 @@ $code-color-punctuation: $code-color-fade !default;
         &.unit {
             color: $code-color-keyword;
         }
+
         &.important {
             color: $code-color-important;
         }
+
         &.atrule {
             color: $code-color-atrule;
         }
@@ -226,6 +229,7 @@ $code-color-punctuation: $code-color-fade !default;
         &.property {
             color: $code-color-property;
         }
+
         &.tag {
             color: $code-color-tag;
         }

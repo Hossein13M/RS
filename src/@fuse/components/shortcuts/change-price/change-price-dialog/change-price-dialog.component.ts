@@ -21,10 +21,10 @@ import { PricePipeService } from 'app/shared/pipes/price-pipe.service';
                 <mat-label>مقیاس قیمت‌ها</mat-label>
                 <mat-select formControlName="scale">
                     <mat-option [value]="0">یک</mat-option>
-                    <mat-option [value]="3">هزار </mat-option>
-                    <mat-option [value]="6">میلیون </mat-option>
-                    <mat-option [value]="9">میلیارد </mat-option>
-                    <mat-option [value]="12">هزار میلیارد </mat-option>
+                    <mat-option [value]="3">هزار</mat-option>
+                    <mat-option [value]="6">میلیون</mat-option>
+                    <mat-option [value]="9">میلیارد</mat-option>
+                    <mat-option [value]="12">هزار میلیارد</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -48,7 +48,10 @@ import { PricePipeService } from 'app/shared/pipes/price-pipe.service';
     ],
 })
 export class ChangePriceDialogComponent {
-    form: FormGroup = this.formBuilder.group({ scale: [this.pricePipeService.downScaleOrder], unit: ['rial', [Validators.required]] });
+    form: FormGroup = this.formBuilder.group({
+        scale: [this.pricePipeService.downScaleOrder],
+        unit: ['rial', [Validators.required]],
+    });
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public dialogData: TableDialogData,

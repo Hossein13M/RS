@@ -14,7 +14,16 @@ import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [OpRiskFlowComponent, FlowAddComponent, OpRiskViewComponent],
-    imports: [CommonModule, LayoutModule, ShareModule, MatProgressSpinnerModule, MatTooltipModule, OpRiskFlowRoutingModule, NgxMatSelectSearchModule, HeaderModule],
+    imports: [
+        CommonModule,
+        LayoutModule,
+        ShareModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        OpRiskFlowRoutingModule,
+        NgxMatSelectSearchModule,
+        HeaderModule,
+    ],
     providers: [OpRiskFlowService],
     entryComponents: [FlowAddComponent, OpRiskViewComponent],
 })

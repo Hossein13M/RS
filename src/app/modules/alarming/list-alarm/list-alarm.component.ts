@@ -13,18 +13,13 @@ import { AlarmDetailComponent } from '../alarm-detail/alarm-detail.component';
     styleUrls: ['./list-alarm.component.scss'],
 })
 export class ListAlarmComponent implements OnInit {
-    constructor(
-        private dialog: MatDialog,
-        private AlertService: AlertService,
-        private alarmService: AlarmService,
-        private moduleService: RiskModuleService
-    ) {}
-
     displayedColumns: string[] = ['isActive', 'title', 'type', 'priority', 'sendEmail', 'sendSms', 'operation'];
     dataSource = new MatTableDataSource<any>();
     modules;
     currentModuleId;
     isWorking: any;
+
+    constructor(private dialog: MatDialog, private AlertService: AlertService, private alarmService: AlarmService, private moduleService: RiskModuleService) {}
 
     ngOnInit(): void {
         this.getAllModules();

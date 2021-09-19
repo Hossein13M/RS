@@ -1,19 +1,19 @@
-<div class="page-layout">
+<div class='page-layout'>
 
-    <app-header pageTitle="صفحه‌ی ۳ تست">
+    <app-header pageTitle='صفحه‌ی ۳ تست'>
         <div subtitle>
             در این صفحه کامپوننت انتخاب درختی تست می‌شود.
         </div>
         <div>
-            <button mat-raised-button color="primary" routerLink="/test/list">
+            <button color='primary' mat-raised-button routerLink='/test/list'>
                 بازگشت
             </button>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div class="container" [formGroup]="fg">
-            <app-tree-select [data]="data" formControlName="tree1"></app-tree-select>
+    <div class='page-content'>
+        <div [formGroup]='fg' class='container'>
+            <app-tree-select [data]='data' formControlName='tree1'></app-tree-select>
         </div>
     </div>
 </div>

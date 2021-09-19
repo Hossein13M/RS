@@ -28,7 +28,7 @@ import { HeaderModule } from '../../layout/components/header/header.module';
         ChartModule,
         LayoutModule,
         MatProgressBarModule,
-        HeaderModule
-    ]
+        HeaderModule,
+    ],
 })
 export class RiskMeasurementModule {}

@@ -14,14 +14,24 @@ import { AlertService } from '#shared/services/alert.service';
 })
 export class ContractTypeComponent implements OnInit {
     public contractTypes: Array<ContractType>;
-    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     public pagination = { skip: 0, limit: 5, total: 100 };
-
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'نوع قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'createdAt', name: 'تاریخ ساخت', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '200px' },
-        { id: 'isActive', name: 'وضعیت نوع قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
+        {
+            id: 'createdAt',
+            name: 'تاریخ ساخت',
+            convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
+            type: 'string',
+            minWidth: '200px',
+        },
+        {
+            id: 'isActive',
+            name: 'وضعیت نوع قرارداد',
+            convert: (value) => (value ? 'فعال' : 'غیر فعال'),
+            type: 'string',
+            minWidth: '200px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -45,6 +55,7 @@ export class ContractTypeComponent implements OnInit {
             ],
         },
     ];
+    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
 
     constructor(private contractService: ContractTypeService, private dialog: MatDialog, private readonly alertService: AlertService) {}
 
@@ -59,17 +70,18 @@ export class ContractTypeComponent implements OnInit {
     }
 
     public getContractTypes(): void {
-        this.contractService.getContractTypes({ ...this.pagination, organization: this.activeOrganizationCode }).subscribe(
-            (response) => {
-                this.contractTypes = response.items;
-                this.pagination.total = response.total;
-            },
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
-    private changeContractTypeStatus(contractTypeId: string): void {
-        this.contractService.changeContractTypeStatus(contractTypeId).subscribe(() => this.getContractTypes());
+        this.contractService
+            .getContractTypes({
+                ...this.pagination,
+                organization: this.activeOrganizationCode,
+            })
+            .subscribe(
+                (response) => {
+                    this.contractTypes = response.items;
+                    this.pagination.total = response.total;
+                },
+                (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+            );
     }
 
     public openContractTypeDialog(dialogType: 'edit' | 'create', contractType?: ContractType): void {
@@ -80,5 +92,9 @@ export class ContractTypeComponent implements OnInit {
             panelClass: 'dialog-p-0',
         });
         dialogRef.afterClosed().subscribe((result) => result && this.getContractTypes());
+    }
+
+    private changeContractTypeStatus(contractTypeId: string): void {
+        this.contractService.changeContractTypeStatus(contractTypeId).subscribe(() => this.getContractTypes());
     }
 }

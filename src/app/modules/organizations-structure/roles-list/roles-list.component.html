@@ -1,18 +1,18 @@
-<div class="page-layout">
-    <app-header [pageTitle]="'مدیریت ساختار و نقش‌های نهاد ' + organizationTitle" class="wp-100"> </app-header>
+<div class='page-layout'>
+    <app-header [pageTitle]="'مدیریت ساختار و نقش‌های نهاد ' + organizationTitle" class='wp-100'></app-header>
 
-    <div class="page-content">
+    <div class='page-content'>
         <app-tree-header-selector
-            [headerList]="headerList"
-            [organizationId]="organizationId"
-            (changedSection)="detectSectionChanges($event)"
+            (changedSection)='detectSectionChanges($event)'
+            [headerList]='headerList'
+            [organizationId]='organizationId'
         ></app-tree-header-selector>
 
         <app-tree-simple-selector
-            *ngIf="!loading"
-            [selected]="selectedTreeChartName"
-            [selectedOrg]="selectedTreeChartName"
-            [organizationCode]="organizationInfo.code"
+            *ngIf='!loading'
+            [organizationCode]='organizationInfo.code'
+            [selectedOrg]='selectedTreeChartName'
+            [selected]='selectedTreeChartName'
         ></app-tree-simple-selector>
     </div>
 </div>

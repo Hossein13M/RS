@@ -15,14 +15,30 @@ import { StrictHttpResponse } from '../strict-http-response';
     providedIn: 'root',
 })
 export class IssuerGoalService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation issuerGoalControllerGetIssuerGoal
      */
     static readonly IssuerGoalControllerGetIssuerGoalPath = '/api/v1/issuer-goal/{issuerGoalId}';
+    /**
+     * Path part for operation issuerGoalControllerDeleteIssuerGoal
+     */
+    static readonly IssuerGoalControllerDeleteIssuerGoalPath = '/api/v1/issuer-goal/{issuerGoalId}';
+    /**
+     * Path part for operation issuerGoalControllerGetIssuersGoal
+     */
+    static readonly IssuerGoalControllerGetIssuersGoalPath = '/api/v1/issuer-goal';
+    /**
+     * Path part for operation issuerGoalControllerUpdateIssuerGoal
+     */
+    static readonly IssuerGoalControllerUpdateIssuerGoalPath = '/api/v1/issuer-goal';
+    /**
+     * Path part for operation issuerGoalControllerCreateIssuerGoal
+     */
+    static readonly IssuerGoalControllerCreateIssuerGoalPath = '/api/v1/issuer-goal';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -61,11 +77,6 @@ export class IssuerGoalService extends BaseService {
     }
 
     /**
-     * Path part for operation issuerGoalControllerDeleteIssuerGoal
-     */
-    static readonly IssuerGoalControllerDeleteIssuerGoalPath = '/api/v1/issuer-goal/{issuerGoalId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `issuerGoalControllerDeleteIssuerGoal()` instead.
      *
@@ -100,11 +111,6 @@ export class IssuerGoalService extends BaseService {
     issuerGoalControllerDeleteIssuerGoal(params: { issuerGoalId: number }): Observable<void> {
         return this.issuerGoalControllerDeleteIssuerGoal$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation issuerGoalControllerGetIssuersGoal
-     */
-    static readonly IssuerGoalControllerGetIssuersGoalPath = '/api/v1/issuer-goal';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -157,15 +163,8 @@ export class IssuerGoalService extends BaseService {
          */
         searchKeyword?: any;
     }): Observable<IssuerResponseDto> {
-        return this.issuerGoalControllerGetIssuersGoal$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerResponseDto>) => r.body as IssuerResponseDto)
-        );
+        return this.issuerGoalControllerGetIssuersGoal$Response(params).pipe(map((r: StrictHttpResponse<IssuerResponseDto>) => r.body as IssuerResponseDto));
     }
-
-    /**
-     * Path part for operation issuerGoalControllerUpdateIssuerGoal
-     */
-    static readonly IssuerGoalControllerUpdateIssuerGoalPath = '/api/v1/issuer-goal';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -202,11 +201,6 @@ export class IssuerGoalService extends BaseService {
     issuerGoalControllerUpdateIssuerGoal(params: { body: IssuerDto }): Observable<IssuerDto> {
         return this.issuerGoalControllerUpdateIssuerGoal$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
-
-    /**
-     * Path part for operation issuerGoalControllerCreateIssuerGoal
-     */
-    static readonly IssuerGoalControllerCreateIssuerGoalPath = '/api/v1/issuer-goal';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

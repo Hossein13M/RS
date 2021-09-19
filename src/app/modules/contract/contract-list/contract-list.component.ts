@@ -28,8 +28,20 @@ export class ContractListComponent implements OnInit {
     public tableColumn: Array<Column> = [
         { id: 'index', type: 'index', minWidth: '200px' },
         { id: 'name', name: 'قرارداد', type: 'string', minWidth: '200px' },
-        { id: 'createdAt', name: 'تاریخ ساخت', convert: (value) => UtilityFunctions.convertDateToPersianDateString(value), type: 'string', minWidth: '200px' },
-        { id: 'isActive', name: 'وضعیت قرارداد', convert: (value) => (value ? 'فعال' : 'غیر فعال'), type: 'string', minWidth: '200px' },
+        {
+            id: 'createdAt',
+            name: 'تاریخ ساخت',
+            convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
+            type: 'string',
+            minWidth: '200px',
+        },
+        {
+            id: 'isActive',
+            name: 'وضعیت قرارداد',
+            convert: (value) => (value ? 'فعال' : 'غیر فعال'),
+            type: 'string',
+            minWidth: '200px',
+        },
         {
             name: 'عملیات',
             id: 'operation',
@@ -95,13 +107,6 @@ export class ContractListComponent implements OnInit {
         );
     }
 
-    private changeContractStatus(contractId: string): void {
-        this.contractService.changeContractStatus(contractId).subscribe(
-            () => this.checkIsActiveFormControl(),
-            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
-        );
-    }
-
     public openContractDialog(dialogType: 'edit' | 'create', contractInfo?: Contract): void {
         const dialogRef: MatDialogRef<any> = this.dialog.open(ContractDialogComponent, {
             data: dialogType === 'edit' ? contractInfo : null,
@@ -113,20 +118,42 @@ export class ContractListComponent implements OnInit {
     }
 
     public openContractHistoryDialog(contractId: string): void {
-        this.dialog.open(ContractHistoryDialogComponent, { data: contractId, width: '600px', height: '350px', panelClass: 'dialog-p-0' });
+        this.dialog.open(ContractHistoryDialogComponent, {
+            data: contractId,
+            width: '600px',
+            height: '350px',
+            panelClass: 'dialog-p-0',
+        });
     }
 
     public openContractNoteDialog(contractId: string): void {
-        this.dialog.open(ContractNoteDialogComponent, { data: contractId, width: '600px', height: '250px', panelClass: 'dialog-p-0' });
+        this.dialog.open(ContractNoteDialogComponent, {
+            data: contractId,
+            width: '600px',
+            height: '250px',
+            panelClass: 'dialog-p-0',
+        });
     }
 
     public openContractFormDialog(contractId: string): void {
-        this.dialog.open(ContractFinalFormDialogComponent, { data: contractId, width: '800px', height: '350px', panelClass: 'dialog-p-0' });
+        this.dialog.open(ContractFinalFormDialogComponent, {
+            data: contractId,
+            width: '800px',
+            height: '350px',
+            panelClass: 'dialog-p-0',
+        });
     }
 
     public paginationControl(pageEvent?: any): void {
         this.pagination.limit = pageEvent.limit;
         this.pagination.skip = pageEvent.skip;
         this.checkIsActiveFormControl();
+    }
+
+    private changeContractStatus(contractId: string): void {
+        this.contractService.changeContractStatus(contractId).subscribe(
+            () => this.checkIsActiveFormControl(),
+            (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
+        );
     }
 }

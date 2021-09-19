@@ -7,9 +7,7 @@ import { RouterModule } from '@angular/router';
 
 @NgModule({
     declarations: [TreeHeaderSelectorComponent],
-    exports: [
-        TreeHeaderSelectorComponent
-    ],
-    imports: [CommonModule, MatIconModule, MatProgressSpinnerModule, RouterModule]
+    exports: [TreeHeaderSelectorComponent],
+    imports: [CommonModule, MatIconModule, MatProgressSpinnerModule, RouterModule],
 })
 export class TreeHeaderSelectorModule {}

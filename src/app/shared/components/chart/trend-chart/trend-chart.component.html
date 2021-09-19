@@ -1,10 +1,10 @@
-<div dir="ltr" [style.height]="height" [style.width]="width">
-    <div id="trendETFChart"
-         [style.height]="height"
-         [style.width]="width">
+<div [style.height]='height' [style.width]='width' dir='ltr'>
+    <div [style.height]='height'
+         [style.width]='width'
+         id='trendETFChart'>
     </div>
 </div>
 
-<div *ngIf="!data">
+<div *ngIf='!data'>
     <h3>داده‌ای موجود نیست</h3>
 </div>
