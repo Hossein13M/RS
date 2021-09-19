@@ -5,18 +5,20 @@ import { ChangePriceDialogComponent } from './change-price-dialog/change-price-d
 @Component({
     selector: 'app-change-price',
     template: `
-        <div fxLayout="row" fxLayoutAlign="space-around center">
-            <button mat-icon-button (click)="openChangePriceDialog()">
-                <mat-icon class="mat-18">monetization_on</mat-icon>
-            </button>
-            <p>
+        <button mat-button (click)="openChangePriceDialog()" class="flex items-center border-r-2 border-l-2">
+            <span>
+                یکای پول:
                 {{ priceUnitScaleString }}
                 {{ priceUnit.unit === 'rial' ? 'ریال' : 'تومان' }}
-            </p>
-        </div>
+            </span>
+        </button>
     `,
     styles: [
         `
+            button {
+                min-width: 64px;
+                height: 64px;
+            }
             p {
                 font-size: 14px;
             }
@@ -24,16 +26,14 @@ import { ChangePriceDialogComponent } from './change-price-dialog/change-price-d
     ],
 })
 export class ChangePriceComponent implements OnInit {
-    priceUnit = { scale: 0, unit: 'rial' };
-    priceUnitScaleString: string = '';
+    public priceUnit = { scale: 0, unit: 'rial' };
+    public priceUnitScaleString: string = '';
 
     constructor(private dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.setPriceUnitValue();
     }
-
-    ngOnChanges(): void {}
 
     public openChangePriceDialog(): void {
         this.dialog
