@@ -7,10 +7,11 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 import jwtDecode from 'jwt-decode';
 import { navigation } from '../../dashboard-configs/navigation';
 import { FuseNavigation } from '../../../@fuse/types';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthorizationService {
-    constructor(private readonly http: HttpClient) {}
+    constructor(private readonly http: HttpClient, private readonly router: Router) {}
 
     public login(loginInfo: Login): Observable<LoginResponse> {
         return this.http.post<LoginResponse>(`/api/v2/auth/login`, loginInfo);
@@ -29,6 +30,14 @@ export class AuthorizationService {
         return token ? ({ ...jwtDecode(token.accessToken) } as User) : ({ ...jwtDecode(localStorage.getItem('accessToken')) } as User);
     }
 
+    public logOut(): Promise<boolean> {
+        localStorage.removeItem('theme');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('activeOrganization');
+        localStorage.removeItem('user');
+        return this.router.navigate(['/login']);
+    }
+
     public static storeToken(token: string): void {
         localStorage.removeItem('accessToken');
         localStorage.setItem('accessToken', token);
@@ -40,6 +49,11 @@ export class AuthorizationService {
 
     public setUserInfoInLocalStorage(token: LoginResponse): void {
         localStorage.setItem('user', JSON.stringify(this.decodeToken(token)));
+    }
+
+    public isAuthenticated(): boolean {
+        const user: User = JSON.parse(localStorage.getItem('user')!);
+        return !!user ? !(Date.now() / 1000 > user.exp) : false;
     }
 
     public static checkUserAccess(): Array<FuseNavigation> {
