@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatRippleModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FuseSidebarModule, FuseThemeOptionsModule } from '@fuse/components';
+import { FuseSidebarModule } from '@fuse/components';
 import { ChartsModule } from 'ng2-charts';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
@@ -56,7 +56,6 @@ import { NgxPrintModule } from 'ngx-print';
         ReactiveFormsModule,
         FlexLayoutModule,
         FuseSidebarModule,
-        FuseThemeOptionsModule,
         MatTooltipModule,
         MatRippleModule,
         MatProgressSpinnerModule,
@@ -76,7 +75,6 @@ import { NgxPrintModule } from 'ngx-print';
         ReactiveFormsModule,
         FlexLayoutModule,
         FuseSidebarModule,
-        FuseThemeOptionsModule,
         DialogHeaderDirective,
         UsualButtonDirective,
         BadgeDirective,

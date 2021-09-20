@@ -34,16 +34,10 @@ export class OrganizationsListComponent implements OnInit {
             showSearchButtons: false,
             operations: [
                 {
-                    name: 'مدیریت ساختار و نقش',
-                    icon: 'filter_list',
-                    color: 'accent',
+                    name: 'پیکربندی ساختار و نقش',
+                    icon: 'account_tree',
+                    color: 'primary',
                     operation: (row: any) => this.navigateToUnitsAndRolesPage(row),
-                },
-                {
-                    name: 'گرفتن رونوشت',
-                    icon: 'file_copy',
-                    color: 'accent',
-                    operation: (row: OrganizationStructureModel) => this.copyOrganization(row),
                 },
                 {
                     name: 'ویرایش نام',
@@ -52,8 +46,8 @@ export class OrganizationsListComponent implements OnInit {
                     operation: (row: any) => this.openOrganizationModal(row),
                 },
                 {
-                    name: 'غیرفعال‌سازی',
-                    icon: 'sync_alt',
+                    name: 'ویرایش وضعیت',
+                    icon: 'sync',
                     color: 'warn',
                     operation: (row: any) => this.deactivateOrganization(row),
                 },
@@ -93,10 +87,6 @@ export class OrganizationsListComponent implements OnInit {
             this.organizations = response.items;
             this.pagination.total = response.total;
         });
-    }
-
-    private copyOrganization(organization: OrganizationStructureModel): void {
-        window.alert('این قابلیت به زودی پیاده‌سازی می‌شود!');
     }
 
     private deactivateOrganization(organization: { operationItem: { color: string; icon: string; operation: any }; row: OrganizationStructureModel }): void {

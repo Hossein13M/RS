@@ -6,6 +6,17 @@ export interface UserRole {
     roles: Array<number>;
 }
 
+export interface TokenUser {
+    exp: number;
+    firstname: string;
+    lastname: string;
+    iat: number;
+    services: string;
+    status: string;
+    userId: number;
+    userRoles: Array<{ organizationCode: number; organizationId: number; personnelCode: number; roles: Array<number>; units: Array<number> }>;
+}
+
 export interface User {
     firstname: string;
     lastname: string;

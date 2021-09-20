@@ -72,12 +72,7 @@ export class UserComponent implements OnInit, OnDestroy {
             sticky: true,
             operations: [
                 { name: 'ویرایش', icon: 'create', color: 'primary', operation: ({ row }: any) => this.editUser(row) },
-                {
-                    name: 'فعال‌سازی/غیرفعال‌سازی',
-                    icon: 'sync_alt',
-                    color: 'primary',
-                    operation: ({ row }: any) => this.changeUserStatus(row),
-                },
+                { name: 'ویرایش وضعیت', icon: 'sync', color: 'warn', operation: ({ row }: any) => this.changeUserStatus(row) },
             ],
         },
     ];

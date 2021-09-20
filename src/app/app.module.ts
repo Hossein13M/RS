@@ -4,7 +4,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
-import { FuseNavigationModule, FuseProgressBarModule, FuseThemeOptionsModule } from '@fuse/components';
+import { FuseNavigationModule, FuseProgressBarModule } from '@fuse/components';
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { AppComponent } from 'app/app.component';
@@ -96,7 +96,6 @@ const appRoutes: Routes = [
         FuseProgressBarModule,
         FuseSharedModule,
         LayoutModule,
-        FuseThemeOptionsModule,
         PortfolioManagementModule,
         OpRiskModule,
         ShareModule,
