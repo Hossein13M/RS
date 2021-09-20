@@ -34,8 +34,8 @@ export class OrganizationsListComponent implements OnInit {
             showSearchButtons: false,
             operations: [
                 {
-                    name: 'مدیریت ساختار و نقش',
-                    icon: 'filter_list',
+                    name: 'پیکربندی ساختار و نقش',
+                    icon: 'account_tree',
                     color: 'primary',
                     operation: (row: any) => this.navigateToUnitsAndRolesPage(row),
                 },
@@ -46,8 +46,8 @@ export class OrganizationsListComponent implements OnInit {
                     operation: (row: any) => this.openOrganizationModal(row),
                 },
                 {
-                    name: 'غیرفعال‌سازی',
-                    icon: 'sync_alt',
+                    name: 'ویرایش وضعیت',
+                    icon: 'sync',
                     color: 'warn',
                     operation: (row: any) => this.deactivateOrganization(row),
                 },
