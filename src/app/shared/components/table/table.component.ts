@@ -2,83 +2,13 @@ import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, Simpl
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
+import { fuseAnimations } from '@fuse/animations';
 import { Color, Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
 import { PaginationModel } from '#shared/models/pagination.model';
+import { StateType } from '#shared/state-type.enum';
+import { FuseConfigService } from '../../../../@fuse/services/config.service';
 
-enum StateType {
-    'LOADING',
-    'PRESENT',
-    'FAILED',
-}
-
-/**
- * Hoshman Risk's General Table Generator Document
- *
- * This table should be used to create all tables of this project.
- *
- * @remarks
- *
- * @param data -table data from back
- * @param columns - array of columns of table.
- *
- * example :
- * ```ts
- * {
- *  name: COLUMN_NAME,
- *  id: DATA_ID,
- *  type: DATA_TYPE -> 'string' | 'date' | 'price' | 'number' | 'operation',
- *
- *  width?: COLUMN_WIDTH -> exp: '300px' | '50%' | '50vw',
- *  minWidth?: COLUMN_MIN_WIDTH -> exp: '300px' | '50%' | '50vw',
- *
- *  search?: {
- *
- *   type: SEARCH_TYPE -> exp: 'select' | 'text' | 'date',
- *   mode: SEARCH_MODE -> exp: TableSearchMode.LOCAL | TableSearchMode.SERVER
- *
- *   // ----------------.
- *   //  "select" only  |
- *   // ----------------'
- *   // if you don't provide options, will find all options from data
- *   options?: [
- *    {
- *     name: 'فعال',
- *     value: 'active',
- *     headerAlign: 'center',
- *     dataAlign: 'center',
- *    },
- *   ],
- *
- *  },
- *
- *  convert?: SOME_FUNCTION -> the function use to convert this col's data to another form like :
- *            (value:any)=>{return 'something'}
- *
- *  // ----------------.
- *  //  "operation" only |
- *  // ----------------'
- *  // you must provide "operations" if you select type -> operation
- *  operations:[
- *   {
- *      showExportButtons: boolean,
- *      showSearchButtons: boolean,
- *     {
- *       name: OPERATION_NAME/TOOLTIP,
- *       icon: OPERATION_ICON,
- *       color: OPERATION_COLOR,
- *       operation: OPERATION_STRING | OPERATION_FUNCTION -> exp: (row:any) -> {some function}
- *     },
- *   }
- *  ]
- * }
- * ```
- *
- * @param searchCall - emit search value that use TableSearchMode.SERVER mode.
- * @param operationCall - emit operation string value if you don't provide function.
- * @returns
- */
 @Component({
     selector: 'app-table',
     templateUrl: './table.component.html',
@@ -108,14 +38,17 @@ export class TableComponent implements OnChanges, AfterViewInit {
     clickCoolDown = false;
     clickCount = 0;
     doubleClickAble = true;
+    public isDarkMode: boolean = false;
 
-    constructor(private formBuilder: FormBuilder) {
+    constructor(private formBuilder: FormBuilder, private fuseConfigService: FuseConfigService) {
         this.searchEvent = new EventEmitter<any>();
         this.operationEvent = new EventEmitter<any>();
         this.paginationEvent = new EventEmitter<PaginationChangeType>();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        this.fuseConfigService.getConfig().subscribe((res) => (this.isDarkMode = res.colorTheme === 'theme-blue-gray-dark'));
+
         let data = this.data;
         if (changes.hasOwnProperty('data')) {
             data = changes.data.currentValue;
@@ -125,7 +58,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
             return;
         }
 
-        // Check For Row Detail
         const rowDetailIndex: number = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
         if (rowDetailIndex !== -1) {
             this.rowDetail = this.columns[rowDetailIndex] as DetailColumn;
@@ -133,7 +65,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
             this.columns.splice(rowDetailIndex, 1);
         }
 
-        // Create Search FormGroup
         const formItems = {};
         this.columns.forEach((col) => {
             if (col.search) {
@@ -157,7 +88,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
             this.searchColumns = this.displayedColumns.map((el) => el + '_search');
         }
 
-        // add operation to each row
         const tableOperation = this.columns.find((element) => element.type === 'operation') as OperationColumn;
         if (tableOperation && tableOperation?.operations) {
             data?.forEach((element) => (element.tableOperation = [...tableOperation.operations.map((el: any) => ({ ...el }))]));
@@ -309,7 +239,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
         if (this.hasSearch) {
             this.dataSource.filterPredicate = this.createSearchFilter();
 
-            // Value Changes
             this.searchForm.valueChanges.pipe(debounceTime(500)).subscribe((r) => {
                 const localSearchFilter = {};
                 const serverSearch = {};
