@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AuthorizationService } from '../../../modules/authorization/authorization.service';
 import { FuseNavigation } from '../../../../@fuse/types';
 import { AlertService } from '#shared/services/alert.service';
+import { TokenUser } from '../../../modules/organizations-structure/user/user.model';
 
 @Component({
     selector: 'toolbar',
@@ -19,7 +20,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     hiddenNavbar: boolean;
     public navigation: Array<FuseNavigation> = [];
     userStatusOptions: any[];
-    user;
+    public user: TokenUser;
     private _unsubscribeAll: Subject<any>;
 
     constructor(

@@ -3,7 +3,6 @@
 @import 'src/@fuse/components/search-bar/search-bar.theme';
 @import 'src/@fuse/components/shortcuts/shortcuts.theme';
 @import 'src/@fuse/components/sidebar/sidebar.theme';
-@import 'src/@fuse/components/theme-options/theme-options.theme';
 @import 'src/@fuse/components/widget/widget.theme';
 
 @mixin fuse-core-theme($theme) {
@@ -19,7 +18,6 @@
     @include fuse-search-bar-theme($theme);
     @include fuse-shortcuts-theme($theme);
     @include fuse-sidebar-theme($theme);
-    @include fuse-theme-options-theme($theme);
     @include fuse-material-color-picker-theme($theme);
     @include fuse-widget-theme($theme);
 
