@@ -20,9 +20,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderModule } from '../../../app/layout/components/header/header.module';
 import { MatRadioModule } from '@angular/material/radio';
+import { ThemeChangerComponent } from './theme-changer/theme-changer.component';
 
 @NgModule({
-    declarations: [FuseShortcutsComponent, AlarmingMenuComponent, ChangePriceComponent, ChangePriceDialogComponent],
+    declarations: [FuseShortcutsComponent, AlarmingMenuComponent, ChangePriceComponent, ChangePriceDialogComponent, ThemeChangerComponent],
     imports: [
         CommonModule,
         RouterModule,
