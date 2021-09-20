@@ -103,6 +103,5 @@ export class ThemeChangerComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.unsubscribeAll.next();
         this.unsubscribeAll.complete();
-        this.fuseNavigationService.removeNavigationItem('custom-function');
     }
 }
