@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from '#shared/services/alert.service';
+import { environment } from '#env/environment';
 
 @Component({
     selector: 'app-cardboard-upload-dialog',
@@ -57,7 +58,8 @@ export class CardboardUploadDialogComponent implements OnInit {
 
     private uploadFile(formData: any): void {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'http://dev.management-api.iirms.ir/api/v1/contract-file/upload');
+        const envUrl = environment.serviceUrl;
+        xhr.open('POST', `${envUrl}/api/v1/contract-file/upload`);
         const token = localStorage.getItem('accessToken');
         xhr.setRequestHeader('Authorization', 'Bearer ' + token);
         xhr.send(formData);
