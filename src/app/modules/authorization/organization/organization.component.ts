@@ -71,6 +71,6 @@ export class OrganizationComponent implements OnInit {
     }
 
     private redirectToWelcome(): void {
-        this.router.navigate(['welcome']);
+        this.router.navigate(['welcome']).finally(() => window.location.reload());
     }
 }
