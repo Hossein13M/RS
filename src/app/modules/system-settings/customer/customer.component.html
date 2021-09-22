@@ -1,0 +1,23 @@
+<div class="page-layout">
+    <app-header class="wp-100" pageTitle="مشتری‌ها">
+        <div>
+            <button (click)="openCusotmerDialog('create')" class="mx-4" mat-stroked-button>
+                <mat-icon class="mat-18">add</mat-icon>
+                افزودن مشتری
+            </button>
+        </div>
+    </app-header>
+
+    <div class="fuse-card m-40 p-40">
+        <h1 class="wp-100 text-center mb-20">فهرست مشتری‌ها</h1>
+        <div class="container fuse-card">
+            <app-table
+                (paginationEvent)="paginationControl($event)"
+                [columns]="tableColumn"
+                [data]="customerList"
+                [paginationObject]="pagination"
+                [paginationSettings]="{ mode: 'backend' }"
+            ></app-table>
+        </div>
+    </div>
+</div>

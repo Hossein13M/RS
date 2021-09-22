@@ -118,6 +118,13 @@ export const navigation: FuseNavigation[] = [
         icon: 'dashboard',
         children: [
             {
+                id: 'customer',
+                title: 'مشتری‌ها',
+                type: 'item',
+                icon: 'supervisor_account',
+                url: '/system-settings/customer',
+            },
+            {
                 id: 'baseInfo',
                 title: 'ورود اطلاعات پایه',
                 type: 'item',
