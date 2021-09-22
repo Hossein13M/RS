@@ -49,6 +49,8 @@ import { MarketMakerComponent } from './bource-instrument-detail/market-maker/ma
 import { BourceInstrumentDetailComponent } from './bource-instrument-detail/bource-instrument-detail.component';
 import { FuseSharedModule } from '../../../@fuse/shared.module';
 import { HeaderModule } from '../../layout/components/header/header.module';
+import { CustomerComponent } from './customer/customer.component';
+import { CustomerDialogComponent } from './customer/customer-dialog/customer-dialog.component';
 
 @NgModule({
     declarations: [
@@ -93,6 +95,8 @@ import { HeaderModule } from '../../layout/components/header/header.module';
         UnderWriterComponent,
         MarketMakerComponent,
         BourceInstrumentDetailComponent,
+        CustomerComponent,
+        CustomerDialogComponent,
     ],
     imports: [
         CommonModule,
