@@ -61,9 +61,13 @@ export class ContractTypeDialogComponent implements OnInit {
         const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
 
         if (this.form.value.units) {
+            (data.units as any) = data.units.filter(item => item.unit != null && item.roles != null);
             data.units.map((item) => {
                 if (Array.isArray(item.unit)) item.unit = item.unit[0];
             });
+            if ((data.units as any).length === 0) {
+                delete data.units;
+            }
         }
 
         if (this.isEditMode) {
