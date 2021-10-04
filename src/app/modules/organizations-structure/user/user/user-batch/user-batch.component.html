@@ -104,7 +104,7 @@
                             <mat-error>نهاد اجباری میباشد.</mat-error>
                         </mat-form-field>
                       
-                        <div *ngIf="userOrganizationControlsData[0].units">
+                        <div *ngIf="userOrganizationControlsData[index].units">
                             <tree-single-select
                                 [data]="userOrganizationControlsData[index].units"
                                 [maxSelect]="userOrganizationControlsData[index].units.children.length === 0 ? 0 : -1"
