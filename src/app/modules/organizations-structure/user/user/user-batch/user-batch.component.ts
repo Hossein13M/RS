@@ -100,7 +100,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
-        console.log(this.form)
         if (this.form.invalid) {
             this.alertService.onError('لطفا ورودی های خود را چک کنید.');
             return;
@@ -234,7 +233,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     private updateUser(): void {
-        console.log(this.form.value);
         this.userService.updateUser({ id: this.passedId, ...this.form.value }).subscribe(
             () => {
                 this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
