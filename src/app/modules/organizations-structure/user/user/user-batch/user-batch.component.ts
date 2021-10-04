@@ -100,6 +100,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(): void {
+        console.log(this.form)
         if (this.form.invalid) {
             this.alertService.onError('لطفا ورودی های خود را چک کنید.');
             return;
