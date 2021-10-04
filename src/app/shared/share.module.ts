@@ -29,6 +29,7 @@ import { MaterialPersianDateAdapter, PERSIAN_DATE_FORMATS } from './material.per
 import { PipesModule } from '#shared/pipes/pipes.module';
 import { TableSavePdfComponent } from '#shared/components/table/table-save-pdf/table-save-pdf.component';
 import { NgxPrintModule } from 'ngx-print';
+import { TreeSingleSelectComponent } from './components/tree-single-select/tree-single-select.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { NgxPrintModule } from 'ngx-print';
         TableSavePdfComponent,
         TableDialogComponent,
         TreeSelectComponent,
+        TreeSingleSelectComponent,
         SearchSelectComponent,
     ],
     imports: [
@@ -83,7 +85,7 @@ import { NgxPrintModule } from 'ngx-print';
         PaginatorComponent,
         TableComponent,
         TableDialogComponent,
-        TreeSelectComponent,
+        TreeSingleSelectComponent,
         SearchSelectComponent,
         TreeSelectComponent,
         ClipboardModule,

@@ -1,0 +1,64 @@
+
+<div (mouseleave)='mouseLeave()' *ngIf='show' [ngClass]='{ selected: isAnyExpanded() }' class='tree-container'>
+    <div *ngIf='showSelected' [@expandCollapse]='!showSelected' class='primary-50 selected-container'>
+        <div class='primary-400 chips'>انتخاب شده‌ها:</div>
+        <div class='selected-values-container'>
+            <div *ngFor='let selected of tree.checklistSelection.selected' class='primary chips'>
+                {{ selected.titleFA }}
+            </div>
+        </div>
+    </div>
+
+    <mat-tree [dataSource]='tree.dataSource' [treeControl]='tree.treeControl' class='tree' dir='rtl'>
+        <mat-tree-node *matTreeNodeDef='let node' [@fadeInOut]="{ duration: '400ms' }" matTreeNodePadding
+                     >
+            <button mat-icon-button matTreeNodeToggle>
+                <mat-icon [ngStyle]="{ transform: !tree.treeControl.isExpanded(node) ? 'rotate(90deg)' : 'rotate(0)'  }" *ngIf="isExpandable(node)"
+                class='mat-icon-rtl-mirror'>
+                 expand_more
+             </mat-icon>
+            </button>
+            <mat-checkbox
+                #value
+                (change)='leafItemSelectionToggle(node, tree, value)'
+                [checked]='tree.checklistSelection.isSelected(node)'
+                [disabled]='disable || (maxSelect !== -1 && maxSelect <= tree.checklistSelection.selected.length && !tree.checklistSelection.isSelected(node))'
+                [value]='node.id'
+                class='checklist-leaf-node'
+            >
+                {{ node.titleFA  }}
+            </mat-checkbox>
+        </mat-tree-node>
+
+        <mat-tree-node *matTreeNodeDef='let node; when: isZerolevel' [@fadeInOut]="{ duration: '400ms' }" matRipple
+                       matTreeNodePadding>
+             
+             <button mat-icon-button matTreeNodeToggle>
+                <mat-icon [ngStyle]="{ transform: !tree.treeControl.isExpanded(node) ? 'rotate(90deg)' : 'rotate(0)' }"
+                   class='mat-icon-rtl-mirror'>
+                    expand_more
+                </mat-icon>
+            </button>
+
+            <span matTreeNodeToggle style='cursor: pointer'>
+                {{ node.titleFA }}
+            </span>
+
+            <span *ngIf='node.level === 0' style='margin-right: auto'>
+                <span> ({{ tree.checklistSelection.selected?.length }}) </span>
+
+                <button (click)='toggleExpandTable()' *ngIf='expandAll' mat-icon-button matTooltip='باز کردن همه'>
+                    <mat-icon class='mat-18'>unfold_more</mat-icon>
+                </button>
+
+                <button (click)='toggleExpandTable()' *ngIf='!expandAll' mat-icon-button matTooltip='بستن همه'>
+                    <mat-icon class='mat-18'>unfold_less</mat-icon>
+                </button>
+
+                <button (click)='showSelected = !showSelected' mat-icon-button matTooltip='انتخاب شده‌ها'>
+                    <mat-icon [style.transform]="showSelected ? 'rotate(180deg)' : 'rotate(0deg)'" class='rotateIcon'>playlist_add_check</mat-icon>
+                </button>
+            </span>
+        </mat-tree-node>
+    </mat-tree>
+</div>
