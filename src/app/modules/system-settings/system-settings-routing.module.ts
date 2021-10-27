@@ -16,8 +16,10 @@ import { OrganizationSupervisorListComponent } from './organization-supervisor-s
 import { OrganizationTypeSettingListComponent } from './organization-type-setting-components/organization-type-setting-list/organization-type-setting-list.component';
 import { InputComponent } from './input/input.component';
 import { BourceInstrumentDetailComponent } from './bource-instrument-detail/bource-instrument-detail.component';
+import { CustomerComponent } from './customer/customer.component';
 
 const routes: Routes = [
+    { component: CustomerComponent, path: 'customer' },
     { component: BranchSettingListComponent, path: 'branch' },
     { component: BrokerSettingListComponent, path: 'broker' },
     { component: GlSettingListComponent, path: 'gl' },
