@@ -104,10 +104,7 @@ export const navigation: FuseNavigation[] = [
                 title: 'مدیریت حدود صندوق‌ها',
                 icon: 'multiline_chart',
                 type: 'collapsable',
-                children: [
-                    { id: 'complianceFund', title: 'تعریف حدود صندوق‌ها', type: 'item', url: '/compliance/fund' },
-                    { id: 'complianceCalc', title: 'گزارش حدود صندوق ها', type: 'item', url: '/compliance/calculated' },
-                ],
+                children: [{ id: 'complianceFund', title: 'تعریف حدود صندوق‌ها', type: 'item', url: '/compliance/fund' }],
             },
         ],
     },
