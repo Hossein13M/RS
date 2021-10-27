@@ -46,6 +46,7 @@ const appRoutes: Routes = [
         pathMatch: 'full',
         redirectTo: 'welcome',
     },
+    
     {
         path: 'messaging',
         loadChildren: () => import('app/modules/mails/messaging.module').then((m) => m.MessagingModule),

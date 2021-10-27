@@ -233,7 +233,6 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     private updateUser(): void {
-        console.log(this.form.value);
         this.userService.updateUser({ id: this.passedId, ...this.form.value }).subscribe(
             () => {
                 this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
