@@ -6,7 +6,7 @@ import { UtilityFunctions } from '#shared/utilityFunctions';
 import { AlertService } from '#shared/services/alert.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
 import { Units, User } from '../../../organizations-structure/user/user.model';
-import { BPMNButtonForm, BpmnData, BpmnStepTool } from '../contract-bpmn.model';
+import { BPMNButtonForm, BpmnData } from '../contract-bpmn.model';
 import { ContractFlowService } from '../../contract-flow/contract-flow.service';
 import { Flow } from '../../contract-flow/contract-flow.model';
 import { ContractBpmnService } from '../contract-bpmn.service';
@@ -38,15 +38,6 @@ export class ContractBpmnDialogComponent implements OnInit {
         units: [],
         initializer: [false, Validators.required],
     });
-    public formTools: Array<BpmnStepTool> = [
-        { type: 'button', name: 'دکمه', icon: 'donut_large', disabled: false },
-        {
-            type: 'button',
-            name: 'ابزارهای جدید به زودی',
-            imageLink: '../../../../../assets/images/coming-soon.png',
-            disabled: true,
-        },
-    ];
     public formArray: FormArray = this.fb.array([]);
     private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     private prevMatSelectValue: ContractFormButtonTypes;
