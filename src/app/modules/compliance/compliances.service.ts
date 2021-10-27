@@ -9,7 +9,6 @@ import { ResponseWithPagination } from '#shared/models/pagination.model';
 export class CompliancesService {
     constructor(private http: HttpClient) {}
 
-    // compliances entity
     public getCompliances(paginationParams?, searchParams?): Observable<ResponseWithPagination<Compliance>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
         return this.http.get<ResponseWithPagination<Compliance>>('/api/v1/compliance', { params });
@@ -27,7 +26,6 @@ export class CompliancesService {
         return this.http.delete<null>('/api/v1/compliance' + id);
     }
 
-    // compliances-fund entity
     public getCompliancesFunds(complianceId: string | number): Observable<Array<ComplianceFund>> {
         const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ complianceId });
         return this.http.get<Array<ComplianceFund>>('/api/v1/compliance-fund', { params });
