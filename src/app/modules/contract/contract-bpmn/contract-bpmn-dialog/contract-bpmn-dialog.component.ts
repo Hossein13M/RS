@@ -102,7 +102,6 @@ export class ContractBpmnDialogComponent implements OnInit {
     public addTool(toolInfo?: BPMNButtonForm) {
         if (this.flowDetails.hasActiveContract) {
             this.alertService.onInfo('نمی‌توانید فرم این گام را تغییر دهید');
-            return;
         }
         let firstAvailableTool;
         if (!toolInfo) {
@@ -235,15 +234,7 @@ export class ContractBpmnDialogComponent implements OnInit {
         if (response.accessRights?.units) this.form.get('units').setValue([response.accessRights.units.unit]);
         this.form.get('users').setValue(userIdList);
         if (!!response.accessRights.units) {
-            this.detectChanges(
-                {
-                    value: {
-                        value: response.accessRights.units.unit,
-                        _checked: true,
-                    },
-                },
-                response.accessRights.units.roles
-            );
+            this.detectChanges({ value: { value: response.accessRights.units.unit, _checked: true } }, response.accessRights.units.roles);
         }
         response.attributes.map((attr) => !attr.isDefaultButton && this.addTool(attr));
         this.addUploadButtonOnFirstTaskAndEndEvent();
