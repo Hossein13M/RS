@@ -5,7 +5,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { AlertService } from '#shared/services/alert.service';
 import { UserService } from '../../../organizations-structure/user/user.service';
-import { Units, User } from '../../../organizations-structure/user/user.model';
+import { Roles, Units, User } from '../../../organizations-structure/user/user.model';
 import { BPMNButtonForm, BpmnData } from '../contract-bpmn.model';
 import { ContractFlowService } from '../../contract-flow/contract-flow.service';
 import { Flow } from '../../contract-flow/contract-flow.model';
@@ -21,7 +21,7 @@ import { StateType } from '#shared/state-type.enum';
 export class ContractBpmnDialogComponent implements OnInit {
     public users: Array<User> = [];
     public units: Units;
-    public rolesOnUnit: Array<{ childId: number; id: number; name: string }> = [];
+    public rolesOnUnit: Array<Roles> = [];
     public taskStep: 'first' | 'last' | 'other' = 'other';
     public flowDetails: Flow;
     public stateType: StateType = StateType.INIT;
@@ -220,9 +220,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     private getRolesOnSpecificUnits(unitId: number): void {
-        this.units.children.map((item) => {
-            if (item.id === unitId) this.rolesOnUnit = item.mappings;
-        });
+        this.userService.getOrganizationRoles(this.organizationCode, [unitId]).subscribe((response) => (this.rolesOnUnit = response));
     }
 
     private setFormDataInEditMode(response: BpmnData) {

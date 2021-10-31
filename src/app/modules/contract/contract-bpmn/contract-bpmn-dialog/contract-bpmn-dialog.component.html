@@ -66,7 +66,7 @@
                             <mat-form-field *ngIf="!!form.get('roles')" appearance="outline" class="py-0">
                                 <mat-label>نقش‌های این ساختار سازمانی</mat-label>
                                 <mat-select formControlName="roles" multiple>
-                                    <mat-option *ngFor="let role of rolesOnUnit" [value]="role.childId">{{ role.name }}</mat-option>
+                                    <mat-option *ngFor="let role of rolesOnUnit" [value]="role.id">{{ role.name }}</mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </div>
