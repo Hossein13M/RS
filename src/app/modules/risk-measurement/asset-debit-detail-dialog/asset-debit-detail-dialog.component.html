@@ -3,7 +3,7 @@
         <mat-icon (click)='this.dialog.close()' class='icon-header'>close</mat-icon>
     </div>
     <div class='asset-debit-container' dir='rtl'>
-        <div class='asset-and-debbit-row'>
+        <div class='asset-and-debit-row'>
             <mat-form-field appearance='outline' style='flex-basis: 40%;margin-left: 10px'>
                 <mat-label>
                     عنوان-کد سرفصل
@@ -30,7 +30,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <div class='asset-and-debbit-btn-container'>
+            <div class='asset-and-debit-btn-container'>
                 <button (click)='createCodeSarfaslObj()' [color]="'accent'"
                         [disabled]='!codeSarfaslValue.value || !codeSarfaslType.value' mat-raised-button>
                     <mat-icon>add</mat-icon>
