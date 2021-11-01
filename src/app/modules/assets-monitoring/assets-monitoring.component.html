@@ -1,117 +1,113 @@
-<div class='page-layout'>
-    <app-header class='wp-100' pageTitle='پایش دارایی‌ها'>
-        <button (click)='openIpsHistoryDialog()' mat-stroked-button>
-            <mat-icon class='mat-18'>history</mat-icon>
-            نمایش پیشینه‌ی IPSها
+<div class="page-layout">
+    <app-header class="wp-100" pageTitle="پایش دارایی‌ها">
+        <button (click)="openIpsHistoryDialog()" mat-stroked-button>
+            <mat-icon class="mat-18">history</mat-icon>
+            نمایش پیشینه‌ی IPS ها
         </button>
     </app-header>
-    <mat-progress-bar *ngIf='loading' color='warn' mode='indeterminate'></mat-progress-bar>
-    <div class='container fuse-card mx-20 mt-20' dir='rtl' style='flex: 1'>
-        <form (submit)='submitForm()' [formGroup]='form' fxLayout='row wrap' fxLayoutGap='20px' style='padding: 30px'>
-            <div fxFlex='100' fxLayout='row wrap' fxLayoutAlign='center center' fxLayoutGap='20px'>
-                <mat-form-field appearance='outline' style='min-width: 150px'>
+    <mat-progress-bar *ngIf="loading" color="warn" mode="indeterminate"></mat-progress-bar>
+    <div class="container fuse-card mx-20 mt-20" dir="rtl" style="flex: 1">
+        <form (submit)="submitForm()" [formGroup]="form" fxLayout="row wrap" fxLayoutGap="20px" style="padding: 30px">
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <mat-form-field appearance="outline" style="min-width: 150px">
                     <mat-label>سبد</mat-label>
-                    <mat-select formControlName='basket'>
+                    <mat-select formControlName="basket">
                         <mat-option [value]="['F', 'T']">همه</mat-option>
-                        <mat-option value='T'>تمدن</mat-option>
-                        <mat-option value='F'>صندوق</mat-option>
+                        <mat-option value="T">تمدن</mat-option>
+                        <mat-option value="F">صندوق</mat-option>
                     </mat-select>
                 </mat-form-field>
 
-                <mat-form-field appearance='outline' class='full-wid'>
+                <mat-form-field appearance="outline" class="full-wid">
                     <mat-label>تاریخ</mat-label>
-                    <input (click)='picker.open()' [matDatepicker]='picker' formControlName='date' matInput required />
-                    <mat-datepicker-toggle [for]='picker' matSuffix></mat-datepicker-toggle>
+                    <input (click)="picker.open()" [matDatepicker]="picker" formControlName="date" matInput required />
+                    <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
 
                 <app-search-select
-                    *ngIf='haveInstrumentsAchieved'
-                    [formControl]='instrumentFormControl'
-                    [list]='instruments'
-                    [multi]='false'
-                    [required]='true'
-                    [searchFn]='searchInstrument'
-                    label='فهرست ابزارها'
-                    style='width: 150px'
-                    uiPropertyName='symbol'
-                    valuePropertyName='ticker'
+                    *ngIf="haveInstrumentsAchieved"
+                    [formControl]="instrumentFormControl"
+                    [list]="instruments"
+                    [multi]="false"
+                    [required]="true"
+                    [searchFn]="searchInstrument"
+                    label="فهرست ابزارها"
+                    style="width: 150px"
+                    uiPropertyName="symbol"
+                    valuePropertyName="ticker"
                 >
                 </app-search-select>
             </div>
 
-            <div fxFlex='100' fxLayout='row wrap' fxLayoutAlign='center center' fxLayoutGap='20px'>
-                <button [disabled]='!checkForValidationButton() || loading || instrumentFormControl.invalid' color='primary'
-                        mat-stroked-button
-                        type='submit'>
-                    <mat-icon class='mat-18'> search</mat-icon>
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <button [disabled]="!checkForValidationButton() || loading || instrumentFormControl.invalid" color="primary" mat-stroked-button type="submit">
+                    <mat-icon class="mat-18"> search</mat-icon>
                     جستجو
                 </button>
             </div>
         </form>
     </div>
 
-    <div *ngIf='isSectionShowing' class='fuse-card mt-40 mx-20'>
-        <div class='mb-40 pt-20 mx-20 mat-card-am'>
-            <mat-card fxLayout='column wrap'>
+    <div *ngIf="isSectionShowing" class="fuse-card mt-40 mx-20">
+        <div class="mb-40 pt-20 mx-20 mat-card-am">
+            <mat-card fxLayout="column wrap">
                 <div>
-                    <mat-card-header class='accent'>
+                    <mat-card-header class="accent">
                         <mat-card-title>ارزش کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p *ngIf='!loading' class='text-center'>{{ assetsMonitoringData.totalValue | price }}</p>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalValue | price }}</p>
                     </mat-card-content>
                 </div>
                 <div>
-                    <mat-card-header class='accent'>
+                    <mat-card-header class="accent">
                         <mat-card-title>حجم کل</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <p *ngIf='!loading'
-                           class='text-center'>{{ assetsMonitoringData.totalVolume | number: '.0-4' }}</p>
+                        <p *ngIf="!loading" class="text-center">{{ assetsMonitoringData.totalVolume | number: '.0-4' }}</p>
                     </mat-card-content>
                 </div>
             </mat-card>
 
-            <mat-card fxLayout='column wrap'>
-                <mat-card-header class='accent'>
+            <mat-card fxLayout="column wrap">
+                <mat-card-header class="accent">
                     <mat-card-title>نمودار دایره‌ای</mat-card-title>
                 </mat-card-header>
-                <mat-card-content class='chart-mat-card'>
+                <mat-card-content class="chart-mat-card">
                     <app-pie-chart
-                        [cardLayout]='false'
-                        [data]='assetsMonitoringData.pieChart'
-                        categoryLabel='name'
-                        chartName='نمودار دایره‌ای'
-                        height='300px'
-                        width='500px'
+                        [cardLayout]="false"
+                        [data]="assetsMonitoringData.pieChart"
+                        categoryLabel="name"
+                        chartName="نمودار دایره‌ای"
+                        height="300px"
+                        width="500px"
                     >
                     </app-pie-chart>
                 </mat-card-content>
             </mat-card>
         </div>
 
-        <mat-card class='mb-40 mt-40 mx-20 p-0'>
-            <mat-card-header class='accent'>
-                <mat-card-title class='text-center'>نمودار ارزش کل دارایی</mat-card-title>
+        <mat-card class="mb-40 mt-40 mx-20 p-0">
+            <mat-card-header class="accent">
+                <mat-card-title class="text-center">نمودار ارزش کل دارایی</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <app-trend-chart *ngIf='dataLoading' [convertJalali]='true' [data]='assetsMonitoringData.trendChart'
-                                 height='380px'></app-trend-chart>
+                <app-trend-chart *ngIf="dataLoading" [convertJalali]="true" [data]="assetsMonitoringData.trendChart" height="380px"></app-trend-chart>
             </mat-card-content>
         </mat-card>
 
-        <mat-card class='mb-40 mt-40 mx-20 p-0'>
-            <mat-card-header class='accent'>
-                <mat-card-title class='text-center'>جدول ارزش کل دارایی</mat-card-title>
+        <mat-card class="mb-40 mt-40 mx-20 p-0">
+            <mat-card-header class="accent">
+                <mat-card-title class="text-center">جدول ارزش کل دارایی</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <app-table
-                    *ngIf='!loading'
-                    [columns]='tableColumn'
-                    [data]='assetsMonitoringData.tableOfAssets'
+                    *ngIf="!loading"
+                    [columns]="tableColumn"
+                    [data]="assetsMonitoringData.tableOfAssets"
                     [paginationSettings]="{ mode: 'local' }"
-                    class='app-table mt-20'
+                    class="app-table mt-20"
                 >
                 </app-table>
             </mat-card-content>
