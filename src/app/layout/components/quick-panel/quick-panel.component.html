@@ -1,31 +1,31 @@
-<div fusePerfectScrollbar fxFlex fxLayout='column'>
-    <mat-list cdkFocusRegionStart class='date'>
-        <h3 cdkFocusInit matSubheader>
+<div fusePerfectScrollbar fxFlex fxLayout="column">
+    <mat-list class="date">
+        <h3 matSubheader>
             <span>Today</span>
         </h3>
 
-        <div class='secondary-text mat-display-1 mb-0 p-16'>
-            <div class='mb-12'>
+        <div class="secondary-text mat-display-1 mb-0 p-16">
+            <div class="mb-12">
                 {{ date | date: 'EEEE' }}
             </div>
-            <div fxLayout='row' fxLayoutAlign='start start'>
+            <div fxLayout="row" fxLayoutAlign="start start">
                 <span> {{ date | date: 'd' }}</span>
-                <span class='mat-subheading-1'>th</span>
+                <span class="mat-subheading-1">th</span>
                 <span> {{ date | date: 'MMMM' }}</span>
             </div>
         </div>
     </mat-list>
 
-    <mat-divider cdkFocusRegionEnd></mat-divider>
+    <mat-divider></mat-divider>
 
     <mat-list>
         <h3 matSubheader>
             <span>Events</span>
         </h3>
 
-        <mat-list-item *ngFor='let event of events'>
+        <mat-list-item *ngFor="let event of events">
             <h3 matLine>{{ event.title }}</h3>
-            <p class='secondary-text' matLine>{{ event.detail }}</p>
+            <p class="secondary-text" matLine>{{ event.detail }}</p>
         </mat-list-item>
     </mat-list>
 
@@ -36,9 +36,9 @@
             <span>Notes</span>
         </h3>
 
-        <mat-list-item *ngFor='let note of notes'>
+        <mat-list-item *ngFor="let note of notes">
             <h3 matLine>{{ note.title }}</h3>
-            <p class='secondary-text' matLine>{{ note.detail }}</p>
+            <p class="secondary-text" matLine>{{ note.detail }}</p>
         </mat-list-item>
     </mat-list>
 
@@ -50,19 +50,19 @@
         </h3>
 
         <mat-list-item>
-            <mat-slide-toggle [(ngModel)]='settings.notify' class='mat-primary' fxFlex labelPosition='before'>
+            <mat-slide-toggle [(ngModel)]="settings.notify" class="mat-primary" fxFlex labelPosition="before">
                 <h3>Notifications</h3>
             </mat-slide-toggle>
         </mat-list-item>
 
         <mat-list-item>
-            <mat-slide-toggle [(ngModel)]='settings.cloud' class='mat-accent' fxFlex labelPosition='before'>
+            <mat-slide-toggle [(ngModel)]="settings.cloud" class="mat-accent" fxFlex labelPosition="before">
                 <h3>Cloud Sync</h3>
             </mat-slide-toggle>
         </mat-list-item>
 
         <mat-list-item>
-            <mat-slide-toggle [(ngModel)]='settings.retro' class='mat-warn' fxFlex labelPosition='before'>
+            <mat-slide-toggle [(ngModel)]="settings.retro" class="mat-warn" fxFlex labelPosition="before">
                 <h3>Retro Thrusters</h3>
             </mat-slide-toggle>
         </mat-list-item>

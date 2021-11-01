@@ -1,23 +1,20 @@
-<div class='page-layout'>
-    <app-header pageTitle='پیشخوان مدیریت سبد'>
-        <form [formGroup]='form' dir='rtl' fxLayout='row wrap' fxLayoutAlign='center center'>
-            <mat-form-field appearance='outline'>
+<div class="page-layout">
+    <app-header pageTitle="پیشخوان مدیریت سبد">
+        <form [formGroup]="form" dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center">
+            <mat-form-field appearance="outline">
                 <mat-label>تاریخ</mat-label>
-                <input (click)='date.open()' [matDatepicker]='date' [max]='today' class='full-wid' formControlName='date'
-                       matInput />
-                <mat-datepicker-toggle [for]='date' matSuffix></mat-datepicker-toggle>
+                <input (click)="date.open()" [matDatepicker]="date" [max]="today" class="full-wid" formControlName="date" matInput />
+                <mat-datepicker-toggle [for]="date" matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #date></mat-datepicker>
                 <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
             </mat-form-field>
         </form>
     </app-header>
 
-    <div class='page-content' fxLayout='row wrap' fxLayoutAlign='space-between start'>
-        <app-trade-dashboard-table [date]='form.value.date' fxFlex='100'></app-trade-dashboard-table>
-        <app-trade-dashboard-trend-chart [date]='form.value.date' fxFlex='60'
-                                         height='500px'></app-trade-dashboard-trend-chart>
-        <app-trade-dashboard-pie-chart [date]='form.value.date' fxFlex='40'
-                                       height='500px'></app-trade-dashboard-pie-chart>
-        <app-daily-investment-report [date]='form.value.date' fxFlex='100'></app-daily-investment-report>
+    <div class="page-content" fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <app-trade-dashboard-table [date]="form.value.date" fxFlex="100"></app-trade-dashboard-table>
+        <app-trade-dashboard-trend-chart [date]="form.value.date" fxFlex="60" height="500px"></app-trade-dashboard-trend-chart>
+        <app-trade-dashboard-pie-chart [date]="form.value.date" fxFlex="40" height="500px"></app-trade-dashboard-pie-chart>
+        <app-daily-investment-report [date]="form.value.date" fxFlex="100"></app-daily-investment-report>
     </div>
 </div>
