@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class ConfirmationDialogComponent {
     constructor(private dialog: MatDialogRef<ConfirmationDialogComponent>) {}
 
-    onConfirationDialogClose(hasConfirmed: boolean): void {
+    onDialogClose(hasConfirmed: boolean): void {
         this.dialog.close(hasConfirmed);
     }
 }
