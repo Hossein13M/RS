@@ -1,9 +1,9 @@
 <div>
-    <div *ngIf="state == 'FAIL'" fxLayout='row wrap' fxLayoutAlign='center center'>
-        <p class='text-center'>دریافت داده ناموفق بود</p>
+    <div *ngIf="state == 'FAIL'" class="flex justify-center items-center">
+        <p class="text-center">دریافت داده ناموفق بود</p>
     </div>
 
     <div *ngIf="dataLength == 0 && state == 'PRESENT'">
-        <p class='text-center'>داده‌ای برای نمایش وجود ندارد</p>
+        <p class="text-center">داده‌ای برای نمایش وجود ندارد</p>
     </div>
 </div>
