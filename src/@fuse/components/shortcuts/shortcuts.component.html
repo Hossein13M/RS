@@ -46,7 +46,7 @@
 
             <mat-divider></mat-divider>
 
-            <mat-nav-list *ngIf="!searching" fusePerfectScrollbar style="max-height: 312px; overflow: auto">
+            <mat-nav-list *ngIf="!searching" style="max-height: 312px; overflow: auto">
                 <mat-list-item (click)="toggleShortcut($event, shortcutItem)" *ngFor="let shortcutItem of shortcutItems">
                     <div class="w-100-p" fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon *ngIf="shortcutItem.icon" class="mr-8 secondary-text" mat-list-icon>
@@ -71,7 +71,7 @@
                 </mat-list-item>
             </mat-nav-list>
 
-            <mat-nav-list *ngIf="searching" fusePerfectScrollbar style="max-height: 312px; overflow: auto">
+            <mat-nav-list *ngIf="searching" style="max-height: 312px; overflow: auto">
                 <mat-list-item (click)="toggleShortcut($event, navigationItem)" *ngFor="let navigationItem of filteredNavigationItems">
                     <div class="w-100-p" fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon *ngIf="navigationItem.icon" class="mr-8 secondary-text" mat-list-icon>
