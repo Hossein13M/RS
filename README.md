@@ -73,8 +73,7 @@ export enum stateType {
 'LOADING',
 'FAILED',
 'SUCCESS',
-...
-}
+...}
 
 The strings in the enum could be different from above.
 

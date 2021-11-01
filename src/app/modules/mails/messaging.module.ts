@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatRippleModule } from '@angular/material/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FuseConfirmDialogModule } from '@fuse/components';
 import { FuseDirectivesModule } from '@fuse/directives/directives';
 import { MaterialModule } from 'app/shared/material.module';
 import { ShareModule } from 'app/shared/share.module';
@@ -29,7 +28,6 @@ const routes: Routes = [
         CommonModule,
         RouterModule.forChild(routes),
         MaterialModule,
-        FuseConfirmDialogModule,
         ShareModule,
         FuseDirectivesModule,
         MatRippleModule,
