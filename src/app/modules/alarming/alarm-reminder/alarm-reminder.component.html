@@ -1,77 +1,61 @@
-<div class='page-layout'>
-
-    <!-- HEADER -->
-    <div class='header accent p-16 p-sm-24' fxLayout='column' fxLayout.gt-xs='row' fxLayoutAlign='start'
-         fxLayoutAlign.gt-xs='space-between center'>
-
-        <!-- APP TITLE -->
-        <div fxLayout='row' fxLayoutAlign='start center'>
-            <div class='logo' fxLayout='row' fxLayoutAlign='start center'>
-                <span [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}" class='logo-text h1'>
-                    هشدار‌ها
-                </span>
+<div class="page-layout">
+    <div class="header accent p-16 p-sm-24" fxLayout="column" fxLayout.gt-xs="row" fxLayoutAlign="start" fxLayoutAlign.gt-xs="space-between center">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="logo" fxLayout="row" fxLayoutAlign="start center">
+                <span [@animate]="{ value: '*', params: { delay: '100ms', x: '-25px' } }" class="logo-text h1"> هشدار‌ها </span>
             </div>
         </div>
-        <!-- / APP TITLE -->
-
     </div>
 
-
-    <div class='alarm-container'>
-        <div class='fuse-card' dir='rtl'>
-            <div class='grid-container'>
-                <table [dataSource]='dataSource' class='mat-elevation-z8' mat-table>
+    <div class="alarm-container">
+        <div class="fuse-card" dir="rtl">
+            <div class="grid-container">
+                <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
                     <!-- Position Column -->
-                    <ng-container matColumnDef='status'>
+                    <ng-container matColumnDef="status">
                         <th *matHeaderCellDef mat-header-cell>وضعیت</th>
-                        <td *matCellDef='let element' mat-cell>
-                        <span [type]='element?.status' appBadge>
-                        {{element.status| readStatus}}
-                        </span>
+                        <td *matCellDef="let element" mat-cell>
+                            <span [type]="element?.status" appBadge>
+                                {{ element.status | readStatus }}
+                            </span>
                         </td>
                     </ng-container>
 
                     <!-- Name Column -->
-                    <ng-container matColumnDef='title'>
-                        <th *matHeaderCellDef mat-header-cell> عنوان</th>
-                        <td *matCellDef='let element' mat-cell> {{element.title}} </td>
+                    <ng-container matColumnDef="title">
+                        <th *matHeaderCellDef mat-header-cell>عنوان</th>
+                        <td *matCellDef="let element" mat-cell>{{ element.title }}</td>
                     </ng-container>
                     <!-- Symbol Column -->
-                    <ng-container matColumnDef='priority'>
-                        <th *matHeaderCellDef mat-header-cell> اولویت</th>
-                        <td *matCellDef='let element' mat-cell>
-                        <span [type]='element.priority' appBadge>
-                            {{element.priority | priority}}
-                        </span>
+                    <ng-container matColumnDef="priority">
+                        <th *matHeaderCellDef mat-header-cell>اولویت</th>
+                        <td *matCellDef="let element" mat-cell>
+                            <span [type]="element.priority" appBadge>
+                                {{ element.priority | priority }}
+                            </span>
                         </td>
                     </ng-container>
-                    <ng-container matColumnDef='remindDate'>
-                        <th *matHeaderCellDef mat-header-cell> تاریخ یادآوری</th>
-                        <td *matCellDef='let element' mat-cell> {{element?.reminderDate | convertDate}} </td>
+                    <ng-container matColumnDef="remindDate">
+                        <th *matHeaderCellDef mat-header-cell>تاریخ یادآوری</th>
+                        <td *matCellDef="let element" mat-cell>{{ element?.reminderDate | convertDate }}</td>
                     </ng-container>
 
-                    <ng-container matColumnDef='operation'>
-                        <th *matHeaderCellDef class='operation-header' mat-header-cell>
-                            عملیات
-                        </th>
-                        <td *matCellDef='let element' class='operation-body' mat-cell>
-                            <button (click)='createReminder(element)'
-                                    [color]="'warn'"
-                                    mat-raised-button>
+                    <ng-container matColumnDef="operation">
+                        <th *matHeaderCellDef class="operation-header" mat-header-cell>عملیات</th>
+                        <td *matCellDef="let element" class="operation-body" mat-cell>
+                            <button (click)="createReminder(element)" [color]="'warn'" mat-raised-button>
                                 <mat-icon>notifications_active</mat-icon>
                                 یادآوری
                             </button>
-                            <button (click)='openAlarm(element)'
-                                    color='accent'
-                                    mat-raised-button>
+                            <button (click)="openAlarm(element)" color="accent" mat-raised-button>
                                 <mat-icon>visibility</mat-icon>
                                 جزئیات
                             </button>
                         </td>
                     </ng-container>
 
-                    <tr *matHeaderRowDef='displayedColumns' mat-header-row></tr>
-                    <tr *matRowDef='let row; columns: displayedColumns;' mat-row></tr>
+                    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                    <tr *matRowDef="let row; columns: displayedColumns" mat-row></tr>
                 </table>
             </div>
         </div>

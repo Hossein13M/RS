@@ -1,28 +1,26 @@
-<div class='page-layout'>
-    <!-- HEADER -->
-    <app-header pageTitle='لیست مشخصات صندوق'>
-        <button (click)='create()' color='primary' mat-raised-button>
+<div class="page-layout">
+    <app-header pageTitle="لیست مشخصات صندوق">
+        <button (click)="create()" color="primary" mat-raised-button>
             <mat-icon>add</mat-icon>
             ایجاد
         </button>
     </app-header>
 
-    <div class='page-content'>
-        <div class='setting-container-back' dir='rtl'>
-            <div class='setting-panel fuse-card'>
-                <div style='width: 100%'>
+    <div class="page-content">
+        <div class="setting-container-back" dir="rtl">
+            <div class="setting-panel fuse-card">
+                <div style="width: 100%">
                     <app-table
-                        (paginationEvent)='paginationControl($event)'
-                        [columns]='column'
-                        [data]='data'
-                        [paginationObject]='pagination'
+                        (paginationEvent)="paginationControl($event)"
+                        [columns]="column"
+                        [data]="data"
+                        [paginationObject]="pagination"
                         [paginationSettings]="{ mode: 'backend' }"
                     ></app-table>
-                    <ng-container *ngIf='data?.length === 0'>
-                        <div
-                            style='display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column'>
-                            <img height='140px' src='../../../../../assets/images/no-data.svg' width='140px' />
-                            <div style='font-size: 13px; color: #449fdb; margin-top: 7px'>موردی وجود ندارد</div>
+                    <ng-container *ngIf="data?.length === 0">
+                        <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                            <img height="140px" src="../../../../../assets/images/no-data.svg" width="140px" alt="" />
+                            <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
                         </div>
                     </ng-container>
                 </div>

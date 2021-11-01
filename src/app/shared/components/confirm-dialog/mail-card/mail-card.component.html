@@ -1,94 +1,46 @@
-<!--<mat-card dir="rtl">-->
-<!--    <mat-card-header>-->
-<!--        <div mat-card-avatar class="avatar">-->
-<!--            <span class="material-icons">-->
-<!--                person-->
-<!--            </span>-->
-<!--        </div>-->
-<!--        <mat-card-title>{{inbox?.title}}</mat-card-title>-->
-<!--        <mat-card-subtitle *ngIf="mailType == 'inbox'">ارسال شده توسط :-->
-<!--            {{inbox?.fromUser[0]['firstName'] + ' ' + inbox?.fromUser[0]['lastName']}}-->
-<!--        </mat-card-subtitle>-->
-
-
-<!--        <mat-card-subtitle>-->
-<!--            <div class="near-text">-->
-
-<!--                <p><b>ارسال شده به :&nbsp;</b></p>-->
-<!--                <p *ngFor="let i of inbox?.toUsers; let i = index">-->
-<!--                    {{i?.firstName + ' ' + i?.lastName}}-->
-<!--                </p>-->
-<!--            </div>-->
-
-<!--            در تاریخ : {{inbox?.submitDate | convertDate}}-->
-
-<!--        </mat-card-subtitle>-->
-<!--    </mat-card-header>-->
-<!--    <mat-card-content>-->
-<!--        <p>-->
-<!--            {{inbox?.body}}-->
-<!--        </p>-->
-<!--    </mat-card-content>-->
-
-<!--    <mat-card-actions>-->
-<!--        <button style="margin-left: 7px" mat-fab color="warn" (click)="deleteMail(inbox.id)">-->
-<!--            <mat-icon>delete</mat-icon>-->
-<!--        </button>-->
-<!--        <button style="margin-left: 7px" mat-fab color="accent" (click)="reply(inbox.id)">-->
-<!--            <mat-icon>reply</mat-icon>-->
-<!--        </button>-->
-<!--        <button style="margin-left: 7px" mat-fab color="primary" (click)="forward(inbox.id)">-->
-<!--            <mat-icon>forward</mat-icon>-->
-<!--        </button>-->
-<!--    </mat-card-actions>-->
-<!--</mat-card>-->
-<div class='main'>
-    <div *ngIf='inbox' class='container'>
-        <div class='mail-title'>
-            {{inbox?.title}}
+<div class="main">
+    <div *ngIf="inbox" class="container">
+        <div class="mail-title">
+            {{ inbox?.title }}
         </div>
-        <div class='mail-body'>
-            <div class='header-flex'>
-                <div class='body-header'>
-                    <img height='30px' src='./assets/images/user.svg' style='border-radius: 30px' width='30px'>
-                    <div style='display: flex;flex-direction: column;margin-right: 7px'>
-                        <div class='sender'>{{inbox?.fromUser[0]?.email}}</div>
-                        <div class='receiver'>
+        <div class="mail-body">
+            <div class="header-flex">
+                <div class="body-header">
+                    <img height="30px" src="./assets/images/user.svg" style="border-radius: 30px" width="30px" alt="" />
+                    <div style="display: flex; flex-direction: column; margin-right: 7px">
+                        <div class="sender">{{ inbox?.fromUser[0]?.email }}</div>
+                        <div class="receiver">
                             به
-                            <span *ngFor='let m of inbox?.toUsers'>{{m?.email}}, &nbsp;</span>
+                            <span *ngFor="let m of inbox?.toUsers">{{ m?.email }}, &nbsp;</span>
                         </div>
-
                     </div>
                 </div>
-                <div class='body-date'>
-                    {{inbox?.submitDate | convertDate}}
+                <div class="body-date">
+                    {{ inbox?.submitDate | convertDate }}
                 </div>
             </div>
-            <div class='body-body'>
-                {{inbox?.body}}
+            <div class="body-body">
+                {{ inbox?.body }}
             </div>
-            <div class='body-action'>
-                <button (click)='deleteMail(inbox.id)' color='warn' mat-mini-fab matTooltip='حذف'
-                        style='margin-left: 7px'>
+            <div class="body-action">
+                <button (click)="deleteMail(inbox.id)" color="warn" mat-mini-fab matTooltip="حذف" style="margin-left: 7px">
                     <mat-icon>delete</mat-icon>
                 </button>
-                <button (click)='reply(inbox.id)' color='accent' mat-mini-fab matTooltip='پاسخ دادن'
-                        style='margin-left: 7px'>
+                <button (click)="reply(inbox.id)" color="accent" mat-mini-fab matTooltip="پاسخ دادن" style="margin-left: 7px">
                     <mat-icon>reply</mat-icon>
                 </button>
-                <button (click)='forward(inbox.id)' color='primary' mat-mini-fab matTooltip='ارسال به دیگران'
-                        style='margin-left: 7px'>
+                <button (click)="forward(inbox.id)" color="primary" mat-mini-fab matTooltip="ارسال به دیگران" style="margin-left: 7px">
                     <mat-icon>forward</mat-icon>
                 </button>
             </div>
         </div>
     </div>
-    <div *ngIf='!inbox'>
-        <div class='no-mail'>
+    <div *ngIf="!inbox">
+        <div class="no-mail">
             <div>
-                <mat-icon style='font-size: 150px;color: rgba(0, 0, 0, 0.38)'>email</mat-icon>
+                <mat-icon style="font-size: 150px; color: rgba(0, 0, 0, 0.38)">email</mat-icon>
             </div>
-            <div style='color: rgba(0, 0, 0, 0.38);margin-right: 120px'>پیامی انتخاب نشده است.</div>
+            <div style="color: rgba(0, 0, 0, 0.38); margin-right: 120px">پیامی انتخاب نشده است.</div>
         </div>
     </div>
 </div>
