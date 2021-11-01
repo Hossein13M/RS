@@ -1,16 +1,18 @@
-<div *ngIf='data'
-     [ngStyle]="{'overflow-y': (data&& data.length>8)? 'scroll':'hidden' , 'height' : (!data || data.length ===0) ? '30px': '250px' }"
-     class='select-container'>
-    <div *ngIf='!data || data.length===0' class='no-data'>
-        نتیجه ای یافت نشد!
-    </div>
-    <div (click)='onItemClicked(item)'
-         *ngFor='let item of data'
-         [ngStyle]="{'font-size' : smallSize ? '12px' : '16px'}"
-         class='select-item'
-         matRipple
-         matRippleCentered='centered'>
-        {{item[showPropertyName]}}
-        <span *ngIf='has2ndPropertyName' class='secound'>{{item[valueOf2ndPropertyName]}}</span>
+<div
+    *ngIf="data"
+    [ngStyle]="{ 'overflow-y': data && data.length > 8 ? 'scroll' : 'hidden', height: !data || data.length === 0 ? '30px' : '250px' }"
+    class="select-container"
+>
+    <div *ngIf="!data || data.length === 0" class="no-data">نتیجه ای یافت نشد!</div>
+    <div
+        (click)="onItemClicked(item)"
+        *ngFor="let item of data"
+        [ngStyle]="{ 'font-size': smallSize ? '12px' : '16px' }"
+        class="select-item"
+        matRipple
+        matRippleCentered="centered"
+    >
+        {{ item[showPropertyName] }}
+        <span *ngIf="has2ndPropertyName" class="second">{{ item[valueOf2ndPropertyName] }}</span>
     </div>
 </div>

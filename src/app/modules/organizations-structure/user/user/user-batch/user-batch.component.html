@@ -32,7 +32,6 @@
             <mat-form-field appearance="outline">
                 <mat-label>شماره همراه</mat-label>
                 <input formControlName="phoneNumber" matInput required />
-                <mat-hint>مثال: 09XXXXXXXXX</mat-hint>
                 <mat-error>شماره همراه باید با 09 شروع شود و 11 رقم باشد.</mat-error>
             </mat-form-field>
 
@@ -103,7 +102,7 @@
                             </mat-select>
                             <mat-error>نهاد اجباری میباشد.</mat-error>
                         </mat-form-field>
-                      
+
                         <div *ngIf="userOrganizationControlsData[index].units">
                             <tree-single-select
                                 [data]="userOrganizationControlsData[index].units"
