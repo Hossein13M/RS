@@ -2,6 +2,10 @@
 @import '../../../../@fuse/scss/fuse';
 @import '../../../layout/styles/variables';
 
+.flip-img {
+    transform: scaleX(-1);
+}
+
 login {
     #login {
         width: 100%;
@@ -258,7 +262,7 @@ login {
                     background-color: gray;
                     color: white;
                     border-top-left-radius: $border-radius-1;
-                    padding: 0px 22px;
+                    padding: 0 22px;
                     font-size: 10px;
                 }
             }

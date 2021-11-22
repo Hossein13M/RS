@@ -27,26 +27,33 @@
 
             <div class="title">ورود به حساب کاربری</div>
 
-            <form (submit)="login()" [formGroup]="loginForm" name="loginForm" novalidate>
+            <form (submit)="login()" [formGroup]="loginForm">
                 <mat-form-field appearance="outline" class="mb-2">
-                    <mat-label>نام کاربری</mat-label>
-                    <label>
-                        <input formControlName="username" matInput />
-                    </label>
-                    <mat-icon class="secondary-text" matSuffix>account_circle</mat-icon>
-                    <mat-error> نام کاربری الزامی می باشد.</mat-error>
+                    <mat-label>کد ملی</mat-label>
+                    <input formControlName="username" matInput />
+                    <mat-icon class="secondary-text" matSuffix>person</mat-icon>
+                    <mat-error> کد ملی الزامی می‌باشد.</mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                    <mat-label>کلمه عبور</mat-label>
+                    <mat-label>گذرواژه</mat-label>
                     <input formControlName="password" matInput type="password" />
                     <mat-icon class="secondary-text" matSuffix>vpn_key</mat-icon>
-                    <mat-hint>کلمه عبور پیشفرض برابر با کد ملی کاربر می باشد.</mat-hint>
-                    <mat-error> کلمه عبور الزامی می باشد.</mat-error>
+                    <mat-hint>گذرواژه‌ی پیشفرض برابر با کد ملی کاربر می باشد.</mat-hint>
+                    <mat-error> گذرواژه الزامی می باشد.</mat-error>
                 </mat-form-field>
 
-                <button [disabled]="loginForm.invalid || loading" class="submit-button" color="primary" mat-raised-button type="submit">
-                    <span *ngIf="!loading">ورود</span>
+                <button
+                    [disabled]="loading"
+                    class="submit-button flex justify-center items-center py-3 text-white"
+                    color="primary"
+                    mat-raised-button
+                    type="submit"
+                >
+                    <span *ngIf="!loading" class="flex items-center justify-center">
+                        <span>ورود</span>
+                        <mat-icon matSuffix class="flip-img px-3">login</mat-icon>
+                    </span>
                     <img *ngIf="loading" alt="loading" src="../../../../assets/images/loading.svg" width="30px" />
                 </button>
             </form>

@@ -33,19 +33,13 @@ export class LoginComponent {
 
     public login(): void {
         this.loading = true;
-        this.authorizationService.login(this.loginForm.value).subscribe(
-            (token) => {
-                this.loading = false;
-                AuthorizationService.storeToken(token.accessToken);
-                this.authorizationService.setUserInfoInLocalStorage(token);
-                AuthorizationService.isUserUnauthorized(this.authorizationService.decodeToken(token))
-                    ? this.redirectToChangePassword()
-                    : this.redirectToOrganization();
+        this.authorizationService.newLogin(this.loginForm.value).subscribe(
+            (response) => {
+                this.authorizationService.temporaryStoreUserTokenAndInfo(response);
+                this.redirectToOrganization();
             },
-            () => {
-                this.loading = false;
-                this.alertService.onError('ورود موفقیت آمیز نبود.');
-            }
+            (error: any) => this.alertService.onError(error.error.errors[0].messageFA),
+            () => (this.loading = false)
         );
     }
 

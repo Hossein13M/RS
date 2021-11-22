@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FuseConfigService } from '../../../../@fuse/services/config.service';
 import { fuseAnimations } from '../../../../@fuse/animations';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthorizationService } from '../authorization.service';
-import { Organization, UserRole } from '../auth.model';
-import { Router } from '@angular/router';
+import { OrganizationInfo } from '../auth.model';
 
 @Component({
     selector: 'organization',
@@ -15,62 +15,53 @@ import { Router } from '@angular/router';
 })
 export class OrganizationComponent implements OnInit {
     public form: FormGroup;
-    public waiting = true;
-    public organizationData: Array<Organization>;
+    public loading: boolean = true;
+    public organizations: Array<OrganizationInfo>;
 
     constructor(
         private _fuseConfigService: FuseConfigService,
         private authorizationService: AuthorizationService,
-        private formBuilder: FormBuilder,
+        private fb: FormBuilder,
         private router: Router
     ) {
         this._fuseConfigService.config = {
             layout: {
                 navbar: { hidden: true },
                 toolbar: { hidden: true },
-                footer: { hidden: true },
+                footer: { hidden: false },
                 sidepanel: { hidden: true },
             },
         };
     }
 
-    private static setActiveOrganization(organization: Organization): void {
-        localStorage.setItem('activeOrganization', JSON.stringify(organization));
-    }
-
     ngOnInit(): void {
         this.initForm();
-        this.initActiveOrganizationData(this.authorizationService.decodeToken().userRoles);
-    }
-
-    public onSubmit(): void {
-        if (this.form.invalid) return;
-        OrganizationComponent.setActiveOrganization(this.form.value['organization']);
-        this.redirectToWelcome();
+        this.organizations = JSON.parse(this.authorizationService.getToken('tempUserInfo')).organizations;
+        this.isOrganizationSingle();
     }
 
     private initForm(): void {
-        this.form = this.formBuilder.group({
-            organization: [null, Validators.required],
-        });
-    }
-
-    private initActiveOrganizationData(userRoles: Array<UserRole>): void {
-        const codes: Array<number> = userRoles.map((userRole) => userRole.organizationCode);
-        this.authorizationService.getOrganizations(codes).subscribe((response) => {
-            this.organizationData = response.items;
-            this.isOrganizationSingle();
-        });
+        this.form = this.fb.group({ organization: [null, Validators.required] });
     }
 
     private isOrganizationSingle(): void {
-        if (this.organizationData.length === 1) {
-            OrganizationComponent.setActiveOrganization(this.organizationData[0]);
-            this.redirectToWelcome();
+        if (this.organizations.length === 1) {
+            this.setActiveOrganization(this.organizations[0]);
         }
     }
 
-    private redirectToWelcome(): void {
-        this.router.navigate(['welcome']).finally(() => window.location.reload());
+    public onSubmit(): void {
+        this.setActiveOrganization(this.form.value['organization']);
+    }
+
+    private setActiveOrganization(organization: OrganizationInfo): void {
+        this.authorizationService.selectActiveOrganization(organization.code).subscribe((token) => {
+            this.authorizationService.setAccessTokenInLocalStorage(token.accessToken);
+            this.redirectToPanel();
+        });
+    }
+
+    private redirectToPanel(): void {
+        this.router.navigate(['welcome']).finally(() => this.authorizationService.removeTempToken());
     }
 }
