@@ -1,17 +1,50 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { ChangePassword, Login, LoginResponse, Organization, Status, User } from './auth.model';
-import { Observable } from 'rxjs';
-import { ResponseWithPagination } from '#shared/models/pagination.model';
-import { UtilityFunctions } from '#shared/utilityFunctions';
-import jwtDecode from 'jwt-decode';
-import { navigation } from '../../dashboard-configs/navigation';
-import { FuseNavigation } from '../../../@fuse/types';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import jwtDecode from 'jwt-decode';
+import { ChangePassword, Login, LoginResponse, LoginTempToken, Organization, Status, User } from './auth.model';
+import { ResponseWithPagination } from '#shared/models/pagination.model';
+import { navigation } from '../../dashboard-configs/navigation';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+import { FuseNavigation } from '../../../@fuse/types';
 
 @Injectable()
 export class AuthorizationService {
     constructor(private readonly http: HttpClient, private readonly router: Router) {}
+
+    public newLogin(userInfo: Login): Observable<LoginTempToken> {
+        return this.http.post<LoginTempToken>(`/api/v2/auth/login`, userInfo);
+    }
+
+    public temporaryStoreUserTokenAndInfo(userInfo: LoginTempToken): void {
+        localStorage.removeItem('tempUserInfo');
+        localStorage.setItem('tempUserInfo', JSON.stringify(userInfo));
+    }
+
+    public selectActiveOrganization(organizationCode: number): Observable<{ accessToken: string }> {
+        const token = JSON.parse(this.getToken('tempUserInfo')).accessToken;
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        });
+        return this.http.post<{ accessToken: string }>(`/api/v2/auth/access-token`, { organizationCode }, { headers: headers });
+    }
+
+    public setAccessTokenInLocalStorage(accessToken: string): void {
+        localStorage.removeItem('accessToken');
+        localStorage.setItem('accessToken', accessToken);
+    }
+
+    public getToken(tokenType: 'tempUserInfo' | 'accessToken'): string {
+        return localStorage.getItem(tokenType);
+    }
+
+    public removeTempToken(): void {
+        localStorage.removeItem('tempUserInfo');
+    }
+
+    // prev implementation
 
     public static storeToken(token: string): void {
         localStorage.removeItem('accessToken');

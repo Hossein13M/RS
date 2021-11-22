@@ -3,6 +3,26 @@ export interface Login {
     password: string;
 }
 
+export interface LoginTempToken {
+    userId: number;
+    organizations: Array<{
+        id: number;
+        name: string;
+        isActive: boolean;
+        code: number;
+    }>;
+    accessToken: string;
+}
+
+export interface OrganizationInfo {
+    code: number;
+    id: number;
+    isActive: boolean;
+    name: string;
+}
+
+// prev implementation
+
 export interface ChangePassword {
     newPassword: string;
     confirmNewPassword: string;
