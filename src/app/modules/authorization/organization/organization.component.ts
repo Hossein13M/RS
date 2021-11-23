@@ -37,17 +37,15 @@ export class OrganizationComponent implements OnInit {
     ngOnInit(): void {
         this.initForm();
         this.organizations = JSON.parse(this.authorizationService.getToken('tempUserInfo')).organizations;
-        this.isOrganizationSingle();
+        this.checkForSingleOrganization();
     }
 
     private initForm(): void {
         this.form = this.fb.group({ organization: [null, Validators.required] });
     }
 
-    private isOrganizationSingle(): void {
-        if (this.organizations.length === 1) {
-            this.setActiveOrganization(this.organizations[0]);
-        }
+    private checkForSingleOrganization(): void {
+        this.organizations.length === 1 && this.setActiveOrganization(this.organizations[0]);
     }
 
     public onSubmit(): void {
