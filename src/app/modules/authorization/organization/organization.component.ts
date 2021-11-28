@@ -14,7 +14,7 @@ import { OrganizationInfo } from '../auth.model';
     animations: fuseAnimations,
 })
 export class OrganizationComponent implements OnInit {
-    public form: FormGroup;
+    public form: FormGroup = this.fb.group({ organization: [null, Validators.required] });
     public loading: boolean = true;
     public organizations: Array<OrganizationInfo>;
 
@@ -35,17 +35,13 @@ export class OrganizationComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.initForm();
         this.organizations = JSON.parse(this.authorizationService.getToken('tempUserInfo')).organizations;
-        this.checkForSingleOrganization();
-    }
-
-    private initForm(): void {
-        this.form = this.fb.group({ organization: [null, Validators.required] });
+        this.organizations.length === 1 && this.checkForSingleOrganization();
     }
 
     private checkForSingleOrganization(): void {
-        this.organizations.length === 1 && this.setActiveOrganization(this.organizations[0]);
+        this.form.get('organization').setValue(this.organizations[0]);
+        this.setActiveOrganization(this.form.get('organization').value);
     }
 
     public onSubmit(): void {
