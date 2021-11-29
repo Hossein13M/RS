@@ -32,7 +32,7 @@ export class UtilityFunctions {
     }
 
     static getActiveOrganizationInfo(requiredInfoType: 'code' | 'id'): number {
-        return JSON.parse(localStorage.getItem('activeOrganization'))[requiredInfoType];
+        return JSON.parse(localStorage.getItem('user')).organization[requiredInfoType];
     }
 
     static getActiveOrganizationName(): string {
