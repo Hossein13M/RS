@@ -1,7 +1,6 @@
 export interface ContractForm {
     name: string;
     sections: Array<any>;
-    organization: number;
 }
 
 export interface ContractFormList {

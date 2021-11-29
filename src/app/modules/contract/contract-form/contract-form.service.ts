@@ -13,8 +13,8 @@ export class ContractFormService {
         return this.http.post<ContractFormList>(`/api/v1/contract-type-form`, contractFormInfo);
     }
 
-    public getContractForm(organization: number): Observable<Array<ContractFormList>> {
-        return this.http.get<Array<ContractFormList>>(`/api/v1/contract-type-form`, { params: { organization } });
+    public getContractForm(): Observable<Array<ContractFormList>> {
+        return this.http.get<Array<ContractFormList>>(`/api/v1/contract-type-form`);
     }
 
     public changeContractFormStatus(contractFormId: number): Observable<any> {
