@@ -58,7 +58,7 @@ export class LoginComponent {
         this.router.navigate([`./change-password`], { relativeTo: this.activatedRoute }).finally();
     }
 
-    private redirectToOrganization(): void {
-        this.router.navigate([`./organization`], { relativeTo: this.activatedRoute }).finally();
+    private redirectToOrganization() {
+        this.router.navigate([`/organization`]).finally(() => window.location.reload());
     }
 }

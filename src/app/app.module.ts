@@ -3,108 +3,77 @@ import { NgModule } from '@angular/core';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
-import { FuseNavigationModule, FuseProgressBarModule } from '@fuse/components';
+import { RouterModule, Routes, UrlSegment } from '@angular/router';
+import { FuseNavigationModule, FuseProgressBarModule, FuseSidebarModule } from '@fuse/components';
 import { FuseModule } from '@fuse/fuse.module';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { AppComponent } from 'app/app.component';
 import { fuseConfig } from 'app/dashboard-configs';
 import { LayoutModule } from 'app/layout/layout.module';
-import { MessagingModule } from './modules/mails/messaging.module';
 import { SendMailComponent } from './modules/mails/send-mail/send-mail.component';
-import { OpRiskModule } from './modules/op-risk/op-risk.module';
-import { PortfolioManagementModule } from './modules/portfolio-management/portfolio-management.module';
-import { TestModule } from './modules/test/test.module';
 import { ApiModule } from '#services/API/api.module';
 import { getFarsiPaginatorIntl } from '#shared/components/table/farsi-paginator-intl';
 import { MaterialModule } from '#shared/material.module';
-import { ShareModule } from '#shared/share.module';
-import { GlModule } from './modules/gl/gl.module';
 import { AlertService } from '#shared/services/alert.service';
-import { AuthorizationModule } from './modules/authorization/authorization.module';
 import { AuthGuard } from '#shared/services/auth.guard';
+import { AuthorizationService } from './pages/authorization.service';
 
-const appRoutes: Routes = [
+function urlMatcher(segments: UrlSegment[], regex: RegExp) {
+    return segments.length >= 1 && regex.exec(segments[0].path);
+}
+
+export function authMatcher(segments: UrlSegment[]) {
+    return urlMatcher(segments, /^(login|change-password|organization)$/) ? { consumed: [] } : (undefined as any);
+}
+
+export function panelMatcher(segments: UrlSegment[]) {
+    return urlMatcher(
+        segments,
+        /^(welcome|organizations-structure|assets-monitoring|system-settings|risk-measurement|nav|alarming|messaging|compliance|aum|contract)$/
+    )
+        ? { consumed: [] }
+        : (undefined as any);
+}
+
+const routes: Routes = [
+    // Panel Layout:
     {
-        path: 'login',
-        loadChildren: () => import('app/modules/authorization/authorization.module').then((m) => m.AuthorizationModule),
+        canActivate: [AuthGuard],
+        matcher: panelMatcher,
+        loadChildren: () => import('./modules/modules.module').then((module) => module.ModulesModule),
     },
+
+    // Pages Layout:
     {
-        path: 'contract',
-        loadChildren: () => import('app/modules/contract/contract.module').then((m) => m.ContractModule),
+        matcher: authMatcher,
+        loadChildren: () => import('./pages/pages.module').then((m) => m.PagesModule),
     },
-    {
-        path: 'aum',
-        loadChildren: () => import('app/modules/aum/aum.module').then((m) => m.AUMModule),
-    },
-    {
-        path: 'compliance',
-        loadChildren: () => import('app/modules/compliance/compliance.module').then((m) => m.ComplianceModule),
-    },
-    {
-        path: '',
-        pathMatch: 'full',
-        redirectTo: 'welcome',
-    },
-    
-    {
-        path: 'messaging',
-        loadChildren: () => import('app/modules/mails/messaging.module').then((m) => m.MessagingModule),
-    },
-    {
-        path: 'alarming',
-        loadChildren: () => import('app/modules/alarming/alarming.module').then((m) => m.AlarmingModule),
-    },
-    {
-        path: 'nav',
-        loadChildren: () => import('app/modules/nav/nav.module').then((m) => m.NavModule),
-    },
-    {
-        path: 'risk-measurement',
-        loadChildren: () => import('app/modules/risk-measurement/risk-measurement.module').then((m) => m.RiskMeasurementModule),
-    },
-    {
-        path: 'system-settings',
-        loadChildren: () => import('app/modules/system-settings/system-settings.module').then((m) => m.SystemSettingsModule),
-    },
-    {
-        path: 'welcome',
-        loadChildren: () => import('app/modules/welcome/welcome.module').then((m) => m.WelcomeModule),
-    },
-    {
-        path: 'assets-monitoring',
-        loadChildren: () => import('app/modules/assets-monitoring/assets-monitoring.module').then((m) => m.AssetsMonitoringModule),
-    },
-    {
-        path: 'organizations-structure',
-        loadChildren: () => import('app/modules/organizations-structure/organization-structure.module').then((m) => m.OrganizationStructureModule),
-    },
+
+    // {
+    //     path: '**',
+    //     redirectTo: 'welcome',
+    //     pathMatch: 'full',
+    // },
 ];
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
         FuseNavigationModule,
-        AuthorizationModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
         ApiModule,
         MaterialModule,
-        RouterModule.forRoot(appRoutes, { relativeLinkResolution: 'legacy' }),
-        MessagingModule,
+        RouterModule.forRoot(routes),
         FuseModule.forRoot(fuseConfig),
         FuseProgressBarModule,
         FuseSharedModule,
         LayoutModule,
-        PortfolioManagementModule,
-        OpRiskModule,
-        ShareModule,
-        GlModule,
-        TestModule, // --> Test Playground
+        FuseSidebarModule,
     ],
     bootstrap: [AppComponent],
-    providers: [{ provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() }, AuthGuard, AlertService],
+    providers: [{ provide: MatPaginatorIntl, useValue: getFarsiPaginatorIntl() }, AuthGuard, AlertService, AuthorizationService],
     entryComponents: [SendMailComponent],
 })
 export class AppModule {}

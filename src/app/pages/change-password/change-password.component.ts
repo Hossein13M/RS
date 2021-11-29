@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FuseConfigService } from '../../../../@fuse/services/config.service';
-import { fuseAnimations } from '../../../../@fuse/animations';
+import { FuseConfigService } from '../../../@fuse/services/config.service';
+import { fuseAnimations } from '../../../@fuse/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangePassword } from '../auth.model';

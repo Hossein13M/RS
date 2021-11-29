@@ -3,7 +3,7 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AuthorizationService } from '../../../modules/authorization/authorization.service';
+import { AuthorizationService } from '../../../pages/authorization.service';
 import { FuseNavigation } from '../../../../@fuse/types';
 import { AlertService } from '#shared/services/alert.service';
 import { TokenUser } from '../../../modules/organizations-structure/user/user.model';
