@@ -1,7 +1,7 @@
 <div class="inner-scroll" fxLayout="row" fxLayoutAlign="start" id="login">
     <div fxFlex fxHide fxShow.gt-xs id="login-intro">
         <div [@animate]="{ value: '*', params: { scale: '0.2' } }" class="logo">
-            <img alt="logo" src="../../../../assets/images/logo.png" style="padding: 10px" />
+            <img alt="logo" src='../../../assets/images/logo.png' style="padding: 10px" />
         </div>
 
         <div [@animate]="{ value: '*', params: { delay: '100ms', y: '25px' } }" class="description">
@@ -22,7 +22,7 @@
     <div [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }" dir="rtl" fusePerfectScrollbar id="login-form-wrapper" class="h-screen">
         <div id="login-form">
             <div class="logo" fxHide.gt-xs>
-                <img alt="white logo image" src="../../../../assets/images/white-logo.png" />
+                <img alt="white logo image" src='../../../assets/images/white-logo.png' />
             </div>
 
             <div class="title">ورود به حساب کاربری</div>
@@ -54,7 +54,7 @@
                         <span>ورود</span>
                         <mat-icon matSuffix class="flip-img px-3">login</mat-icon>
                     </span>
-                    <img *ngIf="loading" alt="loading" src="../../../../assets/images/loading.svg" width="30px" />
+                    <img *ngIf="loading" alt="loading" src='../../../assets/images/loading.svg' width="30px" />
                 </button>
             </form>
         </div>

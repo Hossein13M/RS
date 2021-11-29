@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigation } from '../../types';
-import { AuthorizationService } from '../../../app/modules/authorization/authorization.service';
+import { AuthorizationService } from '../../../app/pages/authorization.service';
 
 @Component({
     selector: 'fuse-navigation',

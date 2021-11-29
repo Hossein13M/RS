@@ -21,6 +21,21 @@ export interface OrganizationInfo {
     name: string;
 }
 
+export interface NewUser {
+    userId: number;
+    firstname: string;
+    lastname: string;
+    status: string;
+    organization: {
+        id: number;
+        code: number;
+        name: string;
+    };
+    role: string;
+    iat: number;
+    exp: number;
+}
+
 // prev implementation
 
 export interface ChangePassword {

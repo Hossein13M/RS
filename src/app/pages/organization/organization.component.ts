@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FuseConfigService } from '../../../../@fuse/services/config.service';
-import { fuseAnimations } from '../../../../@fuse/animations';
+import { FuseConfigService } from '../../../@fuse/services/config.service';
+import { fuseAnimations } from '../../../@fuse/animations';
 import { AuthorizationService } from '../authorization.service';
 import { OrganizationInfo } from '../auth.model';
 
@@ -56,6 +56,6 @@ export class OrganizationComponent implements OnInit {
     }
 
     private redirectToPanel(): void {
-        this.router.navigate(['welcome']).finally(() => this.authorizationService.removeTempToken());
+        this.router.navigate(['/welcome']).finally();
     }
 }

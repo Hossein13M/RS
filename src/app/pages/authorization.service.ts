@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import jwtDecode from 'jwt-decode';
-import { ChangePassword, Login, LoginResponse, LoginTempToken, Organization, Status, User } from './auth.model';
+import { ChangePassword, Login, LoginResponse, LoginTempToken, NewUser, Organization, Status, User } from './auth.model';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
-import { navigation } from '../../dashboard-configs/navigation';
+import { navigation } from '../dashboard-configs/navigation';
 import { UtilityFunctions } from '#shared/utilityFunctions';
-import { FuseNavigation } from '../../../@fuse/types';
+import { FuseNavigation } from '../../@fuse/types';
 
 @Injectable()
 export class AuthorizationService {
@@ -40,8 +40,10 @@ export class AuthorizationService {
         return localStorage.getItem(tokenType);
     }
 
-    public removeTempToken(): void {
-        localStorage.removeItem('tempUserInfo');
+    public verifyUserIntegration(): Promise<NewUser> {
+        const token = this.getToken('accessToken');
+        const headers = new HttpHeaders({ 'Content-Type': 'application/json', Authorization: `Bearer ${token}` });
+        return this.http.post<NewUser>(`/api/v2/auth/verify`, {}, { headers: headers }).toPromise();
     }
 
     // prev implementation
@@ -58,7 +60,7 @@ export class AuthorizationService {
     public static checkUserAccess(): Array<FuseNavigation> {
         const userRoles: Array<string> = [];
         const authorizedNavigation: Array<FuseNavigation> = [];
-        (JSON.parse(localStorage.getItem('user')) as User).services.split('|').map((userRole) => userRoles.push(userRole));
+        (JSON.parse(localStorage.getItem('tempUserInfo')) as User).services.split('|').map((userRole) => userRoles.push(userRole));
         navigation.map((navItem) => {
             if (userRoles.includes(navItem.id)) {
                 if (!!navItem.children) {
@@ -77,10 +79,6 @@ export class AuthorizationService {
         });
 
         return authorizedNavigation;
-    }
-
-    public login(loginInfo: Login): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`/api/v2/auth/login`, loginInfo);
     }
 
     public changePassword(model: ChangePassword): Observable<null> {
@@ -110,10 +108,5 @@ export class AuthorizationService {
 
     public setUserInfoInLocalStorage(token: LoginResponse): void {
         localStorage.setItem('user', JSON.stringify(this.decodeToken(token)));
-    }
-
-    public isAuthenticated(): boolean {
-        const user: User = JSON.parse(localStorage.getItem('user')!);
-        return !!user ? !(Date.now() / 1000 > user.exp) : false;
     }
 }

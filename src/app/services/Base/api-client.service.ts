@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { FuseProgressBarService } from '../../../@fuse/components/progress-bar/progress-bar.service';
-import { FormContainer } from '../../shared/models/FromContainer';
+import { FormContainer } from '#shared/models/FromContainer';
 import { GetAPI } from './Memory';
-import { AuthorizationService } from '../../modules/authorization/authorization.service';
+import { AuthorizationService } from '../../pages/authorization.service';
 
 @Injectable({
     providedIn: 'root',
