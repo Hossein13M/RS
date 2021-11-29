@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
 
     private async checkForUserVerification(): Promise<boolean> {
         const verificationResult = await this.authorizationService.verifyUserIntegration();
+        localStorage.setItem('user', JSON.stringify(verificationResult));
         return !!verificationResult;
     }
 }

@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import jwtDecode from 'jwt-decode';
-import { ChangePassword, Login, LoginResponse, LoginTempToken, NewUser, Organization, Status, User } from './auth.model';
+import { ChangePassword, Login, LoginResponse, LoginTempToken, NewUser, Organization, User } from './auth.model';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
-import { navigation } from '../dashboard-configs/navigation';
 import { UtilityFunctions } from '#shared/utilityFunctions';
+import { navigation } from '../dashboard-configs/navigation';
 import { FuseNavigation } from '../../@fuse/types';
+import { tempAccess } from '../dashboard-configs/temp-access';
 
 @Injectable()
 export class AuthorizationService {
@@ -46,21 +47,10 @@ export class AuthorizationService {
         return this.http.post<NewUser>(`/api/v2/auth/verify`, {}, { headers: headers }).toPromise();
     }
 
-    // prev implementation
-
-    public static storeToken(token: string): void {
-        localStorage.removeItem('accessToken');
-        localStorage.setItem('accessToken', token);
-    }
-
-    public static isUserUnauthorized(user: User): boolean {
-        return user.status === Status.unauthorized;
-    }
-
     public static checkUserAccess(): Array<FuseNavigation> {
         const userRoles: Array<string> = [];
         const authorizedNavigation: Array<FuseNavigation> = [];
-        (JSON.parse(localStorage.getItem('tempUserInfo')) as User).services.split('|').map((userRole) => userRoles.push(userRole));
+        tempAccess.split('|').map((userRole) => userRoles.push(userRole));
         navigation.map((navItem) => {
             if (userRoles.includes(navItem.id)) {
                 if (!!navItem.children) {
