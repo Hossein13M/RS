@@ -48,7 +48,6 @@ export class ContractFormDialogComponent implements OnInit {
             ],
         },
     ];
-    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
 
     constructor(
         private readonly contractFormService: ContractFormService,
@@ -61,7 +60,7 @@ export class ContractFormDialogComponent implements OnInit {
     }
 
     private getContractForms(): void {
-        this.contractFormService.getContractForm(this.organizationCode).subscribe(
+        this.contractFormService.getContractForm().subscribe(
             (response) => (this.contractForm = response),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
