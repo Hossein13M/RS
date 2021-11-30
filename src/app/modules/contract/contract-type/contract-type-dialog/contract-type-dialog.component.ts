@@ -177,7 +177,7 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     private getOrganizationUnits(): void {
-        this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe(
+        this.userService.getOrganizationUnits().subscribe(
             (response) => {
                 this.units = response;
                 if (this.isEditMode) this.setDataForEditMode();

@@ -30,9 +30,8 @@ export class OrganizationStructureService {
         return this.http.get<OrganizationRole<Role>>(`/api/v1/organization-role/`);
     }
 
-    public getOrganizationUnitsByOrgCode(organizationId: number): Observable<OrganizationUnit<Unit>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes: [organizationId] });
-        return this.http.get<OrganizationUnit<Unit>>(`/api/v1/organization-unit/`, { params });
+    public getOrganizationUnits(): Observable<OrganizationUnit<Unit>> {
+        return this.http.get<OrganizationUnit<Unit>>(`/api/v1/organization-unit/`);
     }
 
     public editOrganizationRoleName(id: number | string, name: string): Observable<any> {
@@ -47,7 +46,7 @@ export class OrganizationStructureService {
         return this.http.delete(`/api/v1/organization-unit/revoke-role/${unitId}`);
     }
 
-    public assignRoleToOrganizationUnit(unitInfo): Observable<any> {
+    public assignRoleToOrganizationUnit(unitInfo: { unitId: number; roleId: number }): Observable<any> {
         return this.http.post(`/api/v1/organization-unit/assign-role`, unitInfo);
     }
 
@@ -55,7 +54,7 @@ export class OrganizationStructureService {
         return this.http.post<any>(`/api/v1/organization-role`, roleInfo);
     }
 
-    public addNewOrganizationUnit(unitInfo): Observable<any> {
+    public addNewOrganizationUnit(unitInfo: { name: string; parent: number }): Observable<any> {
         return this.http.post<any>(`/api/v1/organization-unit`, unitInfo);
     }
 }

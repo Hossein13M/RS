@@ -114,7 +114,7 @@ export class TreeSimpleSelectorComponent implements OnChanges {
         this.state = stateType.LOADING;
 
         if (this.selectedOrg === 'org-unit') {
-            this.organizationStructureService.getOrganizationUnitsByOrgCode(+this.organizationCode).subscribe(
+            this.organizationStructureService.getOrganizationUnits().subscribe(
                 (tree) => {
                     this.state = stateType.PRESENT;
 
@@ -278,36 +278,30 @@ export class TreeSimpleSelectorComponent implements OnChanges {
 
         this.subMenuState = stateType.LOADING;
         if (this.selectedOrg === 'org-unit') {
-            this.organizationStructureService
-                .addNewOrganizationUnit({
-                    name,
-                    parent: parentNode.id,
-                    organization: this.organizationCode,
-                })
-                .subscribe(
-                    (newNodeData) => {
-                        this.subMenuState = stateType.SUCCESS;
-                        const newNode = new TreeChartNode();
-                        newNode.id = newNodeData.id;
-                        newNode.name = newNodeData.name;
-                        newNode.children = [];
-                        newNode.parent = parentNode;
-                        newNode.mappings = [];
-                        this.addChildForm.setValue('');
-                        parentNode.children.push(newNode);
+            this.organizationStructureService.addNewOrganizationUnit({ name, parent: parentNode.id }).subscribe(
+                (newNodeData) => {
+                    this.subMenuState = stateType.SUCCESS;
+                    const newNode = new TreeChartNode();
+                    newNode.id = newNodeData.id;
+                    newNode.name = newNodeData.name;
+                    newNode.children = [];
+                    newNode.parent = parentNode;
+                    newNode.mappings = [];
+                    this.addChildForm.setValue('');
+                    parentNode.children.push(newNode);
 
-                        setTimeout(() => {
-                            this.subMenuState = stateType.PRESENT;
-                            this.refreshData();
-                            this.treeControl.expand(parent);
-                            menu.closeMenu();
-                        }, 500);
-                    },
-                    () => {
-                        this.subMenuState = stateType.FAILED;
-                        setTimeout(() => (this.subMenuState = stateType.PRESENT), 500);
-                    }
-                );
+                    setTimeout(() => {
+                        this.subMenuState = stateType.PRESENT;
+                        this.refreshData();
+                        this.treeControl.expand(parent);
+                        menu.closeMenu();
+                    }, 500);
+                },
+                () => {
+                    this.subMenuState = stateType.FAILED;
+                    setTimeout(() => (this.subMenuState = stateType.PRESENT), 500);
+                }
+            );
         } else {
             this.organizationStructureService.addNewOrganizationRole({ name, parent: parentNode.id }).subscribe(
                 (newNodeData) => {
