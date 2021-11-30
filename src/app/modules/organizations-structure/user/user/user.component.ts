@@ -96,11 +96,10 @@ export class UserComponent implements OnInit, OnDestroy {
         if (!searchFilter) {
             return;
         }
-        const organizationId: Array<string> = this.organizationsForm.controls['organization'].value;
         Object.keys(searchFilter).forEach((key) => {
             this.usersSearchForm.controls[key].setValue(searchFilter[key]);
         });
-        this.getUsers(organizationId, this.usersSearchForm.value);
+        this.getUsers(this.usersSearchForm.value);
     }
 
     public paginationControl(pageEvent: PaginationChangeType): void {
@@ -149,8 +148,8 @@ export class UserComponent implements OnInit, OnDestroy {
         this.usersSearchForm = this.formBuilder.group({ ...objectFromKeys });
     }
 
-    private getUsers(organizationIds: Array<string>, search?: any): void {
-        this.userService.getUsers(organizationIds, this.pagination, search).subscribe((response) => {
+    private getUsers(search?: any): void {
+        this.userService.getUsers(this.pagination, search).subscribe((response) => {
             this.users = response.items;
             this.pagination.total = response.total;
         });

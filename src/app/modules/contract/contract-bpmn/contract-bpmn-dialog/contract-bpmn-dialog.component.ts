@@ -39,7 +39,6 @@ export class ContractBpmnDialogComponent implements OnInit {
         initializer: [false, Validators.required],
     });
     public formArray: FormArray = this.fb.array([]);
-    private activeOrganizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
     private prevMatSelectValue: ContractFormButtonTypes;
     private data: BpmnData = {
         step: '',
@@ -193,7 +192,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     private getOrganizationUsers(): any {
-        this.userService.getUsers([`${this.activeOrganizationCode}`]).subscribe((response) => (this.users = response.items));
+        this.userService.getUsers().subscribe((response) => (this.users = response.items));
     }
 
     private prepareAccessRights() {
