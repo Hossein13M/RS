@@ -66,7 +66,7 @@ export class RolesListComponent implements OnInit {
     }
 
     private getOrganizationUnitsByOrgCode(): void {
-        this.organizationStructureService.getOrganizationUnitsByOrgCode(this.organizationInfo.code).subscribe((response: any) => {
+        this.organizationStructureService.getOrganizationUnits().subscribe((response: any) => {
             response.titleEN = 'unit';
             this.trees[0].data = response;
             this.selectProperData();

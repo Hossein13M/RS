@@ -68,7 +68,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
 
     public addExistingOrganization(userRoles: UserRole): void {
         forkJoin({
-            units: this.userService.getOrganizationUnits([userRoles.organizationCode]),
+            units: this.userService.getOrganizationUnits(),
             roles: this.userService.getOrganizationRoles(userRoles.units),
         }).subscribe((response: { units: Units; roles: Array<Roles> }) => {
             this.userOrganizationControlsData.push({
@@ -181,7 +181,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
                     addedForm.controls['organizationId'].setValue(getOrganizationsId(organizationCode, this.defaultOrganizations));
                 }),
                 takeUntil(this._unsubscribeAll),
-                mergeMap((organizationCode: number) => this.userService.getOrganizationUnits([organizationCode]))
+                mergeMap(() => this.userService.getOrganizationUnits())
             )
             .subscribe((response) => {
                 resetControls();

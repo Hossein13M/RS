@@ -37,9 +37,8 @@ export class UserService {
         return this.http.get<ResponseWithPagination<Organization>>('/api/v1/organization', { params });
     }
 
-    public getOrganizationUnits(organizationCodes: Array<number>): Observable<Units> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes });
-        return this.http.get<Units>(`/api/v1/organization-unit`, { params });
+    public getOrganizationUnits(): Observable<Units> {
+        return this.http.get<Units>(`/api/v1/organization-unit`);
     }
 
     public getOrganizationRoles(organizationUnits?: Array<number>): Observable<Array<Roles>> {

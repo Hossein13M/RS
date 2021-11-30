@@ -216,7 +216,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     private getOrganizationUnits(): void {
-        this.userService.getOrganizationUnits([this.activeOrganizationCode]).subscribe((response) => (this.units = response));
+        this.userService.getOrganizationUnits().subscribe((response) => (this.units = response));
     }
 
     private getRolesOnSpecificUnits(unitId: number): void {

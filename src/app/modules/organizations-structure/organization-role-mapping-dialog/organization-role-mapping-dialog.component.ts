@@ -60,7 +60,7 @@ export class OrganizationRoleMappingDialogComponent implements OnInit {
 
     get(): void {
         this.state = stateType.LOADING;
-        this.organizationStructureService.getOrganizationUnitsByOrgCode(+this.data.organizationCode).subscribe(
+        this.organizationStructureService.getOrganizationUnits().subscribe(
             (tree) => {
                 this.state = stateType.PRESENT;
 
@@ -143,31 +143,25 @@ export class OrganizationRoleMappingDialogComponent implements OnInit {
     }
 
     addMap(node: any): void {
-        this.organizationStructureService
-            .assignRoleToOrganizationUnit({
-                unitId: node.id,
-                roleId: this.data.mappedNode.id,
-                organization: this.data.organizationCode,
-            })
-            .subscribe(
-                () => {
-                    const foundedNode = this.flatNodeMap.get(node);
-                    foundedNode.mapped = true;
-                    node.mapped = true;
-                    // this.data.mappedNode.mappings.push({
-                    //     id: res.id,
-                    //     mapParentId: res.mapParent.id,
-                    //     mapChildId: res.mapChild.id,
-                    //     childTitleFa: res.mapChild.name,
-                    //     childTitleEN: res.mapChild.titleEN,
-                    //     childParentId: res.mapParent.id,
-                    //     childIcon: null,
-                    // });
-                    this.refreshData();
-                    this.alertService.onSuccess('نگاشت اضافه شد.');
-                },
-                () => this.alertService.onError('نگاشت اضافه نشد.')
-            );
+        this.organizationStructureService.assignRoleToOrganizationUnit({ unitId: node.id, roleId: this.data.mappedNode.id }).subscribe(
+            () => {
+                const foundedNode = this.flatNodeMap.get(node);
+                foundedNode.mapped = true;
+                node.mapped = true;
+                // this.data.mappedNode.mappings.push({
+                //     id: res.id,
+                //     mapParentId: res.mapParent.id,
+                //     mapChildId: res.mapChild.id,
+                //     childTitleFa: res.mapChild.name,
+                //     childTitleEN: res.mapChild.titleEN,
+                //     childParentId: res.mapParent.id,
+                //     childIcon: null,
+                // });
+                this.refreshData();
+                this.alertService.onSuccess('نگاشت اضافه شد.');
+            },
+            () => this.alertService.onError('نگاشت اضافه نشد.')
+        );
     }
 
     deleteMap(relation: any, node: any): void {
