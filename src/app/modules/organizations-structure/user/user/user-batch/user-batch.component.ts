@@ -146,7 +146,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     }
 
     private setUserRolesData(): void {
-        this.userService.getUsers([], null, { id: this.passedId }).subscribe((response) => {
+        this.userService.getUsers(null, { id: this.passedId }).subscribe((response) => {
             this.userData = response.items[0];
             this.formInit();
             const { userRoles } = this.userData;
