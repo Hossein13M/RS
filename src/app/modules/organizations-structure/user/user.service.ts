@@ -42,11 +42,8 @@ export class UserService {
         return this.http.get<Units>(`/api/v1/organization-unit`, { params });
     }
 
-    public getOrganizationRoles(organizationCode: number, organizationUnits?: Array<number>): Observable<Array<Roles>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({
-            organizationCodes: [organizationCode],
-            organizationUnits,
-        });
+    public getOrganizationRoles(organizationUnits?: Array<number>): Observable<Array<Roles>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationUnits });
         return this.http.get<Array<Roles>>(`/api/v1/organization-role`, { params });
     }
 

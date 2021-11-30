@@ -26,9 +26,8 @@ export class OrganizationStructureService {
         return this.http.put<any>(`/api/v1/organization`, organizationInfo);
     }
 
-    public getOrganizationRoleByOrgCode(organizationId: number): Observable<OrganizationRole<Role>> {
-        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ organizationCodes: [organizationId] });
-        return this.http.get<OrganizationRole<Role>>(`/api/v1/organization-role/`, { params });
+    public getOrganizationRoleByOrgCode(): Observable<OrganizationRole<Role>> {
+        return this.http.get<OrganizationRole<Role>>(`/api/v1/organization-role/`);
     }
 
     public getOrganizationUnitsByOrgCode(organizationId: number): Observable<OrganizationUnit<Unit>> {
@@ -50,10 +49,6 @@ export class OrganizationStructureService {
 
     public assignRoleToOrganizationUnit(unitInfo): Observable<any> {
         return this.http.post(`/api/v1/organization-unit/assign-role`, unitInfo);
-    }
-
-    public deleteOrganizationRole(unitId: number): Observable<any> {
-        return this.http.delete(`/api/v1/organization-role/${unitId}`);
     }
 
     public addNewOrganizationRole(roleInfo): Observable<any> {

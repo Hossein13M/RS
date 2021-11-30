@@ -61,7 +61,7 @@ export class ContractTypeDialogComponent implements OnInit {
         const data: Form = ContractTypeDialogComponent.removeEmptyStatesFromForm(this.form.value);
 
         if (this.form.value.units) {
-            (data.units as any) = data.units.filter(item => item.unit != null && item.roles != null);
+            (data.units as any) = data.units.filter((item) => item.unit != null && item.roles != null);
             data.units.map((item) => {
                 if (Array.isArray(item.unit)) item.unit = item.unit[0];
             });
@@ -69,7 +69,6 @@ export class ContractTypeDialogComponent implements OnInit {
                 delete data.units;
             }
         }
-
 
         if (this.isEditMode) {
             const editData = { ...data, id: this.data._id };
@@ -171,7 +170,7 @@ export class ContractTypeDialogComponent implements OnInit {
     }
 
     private getOrganizationRoles(): void {
-        this.userService.getOrganizationRoles(this.activeOrganizationCode, []).subscribe(
+        this.userService.getOrganizationRoles([]).subscribe(
             (response) => (this.allRolesList = response),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );

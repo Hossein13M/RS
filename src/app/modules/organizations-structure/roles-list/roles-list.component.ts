@@ -59,7 +59,7 @@ export class RolesListComponent implements OnInit {
     }
 
     private getOrganizationRoleByOrgCode(): void {
-        this.organizationStructureService.getOrganizationRoleByOrgCode(this.organizationInfo.code).subscribe((response) => {
+        this.organizationStructureService.getOrganizationRoleByOrgCode().subscribe((response) => {
             this.trees[1].data = response;
             this.selectProperData();
         });
