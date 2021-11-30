@@ -69,7 +69,7 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     public addExistingOrganization(userRoles: UserRole): void {
         forkJoin({
             units: this.userService.getOrganizationUnits([userRoles.organizationCode]),
-            roles: this.userService.getOrganizationRoles(userRoles.organizationCode, userRoles.units),
+            roles: this.userService.getOrganizationRoles(userRoles.units),
         }).subscribe((response: { units: Units; roles: Array<Roles> }) => {
             this.userOrganizationControlsData.push({
                 organizationsSearchControl: new FormControl(''),
@@ -203,14 +203,13 @@ export class UserBatchComponent implements OnInit, OnDestroy {
     private onUnitsChange(index: number): void {
         const { controls } = this.form.get('userRoles') as FormArray;
         const addedForm = controls[index] as FormGroup;
-        const { organizationCode } = addedForm.value;
 
         addedForm.controls['units'].valueChanges.subscribe();
 
         addedForm.controls['units'].valueChanges
             .pipe(
                 takeUntil(this._unsubscribeAll),
-                mergeMap((units: Array<number>) => this.userService.getOrganizationRoles(organizationCode, units))
+                mergeMap((units: Array<number>) => this.userService.getOrganizationRoles(units))
             )
             .subscribe((response) => {
                 resetRoleControl();

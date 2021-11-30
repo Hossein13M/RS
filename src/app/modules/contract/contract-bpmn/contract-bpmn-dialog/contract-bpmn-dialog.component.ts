@@ -220,7 +220,7 @@ export class ContractBpmnDialogComponent implements OnInit {
     }
 
     private getRolesOnSpecificUnits(unitId: number): void {
-        this.userService.getOrganizationRoles(this.organizationCode, [unitId]).subscribe((response) => (this.rolesOnUnit = response));
+        this.userService.getOrganizationRoles([unitId]).subscribe((response) => (this.rolesOnUnit = response));
     }
 
     private setFormDataInEditMode(response: BpmnData) {
