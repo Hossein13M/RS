@@ -1,23 +1,29 @@
 export interface Contract {
-    organization: number;
-    name: string;
-    customer: {
-        id: number;
-        name: string;
-    };
-    category: 1;
+    category: number;
     code: string;
-    parentId: string;
-    contractType: string;
-    flow: string;
-    isActive?: boolean;
-    readonly _id?: string;
+    contractType: ContractType;
     readonly createdAt?: Date;
+    customer: Customer;
+    flow: string;
+    initializerUser?: InitializerUser;
+    isActive?: boolean;
+    name: string;
+    organization: number;
+    parentId?: string;
     readonly updatedAt?: Date;
-    initializerUser?: {
-        id: number;
-        name: string;
-    };
+    readonly _id?: string;
+}
+
+export interface ContractTableList {
+    code: string;
+    contractType: string;
+    createdAt: Date;
+    customer: string;
+    initializerUser: string;
+    isActive: boolean;
+    name: string;
+    updatedAt: Date;
+    _id: string;
 }
 
 export interface Customer {
@@ -26,4 +32,19 @@ export interface Customer {
     glCode: number;
     type: 'legal' | 'real';
     id: number;
+}
+
+export interface ContractType {
+    name: string;
+    _id: string;
+}
+
+export interface Customer {
+    id: number;
+    name: string;
+}
+
+export interface InitializerUser {
+    id: number;
+    name: string;
 }

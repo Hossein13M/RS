@@ -4,7 +4,7 @@ import { Column } from '#shared/components/table/table.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { AlertService } from '#shared/services/alert.service';
 import { ContractService } from './contract.service';
-import { Contract } from './contract.model';
+import { Contract, ContractTableList } from './contract.model';
 import { ContractDialogComponent } from './contract-dialog/contract-dialog.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ContractNoteDialogComponent } from './contract-note-dialog/contract-note-dialog.component';
@@ -17,7 +17,7 @@ import { ContractFinalFormDialogComponent } from './contract-final-form-dialog/c
     styleUrls: ['./contract-list.component.scss'],
 })
 export class ContractListComponent implements OnInit {
-    public contracts: Array<Contract>;
+    public contracts: Array<ContractTableList>;
     public pagination = { skip: 0, limit: 5, total: 100 };
     public form: FormGroup = this.fb.group({
         name: [''],
@@ -26,21 +26,32 @@ export class ContractListComponent implements OnInit {
     });
 
     public tableColumn: Array<Column> = [
-        { id: 'index', type: 'index', minWidth: '200px' },
-        { id: 'name', name: 'قرارداد', type: 'string', minWidth: '200px' },
+        { id: 'index', type: 'index', minWidth: '50px' },
+        { id: 'name', name: 'نام قرارداد', type: 'string', minWidth: '150px' },
+        { id: 'contractType', name: 'نوع قرارداد', type: 'string', minWidth: '150px' },
+        { id: 'code', name: 'کد قرارداد', type: 'string', minWidth: '150px' },
+        { id: 'customer', name: 'مشتری قرارداد', type: 'string', minWidth: '150px' },
+        { id: 'initializerUser', name: 'سازنده‌ی قرارداد', type: 'string', minWidth: '150px' },
         {
             id: 'createdAt',
             name: 'تاریخ ساخت',
             convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
             type: 'string',
-            minWidth: '200px',
+            minWidth: '100px',
+        },
+        {
+            id: 'updatedAt',
+            name: 'تاریخ به‌روزرسانی',
+            convert: (value) => UtilityFunctions.convertDateToPersianDateString(value),
+            type: 'string',
+            minWidth: '100px',
         },
         {
             id: 'isActive',
             name: 'وضعیت قرارداد',
             convert: (value) => (value ? 'فعال' : 'غیر فعال'),
             type: 'string',
-            minWidth: '200px',
+            minWidth: '100px',
         },
         {
             name: 'عملیات',
@@ -100,7 +111,8 @@ export class ContractListComponent implements OnInit {
         this.contracts = [];
         this.contractService.getContractsList(searchParams).subscribe(
             (response) => {
-                this.contracts = response.items;
+                this.contracts = ContractListComponent.manipulateDateForTable(response.items);
+                console.log(this.contracts);
                 this.pagination.total = response.total;
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
@@ -155,5 +167,24 @@ export class ContractListComponent implements OnInit {
             () => this.checkIsActiveFormControl(),
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
+    }
+
+    private static manipulateDateForTable(contracts: Array<Contract>): Array<ContractTableList> {
+        let manipulatedContractList: Array<ContractTableList> = [];
+        contracts.map((contract) => {
+            manipulatedContractList.push({
+                code: contract.code,
+                contractType: contract.contractType.name,
+                createdAt: contract.createdAt,
+                customer: contract.customer.name,
+                initializerUser: contract.initializerUser.name,
+                isActive: contract.isActive,
+                name: contract.name,
+                updatedAt: contract.updatedAt,
+                _id: contract._id,
+            });
+        });
+
+        return manipulatedContractList;
     }
 }
