@@ -12,3 +12,8 @@ export interface ContractFormList {
     updatedAt: Date;
     _id: string;
 }
+
+export interface DuplicateContractForm {
+    name: string;
+    id: string;
+}

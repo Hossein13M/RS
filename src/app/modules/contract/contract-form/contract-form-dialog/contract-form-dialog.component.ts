@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AlertService } from '#shared/services/alert.service';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { Column } from '#shared/components/table/table.model';
 import { ContractFormService } from '../contract-form.service';
 import { ContractFormList } from '../contract-form.model';
+import { ContractFormDuplicateDialogComponent } from './contract-form-duplicate-dialog/contract-form-duplicate-dialog.component';
 
 @Component({
     selector: 'app-contract-form-dialog',
@@ -45,6 +46,12 @@ export class ContractFormDialogComponent implements OnInit {
                     color: 'warn',
                     operation: (row: { operationItem: any; row: any }) => this.changeContractFormStatus(row.row._id),
                 },
+                {
+                    name: 'ایجاد رونوشت',
+                    icon: 'file_copy',
+                    color: 'primary',
+                    operation: (row: { operationItem: any; row: any }) => this.duplicateContractFormDialog(row.row._id),
+                },
             ],
         },
     ];
@@ -52,7 +59,8 @@ export class ContractFormDialogComponent implements OnInit {
     constructor(
         private readonly contractFormService: ContractFormService,
         private readonly alertService: AlertService,
-        public readonly dialog: MatDialogRef<ContractFormDialogComponent>
+        public readonly dialog: MatDialogRef<ContractFormDialogComponent>,
+        private readonly duplicateDialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -74,5 +82,15 @@ export class ContractFormDialogComponent implements OnInit {
             },
             (error) => (error.status !== 500 ? this.alertService.onError(error.error.errors[0].messageFA) : this.alertService.onError('خطای سرور'))
         );
+    }
+
+    private duplicateContractFormDialog(contractFormId: number): void {
+        const result = this.duplicateDialog.open(ContractFormDuplicateDialogComponent, {
+            width: '500px',
+            height: '300px',
+            panelClass: 'dialog-p-0',
+            data: { contractFormId },
+        });
+        result.afterClosed().subscribe((response) => response && this.getContractForms());
     }
 }
