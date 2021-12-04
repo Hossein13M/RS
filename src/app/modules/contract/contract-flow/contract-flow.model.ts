@@ -13,3 +13,8 @@ export interface Flow {
     activeContractTypes: Array<string>;
     hasActiveContract: boolean;
 }
+
+export interface DuplicateFlow {
+    id: string;
+    name: string;
+}
