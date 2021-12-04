@@ -32,6 +32,7 @@ export class ContractListComponent implements OnInit {
         { id: 'code', name: 'کد قرارداد', type: 'string', minWidth: '150px' },
         { id: 'customer', name: 'مشتری قرارداد', type: 'string', minWidth: '150px' },
         { id: 'initializerUser', name: 'سازنده‌ی قرارداد', type: 'string', minWidth: '150px' },
+        { id: 'curentStep', name: 'گام کنونی', type: 'string', minWidth: '100px' },
         {
             id: 'createdAt',
             name: 'تاریخ ساخت',
@@ -178,6 +179,7 @@ export class ContractListComponent implements OnInit {
                 createdAt: contract.createdAt,
                 customer: contract.customer.name,
                 initializerUser: contract.initializerUser.name,
+                curentStep: contract.curentStep,
                 isActive: contract.isActive,
                 name: contract.name,
                 updatedAt: contract.updatedAt,

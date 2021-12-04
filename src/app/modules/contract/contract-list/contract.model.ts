@@ -6,6 +6,7 @@ export interface Contract {
     customer: Customer;
     flow: string;
     initializerUser?: InitializerUser;
+    curentStep: string;
     isActive?: boolean;
     name: string;
     organization: number;
@@ -20,6 +21,7 @@ export interface ContractTableList {
     createdAt: Date;
     customer: string;
     initializerUser: string;
+    curentStep: string;
     isActive: boolean;
     name: string;
     updatedAt: Date;
