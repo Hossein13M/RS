@@ -6,7 +6,7 @@
 
 <mat-horizontal-stepper #stepper="matHorizontalStepper" *ngIf="isUpdate() ? userData : true" class="p-12" dir="rtl" linear>
     <mat-step>
-        <ng-template matStepLabel>اطلاعات پایه</ng-template>
+        <ng-template matStepLabel>داده‌های پایه</ng-template>
         <form [formGroup]="form" class="grid grid-cols-3 gap-7 flex-wrap pt-12" dir="rtl">
             <mat-form-field appearance="outline">
                 <mat-label>نام کاربری</mat-label>
@@ -32,14 +32,14 @@
             <mat-form-field appearance="outline">
                 <mat-label>شماره همراه</mat-label>
                 <input formControlName="phoneNumber" matInput required />
-                <mat-error>شماره همراه باید با 09 شروع شود و 11 رقم باشد.</mat-error>
+                <mat-error>شماره‌ی همراه باید با 09 آغاز شود و 11 رقم باشد.</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
                 <mat-label>ایمیل</mat-label>
                 <input formControlName="email" matInput required />
-                <mat-hint>مثال: example@gmail.com</mat-hint>
-                <mat-error>لطفا ایمیل درستی را وارد کنید.</mat-error>
+                <mat-hint>نمونه: example@gmail.com</mat-hint>
+                <mat-error>ایمیل نادرست است.</mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -50,7 +50,7 @@
             </mat-form-field>
 
             <div class="col-span-3">
-                <button color="primary" mat-raised-button matStepperNext>بعدی</button>
+                <button color="primary" mat-raised-button matStepperNext>گام بعدی</button>
             </div>
         </form>
     </mat-step>
@@ -70,7 +70,7 @@
                                 mat-flat-button
                                 type="button"
                             >
-                                حذف چینش سازمانی
+                                پاک کردن چینش سازمانی
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </div>
@@ -100,7 +100,7 @@
                                     {{ organize.name }}
                                 </mat-option>
                             </mat-select>
-                            <mat-error>نهاد اجباری میباشد.</mat-error>
+                            <mat-error>نهاد اجباری است.</mat-error>
                         </mat-form-field>
 
                         <div *ngIf="userOrganizationControlsData[index].units">
@@ -139,8 +139,8 @@
             </div>
 
             <div class="mt-10">
-                <button class="ml-5" color="primary" mat-raised-button matStepperPrevious>قبلی</button>
-                <button (click)="onSubmit()" color="warn" mat-raised-button>ثبت کاربر</button>
+                <button class="ml-5" color="primary" mat-raised-button matStepperPrevious>گام قبلی</button>
+                <button (click)="onSubmit()" color="warn" mat-raised-button>افزودن کاربر</button>
             </div>
         </form>
     </mat-step>
