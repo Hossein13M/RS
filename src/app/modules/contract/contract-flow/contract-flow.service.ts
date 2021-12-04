@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
-import { Flow } from './contract-flow.model';
+import { DuplicateFlow, Flow } from './contract-flow.model';
 
 @Injectable({
     providedIn: 'root',
@@ -35,5 +35,9 @@ export class ContractFlowService {
 
     public saveBpmnConfiguration(flowInformation): Observable<Flow> {
         return this.http.put<Flow>(`/api/v2/flow`, flowInformation);
+    }
+
+    public duplicateFlow(duplicateFlow: DuplicateFlow): Observable<Flow> {
+        return this.http.post<Flow>('/api/v2/flow/duplicate', duplicateFlow);
     }
 }
