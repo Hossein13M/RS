@@ -1,13 +1,12 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Organization, Roles, Units, User, UserRole } from '../../user.model';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AccessRole, BackendData, Roles, Units, User, UserRoles } from '../../user.model';
 import { UserService } from '../../user.service';
-import { forkJoin, Subject } from 'rxjs';
-import { mergeMap, takeUntil, tap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { phoneNumberValidator } from '#shared/validators/phoneNumber/phoneNumberValidator';
-import * as _ from 'lodash';
 import { AlertService } from '#shared/services/alert.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-user-batch',
@@ -15,20 +14,24 @@ import { AlertService } from '#shared/services/alert.service';
     styleUrls: ['./user-batch.component.scss'],
 })
 export class UserBatchComponent implements OnInit, OnDestroy {
-    public userData: User;
+    private organizationCode: number = UtilityFunctions.getActiveOrganizationInfo('code');
+    public userAccessRoles: Array<AccessRole> = [];
+    public rolesOnUnit: Array<Array<{ childId: number; id: number; name: string }>> = [];
     public form: FormGroup;
+    public organizationUnits: Units;
+    public rolesForm: FormArray = this.fb.array([], [Validators.required]);
+    private dataForBackend: BackendData;
+
+    public userData: User;
     public userOrganizationControlsData: Array<{
-        organizationsSearchControl: FormControl;
-        organizations: Array<Organization>;
         units: Units;
         roles: Array<Roles>;
     }> = [];
-    private defaultOrganizations: Array<Organization> = [];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     constructor(
         public dialogRef: MatDialogRef<UserBatchComponent>,
-        private formBuilder: FormBuilder,
+        private fb: FormBuilder,
         private userService: UserService,
         private alertService: AlertService,
         @Inject(MAT_DIALOG_DATA) public passedId: number | null
@@ -38,191 +41,96 @@ export class UserBatchComponent implements OnInit, OnDestroy {
         return this.form.get('userRoles') as FormArray;
     }
 
+    public get formRoles(): FormArray {
+        return this.rolesForm as FormArray;
+    }
+
+    get formArray(): AbstractControl | null {
+        return this.form.get('formArray');
+    }
+
     ngOnInit(): void {
-        this.formInit();
-        this.defaultOrganizationsInit();
+        this.initializeForm();
+        this.getUserAccessRole();
+        this.getOrganizationUnits();
+        this.addFormGroupToRoleFormArray();
     }
 
-    public addOrganization(): void {
-        this.userOrganizations.push(
-            this.formBuilder.group({
-                personnelCode: ['', Validators.required],
-                organizationId: ['', Validators.required],
-                organizationCode: ['', Validators.required],
-                units: [[], Validators.required],
-                roles: [[], Validators.required],
-            })
-        );
-
-        this.userOrganizationControlsData.push({
-            organizationsSearchControl: new FormControl(''),
-            organizations: this.defaultOrganizations,
-            units: null,
-            roles: [],
-        });
-
-        this.onSearchOrganizationSearchChange(this.userOrganizationControlsData.length - 1);
-        this.onOrganizationCodeChange(this.userOrganizationControlsData.length - 1);
-        // this.onUnitsChange(this.userRoleControlsData.length - 1);
-    }
-
-    public addExistingOrganization(userRoles: UserRole): void {
-        forkJoin({
-            units: this.userService.getOrganizationUnits(),
-            roles: this.userService.getOrganizationRoles(userRoles.units),
-        }).subscribe((response: { units: Units; roles: Array<Roles> }) => {
-            this.userOrganizationControlsData.push({
-                organizationsSearchControl: new FormControl(''),
-                organizations: this.defaultOrganizations,
-                units: response.units,
-                roles: response.roles,
-            });
-
-            this.userOrganizations.push(
-                this.formBuilder.group({
-                    personnelCode: [userRoles.personnelCode, Validators.required],
-                    organizationId: [userRoles.organizationId, Validators.required],
-                    organizationCode: [userRoles.organizationCode, Validators.required],
-                    units: [userRoles.units, Validators.required],
-                    roles: [userRoles.roles, Validators.required],
-                })
-            );
-
-            this.onSearchOrganizationSearchChange(this.userOrganizationControlsData.length - 1);
-            this.onOrganizationCodeChange(this.userOrganizationControlsData.length - 1);
-            this.onUnitsChange(this.userOrganizationControlsData.length - 1);
-        });
-    }
-
-    public deleteOrganization(index: number): void {
-        this.userOrganizationControlsData.splice(index, 1);
-        this.userOrganizations.removeAt(index);
-    }
-
-    public onSubmit(): void {
-        if (this.form.invalid) {
-            this.alertService.onError('لطفا ورودی های خود را چک کنید.');
-            return;
-        }
-
-        this.isUpdate() ? this.updateUser() : this.createUser();
-    }
-
-    public closeDialog(): void {
-        this.dialogRef.close(false);
-    }
-
-    public isUpdate(): boolean {
-        return !!this.passedId;
-    }
-
-    ngOnDestroy(): void {
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
-
-    private formInit(): void {
-        this.form = this.formBuilder.group({
-            username: [this.userData?.username ?? '', Validators.required],
+    private initializeForm(): void {
+        this.form = this.fb.group({
+            personnelCode: [this.userData?.organizationStructures[0].personnelCode ?? '', Validators.required],
             firstname: [this.userData?.firstname ?? '', Validators.required],
             lastname: [this.userData?.lastname ?? '', Validators.required],
             nationalCode: [this.userData?.nationalCode ?? '', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
             phoneNumber: [this.userData?.phoneNumber ?? '', [Validators.required, phoneNumberValidator()]],
             email: [this.userData?.email ?? '', [Validators.required, Validators.email]],
             birthDate: [this.userData?.birthDate ?? '', Validators.required],
-            userRoles: this.formBuilder.array([], [Validators.required]),
+            userRole: [this.userData?.organizationStructures[0].userRole ?? null, Validators.required],
+            rolesForm: this.fb.array([]),
         });
     }
 
-    private defaultOrganizationsInit(): void {
-        this.userService.getOrganizations().subscribe((response) => {
-            this.defaultOrganizations = response.items;
-            this.userRolesInit();
-        });
+    public rolesBasedOnUnits(): FormArray {
+        return this.form.get('rolesForm') as FormArray;
     }
 
-    private userRolesInit(): void {
-        this.isUpdate() ? this.setUserRolesData() : this.addOrganization();
+    private getUserAccessRole(): void {
+        this.userService.getUserAccessRolesOnSpecificOrganization(this.organizationCode).subscribe((response) => (this.userAccessRoles = response));
     }
 
-    private setUserRolesData(): void {
-        this.userService.getUsers(null, { id: this.passedId }).subscribe((response) => {
-            this.userData = response.items[0];
-            this.formInit();
-            const { userRoles } = this.userData;
-            for (const role of userRoles) {
-                this.addExistingOrganization(role);
+    private getOrganizationUnits(): void {
+        this.userService.getOrganizationUnits().subscribe((response) => (this.organizationUnits = response));
+    }
+
+    public addFormGroupToRoleFormArray(formData?: { units: Array<number>; roles: Array<number> }): void {
+        this.rolesForm = this.form.get('rolesForm') as FormArray;
+        !!formData
+            ? this.rolesForm.push(this.addNewRolesBasedOnUnits({ units: formData.units, roles: formData.roles }))
+            : this.rolesForm.push(this.addNewRolesBasedOnUnits());
+
+        !!formData && this.form.get('rolesForm').setValue(this.rolesForm);
+    }
+
+    public addNewRolesBasedOnUnits(data?: { units: Array<number>; roles: Array<number> }): FormGroup {
+        return data
+            ? this.fb.group({ units: [data.units], roles: [data.roles] })
+            : this.fb.group({
+                  units: null,
+                  roles: null,
+              });
+    }
+
+    public removeFormGroupFromFormArray(index: number): void {
+        this.rolesForm.removeAt(index);
+    }
+
+    public detectChanges(event: any, index) {
+        event.value._checked ? this.getRolesOnSpecificUnits(event.value.value, index) : (this.rolesOnUnit[index] = []);
+    }
+
+    private getRolesOnSpecificUnits(unitId: number, index: number): void {
+        this.organizationUnits.children.map((item) => {
+            if (item.id === unitId) {
+                this.rolesOnUnit[index] = item.mappings;
             }
         });
     }
 
-    private onSearchOrganizationSearchChange(index: number): void {
-        const { organizationsSearchControl, organizations } = this.userOrganizationControlsData[index];
-        organizationsSearchControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                mergeMap((value: string) => this.userService.getOrganizations(value))
-            )
-            .subscribe((response) => setOrganization(response.items));
+    public onSubmit(): void {
+        this.prepareDataForAPI();
 
-        function setOrganization(values: Array<Organization>): void {
-            organizations.splice(0, organizations.length);
-            organizations.push(...values);
+        if (this.form.invalid) {
+            this.alertService.onError('ورودی‌ها را بررسی کنید.');
+            return;
         }
     }
 
-    private onOrganizationCodeChange(index: number): void {
-        const { controls } = this.form.get('userRoles') as FormArray;
-        const addedForm = controls[index] as FormGroup;
-
-        addedForm.controls['organizationCode'].valueChanges
-            .pipe(
-                tap((organizationCode: number) => {
-                    addedForm.controls['organizationId'].setValue(getOrganizationsId(organizationCode, this.defaultOrganizations));
-                }),
-                takeUntil(this._unsubscribeAll),
-                mergeMap(() => this.userService.getOrganizationUnits())
-            )
-            .subscribe((response) => {
-                resetControls();
-                this.userOrganizationControlsData[index].units = response;
-                this.onUnitsChange(index);
-            });
-
-        function getOrganizationsId(organizationCode: number, organizations: Array<Organization>): number {
-            const { id } = _.find(organizations, (organization) => organization.code === organizationCode);
-            return id;
-        }
-
-        function resetControls(): void {
-            addedForm.controls['units'].reset([]);
-            addedForm.controls['roles'].reset([]);
-        }
-    }
-
-    private onUnitsChange(index: number): void {
-        const { controls } = this.form.get('userRoles') as FormArray;
-        const addedForm = controls[index] as FormGroup;
-
-        addedForm.controls['units'].valueChanges.subscribe();
-
-        addedForm.controls['units'].valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                mergeMap((units: Array<number>) => this.userService.getOrganizationRoles(units))
-            )
-            .subscribe((response) => {
-                resetRoleControl();
-                this.userOrganizationControlsData[index].roles = response;
-            });
-
-        function resetRoleControl(): void {
-            addedForm.controls['roles'].reset([]);
-        }
+    public isUpdate(): boolean {
+        return !!this.passedId;
     }
 
     private createUser(): void {
-        this.userService.createUser(this.form.value).subscribe(
+        this.userService.createUser(this.dataForBackend).subscribe(
             () => {
                 this.alertService.onSuccess('کاربر با موفقیت ساخته شد.');
                 this.dialogRef.close(true);
@@ -239,5 +147,48 @@ export class UserBatchComponent implements OnInit, OnDestroy {
             },
             () => this.alertService.onError('لطفا ورودی های خود را چک کنید.')
         );
+    }
+
+    public prepareDataForAPI(): void {
+        const organizationStructures: Array<UserRoles> = [
+            {
+                organizationId: UtilityFunctions.getActiveOrganizationInfo('id'),
+                organizationCode: UtilityFunctions.getActiveOrganizationInfo('id'),
+                personnelCode: this.form.get('personnelCode').value,
+                userRole: this.form.get('userRole').value,
+                units: [],
+                roles: [],
+            },
+        ];
+        const nationalCode: string = this.form.get('nationalCode').value;
+
+        this.form.value.rolesForm.map((item) => {
+            item.roles.map((innerItem) => organizationStructures[0].roles.push(innerItem));
+            item.units.map((innerItem) => organizationStructures[0].units.push(innerItem));
+        });
+
+        this.dataForBackend = {
+            firstname: this.form.get('firstname').value,
+            lastname: this.form.get('firstname').value,
+            nationalCode: this.form.get('nationalCode').value,
+            birthDate: <string>UtilityFunctions.convertDateToGregorianFormatForServer(this.form.get('birthDate').value),
+            email: this.form.get('email').value,
+            phoneNumber: this.form.get('phoneNumber').value,
+            organizationStructures: organizationStructures,
+        };
+
+        this.userService.checkForExistingUser(nationalCode).subscribe((response) => {
+            if (response.items.length === 0) {
+                this.isUpdate() ? this.updateUser() : this.createUser();
+            } else {
+                this.alertService.onError('کاربری با این کد ملی موجود است');
+                return;
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 }

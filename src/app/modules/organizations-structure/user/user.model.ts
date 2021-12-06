@@ -6,6 +6,13 @@ export interface UserRole {
     roles: Array<number>;
 }
 
+export interface AccessRole {
+    id: number;
+    name: string;
+    isActive: boolean;
+    deletedAt: Date | null;
+}
+
 export interface TokenUser {
     exp: number;
     firstname: string;
@@ -26,10 +33,20 @@ export interface User {
     password: string;
     phoneNumber: string;
     nationalCode: string;
+    organizationStructures: Array<OrganizationStructures>;
     birthDate: string;
     id: number;
     status: string;
     userRoles: Array<UserRole>;
+}
+
+export interface OrganizationStructures {
+    organizationCode: number;
+    organizationId: number;
+    personnelCode: string;
+    roles: Array<number>;
+    units: Array<number>;
+    userRole: number;
 }
 
 export interface Organization {
@@ -60,4 +77,24 @@ export interface Roles {
     parent: number;
     organization: number;
     deletedAt: string;
+}
+
+export interface BackendData {
+    firstname: string;
+    lastname: string;
+    nationalCode: string;
+    birthDate: Date | string;
+    email: string;
+    phoneNumber: string;
+    organizationStructures: Array<UserRoles>;
+    id?: number;
+}
+
+export interface UserRoles {
+    organizationId: number;
+    organizationCode: number;
+    personnelCode: string;
+    userRole: number;
+    units: Array<number>;
+    roles: Array<number>;
 }
