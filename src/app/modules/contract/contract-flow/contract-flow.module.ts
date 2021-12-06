@@ -9,11 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ShareModule } from '#shared/share.module';
 import { HeaderModule } from '../../../layout/components/header/header.module';
+import { ContractFlowDuplicateDialogComponent } from './contract-flow-duplicate-dialog/contract-flow-duplicate-dialog.component';
 
 const routes: Routes = [{ path: '', pathMatch: 'full', component: ContractFlowComponent }];
 
 @NgModule({
-    declarations: [ContractFlowComponent, ContractFlowDialogComponent],
+    declarations: [ContractFlowComponent, ContractFlowDialogComponent, ContractFlowDuplicateDialogComponent],
     imports: [CommonModule, RouterModule.forChild(routes), LayoutModule, MatIconModule, MatButtonModule, ShareModule, HeaderModule],
     entryComponents: [ContractFlowDialogComponent],
     providers: [ContractFlowService],
