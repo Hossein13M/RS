@@ -7,6 +7,7 @@ import { AlertService } from '#shared/services/alert.service';
 import { ContractFlowDialogComponent } from './contract-flow-dialog/contract-flow-dialog.component';
 import { ContractFlowService } from './contract-flow.service';
 import { Flow } from './contract-flow.model';
+import { ContractFlowDuplicateDialogComponent } from './contract-flow-duplicate-dialog/contract-flow-duplicate-dialog.component';
 
 @Component({
     selector: 'app-contract-flow',
@@ -59,6 +60,12 @@ export class ContractFlowComponent implements OnInit {
                     color: 'warn',
                     operation: (row: { operationItem: any; row: Flow }) => this.changeFlowStatus(row.row._id),
                 },
+                {
+                    name: 'ایجاد رونوشت',
+                    icon: 'file_copy',
+                    color: 'primary',
+                    operation: (row: { operationItem: any; row: any }) => this.duplicateContractFlow(row.row._id),
+                },
             ],
         },
     ];
@@ -104,5 +111,17 @@ export class ContractFlowComponent implements OnInit {
 
     private navigateToFlowBPMNPage(flowId: string): void {
         this.router.navigate(['contract/flow/bpmn/' + flowId]).finally();
+    }
+
+    private duplicateContractFlow(flowId: string): void {
+        this.dialog
+            .open(ContractFlowDuplicateDialogComponent, {
+                data: { flowId },
+                width: '500px',
+                height: '300px',
+                panelClass: 'dialog-p-0',
+            })
+            .afterClosed()
+            .subscribe((result) => result && this.getFlows());
     }
 }

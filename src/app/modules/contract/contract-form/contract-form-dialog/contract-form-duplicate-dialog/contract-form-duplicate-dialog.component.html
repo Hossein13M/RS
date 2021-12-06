@@ -1,0 +1,21 @@
+<div class='page-layout h-full'>
+    <app-header class='wp-100' pageTitle='ایجاد رونوشت فرم قرارداد'>
+        <button (click)='dialog.close()' mat-icon-button>
+            <mat-icon class='mat-18'>close</mat-icon>
+        </button>
+    </app-header>
+
+    <form (submit)="submitForm()" [formGroup]="form" class="flex flex-col mt-10 justify-around items-center" dir='rtl'>
+        <mat-form-field appearance="outline">
+            <mat-label>نام</mat-label>
+            <input formControlName="name" matInput name="name" required />
+            <mat-error *ngIf="form.get('name').hasError('required')"> وارد کردن این فیلد الزامی است. </mat-error>
+        </mat-form-field>
+
+        <button color="primary" mat-flat-button type="submit" [disabled]="form.invalid">
+            <mat-icon class="icon-header">add</mat-icon>
+            ایجاد
+        </button>
+    </form>
+
+</div>
