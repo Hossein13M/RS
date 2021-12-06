@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
-import { Organization, Roles, Units, User } from './user.model';
+import { AccessRole, BackendData, Organization, Roles, Units, User } from './user.model';
 
 @Injectable()
 export class UserService {
@@ -14,7 +14,7 @@ export class UserService {
         return this.http.get<ResponseWithPagination<User>>('/api/v2/user', { params });
     }
 
-    public createUser(model: User): Observable<User> {
+    public createUser(model: BackendData): Observable<User> {
         return this.http.post<User>('/api/v2/user', model);
     }
 
@@ -42,5 +42,13 @@ export class UserService {
 
     public changeUserStatus(userId: number): Observable<any> {
         return this.http.put<any>(`/api/v2/user/inactive/${userId}`, { userId: userId });
+    }
+
+    public getUserAccessRolesOnSpecificOrganization(organizationCode: number): Observable<Array<AccessRole>> {
+        return this.http.get<Array<AccessRole>>(`/api/v1/user-role`, { params: { organizationCode } });
+    }
+
+    public checkForExistingUser(nationalCode: string): Observable<ResponseWithPagination<User>> {
+        return this.http.get<ResponseWithPagination<User>>(`/api/v2/user`, { params: { nationalCode } });
     }
 }

@@ -37,7 +37,7 @@ export class UserComponent implements OnInit, OnDestroy {
         },
         {
             id: 'email',
-            name: 'پست الکترونیک',
+            name: 'رایانامه',
             type: 'string',
             search: { type: 'text', mode: TableSearchMode.SERVER },
         },
@@ -48,14 +48,8 @@ export class UserComponent implements OnInit, OnDestroy {
             search: { type: 'text', mode: TableSearchMode.SERVER },
         },
         {
-            id: 'username',
-            name: 'نام کاربری',
-            type: 'string',
-            search: { type: 'text', mode: TableSearchMode.SERVER },
-        },
-        {
             id: 'phoneNumber',
-            name: 'شماره تماس',
+            name: 'شماره‌ی همراه',
             type: 'string',
         },
         {
