@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { OrganizationComponent } from './organization/organization.component';
 import { PageComponent } from './page.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 const routes: Routes = [
     {
@@ -13,6 +14,7 @@ const routes: Routes = [
             { path: 'login', component: LoginComponent },
             { path: 'change-password', component: ChangePasswordComponent },
             { path: 'organization', component: OrganizationComponent },
+            { path: 'forget-password', component: ForgetPasswordComponent },
         ],
     },
 ];

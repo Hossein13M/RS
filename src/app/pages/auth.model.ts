@@ -95,3 +95,13 @@ export interface Units {
     children: Array<Units>;
     mapping: Array<any>;
 }
+
+export interface UserId {
+    userId: number;
+}
+
+export interface ForgetPassword extends UserId {
+    otp: string;
+    newPassword: string;
+    confirmNewPassword: string;
+}
