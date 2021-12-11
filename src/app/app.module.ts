@@ -23,7 +23,7 @@ function urlMatcher(segments: UrlSegment[], regex: RegExp) {
 }
 
 export function authMatcher(segments: UrlSegment[]) {
-    return urlMatcher(segments, /^(login|change-password|organization)$/) ? { consumed: [] } : (undefined as any);
+    return urlMatcher(segments, /^(login|change-password|organization|forget-password)$/) ? { consumed: [] } : (undefined as any);
 }
 
 export function panelMatcher(segments: UrlSegment[]) {

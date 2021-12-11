@@ -14,9 +14,10 @@ import { AuthorizationService } from './authorization.service';
 import { PagesRoutingModule } from './pages.routing.module';
 import { LoginComponent } from './login/login.component';
 import { PageComponent } from './page.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 @NgModule({
-    declarations: [LoginComponent, ChangePasswordComponent, OrganizationComponent, PageComponent],
+    declarations: [LoginComponent, ChangePasswordComponent, OrganizationComponent, PageComponent, ForgetPasswordComponent],
     imports: [
         CommonModule,
         PagesRoutingModule,
