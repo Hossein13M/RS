@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import jwtDecode from 'jwt-decode';
-import { ChangePassword, Login, LoginResponse, LoginTempToken, NewUser, Organization, User } from './auth.model';
+import { ChangePassword, ForgetPassword, Login, LoginResponse, LoginTempToken, NewUser, Organization, User, UserId } from './auth.model';
 import { ResponseWithPagination } from '#shared/models/pagination.model';
 import { UtilityFunctions } from '#shared/utilityFunctions';
 import { navigation } from '../dashboard-configs/navigation';
@@ -98,5 +98,13 @@ export class AuthorizationService {
 
     public setUserInfoInLocalStorage(token: LoginResponse): void {
         localStorage.setItem('user', JSON.stringify(this.decodeToken(token)));
+    }
+
+    public sendOTPSms(nationalCode: string): Observable<UserId> {
+        return this.http.post<UserId>('/api/v2/user/verification-password-sms', { nationalCode });
+    }
+
+    public forgetPassword(forgetPassword: ForgetPassword): Observable<void> {
+        return this.http.put<void>('/api/v2/user/forget-password', forgetPassword);
     }
 }
