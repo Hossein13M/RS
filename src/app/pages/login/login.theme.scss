@@ -6,7 +6,8 @@
 
     login,
     change-password,
-    organization {
+    organization,
+    forget-password {
         #login {
             // Mountain Background
             background-color: map-get($background, 500);

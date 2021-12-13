@@ -18,7 +18,7 @@
     <div class="flex items-center" dir="rtl">
         <button [matMenuTriggerFor]="userMenu" class="user-button flex justify-center items-center" mat-button>
             <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon>
-            <span class="username mr-12"> {{ user.firstname }} {{ user.lastname }} </span>
+            <span class="username mr-12"> {{ user?.firstname }} {{ user?.lastname }} </span>
             <mat-icon class="s-16" fxHide.xs>keyboard_arrow_down</mat-icon>
         </button>
 
