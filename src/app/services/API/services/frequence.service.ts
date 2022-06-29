@@ -10,19 +10,34 @@ import { FrequenceDto } from '../models/frequence-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class FrequenceService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation frequenceControllerGetFrequence
      */
     static readonly FrequenceControllerGetFrequencePath = '/api/v1/frequence/{id}';
+    /**
+     * Path part for operation frequenceControllerDeleteFrequence
+     */
+    static readonly FrequenceControllerDeleteFrequencePath = '/api/v1/frequence/{id}';
+    /**
+     * Path part for operation frequenceControllerGetFrequences
+     */
+    static readonly FrequenceControllerGetFrequencesPath = '/api/v1/frequence';
+    /**
+     * Path part for operation frequenceControllerUpdateFrequence
+     */
+    static readonly FrequenceControllerUpdateFrequencePath = '/api/v1/frequence';
+    /**
+     * Path part for operation frequenceControllerCreateFrequence
+     */
+    static readonly FrequenceControllerCreateFrequencePath = '/api/v1/frequence';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -57,15 +72,8 @@ export class FrequenceService extends BaseService {
      * This method doesn't expect any request body.
      */
     frequenceControllerGetFrequence(params: { id: number }): Observable<FrequenceDto> {
-        return this.frequenceControllerGetFrequence$Response(params).pipe(
-            map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto)
-        );
+        return this.frequenceControllerGetFrequence$Response(params).pipe(map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto));
     }
-
-    /**
-     * Path part for operation frequenceControllerDeleteFrequence
-     */
-    static readonly FrequenceControllerDeleteFrequencePath = '/api/v1/frequence/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -104,11 +112,6 @@ export class FrequenceService extends BaseService {
     }
 
     /**
-     * Path part for operation frequenceControllerGetFrequences
-     */
-    static readonly FrequenceControllerGetFrequencesPath = '/api/v1/frequence';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `frequenceControllerGetFrequences()` instead.
      *
@@ -141,15 +144,8 @@ export class FrequenceService extends BaseService {
      * This method doesn't expect any request body.
      */
     frequenceControllerGetFrequences(params?: { searchKeyword?: any }): Observable<Array<FrequenceDto>> {
-        return this.frequenceControllerGetFrequences$Response(params).pipe(
-            map((r: StrictHttpResponse<Array<FrequenceDto>>) => r.body as Array<FrequenceDto>)
-        );
+        return this.frequenceControllerGetFrequences$Response(params).pipe(map((r: StrictHttpResponse<Array<FrequenceDto>>) => r.body as Array<FrequenceDto>));
     }
-
-    /**
-     * Path part for operation frequenceControllerUpdateFrequence
-     */
-    static readonly FrequenceControllerUpdateFrequencePath = '/api/v1/frequence';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -184,15 +180,8 @@ export class FrequenceService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     frequenceControllerUpdateFrequence(params: { body: FrequenceDto }): Observable<FrequenceDto> {
-        return this.frequenceControllerUpdateFrequence$Response(params).pipe(
-            map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto)
-        );
+        return this.frequenceControllerUpdateFrequence$Response(params).pipe(map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto));
     }
-
-    /**
-     * Path part for operation frequenceControllerCreateFrequence
-     */
-    static readonly FrequenceControllerCreateFrequencePath = '/api/v1/frequence';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -227,8 +216,6 @@ export class FrequenceService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     frequenceControllerCreateFrequence(params: { body: CreateFrequenceDto }): Observable<FrequenceDto> {
-        return this.frequenceControllerCreateFrequence$Response(params).pipe(
-            map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto)
-        );
+        return this.frequenceControllerCreateFrequence$Response(params).pipe(map((r: StrictHttpResponse<FrequenceDto>) => r.body as FrequenceDto));
     }
 }

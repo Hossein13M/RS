@@ -11,19 +11,30 @@ import { UpdateEventReminderDto } from '../models/update-event-reminder-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class EventReminderService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventReminderControllerFindEventReminder
      */
     static readonly EventReminderControllerFindEventReminderPath = '/api/v1/event-reminder';
+    /**
+     * Path part for operation eventReminderControllerCreateEventReminder
+     */
+    static readonly EventReminderControllerCreateEventReminderPath = '/api/v1/event-reminder';
+    /**
+     * Path part for operation eventReminderControllerUpdateEventReminder
+     */
+    static readonly EventReminderControllerUpdateEventReminderPath = '/api/v1/event-reminder/{id}';
+    /**
+     * Path part for operation eventReminderControllerDeleteEventReminder
+     */
+    static readonly EventReminderControllerDeleteEventReminderPath = '/api/v1/event-reminder/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -61,19 +72,11 @@ export class EventReminderService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventReminderControllerFindEventReminder(params?: {
-        eventId?: number;
-        id?: number;
-    }): Observable<Array<CreateEventReminderResponseDto>> {
+    eventReminderControllerFindEventReminder(params?: { eventId?: number; id?: number }): Observable<Array<CreateEventReminderResponseDto>> {
         return this.eventReminderControllerFindEventReminder$Response(params).pipe(
             map((r: StrictHttpResponse<Array<CreateEventReminderResponseDto>>) => r.body as Array<CreateEventReminderResponseDto>)
         );
     }
-
-    /**
-     * Path part for operation eventReminderControllerCreateEventReminder
-     */
-    static readonly EventReminderControllerCreateEventReminderPath = '/api/v1/event-reminder';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -116,11 +119,6 @@ export class EventReminderService extends BaseService {
     }
 
     /**
-     * Path part for operation eventReminderControllerUpdateEventReminder
-     */
-    static readonly EventReminderControllerUpdateEventReminderPath = '/api/v1/event-reminder/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventReminderControllerUpdateEventReminder()` instead.
      *
@@ -157,19 +155,11 @@ export class EventReminderService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventReminderControllerUpdateEventReminder(params: {
-        id: number;
-        body: UpdateEventReminderDto;
-    }): Observable<CreateEventReminderResponseDto> {
+    eventReminderControllerUpdateEventReminder(params: { id: number; body: UpdateEventReminderDto }): Observable<CreateEventReminderResponseDto> {
         return this.eventReminderControllerUpdateEventReminder$Response(params).pipe(
             map((r: StrictHttpResponse<CreateEventReminderResponseDto>) => r.body as CreateEventReminderResponseDto)
         );
     }
-
-    /**
-     * Path part for operation eventReminderControllerDeleteEventReminder
-     */
-    static readonly EventReminderControllerDeleteEventReminderPath = '/api/v1/event-reminder/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

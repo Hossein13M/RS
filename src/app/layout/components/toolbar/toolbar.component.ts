@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { navigation } from 'app/dashboard-configs/navigation';
-import { UserInfoService } from 'app/services/App/userInfo/user-info.service';
-import { AuthenticationService } from 'app/services/authentication.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthorizationService } from '../../../pages/authorization.service';
+import { FuseNavigation } from '../../../../@fuse/types';
+import { AlertService } from '#shared/services/alert.service';
+import { TokenUser } from '../../../modules/organizations-structure/user/user.model';
 
 @Component({
     selector: 'toolbar',
@@ -17,21 +18,18 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     horizontalNavbar: boolean;
     rightNavbar: boolean;
     hiddenNavbar: boolean;
-    navigation: any;
+    public navigation: Array<FuseNavigation> = [];
     userStatusOptions: any[];
-
+    public user: TokenUser;
     private _unsubscribeAll: Subject<any>;
-    user;
 
     constructor(
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
-        private authenticationService: AuthenticationService,
-        private userInfoService: UserInfoService
+        private authorizationService: AuthorizationService,
+        private readonly alertService: AlertService
     ) {
-        this.userInfoService.userInfo$.subscribe((res) => {
-            this.user = res;
-        });
+        this.user = JSON.parse(localStorage.getItem('user'));
 
         this.userStatusOptions = [
             { title: 'Online', icon: 'icon-checkbox-marked-circle', color: '#4CAF50' },
@@ -41,7 +39,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
             { title: 'Offline', icon: 'icon-checkbox-blank-circle-outline', color: '#616161' },
         ];
 
-        this.navigation = navigation;
+        this.navigation = AuthorizationService.checkUserAccess();
         this._unsubscribeAll = new Subject();
     }
 
@@ -62,9 +60,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
         this._fuseSidebarService.getSidebar(key).toggleOpen();
     }
 
-    search(): void {}
-
     logout() {
-        this.authenticationService.logout();
+        this.authorizationService.logOut().finally(() => this.alertService.onInfo('شما از نرم‌افزار خارج شدید'));
     }
 }

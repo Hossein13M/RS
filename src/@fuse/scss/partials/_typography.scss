@@ -1,8 +1,8 @@
+@use '~@angular/material' as mat;
 // -----------------------------------------------------------------------------------------------------
 // @ Theming
 // -----------------------------------------------------------------------------------------------------
 @mixin typography-theme($theme) {
-
     $background: map-get($theme, background);
     $accent: map-get($theme, accent);
     $is-dark: map-get($theme, is-dark);
@@ -12,14 +12,12 @@
     }
 
     code {
-
         &:not(.highlight) {
             background-color: map-get($background, app-bar);
         }
     }
 
     .changelog {
-
         .entry {
             background-color: map-get($background, card);
         }
@@ -41,12 +39,16 @@
 // -----------------------------------------------------------------------------------------------------
 html {
     font-size: 62.5%;
-    font-family: IRANSans,'Muli', 'Helvetica Neue', 'Arial', sans-serif;
+    font-family: IRANSans, 'Muli', 'Helvetica Neue', 'Arial', sans-serif;
     line-height: 1.4 !important;
     // letter-spacing: -0.1px !important;
-    svg{
-        tspan{
+    svg {
+        text {
+        }
+
+        tspan {
             font-family: IRANSans !important;
+            font-size: 10px;
         }
     }
 }
@@ -55,42 +57,60 @@ body {
     font-size: 14px;
 }
 
-html, body {
+html,
+body {
     -webkit-font-smoothing: auto;
     -moz-osx-font-smoothing: auto;
 }
 
 // Headings
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
     font-weight: normal;
 }
 
-h1, .h1 {
+h1,
+.h1 {
     font-size: 24px;
 }
 
-h2, .h2 {
+h2,
+.h2 {
     font-size: 20px;
 }
 
-h3, .h3 {
+h3,
+.h3 {
     font-size: 16px;
 }
 
-h4, .h4 {
+h4,
+.h4 {
     font-size: 15px;
 }
 
-h5, .h5 {
+h5,
+.h5 {
     font-size: 13px;
 }
 
-h6, .h6 {
+h6,
+.h6 {
     font-size: 12px;
 }
-input{
-    font-family: IRANSans,'Muli', 'Helvetica Neue', 'Arial', sans-serif;
+
+input {
+    font-family: IRANSans, 'Muli', 'Helvetica Neue', 'Arial', sans-serif;
 }
 
 // Links
@@ -98,8 +118,8 @@ a {
     text-decoration: none;
 
     &:not(.mat-button):not(.mat-raised-button):not(.mat-flat-button):not(.mat-stroked-button):not(.mat-icon-button):not(.mat-fab):not(.mat-mini-fab) {
-
-        &:hover, &:active {
+        &:hover,
+        &:active {
             text-decoration: underline;
         }
     }
@@ -134,7 +154,6 @@ blockquote {
         padding-right: 16px;
 
         footer {
-
             &:before {
                 content: '';
             }
@@ -148,10 +167,10 @@ blockquote {
 
 // Code
 code {
-    font-family: 'Monaco', 'Menlo', 'Consolas', 'Ubuntu Mono', monospace;;
+    font-family: 'Monaco', 'Menlo', 'Consolas', 'Ubuntu Mono', monospace;
 
     &:not(.highlight) {
-        color: #106CC8;
+        color: #106cc8;
         padding: 2px 3px;
         border-radius: 2px;
         line-height: 1.7;
@@ -160,7 +179,6 @@ code {
 
 // Definition lists
 dl {
-
     dt {
         font-weight: bold;
     }
@@ -172,7 +190,7 @@ dl {
 
 // Mark
 mark {
-    background: #F7F49A;
+    background: #f7f49a;
 }
 
 // Pre
@@ -189,11 +207,8 @@ small {
 
 // Table
 table {
-
     thead {
-
         tr {
-
             th {
                 text-align: left;
             }
@@ -254,7 +269,6 @@ strong {
 
 // Font weight helpers
 @for $weight from 1 through 9 {
-
     .font-weight-#{$weight * 100} {
         font-weight: #{$weight * 100};
     }
@@ -262,7 +276,6 @@ strong {
 
 // Font size helpers
 @for $size from 1 through 60 {
-
     .font-size-#{$size * 2} {
         font-size: #{$size * 2}px;
     }
@@ -270,7 +283,6 @@ strong {
 
 // Line height helpers
 @for $lineHeight from 1 through 60 {
-
     .line-height-#{$lineHeight * 2} {
         line-height: #{$lineHeight * 2}px;
     }
@@ -331,11 +343,10 @@ strong {
 
 // Changelog
 .changelog {
-
     .entry {
         margin-bottom: 24px;
         padding: 24px 32px;
-        @include mat-elevation(2);
+        @include mat.elevation(2);
 
         > .title {
             display: flex;
@@ -354,7 +365,6 @@ strong {
         }
 
         .groups {
-
             div {
                 margin-bottom: 32px;
 
@@ -374,30 +384,26 @@ strong {
             }
 
             .breaking-changes {
-
                 .title {
-                    background: #F44336;
+                    background: #f44336;
                 }
             }
 
             .new {
-
                 .title {
-                    background: #43A047;
+                    background: #43a047;
                 }
             }
 
             .improved {
-
                 .title {
-                    background: #673AB7;
+                    background: #673ab7;
                 }
             }
 
             .fixed {
-
                 .title {
-                    background: #2196F3;
+                    background: #2196f3;
                 }
             }
 
@@ -420,29 +426,29 @@ strong {
 // Message boxes
 .message-box {
     padding: 16px;
-    background: #607D8B;
-    border-left: 6px solid #37474F;
+    background: #607d8b;
+    border-left: 6px solid #37474f;
     color: rgba(255, 255, 255, 1);
 
     &.error {
-        background: #EF5350;
-        border-left-color: #B71C1C;
+        background: #ef5350;
+        border-left-color: #b71c1c;
     }
 
     &.warning {
-        background: #FFECB3;
-        border-left-color: #FFC107;
+        background: #ffecb3;
+        border-left-color: #ffc107;
         color: rgba(0, 0, 0, 0.87);
     }
 
     &.success {
-        background: #4CAF50;
-        border-left-color: #2E7D32;
+        background: #4caf50;
+        border-left-color: #2e7d32;
     }
 
     &.info {
-        background: #B3E5FC;
-        border-left-color: #03A9F4;
+        background: #b3e5fc;
+        border-left-color: #03a9f4;
         color: rgba(0, 0, 0, 0.87);
     }
 }

@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { BondDetail } from './bond-detail';
+
 export interface BondTableItem {
     /**
      * نرخ سود اسمی

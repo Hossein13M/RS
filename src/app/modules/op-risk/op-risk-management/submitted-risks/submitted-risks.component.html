@@ -1,0 +1,16 @@
+<div class='page-layout'>
+    <app-header pageTitle='ریسک و زیان‌های ثبت‌شده'></app-header>
+
+    <div class='page-content'>
+        <div class='fuse-card m-20'>
+            <app-table
+                (paginationEvent)='paginationControl($event)'
+                [columns]='columns'
+                [data]='data'
+                [paginationObject]='pagination'
+                [paginationSettings]="{ mode: 'backend' }"
+            >
+            </app-table>
+        </div>
+    </div>
+</div>

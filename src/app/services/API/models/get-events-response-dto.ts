@@ -3,6 +3,7 @@ import { EventInformPartyForGetEventResponseDto } from './event-inform-party-for
 import { EventLevelAndEventTitleResponseDto } from './event-level-and-event-title-response-dto';
 import { EventRelationForGetEventDto } from './event-relation-for-get-event-dto';
 import { EventReminderForUpdateEventDto } from './event-reminder-for-update-event-dto';
+
 export interface GetEventsResponseDto {
     code?: string;
     comment?: string;

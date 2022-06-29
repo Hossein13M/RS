@@ -1,0 +1,11 @@
+<div class='container fuse-card'>
+    <div *ngIf="stateType === 'PRESENT'" class='table'>
+        <app-table [columns]='columns' [data]='data'></app-table>
+    </div>
+
+    <div *ngIf="stateType === 'FAIL'" fxLayout='row wrap' fxLayoutAlign='center center'>دریافت داده ناموفق بود</div>
+    <p *ngIf="data && data.length == 0 && stateType === 'PRESENT'" class='text-center'>داده‌ای برای نمایش وجود ندارد</p>
+    <div *ngIf="stateType === 'LOADING'" class='loader'>
+        <mat-spinner [diameter]='50'></mat-spinner>
+    </div>
+</div>

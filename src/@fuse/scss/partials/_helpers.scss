@@ -2,10 +2,8 @@
 // @ Position helpers
 // -----------------------------------------------------------------------------------------------------
 @each $breakpoint, $materialBreakpoint in $helper-breakpoints {
-
     @include media-breakpoint($materialBreakpoint) {
-
-        $infix: if($materialBreakpoint == null, "", "-#{$breakpoint}");
+        $infix: if($materialBreakpoint == null, '', '-#{$breakpoint}');
 
         .position#{$infix}-relative {
             position: relative;
@@ -25,10 +23,8 @@
 // @ Absolute position alignment helpers
 // -----------------------------------------------------------------------------------------------------
 @each $breakpoint, $materialBreakpoint in $helper-breakpoints {
-
     @include media-breakpoint($materialBreakpoint) {
-
-        $infix: if($materialBreakpoint == null, "", "-#{$breakpoint}");
+        $infix: if($materialBreakpoint == null, '', '-#{$breakpoint}');
 
         .align#{$infix}-top {
             top: 0;
@@ -52,7 +48,6 @@
 // @ Size helpers
 // -----------------------------------------------------------------------------------------------------
 @each $prop, $abbrev in (height: h, width: w) {
-
     @for $index from 0 through 180 {
         $size: $index * 4;
         $length: #{$size}px;
@@ -79,13 +74,10 @@
 // @ Spacing helpers
 // -----------------------------------------------------------------------------------------------------
 @each $breakpoint, $materialBreakpoint in $helper-breakpoints {
-
     @include media-breakpoint($materialBreakpoint) {
-
-        $infix: if($materialBreakpoint == null, "", "-#{$breakpoint}");
+        $infix: if($materialBreakpoint == null, '', '-#{$breakpoint}');
 
         @each $prop, $abbrev in (margin: m, padding: p) {
-
             @for $index from 0 through 64 {
                 $size: $index * 4;
                 $length: #{$size}px;
@@ -132,7 +124,6 @@
             }
 
             @if ($abbrev == m) {
-
                 // Some special margin utils for flex alignments
                 .m#{$infix}-auto {
                     margin: auto !important;

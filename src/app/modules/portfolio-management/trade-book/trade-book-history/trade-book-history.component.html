@@ -1,58 +1,34 @@
-<div class="container">
-    <div mat-dialog-title class="header" fxLayout="row wrap" fxLayoutAlign="space-between center" dir="rtl">
+<div class='container'>
+    <div class='header' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center' mat-dialog-title>
+        <h1>تاریخچه بروزرسانی IPS‌ها</h1>
 
-        <h1>
-            تاریخچه بروزرسانی IPS‌ها
-        </h1>
-
-        <form [formGroup]="searchFormGroup" dir="rtl">
-            <mat-form-field appearance="fill">
-
-                <mat-label>
-                    تاریخ
-                </mat-label>
-
-                <input matInput
-                       formControlName="date"
-                       [max]="today"
-                       [matDatepicker]="picker">
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <form [formGroup]='form' dir='rtl'>
+            <mat-form-field appearance='fill'>
+                <mat-label> تاریخ</mat-label>
+                <input [matDatepicker]='picker' [max]='today' formControlName='date' matInput />
+                <mat-datepicker-toggle [for]='picker' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
         </form>
-
     </div>
 
     <div mat-dialog-content>
-        <!--  Table  -->
-        <div class="fuse-card">
-            <app-table [data]="data"
-                       [columns]="columns"
-                       (searchCall)="search($event)">
+        <div class='fuse-card'>
+            <app-table
+                (paginationEvent)='pageHandler($event)'
+                [columns]='columns'
+                [data]='tradeBook.data'
+                [paginationObject]='pagination'
+                [paginationSettings]="{ mode: 'backend' }"
+            >
             </app-table>
         </div>
 
-
-        <!--    Paginator    -->
-        <app-paginator *ngIf="data && data.length!=0"
-                       [data]="tbhs.pageEvent"
-                       (page)="pageHandler($event)"
-                       [pageSizeOptions]="[5, 10,20, 50]"></app-paginator>
-
-        <!--   Getting Data Failed  -->
-        <div *ngIf="failed" fxLayout="row wrap" fxLayoutAlign="center center">
-            دریافت داده ناموفق بود
-
-            <button mat-button
-                    class="againBtn"
-                    (click)="get()">
-                دریافت دوباره
-            </button>
+        <div *ngIf="tradeBook.state === 'FAIL'" fxLayout='row wrap' fxLayoutAlign='center center'>دریافت داده ناموفق
+            بود
         </div>
-
-        <!--   Help Quotes  -->
-        <p *ngIf="data && data.length==0 && !isWorking && !failed" class="text-center">
-            داده‌ای برای نمایش وجود ندارد
-        </p>
+        <div *ngIf="tradeBook.data?.length == 0 && tradeBook.state === 'PRESENT'" class='text-center'>داده‌ای برای نمایش
+            وجود ندارد
+        </div>
     </div>
 </div>

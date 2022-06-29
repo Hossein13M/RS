@@ -1,17 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'app-table-save-csv',
     template: ` <button mat-menu-item (click)="save()">ذخیره به فرمت CSV</button> `,
 })
-export class TableSaveCSVComponent implements OnInit {
+export class TableSaveCSVComponent {
     @Input() name = 'table';
     @Input() data: Array<any>;
     @Input() columns: Array<any>;
 
     constructor() {}
-
-    ngOnInit(): void {}
 
     save(): void {
         if (!this.data || !this.columns) {
@@ -22,9 +20,7 @@ export class TableSaveCSVComponent implements OnInit {
         const header = this.columns.map((r) => r.name);
         const csv = this.data.map((row) =>
             this.columns
-                .map((col) =>
-                    col.id !== 'operation' ? JSON.stringify(col.convert ? col.convert(row[col.id]) : row[col.id], replacer) : null
-                )
+                .map((col) => (col.id !== 'operation' ? JSON.stringify(col.convert ? col.convert(row[col.id]) : row[col.id], replacer) : null))
                 .join(',')
         );
         csv.unshift(header.join(','));

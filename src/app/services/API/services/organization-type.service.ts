@@ -10,19 +10,34 @@ import { OrganizationTypeDto } from '../models/organization-type-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class OrganizationTypeService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation organizationTypeControllerGetOrganizationType
      */
     static readonly OrganizationTypeControllerGetOrganizationTypePath = '/api/v1/organization-type/{id}';
+    /**
+     * Path part for operation organizationTypeControllerDeleteOrganizationType
+     */
+    static readonly OrganizationTypeControllerDeleteOrganizationTypePath = '/api/v1/organization-type/{id}';
+    /**
+     * Path part for operation organizationTypeControllerGetOrganizationTypes
+     */
+    static readonly OrganizationTypeControllerGetOrganizationTypesPath = '/api/v1/organization-type';
+    /**
+     * Path part for operation organizationTypeControllerUpdateOrganizationType
+     */
+    static readonly OrganizationTypeControllerUpdateOrganizationTypePath = '/api/v1/organization-type';
+    /**
+     * Path part for operation organizationTypeControllerCreateOrganizationType
+     */
+    static readonly OrganizationTypeControllerCreateOrganizationTypePath = '/api/v1/organization-type';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,11 +78,6 @@ export class OrganizationTypeService extends BaseService {
     }
 
     /**
-     * Path part for operation organizationTypeControllerDeleteOrganizationType
-     */
-    static readonly OrganizationTypeControllerDeleteOrganizationTypePath = '/api/v1/organization-type/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `organizationTypeControllerDeleteOrganizationType()` instead.
      *
@@ -100,15 +110,8 @@ export class OrganizationTypeService extends BaseService {
      * This method doesn't expect any request body.
      */
     organizationTypeControllerDeleteOrganizationType(params: { id: number }): Observable<void> {
-        return this.organizationTypeControllerDeleteOrganizationType$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.organizationTypeControllerDeleteOrganizationType$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation organizationTypeControllerGetOrganizationTypes
-     */
-    static readonly OrganizationTypeControllerGetOrganizationTypesPath = '/api/v1/organization-type';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -116,9 +119,7 @@ export class OrganizationTypeService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    organizationTypeControllerGetOrganizationTypes$Response(params?: {
-        searchKeyword?: any;
-    }): Observable<StrictHttpResponse<Array<OrganizationTypeDto>>> {
+    organizationTypeControllerGetOrganizationTypes$Response(params?: { searchKeyword?: any }): Observable<StrictHttpResponse<Array<OrganizationTypeDto>>> {
         const rb = new RequestBuilder(this.rootUrl, OrganizationTypeService.OrganizationTypeControllerGetOrganizationTypesPath, 'get');
         if (params) {
             rb.query('searchKeyword', params.searchKeyword, {});
@@ -151,19 +152,12 @@ export class OrganizationTypeService extends BaseService {
     }
 
     /**
-     * Path part for operation organizationTypeControllerUpdateOrganizationType
-     */
-    static readonly OrganizationTypeControllerUpdateOrganizationTypePath = '/api/v1/organization-type';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `organizationTypeControllerUpdateOrganizationType()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    organizationTypeControllerUpdateOrganizationType$Response(params: {
-        body: OrganizationTypeDto;
-    }): Observable<StrictHttpResponse<OrganizationTypeDto>> {
+    organizationTypeControllerUpdateOrganizationType$Response(params: { body: OrganizationTypeDto }): Observable<StrictHttpResponse<OrganizationTypeDto>> {
         const rb = new RequestBuilder(this.rootUrl, OrganizationTypeService.OrganizationTypeControllerUpdateOrganizationTypePath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -194,11 +188,6 @@ export class OrganizationTypeService extends BaseService {
             map((r: StrictHttpResponse<OrganizationTypeDto>) => r.body as OrganizationTypeDto)
         );
     }
-
-    /**
-     * Path part for operation organizationTypeControllerCreateOrganizationType
-     */
-    static readonly OrganizationTypeControllerCreateOrganizationTypePath = '/api/v1/organization-type';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

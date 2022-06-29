@@ -11,19 +11,34 @@ import { UpdateBrokerDto } from '../models/update-broker-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class BrokerService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation brokerControllerGetBroker
      */
     static readonly BrokerControllerGetBrokerPath = '/api/v1/broker/{brokerId}';
+    /**
+     * Path part for operation brokerControllerDeleteBroker
+     */
+    static readonly BrokerControllerDeleteBrokerPath = '/api/v1/broker/{brokerId}';
+    /**
+     * Path part for operation brokerControllerGetBrokers
+     */
+    static readonly BrokerControllerGetBrokersPath = '/api/v1/broker';
+    /**
+     * Path part for operation brokerControllerUpdateBroker
+     */
+    static readonly BrokerControllerUpdateBrokerPath = '/api/v1/broker';
+    /**
+     * Path part for operation brokerControllerCreateBroker
+     */
+    static readonly BrokerControllerCreateBrokerPath = '/api/v1/broker';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -58,15 +73,8 @@ export class BrokerService extends BaseService {
      * This method doesn't expect any request body.
      */
     brokerControllerGetBroker(params: { brokerId: number }): Observable<GetBrokerResponseDto> {
-        return this.brokerControllerGetBroker$Response(params).pipe(
-            map((r: StrictHttpResponse<GetBrokerResponseDto>) => r.body as GetBrokerResponseDto)
-        );
+        return this.brokerControllerGetBroker$Response(params).pipe(map((r: StrictHttpResponse<GetBrokerResponseDto>) => r.body as GetBrokerResponseDto));
     }
-
-    /**
-     * Path part for operation brokerControllerDeleteBroker
-     */
-    static readonly BrokerControllerDeleteBrokerPath = '/api/v1/broker/{brokerId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -105,20 +113,12 @@ export class BrokerService extends BaseService {
     }
 
     /**
-     * Path part for operation brokerControllerGetBrokers
-     */
-    static readonly BrokerControllerGetBrokersPath = '/api/v1/broker';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `brokerControllerGetBrokers()` instead.
      *
      * This method doesn't expect any request body.
      */
-    brokerControllerGetBrokers$Response(params?: {
-        name?: string;
-        code?: string;
-    }): Observable<StrictHttpResponse<Array<GetBrokerResponseDto>>> {
+    brokerControllerGetBrokers$Response(params?: { name?: string; code?: string }): Observable<StrictHttpResponse<Array<GetBrokerResponseDto>>> {
         const rb = new RequestBuilder(this.rootUrl, BrokerService.BrokerControllerGetBrokersPath, 'get');
         if (params) {
             rb.query('name', params.name, {});
@@ -150,11 +150,6 @@ export class BrokerService extends BaseService {
             map((r: StrictHttpResponse<Array<GetBrokerResponseDto>>) => r.body as Array<GetBrokerResponseDto>)
         );
     }
-
-    /**
-     * Path part for operation brokerControllerUpdateBroker
-     */
-    static readonly BrokerControllerUpdateBrokerPath = '/api/v1/broker';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -189,15 +184,8 @@ export class BrokerService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     brokerControllerUpdateBroker(params: { body: UpdateBrokerDto }): Observable<GetBrokerResponseDto> {
-        return this.brokerControllerUpdateBroker$Response(params).pipe(
-            map((r: StrictHttpResponse<GetBrokerResponseDto>) => r.body as GetBrokerResponseDto)
-        );
+        return this.brokerControllerUpdateBroker$Response(params).pipe(map((r: StrictHttpResponse<GetBrokerResponseDto>) => r.body as GetBrokerResponseDto));
     }
-
-    /**
-     * Path part for operation brokerControllerCreateBroker
-     */
-    static readonly BrokerControllerCreateBrokerPath = '/api/v1/broker';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -232,8 +220,6 @@ export class BrokerService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     brokerControllerCreateBroker(params: { body: CreateBrokerDto }): Observable<GetBrokerResponseDto> {
-        return this.brokerControllerCreateBroker$Response(params).pipe(
-            map((r: StrictHttpResponse<GetBrokerResponseDto>) => r.body as GetBrokerResponseDto)
-        );
+        return this.brokerControllerCreateBroker$Response(params).pipe(map((r: StrictHttpResponse<GetBrokerResponseDto>) => r.body as GetBrokerResponseDto));
     }
 }

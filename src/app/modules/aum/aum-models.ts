@@ -19,8 +19,8 @@ export interface SearchParams {
     tamadonAssets: boolean;
     fundNationalCodes: any;
     date: any;
-    listedAsstes: boolean;
-    nonlistedAsstes: boolean;
+    listedAssets: boolean;
+    nonlistedAssets: boolean;
     bondsAssets: boolean;
     stocksAssets: boolean;
     fundsAssets: boolean;

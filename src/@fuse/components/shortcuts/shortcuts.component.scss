@@ -1,11 +1,8 @@
 @import 'src/@fuse/scss/fuse';
 
 :host {
-
     @include media-breakpoint('lt-md') {
-
         #fuse-shortcuts {
-
             &.show-mobile-panel {
                 position: absolute;
                 top: 0;
@@ -79,5 +76,4 @@
             background-color: rgba(0, 0, 0, 0.15);
         }
     }
-
 }

@@ -4,6 +4,7 @@ import { EventLevelAndEventTitleResponseDto } from './event-level-and-event-titl
 import { EventRelationForGetEventDto } from './event-relation-for-get-event-dto';
 import { EventReminderForUpdateEventDto } from './event-reminder-for-update-event-dto';
 import { GetEventFieldValueDto } from './get-event-field-value-dto';
+
 export interface EventsForEventDetailsDto {
     code?: string;
     comment?: string;

@@ -1,0 +1,11 @@
+<div class='container'>
+    <div class='header' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-between center' mat-dialog-title>
+        <h1>پیشینه‌ی بروزرسانی IPS‌ها</h1>
+        <mat-progress-bar *ngIf='loading' mode='indeterminate'></mat-progress-bar>
+    </div>
+
+    <div class='fuse-card' mat-dialog-content>
+        <app-table *ngIf='!loading' [columns]='columns' [data]='tableData' [paginationSettings]="{ mode: 'local' }"
+                   dir='rtl'></app-table>
+    </div>
+</div>

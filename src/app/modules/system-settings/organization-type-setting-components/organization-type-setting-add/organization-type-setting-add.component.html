@@ -1,0 +1,32 @@
+<div class='dialog-container'>
+    <div appDialogHeader
+         title='{{title}}'>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
+    </div>
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>نام
+                    <span style='color: red'>*</span>
+
+                </mat-label>
+                <input formControlName='name' matInput>
+            </mat-form-field>
+        </div>
+
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
+                <mat-icon>close</mat-icon>
+                برگشت
+            </button>
+            <button (click)='onCreateBranch()' *ngIf='!data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button (click)='onEditBranch()' *ngIf='data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

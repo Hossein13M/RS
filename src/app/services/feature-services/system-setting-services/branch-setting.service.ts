@@ -1,33 +1,28 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BranchSettingService extends Specification {
-    private static createBranch = '/api/v1/bank-branch';
+export class BranchSettingService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    getBankBranch(paginationParams?, searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get('/api/v1/bank-branch', { params });
     }
 
-    createBankBranch(model, fc?: FormContainer) {
-        return this.apiClientService.post(BranchSettingService.createBranch, model, fc);
+    post(model): Observable<any> {
+        return this.http.post('/api/v1/bank-branch', model);
     }
 
-    updateBankBranch(model, fc?: FormContainer) {
-        return this.apiClientService.put(BranchSettingService.createBranch, fc, model);
+    put(model): Observable<any> {
+        return this.http.put('/api/v1/bank-branch', model);
     }
 
-    getBankBranch(fc?: FormContainer) {
-        const api = BranchSettingService.createBranch + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
-    }
-
-    public deleteBankBranch(id, fc?: FormContainer) {
-        const api = BranchSettingService.createBranch + '/' + id;
-        return this.apiClientService.delete(api, fc);
+    public delete(id): Observable<any> {
+        return this.http.delete('/api/v1/bank-branch/' + id);
     }
 }

@@ -1,0 +1,53 @@
+<div class="dialog-content-wrapper flex flex-col h-full" dir="rtl">
+    <mat-toolbar class="mat-accent m-0 text-black" matDialogTitle>
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ headerTitle }}</span>
+            <button (click)="this.dialog.close(false)" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class="p-24 pb-0 m-0 h-full">
+        <form (submit)="submitForm()" [formGroup]="form" class="flex flex-col justify-between h-full">
+            <div class="flex flex-col">
+                <mat-form-field appearance="outline">
+                    <mat-label>نام مشتری</mat-label>
+                    <mat-icon class="secondary-text" matSuffix>timeline</mat-icon>
+                    <input formControlName="name" matInput name="name" required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>شماره‌ی ملی</mat-label>
+                    <mat-icon class="secondary-text" matSuffix>timeline</mat-icon>
+                    <input formControlName="nationalId" matInput name="name" required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>GL Code</mat-label>
+                    <mat-icon class="secondary-text" matSuffix>timeline</mat-icon>
+                    <input formControlName="glCode" matInput name="name" required />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>نوع مشتری</mat-label>
+                    <mat-select formControlName="type" required>
+                        <mat-option value="legal" class="text=right"> حقوقی </mat-option>
+                        <mat-option value="real" class="text=right">حقیقی </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="m-0 p-16 flex justify-around items-center mt-auto" mat-dialog-actions>
+                <button [disabled]="form.invalid" color="primary" mat-flat-button type="submit">
+                    <mat-icon class="icon-header">{{ this.data.isEditMode ? 'edit' : 'add' }}</mat-icon>
+                    {{ this.data.isEditMode || this.data.isEditMode ? 'ویرایش مشتری' : 'افزودن مشتری' }}
+                </button>
+                <button (click)="dialog.close(false)" color="warn" mat-flat-button type="button">
+                    <mat-icon class="icon-header">close</mat-icon>
+                    بازگشت
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

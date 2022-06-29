@@ -10,19 +10,30 @@ import { GetEventLevelDto } from '../models/get-event-level-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class EventLevelService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventLevelControllerGetEventLevels
      */
     static readonly EventLevelControllerGetEventLevelsPath = '/api/v1/event-level';
+    /**
+     * Path part for operation eventLevelControllerCreateEventLevel
+     */
+    static readonly EventLevelControllerCreateEventLevelPath = '/api/v1/event-level';
+    /**
+     * Path part for operation eventLevelControllerUpdateEventLevel
+     */
+    static readonly EventLevelControllerUpdateEventLevelPath = '/api/v1/event-level/{id}';
+    /**
+     * Path part for operation eventLevelControllerDeleteEventLevel
+     */
+    static readonly EventLevelControllerDeleteEventLevelPath = '/api/v1/event-level/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,11 +74,6 @@ export class EventLevelService extends BaseService {
     }
 
     /**
-     * Path part for operation eventLevelControllerCreateEventLevel
-     */
-    static readonly EventLevelControllerCreateEventLevelPath = '/api/v1/event-level';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventLevelControllerCreateEventLevel()` instead.
      *
@@ -100,15 +106,8 @@ export class EventLevelService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventLevelControllerCreateEventLevel(params: { body: CreateEventLevelDto }): Observable<GetEventLevelDto> {
-        return this.eventLevelControllerCreateEventLevel$Response(params).pipe(
-            map((r: StrictHttpResponse<GetEventLevelDto>) => r.body as GetEventLevelDto)
-        );
+        return this.eventLevelControllerCreateEventLevel$Response(params).pipe(map((r: StrictHttpResponse<GetEventLevelDto>) => r.body as GetEventLevelDto));
     }
-
-    /**
-     * Path part for operation eventLevelControllerUpdateEventLevel
-     */
-    static readonly EventLevelControllerUpdateEventLevelPath = '/api/v1/event-level/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -116,10 +115,7 @@ export class EventLevelService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventLevelControllerUpdateEventLevel$Response(params: {
-        id: number;
-        body: CreateEventLevelDto;
-    }): Observable<StrictHttpResponse<GetEventLevelDto>> {
+    eventLevelControllerUpdateEventLevel$Response(params: { id: number; body: CreateEventLevelDto }): Observable<StrictHttpResponse<GetEventLevelDto>> {
         const rb = new RequestBuilder(this.rootUrl, EventLevelService.EventLevelControllerUpdateEventLevelPath, 'put');
         if (params) {
             rb.path('id', params.id, {});
@@ -148,15 +144,8 @@ export class EventLevelService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventLevelControllerUpdateEventLevel(params: { id: number; body: CreateEventLevelDto }): Observable<GetEventLevelDto> {
-        return this.eventLevelControllerUpdateEventLevel$Response(params).pipe(
-            map((r: StrictHttpResponse<GetEventLevelDto>) => r.body as GetEventLevelDto)
-        );
+        return this.eventLevelControllerUpdateEventLevel$Response(params).pipe(map((r: StrictHttpResponse<GetEventLevelDto>) => r.body as GetEventLevelDto));
     }
-
-    /**
-     * Path part for operation eventLevelControllerDeleteEventLevel
-     */
-    static readonly EventLevelControllerDeleteEventLevelPath = '/api/v1/event-level/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

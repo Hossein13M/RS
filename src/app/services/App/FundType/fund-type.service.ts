@@ -3,6 +3,13 @@ import { FundTypeDto } from 'app/services/API/models';
 import { FundTypeService } from 'app/services/API/services';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
+
+export interface FundType {
+    id: number;
+    name: string;
+}
 
 @Injectable({
     providedIn: 'root',
@@ -12,7 +19,7 @@ export class FundTypesService {
 
     searchKeyword: string = '';
 
-    constructor(private fundTypeService: FundTypeService) {}
+    constructor(private fundTypeService: FundTypeService, private http: HttpClient) {}
 
     getFundTypes(searchKeyword?: string): Observable<Array<FundTypeDto>> {
         let param = {
@@ -81,5 +88,10 @@ export class FundTypesService {
                 this.fundTypeList.next(fundTypeList);
             })
         );
+    }
+
+    public $getFundTypes(searchParams?): Observable<Array<FundType>> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...searchParams });
+        return this.http.get<Array<FundType>>('/api/v1/fund-type', { params });
     }
 }

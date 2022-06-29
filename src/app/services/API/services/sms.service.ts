@@ -11,19 +11,26 @@ import { StatusResponseDto } from '../models/status-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class SmsService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation smsControllerSendSms
      */
     static readonly SmsControllerSendSmsPath = '/api/v1/sms';
+    /**
+     * Path part for operation smsControllerGetStatusSms
+     */
+    static readonly SmsControllerGetStatusSmsPath = '/api/v1/sms/status/{messageId}';
+    /**
+     * Path part for operation smsControllerGetSms
+     */
+    static readonly SmsControllerGetSmsPath = '/api/v1/sms/{smsId}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -62,11 +69,6 @@ export class SmsService extends BaseService {
     }
 
     /**
-     * Path part for operation smsControllerGetStatusSms
-     */
-    static readonly SmsControllerGetStatusSmsPath = '/api/v1/sms/status/{messageId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `smsControllerGetStatusSms()` instead.
      *
@@ -99,15 +101,8 @@ export class SmsService extends BaseService {
      * This method doesn't expect any request body.
      */
     smsControllerGetStatusSms(params: { messageId: string }): Observable<StatusResponseDto> {
-        return this.smsControllerGetStatusSms$Response(params).pipe(
-            map((r: StrictHttpResponse<StatusResponseDto>) => r.body as StatusResponseDto)
-        );
+        return this.smsControllerGetStatusSms$Response(params).pipe(map((r: StrictHttpResponse<StatusResponseDto>) => r.body as StatusResponseDto));
     }
-
-    /**
-     * Path part for operation smsControllerGetSms
-     */
-    static readonly SmsControllerGetSmsPath = '/api/v1/sms/{smsId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

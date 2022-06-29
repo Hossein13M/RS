@@ -13,19 +13,38 @@ import { InstrumentWithParentDto } from '../models/instrument-with-parent-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class InstrumentService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation instrumentControllerGetInstrumentTree
      */
     static readonly InstrumentControllerGetInstrumentTreePath = '/api/v1/instrument/tree';
+    /**
+     * Path part for operation instrumentControllerGetInstrument
+     */
+    static readonly InstrumentControllerGetInstrumentPath = '/api/v1/instrument/{instrumentId}';
+    /**
+     * Path part for operation instrumentControllerDeleteInstrument
+     */
+    static readonly InstrumentControllerDeleteInstrumentPath = '/api/v1/instrument/{instrumentId}';
+    /**
+     * Path part for operation instrumentControllerGetInstruments
+     */
+    static readonly InstrumentControllerGetInstrumentsPath = '/api/v1/instrument';
+    /**
+     * Path part for operation instrumentControllerUpdateInstrument
+     */
+    static readonly InstrumentControllerUpdateInstrumentPath = '/api/v1/instrument';
+    /**
+     * Path part for operation instrumentControllerCreateInstrument
+     */
+    static readonly InstrumentControllerCreateInstrumentPath = '/api/v1/instrument';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,11 +82,6 @@ export class InstrumentService extends BaseService {
             map((r: StrictHttpResponse<Array<InstrumentWithChildDto>>) => r.body as Array<InstrumentWithChildDto>)
         );
     }
-
-    /**
-     * Path part for operation instrumentControllerGetInstrument
-     */
-    static readonly InstrumentControllerGetInstrumentPath = '/api/v1/instrument/{instrumentId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -108,11 +122,6 @@ export class InstrumentService extends BaseService {
     }
 
     /**
-     * Path part for operation instrumentControllerDeleteInstrument
-     */
-    static readonly InstrumentControllerDeleteInstrumentPath = '/api/v1/instrument/{instrumentId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `instrumentControllerDeleteInstrument()` instead.
      *
@@ -147,11 +156,6 @@ export class InstrumentService extends BaseService {
     instrumentControllerDeleteInstrument(params: { instrumentId: number }): Observable<void> {
         return this.instrumentControllerDeleteInstrument$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation instrumentControllerGetInstruments
-     */
-    static readonly InstrumentControllerGetInstrumentsPath = '/api/v1/instrument';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -222,19 +226,12 @@ export class InstrumentService extends BaseService {
     }
 
     /**
-     * Path part for operation instrumentControllerUpdateInstrument
-     */
-    static readonly InstrumentControllerUpdateInstrumentPath = '/api/v1/instrument';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `instrumentControllerUpdateInstrument()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    instrumentControllerUpdateInstrument$Response(params: {
-        body: InstrumentWithIdDto;
-    }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
+    instrumentControllerUpdateInstrument$Response(params: { body: InstrumentWithIdDto }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentService.InstrumentControllerUpdateInstrumentPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -267,19 +264,12 @@ export class InstrumentService extends BaseService {
     }
 
     /**
-     * Path part for operation instrumentControllerCreateInstrument
-     */
-    static readonly InstrumentControllerCreateInstrumentPath = '/api/v1/instrument';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `instrumentControllerCreateInstrument()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    instrumentControllerCreateInstrument$Response(params: {
-        body: CreateInstrumentDto;
-    }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
+    instrumentControllerCreateInstrument$Response(params: { body: CreateInstrumentDto }): Observable<StrictHttpResponse<InstrumentWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, InstrumentService.InstrumentControllerCreateInstrumentPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

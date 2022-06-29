@@ -11,19 +11,34 @@ import { CreateBankDto } from '../models/create-bank-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class BankService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bankControllerGetBank
      */
     static readonly BankControllerGetBankPath = '/api/v1/bank/{bankId}';
+    /**
+     * Path part for operation bankControllerDeleteBank
+     */
+    static readonly BankControllerDeleteBankPath = '/api/v1/bank/{bankId}';
+    /**
+     * Path part for operation bankControllerGetBanks
+     */
+    static readonly BankControllerGetBanksPath = '/api/v1/bank';
+    /**
+     * Path part for operation bankControllerUpdateBank
+     */
+    static readonly BankControllerUpdateBankPath = '/api/v1/bank';
+    /**
+     * Path part for operation bankControllerCreateBank
+     */
+    static readonly BankControllerCreateBankPath = '/api/v1/bank';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -62,11 +77,6 @@ export class BankService extends BaseService {
     }
 
     /**
-     * Path part for operation bankControllerDeleteBank
-     */
-    static readonly BankControllerDeleteBankPath = '/api/v1/bank/{bankId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankControllerDeleteBank()` instead.
      *
@@ -103,21 +113,12 @@ export class BankService extends BaseService {
     }
 
     /**
-     * Path part for operation bankControllerGetBanks
-     */
-    static readonly BankControllerGetBanksPath = '/api/v1/bank';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankControllerGetBanks()` instead.
      *
      * This method doesn't expect any request body.
      */
-    bankControllerGetBanks$Response(params?: {
-        limit?: number;
-        skip?: number;
-        searchKeyword?: any;
-    }): Observable<StrictHttpResponse<BankResponseDto>> {
+    bankControllerGetBanks$Response(params?: { limit?: number; skip?: number; searchKeyword?: any }): Observable<StrictHttpResponse<BankResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankService.BankControllerGetBanksPath, 'get');
         if (params) {
             rb.query('limit', params.limit, {});
@@ -146,15 +147,8 @@ export class BankService extends BaseService {
      * This method doesn't expect any request body.
      */
     bankControllerGetBanks(params?: { limit?: number; skip?: number; searchKeyword?: any }): Observable<BankResponseDto> {
-        return this.bankControllerGetBanks$Response(params).pipe(
-            map((r: StrictHttpResponse<BankResponseDto>) => r.body as BankResponseDto)
-        );
+        return this.bankControllerGetBanks$Response(params).pipe(map((r: StrictHttpResponse<BankResponseDto>) => r.body as BankResponseDto));
     }
-
-    /**
-     * Path part for operation bankControllerUpdateBank
-     */
-    static readonly BankControllerUpdateBankPath = '/api/v1/bank';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -191,11 +185,6 @@ export class BankService extends BaseService {
     bankControllerUpdateBank(params: { body: BankDto }): Observable<BankDto> {
         return this.bankControllerUpdateBank$Response(params).pipe(map((r: StrictHttpResponse<BankDto>) => r.body as BankDto));
     }
-
-    /**
-     * Path part for operation bankControllerCreateBank
-     */
-    static readonly BankControllerCreateBankPath = '/api/v1/bank';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

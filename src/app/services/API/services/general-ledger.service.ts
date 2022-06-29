@@ -17,19 +17,54 @@ import { TreeSearchGlDto } from '../models/tree-search-gl-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class GeneralLedgerService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation generalLedgerControllerGetCategoryLedger
      */
     static readonly GeneralLedgerControllerGetCategoryLedgerPath = '/api/v1/gl/category';
+    /**
+     * Path part for operation generalLedgerControllerGetGroupLedger
+     */
+    static readonly GeneralLedgerControllerGetGroupLedgerPath = '/api/v1/gl/group';
+    /**
+     * Path part for operation generalLedgerControllerGetGeneralLedger
+     */
+    static readonly GeneralLedgerControllerGetGeneralLedgerPath = '/api/v1/gl/general';
+    /**
+     * Path part for operation generalLedgerControllerGetSubsidiaryLedger
+     */
+    static readonly GeneralLedgerControllerGetSubsidiaryLedgerPath = '/api/v1/gl/subsidiary';
+    /**
+     * Path part for operation generalLedgerControllerGetDetailLedger
+     */
+    static readonly GeneralLedgerControllerGetDetailLedgerPath = '/api/v1/gl/detail';
+    /**
+     * Path part for operation generalLedgerControllerGetChangeGeneralLedger
+     */
+    static readonly GeneralLedgerControllerGetChangeGeneralLedgerPath = '/api/v1/gl/change';
+    /**
+     * Path part for operation generalLedgerControllerGetGeneralLedgerList
+     */
+    static readonly GeneralLedgerControllerGetGeneralLedgerListPath = '/api/v1/gl/list';
+    /**
+     * Path part for operation generalLedgerControllerGetGlLevelList
+     */
+    static readonly GeneralLedgerControllerGetGlLevelListPath = '/api/v1/gl/level';
+    /**
+     * Path part for operation generalLedgerControllerGetChartGeneralLedger
+     */
+    static readonly GeneralLedgerControllerGetChartGeneralLedgerPath = '/api/v1/gl/chart';
+    /**
+     * Path part for operation generalLedgerControllerGetTreeSearchGeneralLedger
+     */
+    static readonly GeneralLedgerControllerGetTreeSearchGeneralLedgerPath = '/api/v1/gl/tree/search';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -78,11 +113,6 @@ export class GeneralLedgerService extends BaseService {
             map((r: StrictHttpResponse<CategoryLedgerDtoResponse>) => r.body as CategoryLedgerDtoResponse)
         );
     }
-
-    /**
-     * Path part for operation generalLedgerControllerGetGroupLedger
-     */
-    static readonly GeneralLedgerControllerGetGroupLedgerPath = '/api/v1/gl/group';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -138,11 +168,6 @@ export class GeneralLedgerService extends BaseService {
     }
 
     /**
-     * Path part for operation generalLedgerControllerGetGeneralLedger
-     */
-    static readonly GeneralLedgerControllerGetGeneralLedgerPath = '/api/v1/gl/general';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `generalLedgerControllerGetGeneralLedger()` instead.
      *
@@ -194,11 +219,6 @@ export class GeneralLedgerService extends BaseService {
             map((r: StrictHttpResponse<GeneralLedgerDtoResponse>) => r.body as GeneralLedgerDtoResponse)
         );
     }
-
-    /**
-     * Path part for operation generalLedgerControllerGetSubsidiaryLedger
-     */
-    static readonly GeneralLedgerControllerGetSubsidiaryLedgerPath = '/api/v1/gl/subsidiary';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -254,11 +274,6 @@ export class GeneralLedgerService extends BaseService {
     }
 
     /**
-     * Path part for operation generalLedgerControllerGetDetailLedger
-     */
-    static readonly GeneralLedgerControllerGetDetailLedgerPath = '/api/v1/gl/detail';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `generalLedgerControllerGetDetailLedger()` instead.
      *
@@ -299,11 +314,6 @@ export class GeneralLedgerService extends BaseService {
             map((r: StrictHttpResponse<DetailLedgerDtoResponse>) => r.body as DetailLedgerDtoResponse)
         );
     }
-
-    /**
-     * Path part for operation generalLedgerControllerGetChangeGeneralLedger
-     */
-    static readonly GeneralLedgerControllerGetChangeGeneralLedgerPath = '/api/v1/gl/change';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -373,11 +383,6 @@ export class GeneralLedgerService extends BaseService {
             map((r: StrictHttpResponse<Array<ChangeGlResponseDto>>) => r.body as Array<ChangeGlResponseDto>)
         );
     }
-
-    /**
-     * Path part for operation generalLedgerControllerGetGeneralLedgerList
-     */
-    static readonly GeneralLedgerControllerGetGeneralLedgerListPath = '/api/v1/gl/list';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -452,11 +457,6 @@ export class GeneralLedgerService extends BaseService {
     }
 
     /**
-     * Path part for operation generalLedgerControllerGetGlLevelList
-     */
-    static readonly GeneralLedgerControllerGetGlLevelListPath = '/api/v1/gl/level';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `generalLedgerControllerGetGlLevelList()` instead.
      *
@@ -504,11 +504,6 @@ export class GeneralLedgerService extends BaseService {
     }): Observable<void> {
         return this.generalLedgerControllerGetGlLevelList$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation generalLedgerControllerGetChartGeneralLedger
-     */
-    static readonly GeneralLedgerControllerGetChartGeneralLedgerPath = '/api/v1/gl/chart';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -571,11 +566,6 @@ export class GeneralLedgerService extends BaseService {
     }
 
     /**
-     * Path part for operation generalLedgerControllerGetTreeSearchGeneralLedger
-     */
-    static readonly GeneralLedgerControllerGetTreeSearchGeneralLedgerPath = '/api/v1/gl/tree/search';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `generalLedgerControllerGetTreeSearchGeneralLedger()` instead.
      *
@@ -613,11 +603,7 @@ export class GeneralLedgerService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    generalLedgerControllerGetTreeSearchGeneralLedger(params?: {
-        date?: string;
-        name?: string;
-        code?: string;
-    }): Observable<TreeSearchGlDto> {
+    generalLedgerControllerGetTreeSearchGeneralLedger(params?: { date?: string; name?: string; code?: string }): Observable<TreeSearchGlDto> {
         return this.generalLedgerControllerGetTreeSearchGeneralLedger$Response(params).pipe(
             map((r: StrictHttpResponse<TreeSearchGlDto>) => r.body as TreeSearchGlDto)
         );

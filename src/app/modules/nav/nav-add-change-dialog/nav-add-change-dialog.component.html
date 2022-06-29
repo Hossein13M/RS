@@ -1,26 +1,26 @@
-<div class="dialog-container">
-    <div title="اضافه کردن تغییر جدید" appDialogHeader>
-        <mat-icon (click)="this.dialog.close()" class="icon-header">close</mat-icon>
+<div class='dialog-container'>
+    <div appDialogHeader title='اضافه کردن تغییر جدید'>
+        <mat-icon (click)='this.dialog.close()' class='icon-header'>close</mat-icon>
     </div>
 
-    <div class="add-changes-container"
-         [formGroup]="form"
-         fxLayout="row wrap"
-         fxLayoutAlign="start start"
-         dir="rtl">
+    <div [formGroup]='form'
+         class='add-changes-container'
+         dir='rtl'
+         fxLayout='row wrap'
+         fxLayoutAlign='start start'>
 
-        <ng-container *ngFor="let formEl of showingFormConfig">
-            <ng-container [ngSwitch]="formEl.type">
+        <ng-container *ngFor='let formEl of showingFormConfig'>
+            <ng-container [ngSwitch]='formEl.type'>
 
                 <ng-container *ngSwitchCase="'select'">
                     <mat-form-field [fxFlex]="(formEl.width) ? formEl.width :'200px'"
-                                    appearance="outline">
+                                    appearance='outline'>
                         <mat-label>
                             {{formEl.label}}
                         </mat-label>
-                        <mat-select [formControlName]="formEl.id">
-                            <mat-option *ngFor="let selectItem of formEl.select"
-                                        [value]="selectItem.value">
+                        <mat-select [formControlName]='formEl.id'>
+                            <mat-option *ngFor='let selectItem of formEl.select'
+                                        [value]='selectItem.value'>
                                 {{selectItem.name}}
                             </mat-option>
                         </mat-select>
@@ -30,43 +30,43 @@
 
                 <ng-container *ngSwitchCase="'input'">
                     <mat-form-field [fxFlex]="(formEl.width) ? formEl.width :'200px'"
-                                    appearance="outline">
+                                    appearance='outline'>
                         <mat-label>
                             {{formEl.label}}
                         </mat-label>
-                        <input [type]="formEl.inputType" [formControlName]="formEl.id" matInput>
+                        <input [formControlName]='formEl.id' [type]='formEl.inputType' matInput>
                     </mat-form-field>
                 </ng-container>
 
                 <ng-container *ngSwitchCase="'date'">
                     <mat-form-field [fxFlex]="(formEl.width) ? formEl.width :'200px'"
-                                    appearance="outline">
+                                    appearance='outline'>
                         <mat-label>
                             {{formEl.label}}
                         </mat-label>
-                        <input (click)="picker.open()" matInput [formControlName]="formEl.id" [matDatepicker]="picker">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <input (click)='picker.open()' [formControlName]='formEl.id' [matDatepicker]='picker' matInput>
+                        <mat-datepicker-toggle [for]='picker' matSuffix></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                 </ng-container>
 
 
                 <ng-container *ngSwitchCase="'searchSelect'">
-                    <div [fxFlex]="(formEl.width) ? formEl.width :'400px'" class="search-select-box">
-                        <app-search-select [formControlName]="formEl.id"
-                                           [label]="formEl.label"
-                                           [placeholder]="formEl.placeholder"
-                                           [searchFn]="formEl.searchFn"
-                                           [valuePropertyName]="formEl.valuePropertyName"
+                    <div [fxFlex]="(formEl.width) ? formEl.width :'400px'" class='search-select-box'>
+                        <app-search-select [formControlName]='formEl.id'
+                                           [label]='formEl.label'
                                            [outputValueForm]="(formEl.outputValueForm)?formEl.outputValueForm:'only-value'"
-                                           [uiPropertyName]="formEl.uiPropertyName">
+                                           [placeholder]='formEl.placeholder'
+                                           [searchFn]='formEl.searchFn'
+                                           [uiPropertyName]='formEl.uiPropertyName'
+                                           [valuePropertyName]='formEl.valuePropertyName'>
                         </app-search-select>
                     </div>
                 </ng-container>
 
 
                 <ng-container *ngSwitchCase="'checkbox'">
-                    <mat-checkbox (change)="formEl.onChange && formEl.onChange($event)">
+                    <mat-checkbox (change)='formEl.onChange && formEl.onChange($event)'>
                         {{formEl.label}}
                     </mat-checkbox>
                 </ng-container>
@@ -75,11 +75,11 @@
             </ng-container>
         </ng-container>
 
-        <div class="action-container">
-            <button mat-raised-button
-                    color="accent"
-                    (click)="addChange()"
-                    [disabled]="!this.form.valid">
+        <div class='action-container'>
+            <button (click)='addChange()'
+                    [disabled]='!this.form.valid'
+                    color='accent'
+                    mat-raised-button>
                 اضافه کردن
             </button>
         </div>

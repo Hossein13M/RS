@@ -1,33 +1,28 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../shared/models/FromContainer';
-import { Specification } from '../../shared/models/Specification';
-import { ApiClientService } from '../Base/api-client.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BankService extends Specification {
-    private static getBankApi = '/api/v1/bank';
+export class BankService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    getBankSettings(paginationParams?, searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get('/api/v1/bank', { params });
     }
 
-    getAllBank(fc?: FormContainer) {
-        const api = BankService.getBankApi + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
+    createBankSetting(model): Observable<any> {
+        return this.http.post('/api/v1/bank', model);
     }
 
-    createBank(model, fc?: FormContainer) {
-        return this.apiClientService.post(BankService.getBankApi, model, fc);
+    deleteBankSetting(id): Observable<any> {
+        return this.http.delete('/api/v1/bank/' + id);
     }
 
-    deleteBank(id, fc?: FormContainer) {
-        const api = BankService.getBankApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
-    }
-
-    updateBank(model, fc?: FormContainer) {
-        return this.apiClientService.put(BankService.getBankApi, fc, model);
+    updateBankSetting(model): Observable<any> {
+        return this.http.put('/api/v1/bank', model);
     }
 }

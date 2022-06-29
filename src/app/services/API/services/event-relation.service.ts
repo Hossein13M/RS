@@ -11,19 +11,30 @@ import { UpdateEventRelationDto } from '../models/update-event-relation-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class EventRelationService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventRelationControllerGetEventRelations
      */
     static readonly EventRelationControllerGetEventRelationsPath = '/api/v1/event-relation';
+    /**
+     * Path part for operation eventRelationControllerCreateEventRelation
+     */
+    static readonly EventRelationControllerCreateEventRelationPath = '/api/v1/event-relation';
+    /**
+     * Path part for operation eventRelationControllerUpdateEventRelation
+     */
+    static readonly EventRelationControllerUpdateEventRelationPath = '/api/v1/event-relation/{id}';
+    /**
+     * Path part for operation eventRelationControllerDeleteEventRelation
+     */
+    static readonly EventRelationControllerDeleteEventRelationPath = '/api/v1/event-relation/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -61,19 +72,11 @@ export class EventRelationService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventRelationControllerGetEventRelations(params?: {
-        id?: number;
-        eventId?: number;
-    }): Observable<Array<CreateEventRelationResponseDto>> {
+    eventRelationControllerGetEventRelations(params?: { id?: number; eventId?: number }): Observable<Array<CreateEventRelationResponseDto>> {
         return this.eventRelationControllerGetEventRelations$Response(params).pipe(
             map((r: StrictHttpResponse<Array<CreateEventRelationResponseDto>>) => r.body as Array<CreateEventRelationResponseDto>)
         );
     }
-
-    /**
-     * Path part for operation eventRelationControllerCreateEventRelation
-     */
-    static readonly EventRelationControllerCreateEventRelationPath = '/api/v1/event-relation';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -116,11 +119,6 @@ export class EventRelationService extends BaseService {
     }
 
     /**
-     * Path part for operation eventRelationControllerUpdateEventRelation
-     */
-    static readonly EventRelationControllerUpdateEventRelationPath = '/api/v1/event-relation/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventRelationControllerUpdateEventRelation()` instead.
      *
@@ -157,19 +155,11 @@ export class EventRelationService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventRelationControllerUpdateEventRelation(params: {
-        id: number;
-        body: UpdateEventRelationDto;
-    }): Observable<CreateEventRelationResponseDto> {
+    eventRelationControllerUpdateEventRelation(params: { id: number; body: UpdateEventRelationDto }): Observable<CreateEventRelationResponseDto> {
         return this.eventRelationControllerUpdateEventRelation$Response(params).pipe(
             map((r: StrictHttpResponse<CreateEventRelationResponseDto>) => r.body as CreateEventRelationResponseDto)
         );
     }
-
-    /**
-     * Path part for operation eventRelationControllerDeleteEventRelation
-     */
-    static readonly EventRelationControllerDeleteEventRelationPath = '/api/v1/event-relation/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

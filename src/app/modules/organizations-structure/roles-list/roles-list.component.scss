@@ -1,0 +1,15 @@
+.tree-select-container {
+    position: relative;
+    margin: 10px 0;
+
+    button {
+        padding: 5px 0;
+    }
+
+    .tree-select {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+    }
+}

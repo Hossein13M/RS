@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../shared/models/FromContainer';
-import { CreateMessageReq } from '../../shared/models/MessageModel';
+import { FormContainer } from '#shared/models/FromContainer';
 import { ApiClientService } from '../Base/api-client.service';
 
 @Injectable({
@@ -26,7 +25,7 @@ export class MessageApiService {
         return this.apiClientService.delete(api, fc);
     }
 
-    createMessage(data: CreateMessageReq, fc?: FormContainer) {
+    createMessage(data: any, fc?: FormContainer) {
         return this.apiClientService.post(MessageApiService.CreateMessageApi, data, fc);
     }
 

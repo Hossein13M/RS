@@ -1,0 +1,96 @@
+<div class='dialog-container'>
+    <div [title]='dialogTitle' appDialogHeader>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
+    </div>
+    <form [formGroup]='form' autocomplete='off' class='form-container'>
+        <div class='form-row' dir='rtl'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    عنوان
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <input formControlName='title' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    به
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select [multiple]='true' formControlName='toUsers' placeholder='به'>
+                    <ngx-mat-select-search [formControl]='operatorMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredOperatorsMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        <span class='email-info'>({{op?.email}})</span>
+                        {{op?.fullName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+        <div class='form-row' dir='rtl'>
+            <mat-form-field appearance='outline'>
+                <mat-label>وضعیت</mat-label>
+                <mat-select formControlName='isActive'>
+                    <mat-option *ngFor='let m of alarmService.alarmActivation'
+                                [value]='m?.value'>{{m?.title}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>حد</mat-label>
+                <input formControlName='limit' matInput type='number'>
+            </mat-form-field>
+        </div>
+        <div class='form-row' dir='rtl'>
+            <mat-form-field appearance='outline'>
+                <mat-label>اولیت</mat-label>
+                <mat-select formControlName='priority'>
+                    <mat-option *ngFor='let m of alarmService.alarmPriority'
+                                [value]='m?.value'>{{m?.title}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>نوع</mat-label>
+                <mat-select formControlName='type'>
+                    <mat-option *ngFor='let m of alarmService.alarmType' [value]='m?.value'>{{m?.title}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+        <div class='form-row' dir='rtl' style='margin-bottom: 15px'>
+            <mat-slide-toggle formControlName='sendEmail'> ارسال ایمیل</mat-slide-toggle>
+            <mat-slide-toggle formControlName='sendSms'>ارسال پیامک</mat-slide-toggle>
+        </div>
+        <div class='form-row-full' dir='rtl'>
+            <mat-form-field appearance='outline'>
+                <mat-label>توضیحات
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <textarea formControlName='description' matInput></textarea>
+            </mat-form-field>
+        </div>
+    </form>
+    <div class='form-btn-container'>
+        <button (click)='createAlarm()' *ngIf='!data?.data'
+                [color]="'accent'"
+                [disabled]='!form.valid'
+                mat-raised-button>
+            افزودن
+            <mat-icon>add</mat-icon>
+        </button>
+        <button (click)='updateAlarm()' *ngIf='data?.data'
+                [color]="'accent'"
+                [disabled]='!form.valid'
+                mat-raised-button>
+            ویرایش
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button [color]="'warn'" [mat-dialog-close]='true' mat-raised-button
+                style='margin-left: 10px'>
+            برگشت
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

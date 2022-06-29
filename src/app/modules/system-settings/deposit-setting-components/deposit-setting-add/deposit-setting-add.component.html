@@ -1,0 +1,219 @@
+<div class='dialog-container'>
+    <div appDialogHeader title='{{ title }}'>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
+    </div>
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نوع حساب
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='accountTypeId'>
+                    <mat-option *ngFor='let c of bankAccountTypes' [value]='c?.id' style='text-align: right'>
+                        {{ c?.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نام بانک
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='bankId'>
+                    <mat-option *ngFor='let c of banks' [value]='c?.id' style='text-align: right'>
+                        {{ c?.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نام و کد شعبه
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='branchId'>
+                    <mat-option *ngFor='let c of bankBranches' [value]='c?.id' style='text-align: right'>
+                        {{ c?.name }}
+                        <span style='font-size: 12px; color: #9ea1a9'>
+                            {{ c?.code }}
+                        </span>
+                    </mat-option>
+                </mat-select>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline' class='full-wid'>
+                <mat-label>
+                    تاریخ افتتاح
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <input (click)='start123.open()' [matDatepicker]='start123' formControlName='openingDate' matInput />
+                <mat-datepicker-toggle [for]='start123' matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #start123></mat-datepicker>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline' class='full-wid'>
+                <mat-label> تاریخ پایان قرارداد</mat-label>
+                <input (click)='start.open()' [matDatepicker]='start' formControlName='endDate' matInput />
+                <mat-datepicker-toggle [for]='start' matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #start></mat-datepicker>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    شماره سپرده
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <input formControlName='depositNumber' matInput type='number' />
+            </mat-form-field>
+        </div>
+
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label> نرخ سود</mat-label>
+                <input formControlName='interestRate' matInput type='number' />
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label> نرخ ترجیهی</mat-label>
+                <input formControlName='preferedRate' matInput type='number' />
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label> نرخ شکست</mat-label>
+                <input formControlName='penaltyRate' matInput type='number' />
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تواتر واریز سود
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='frequenceId'>
+                    <mat-option *ngFor='let c of frequences' [value]='c?.id' style='text-align: right'>
+                        {{ c?.name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label> حساب سود واریزی</mat-label>
+                <input formControlName='interestReceivedAccount' matInput type='number' />
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label> مانده مسدودی</mat-label>
+                <input formControlName='blockedDepositBalance' matInput type='number' />
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    وضعیت سپرده
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='status'>
+                    <mat-option [value]='true' style='text-align: right'> فعال</mat-option>
+                    <mat-option [value]='false' style='text-align: right'> غیرفعال</mat-option>
+                </mat-select>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    کد سطح Gl
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <input formControlName='glCode' matInput type='number' />
+            </mat-form-field>
+
+            <mat-form-field appearance='outline'>
+                <mat-label> مبلغ افتتاح حساب</mat-label>
+                <input formControlName='depositBalance' matInput type='number' />
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    روز پرداخت سود
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='paymentDay'>
+                    <mat-option
+                        *ngFor='
+                            let m of [
+                                0,
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                10,
+                                11,
+                                12,
+                                13,
+                                14,
+                                15,
+                                16,
+                                17,
+                                18,
+                                19,
+                                20,
+                                21,
+                                22,
+                                23,
+                                24,
+                                25,
+                                26,
+                                27,
+                                28,
+                                29,
+                                30,
+                                31
+                            ]
+                        '
+                        [value]='m'
+                        style='text-align: right'
+                    >
+                        {{ m == 0 ? 'ندارد' : m }}
+                    </mat-option>
+                </mat-select>
+                <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    شبا
+                    <span style='color: red'> * </span>
+                </mat-label>
+                <input formControlName='iban' matInput />
+            </mat-form-field>
+
+            <mat-form-field appearance='outline'>
+                <mat-label> توضیحات</mat-label>
+                <textarea formControlName='description' matInput></textarea>
+            </mat-form-field>
+        </div>
+
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
+                <mat-icon>close</mat-icon>
+                برگشت
+            </button>
+            <button (click)='onCreateBranch()' *ngIf='!data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button (click)='onEditBranch()' *ngIf='data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

@@ -10,19 +10,26 @@ import { RiskShieldModuleDto } from '../models/risk-shield-module-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class RiskShieldModuleService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation riskShieldModuleControllerGetRiskShieldModules
      */
     static readonly RiskShieldModuleControllerGetRiskShieldModulesPath = '/api/v1/risk-shield-module';
+    /**
+     * Path part for operation riskShieldModuleControllerUpdateRiskShieldModule
+     */
+    static readonly RiskShieldModuleControllerUpdateRiskShieldModulePath = '/api/v1/risk-shield-module';
+    /**
+     * Path part for operation riskShieldModuleControllerCreateRiskShieldModule
+     */
+    static readonly RiskShieldModuleControllerCreateRiskShieldModulePath = '/api/v1/risk-shield-module';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -30,9 +37,7 @@ export class RiskShieldModuleService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    riskShieldModuleControllerGetRiskShieldModules$Response(params?: {
-        searchKeyword?: any;
-    }): Observable<StrictHttpResponse<Array<RiskShieldModuleDto>>> {
+    riskShieldModuleControllerGetRiskShieldModules$Response(params?: { searchKeyword?: any }): Observable<StrictHttpResponse<Array<RiskShieldModuleDto>>> {
         const rb = new RequestBuilder(this.rootUrl, RiskShieldModuleService.RiskShieldModuleControllerGetRiskShieldModulesPath, 'get');
         if (params) {
             rb.query('searchKeyword', params.searchKeyword, {});
@@ -65,19 +70,12 @@ export class RiskShieldModuleService extends BaseService {
     }
 
     /**
-     * Path part for operation riskShieldModuleControllerUpdateRiskShieldModule
-     */
-    static readonly RiskShieldModuleControllerUpdateRiskShieldModulePath = '/api/v1/risk-shield-module';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `riskShieldModuleControllerUpdateRiskShieldModule()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    riskShieldModuleControllerUpdateRiskShieldModule$Response(params: {
-        body: RiskShieldModuleDto;
-    }): Observable<StrictHttpResponse<RiskShieldModuleDto>> {
+    riskShieldModuleControllerUpdateRiskShieldModule$Response(params: { body: RiskShieldModuleDto }): Observable<StrictHttpResponse<RiskShieldModuleDto>> {
         const rb = new RequestBuilder(this.rootUrl, RiskShieldModuleService.RiskShieldModuleControllerUpdateRiskShieldModulePath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -108,11 +106,6 @@ export class RiskShieldModuleService extends BaseService {
             map((r: StrictHttpResponse<RiskShieldModuleDto>) => r.body as RiskShieldModuleDto)
         );
     }
-
-    /**
-     * Path part for operation riskShieldModuleControllerCreateRiskShieldModule
-     */
-    static readonly RiskShieldModuleControllerCreateRiskShieldModulePath = '/api/v1/risk-shield-module';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

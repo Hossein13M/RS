@@ -1,0 +1,91 @@
+<div class='dialog-container'>
+    <div appDialogHeader
+         title='جزئیات'>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
+    </div>
+    <div class='form-setting-detail'>
+        <div class='row'>
+            <div class='column'>
+                <span>نوع حساب</span>
+                <strong>{{data?.accountTypeId}}</strong>
+            </div>
+            <div class='column'>
+                <span>نام بانک</span>
+                <strong>{{data?.bankName}}</strong>
+            </div>
+            <div class='column'>
+                <span>نام شعبه</span>
+                <strong>{{data?.branchName}}</strong>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='column'>
+                <span>شماره سپرده</span>
+                <strong>{{data?.depositNumber}}</strong>
+            </div>
+            <div class='column'>
+                <span>تاریخ افتتاح</span>
+                <strong>{{data?.openingDate | convertDate}}</strong>
+            </div>
+            <div class='column'>
+                <span>تاریخ پایان قرارداد</span>
+                <strong>{{data?.endDate | convertDate}}</strong>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='column'>
+                <span>نرخ سود</span>
+                <strong>{{data?.interestRate}}</strong>
+            </div>
+            <div class='column'>
+                <span>نرخ ترجیحی</span>
+                <strong>{{data?.preferedRate}}</strong>
+            </div>
+            <div class='column'>
+                <span>تواتر واریز سود</span>
+                <strong>{{data?.frequenceId}}</strong>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='column'>
+                <span>حساب واریز</span>
+                <strong>{{data?.interestReceivedAccount}}</strong>
+            </div>
+            <div class='column'>
+                <span>مانده مسدود</span>
+                <strong>{{data?.blockedDepositBalance}}</strong>
+            </div>
+            <div class='column'>
+                <span>وضعیت سپرده</span>
+                <strong>{{data?.status}}</strong>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='column'>
+                <span>کد سطح Gl</span>
+                <strong>{{data?.glCode}}</strong>
+            </div>
+            <div class='column'>
+                <span>مبلغ افتتاح حساب</span>
+                <strong>{{data?.depositBalance}}</strong>
+            </div>
+            <div class='column'>
+                <span>توضیحات</span>
+                <strong>{{data?.description}}</strong>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='column'>
+                <span>روز پرداخت سپرده</span>
+                <strong>{{data?.paymentDay}}</strong>
+            </div>
+
+        </div>
+    </div>
+    <div style='display: flex;align-items: center;justify-content: flex-start;margin: 10px'>
+        <button [mat-dialog-close]='false' color='warn' mat-raised-button>
+            بستن
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

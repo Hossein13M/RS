@@ -1,0 +1,424 @@
+<div class='dialog-container'>
+    <div appDialogHeader
+         title='{{title}}'>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
+    </div>
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    کد صندوق
+                    <span style='color: red'>*</span>
+
+                </mat-label>
+                <input formControlName='code' matInput type='number'>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نام صندوق
+                    <span style='color: red'>*</span>
+
+                </mat-label>
+                <input formControlName='name' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label> نوع صندوق
+
+                </mat-label>
+                <mat-select formControlName='fundTypeId'>
+                    <mat-option *ngFor='let c of fundTypes' [value]='c?.id'
+                                style='text-align: right'>
+                        {{c?.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    قابلیت معامله
+                </mat-label>
+                <mat-select formControlName='etf'>
+                    <mat-option [value]='true'
+                                style='text-align: right'>
+                        قابل معامله
+                    </mat-option>
+                    <mat-option [value]='false'
+                                style='text-align: right'>
+                        غیر قابل معامله
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    قیمت اسمی هر واحد سرمایه گذاری
+
+
+                </mat-label>
+                <input formControlName='unitFaceValue' matInput type='number'>
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تاریخ تاسیس صندوق
+
+                </mat-label>
+                <input (click)='start12.open()' [matDatepicker]='start12'
+                       formControlName='establishingDate'
+                       matInput>
+                <mat-datepicker-toggle [for]='start12' matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #start12></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تاریخ شروع فعالیت
+
+                </mat-label>
+                <input (click)='start1.open()' [matDatepicker]='start1'
+                       formControlName='activityStartDate'
+                       matInput>
+                <mat-datepicker-toggle [for]='start1' matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #start1></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تاریخ شروع عرضه عمومی
+
+                </mat-label>
+                <input (click)='start123.open()' [matDatepicker]='start123'
+                       formControlName='startDateOfpublicOffering'
+                       matInput>
+                <mat-datepicker-toggle [for]='start123' matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #start123></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تاریخ پایان عرضه عمومی
+
+                </mat-label>
+                <input (click)='start126.open()' [matDatepicker]='start126'
+                       formControlName='endDateOfpublicOffering'
+                       matInput>
+                <mat-datepicker-toggle [for]='start126' matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #start126></mat-datepicker>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    حداقل تعهدات روزانه ضامن نقدشوندگی
+
+                </mat-label>
+                <input formControlName='minDailyGuarantee' matInput type='number'>
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    حداقل سفارش انباشته بازارگردان
+
+                </mat-label>
+                <input formControlName='minOrderQuantity' matInput type='number'>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    حداقل معامله روزانه بازارگردان
+                </mat-label>
+                <input formControlName='minDailyDeal' matInput type='number'>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    دامنه مظنه بازارگردان
+
+                </mat-label>
+                <input formControlName='domainOfQuotation' matInput type='number'>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تعداد واحدهای ممتاز کل صندوق
+
+                </mat-label>
+                <input formControlName='numberOfPrivilegeUnit' matInput type='number'>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تواتر واریز سود صندوق
+
+                </mat-label>
+                <mat-select formControlName='frequenceId'>
+                    <mat-option *ngFor='let f of frequences' [value]='f?.id'
+                                style='text-align: right'>
+                        {{f?.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    روز پرداخت سود
+                </mat-label>
+                <input formControlName='dayOfPayingProfit' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    حداقل تعداد واحد سرمایه گذاری
+                </mat-label>
+                <input formControlName='minUnitNum' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    حداکثر تعداد واحد سرمایه گذاری
+                </mat-label>
+                <input formControlName='maxUnitNum' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    وبسایت
+                </mat-label>
+                <input formControlName='website' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    سود پیش بینی شده
+                </mat-label>
+                <input formControlName='forecastProfitPercent' matInput>
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    سود تضمینی
+                </mat-label>
+                <input formControlName='benefitGuarantorPercent' matInput>
+            </mat-form-field>
+            <!--            <mat-form-field appearance="outline">-->
+            <!--                <mat-label>-->
+            <!--                    وبسایت-->
+            <!--                </mat-label>-->
+            <!--                <input formControlName="website" matInput>-->
+            <!--            </mat-form-field>-->
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    درصد حداقل معاملات روزانه بازارگردان
+                </mat-label>
+                <input formControlName='perMinDailyDeal' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تنخواه بازارگردان صندوق
+                </mat-label>
+                <input formControlName='volMinDailyDeal' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نماد صندوق
+                </mat-label>
+                <input formControlName='symbol' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    کد دفتر کل صندوق
+                </mat-label>
+                <input formControlName='glCode' matInput>
+            </mat-form-field>
+        </div>
+
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    ماه سال مالی
+                </mat-label>
+                <input formControlName='fiscalMonth' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    روز مهلت اظهارنامه مالیاتی
+                </mat-label>
+                <input formControlName='taxDueDay' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    ماه مهلت اظهارنامه مالیاتی
+                </mat-label>
+                <input formControlName='taxDueMonth' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    شناسه ملی
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <input formControlName='nationalId' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    کد ثبت نزد سازمان بورس
+                </mat-label>
+                <input formControlName='SEORgisterCode' matInput>
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    کد ثبت نزد سازمان ثبت شرکت ها
+                </mat-label>
+                <input formControlName='CRORegisterCode' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    حسابرس
+                </mat-label>
+                <mat-select formControlName='auditorId'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    ضامن سود
+                </mat-label>
+                <mat-select formControlName='benefitGuarantorId'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    ضامن نقدشوندگی
+                </mat-label>
+                <mat-select formControlName='liquidityGuarantorId'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    بازارگردان
+                </mat-label>
+                <mat-select [multiple]='true' formControlName='marketerIds'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    متولی
+                </mat-label>
+                <mat-select formControlName='trusterId'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    مدیر ثبت
+                </mat-label>
+                <mat-select [multiple]='true' formControlName='registerManagementIds'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    مدیر سرمایه گذاری
+                </mat-label>
+                <mat-select formControlName='investmentManagementId'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    متعد پذیره نویس
+                </mat-label>
+                <mat-select formControlName='underwritingIds'>
+                    <ngx-mat-select-search [formControl]='fundRoleMultiFilterCtrl'
+                                           [noEntriesFoundLabel]=" 'یافت نشد'"
+                                           [placeholderLabel]="'جستجو'"
+                                           style='text-align: right'></ngx-mat-select-search>
+                    <mat-option *ngFor='let op of filteredFundRoleMulti | async' [value]='op?.id'
+                                style='text-align: right;'>
+                        {{op?.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
+                <mat-icon>close</mat-icon>
+                برگشت
+            </button>
+            <button (click)='onCreateBranch()' *ngIf='!data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button (click)='onEditBranch()' *ngIf='data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

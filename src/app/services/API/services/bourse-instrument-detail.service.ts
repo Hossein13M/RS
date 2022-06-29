@@ -12,19 +12,26 @@ import { UpdateBourseInstrumentDetailsDto } from '../models/update-bourse-instru
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class BourseInstrumentDetailService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bourseInstrumentDetailControllerGetBondsList
      */
     static readonly BourseInstrumentDetailControllerGetBondsListPath = '/api/v1/bourse-instrument-detail/bonds';
+    /**
+     * Path part for operation bourseInstrumentDetailControllerGetBourseInstrumentDetails
+     */
+    static readonly BourseInstrumentDetailControllerGetBourseInstrumentDetailsPath = '/api/v1/bourse-instrument-detail/details/{id}';
+    /**
+     * Path part for operation bourseInstrumentDetailControllerUpdateBourseInstrumentDetails
+     */
+    static readonly BourseInstrumentDetailControllerUpdateBourseInstrumentDetailsPath = '/api/v1/bourse-instrument-detail';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -78,11 +85,6 @@ export class BourseInstrumentDetailService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseInstrumentDetailControllerGetBourseInstrumentDetails
-     */
-    static readonly BourseInstrumentDetailControllerGetBourseInstrumentDetailsPath = '/api/v1/bourse-instrument-detail/details/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseInstrumentDetailControllerGetBourseInstrumentDetails()` instead.
      *
@@ -92,11 +94,7 @@ export class BourseInstrumentDetailService extends BaseService {
         id: number;
         ticker: any;
     }): Observable<StrictHttpResponse<BourseInstrumentDetailsDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            BourseInstrumentDetailService.BourseInstrumentDetailControllerGetBourseInstrumentDetailsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, BourseInstrumentDetailService.BourseInstrumentDetailControllerGetBourseInstrumentDetailsPath, 'get');
         if (params) {
             rb.path('id', params.id, {});
             rb.query('ticker', params.ticker, {});
@@ -129,11 +127,6 @@ export class BourseInstrumentDetailService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseInstrumentDetailControllerUpdateBourseInstrumentDetails
-     */
-    static readonly BourseInstrumentDetailControllerUpdateBourseInstrumentDetailsPath = '/api/v1/bourse-instrument-detail';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseInstrumentDetailControllerUpdateBourseInstrumentDetails()` instead.
      *
@@ -142,11 +135,7 @@ export class BourseInstrumentDetailService extends BaseService {
     bourseInstrumentDetailControllerUpdateBourseInstrumentDetails$Response(params: {
         body: UpdateBourseInstrumentDetailsDto;
     }): Observable<StrictHttpResponse<SentSuccessDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            BourseInstrumentDetailService.BourseInstrumentDetailControllerUpdateBourseInstrumentDetailsPath,
-            'put'
-        );
+        const rb = new RequestBuilder(this.rootUrl, BourseInstrumentDetailService.BourseInstrumentDetailControllerUpdateBourseInstrumentDetailsPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
         }
@@ -175,11 +164,5 @@ export class BourseInstrumentDetailService extends BaseService {
         return this.bourseInstrumentDetailControllerUpdateBourseInstrumentDetails$Response(params).pipe(
             map((r: StrictHttpResponse<SentSuccessDto>) => r.body as SentSuccessDto)
         );
-    }
-
-    // implement http request from now on
-
-    getBourseInstrumentDetailControllerGetBondsList(searchKeyword: string) {
-        return this.http.get<any>(`/bourse-instrument-detail/bonds?searchKeyword=${searchKeyword}`);
     }
 }

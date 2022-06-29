@@ -1,0 +1,264 @@
+<div class='page-layout'>
+    <app-header pageTitle='{{ title }}'>
+        <div>
+            <a *ngIf='!created' [routerLink]="['/op-risk/management/loss']" color='accent' mat-raised-button>
+                <mat-icon>arrow_back</mat-icon>
+            </a>
+
+            <a *ngIf='created' [routerLink]="['/op-risk/management']" color='primary' mat-raised-button> مدیریت
+                ریسک </a>
+        </div>
+    </app-header>
+
+    <div [formGroup]='form' class='form'>
+        <div class='page-content' dir='rtl' fxLayout='row wrap' style='overflow: auto'>
+            <div *ngIf='view' fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none'>
+                <div class='section-select'>
+                    <button
+                        (click)='viewRelatedRisk(relatedRisk)'
+                        *ngFor='let relatedRisk of data?.details; let i = index'
+                        [color]="relatedRisk.id == selected ? 'accent' : 'primary'"
+                        class='section-item'
+                        mat-button
+                    >
+                        {{ relatedRisk?.relatedOPRisk?.title ? relatedRisk.relatedOPRisk.title : 'ریسک اصلی' }}
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf='!view' fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none'>
+                <div class='section-select'>
+                    <button [color]="mainSaved == true ? 'warn' : 'primary'" [disabled]='mainSaved' class='section-item'
+                            mat-button>ریسک اصلی
+                    </button>
+                    <button
+                        (click)='showAddRelatedRisk(relatedRisk.title, relatedRisk.id)'
+                        *ngFor='let relatedRisk of relatedRiskArray; let i = index'
+                        [color]="relatedRisk.id == selected ? 'accent' : 'primary'"
+                        [disabled]='!mainSaved'
+                        class='section-item'
+                        mat-button
+                    >
+                        {{ relatedRisk.title }}
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf='view' fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly center ' style='margin-top: 20px'>
+                <div fxFlex='95' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-horizontal-stepper [selectedIndex]='stepIndex' class='custom-stepper' linear>
+                        <mat-step *ngFor='let step of steps; let indexOfLoop = index'
+                                  [completed]='indexOfLoop == selected' [editable]='false'>
+                            <ng-template matStepLabel>
+                                <div style='font-size: 12px'>
+                                    {{ step.action }}
+                                </div>
+                                <div style='font-size: 11px'>
+                                    {{ step.username }}
+                                </div>
+                                <div style='font-size: 11px'>
+                                    {{ step.createdAt }}
+                                </div>
+                            </ng-template>
+                        </mat-step>
+                    </mat-horizontal-stepper>
+                </div>
+            </div>
+
+            <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly center ' style='margin-top: 20px'>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>شرح رویداد زیان</mat-label>
+                        <input formControlName='description' matInput required type='text' />
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>محرکه عملیاتی</mat-label>
+                        <mat-select formControlName='drivers' multiple required>
+                            <mat-option *ngFor='let driver of driverArray'
+                                        [value]='driver.treeNode.id'>{{ driver.treeNode.titleFA }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+            </div>
+
+            <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly center ' style='margin-top: 20px'>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline' style='width: 100%'>
+                        <mat-label>تاریخ وقوع رویداد زیان</mat-label>
+                        <input [matDatepicker]='lossEventDate' [max]='dateLimit.lossEventDate.max'
+                               formControlName='lossEventDate' matInput required />
+                        <mat-datepicker-toggle [for]='lossEventDate' matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #lossEventDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline' style='width: 100%'>
+                        <mat-label>تاریخ اختتام پرونده</mat-label>
+                        <input
+                            (dateChange)='calculateDate()'
+                            [matDatepicker]='profileFinishingDate'
+                            [min]='dateLimit.profileFinishingDate.min'
+                            formControlName='profileFinishingDate'
+                            matInput
+                            required
+                        />
+                        <mat-datepicker-toggle [for]='profileFinishingDate' matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #profileFinishingDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline' disabled>
+                        <mat-label>طول عمر رویداد زیان</mat-label>
+                        <input disabled formControlName='life' matInput type='text' />
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly center ' style='margin-top: 20px'>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline' style='width: 100%'>
+                        <mat-label>تاریخ کشف رویداد زیان</mat-label>
+                        <input
+                            [matDatepicker]='lossEventDiscoveryDate'
+                            [min]='dateLimit.profileFinishingDate.min'
+                            formControlName='lossEventDiscoveryDate'
+                            matInput
+                            required
+                        />
+                        <mat-datepicker-toggle [for]='lossEventDiscoveryDate' matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #lossEventDiscoveryDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline' style='width: 100%'>
+                        <mat-label>تاریخ شروع بررسی</mat-label>
+                        <input
+                            [matDatepicker]='checkStartingDate'
+                            [max]='dateLimit.checkStartingDate.max'
+                            [min]='dateLimit.profileFinishingDate.min'
+                            formControlName='checkStartingDate'
+                            matInput
+                            required
+                        />
+                        <mat-datepicker-toggle [for]='checkStartingDate' matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #checkStartingDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline' style='width: 100%'>
+                        <mat-label>تاریخ پایان بررسی</mat-label>
+                        <input
+                            [matDatepicker]='checkFinishingDate'
+                            [min]='dateLimit.checkFinishingDate.min'
+                            formControlName='checkFinishingDate'
+                            matInput
+                            required
+                        />
+                        <mat-datepicker-toggle [for]='checkFinishingDate' matSuffix></mat-datepicker-toggle>
+                        <mat-datepicker #checkFinishingDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly center ' style='margin-top: 20px'>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>پوشش</mat-label>
+                        <mat-select formControlName='recoveries' multiple>
+                            <mat-option *ngFor='let recovery of recoveriesArray'
+                                        [value]='recovery.treeNode.id'>{{ recovery.treeNode.titleFA }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>مبلغ پوشش</mat-label>
+                        <input formControlName='recoveriesAmount' matInput type='number' />
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+            </div>
+
+            <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly center ' style='margin-top: 20px'>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>زیان های مستقیم</mat-label>
+                        <mat-select formControlName='directLosses' multiple>
+                            <mat-option *ngFor='let directLosses of directLossesArray'
+                                        [value]='directLosses.treeNode.id'>{{
+                                directLosses.treeNode.titleFA
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>مبلغ زیان های مستقیم</mat-label>
+                        <input formControlName='directLossesAmount' matInput type='number' />
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+            </div>
+
+            <div fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly center ' style='margin-top: 20px'>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>زیان های غیر مستقیم</mat-label>
+                        <mat-select formControlName='inDirectLosses' multiple>
+                            <mat-option *ngFor='let inDirectLosses of inDirectLossesArray'
+                                        [value]='inDirectLosses.treeNode.id'>{{
+                                inDirectLosses.treeNode.titleFA
+                                }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <mat-form-field appearance='outline'>
+                        <mat-label>مبلغ زیان های غیر مستقیم</mat-label>
+                        <input formControlName='inDirectLossesAmount' matInput type='number' />
+                    </mat-form-field>
+                </div>
+                <div fxFlex='30' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+            </div>
+
+            <div *ngIf='!addRelatedRisk && !view' fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none'
+                 style='margin-top: 20px'>
+                <div fxFlex='10' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <button (click)='createOpLossDetail(false)' color='primary' mat-raised-button>
+                        <mat-icon>done</mat-icon>
+                        ذخیره
+                    </button>
+                </div>
+                <div fxFlex='10' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <a [routerLink]="['/op-risk/management']" color='warn' mat-raised-button>
+                        <mat-icon>cancel</mat-icon>
+                        برگشت
+                    </a>
+                </div>
+                <div fxFlex='10' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+                <div fxFlex='58' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+            </div>
+
+            <div *ngIf='addRelatedRisk && !view' fxFlex='100' fxLayout='row' fxLayoutAlign='space-evenly none'
+                 style='margin-top: 20px'>
+                <div fxFlex='10' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <button (click)='createOpLossDetail(true)' color='primary' mat-raised-button>
+                        <mat-icon>done</mat-icon>
+                        ذخیره
+                    </button>
+                </div>
+                <div fxFlex='10' fxLayout='column' fxLayoutAlign='space-evenly none'>
+                    <a [routerLink]="['/op-risk/management']" color='warn' mat-raised-button>
+                        <mat-icon>cancel</mat-icon>
+                        برگشت
+                    </a>
+                </div>
+                <div fxFlex='10' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+                <div fxFlex='58' fxLayout='column' fxLayoutAlign='space-evenly none'></div>
+            </div>
+        </div>
+    </div>
+</div>

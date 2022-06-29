@@ -5,8 +5,6 @@ import { FuseNavigationModule } from '@fuse/components';
 import { FuseSharedModule } from '@fuse/shared.module';
 import { NavbarVerticalStyle1Component } from 'app/layout/components/navbar/vertical/style-1/style-1.component';
 
-
-
 @NgModule({
     declarations: [NavbarVerticalStyle1Component],
     imports: [MatButtonModule, MatIconModule, FuseSharedModule, FuseNavigationModule],

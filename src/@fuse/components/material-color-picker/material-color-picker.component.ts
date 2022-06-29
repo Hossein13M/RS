@@ -29,9 +29,6 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
     // Color changed
     @Output()
     colorChanged: EventEmitter<any>;
-
-    // Private
-    private _color: string;
     private _modelChange: (value: any) => void;
     private _modelTouched: (value: any) => void;
 
@@ -42,22 +39,7 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
         // Set the defaults
         this.colorChanged = new EventEmitter();
         this.colors = MatColors.all;
-        this.hues = [
-            '50',
-            '100',
-            '200',
-            '300',
-            '400',
-            '500',
-            '600',
-            '700',
-            '800',
-            '900',
-            'A100',
-            'A200',
-            'A400',
-            'A700',
-        ];
+        this.hues = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'A100', 'A200', 'A400', 'A700'];
         this.selectedHue = '500';
         this.view = 'palettes';
 
@@ -67,9 +49,16 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
         this._modelTouched = () => {};
     }
 
+    // Private
+    private _color: string;
+
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
     // -----------------------------------------------------------------------------------------------------
+
+    get color(): string {
+        return this._color;
+    }
 
     /**
      * Selected class
@@ -96,10 +85,6 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
 
         // Store the color value
         this._color = value;
-    }
-
-    get color(): string {
-        return this._color;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -207,11 +192,7 @@ export class FuseMaterialColorPickerComponent implements ControlValueAccessor {
      * Update selected color
      */
     updateSelectedColor(): void {
-        if (
-            this.selectedColor &&
-            this.selectedColor.palette === this.selectedPalette &&
-            this.selectedColor.hue === this.selectedHue
-        ) {
+        if (this.selectedColor && this.selectedColor.palette === this.selectedPalette && this.selectedColor.hue === this.selectedHue) {
             return;
         }
 

@@ -1,0 +1,72 @@
+<div class='dialog-content-wrapper' dir='rtl'>
+    <mat-toolbar class='mat-accent m-0' matDialogTitle>
+        <mat-toolbar-row fxLayout='row' fxLayoutAlign='space-between center'>
+            <span class='title dialog-title'>افزودن بازارگردان</span>
+            <button (click)='matDialogRef.close()' mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class='p-24 m-0' fusePerfectScrollbar mat-dialog-content>
+        <app-table [columns]='column' [data]='data' [paginationSettings]="{ mode: 'local' }"></app-table>
+        <ng-container *ngIf='data?.length === 0'>
+            <div
+                style='display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column'>
+                <img alt='no data' height='140px' src='../../../../../assets/images/no-data.svg' width='140px' />
+                <div style='font-size: 13px; color: #449fdb; margin-top: 7px'>موردی وجود ندارد</div>
+            </div>
+        </ng-container>
+
+        <form [formGroup]='marketMakerForm' class='form' fxLayout='row wrap' fxLayoutAlign='space-between center'>
+            <div fxFlex='49'>
+                <mat-form-field appearance='outline'>
+                    <mat-label>بازارگردان</mat-label>
+                    <mat-select [multiple]='false' [placeholder]='marketMakerForm.value.markerMakerName'
+                                formControlName='markerMakerId'>
+                        <ngx-mat-select-search
+                            [formControl]='searchKey'
+                            [noEntriesFoundLabel]="'یافت نشد'"
+                            [placeholderLabel]="'جستجو'"
+                            style='text-align: right'
+                        ></ngx-mat-select-search>
+                        <mat-option
+                            (click)="marketMakerForm.controls['markerMakerName'].setValue(MarketMaker.name)"
+                            *ngFor='let MarketMaker of marketMakers'
+                            [value]='MarketMaker.id'
+                            style='text-align: right'
+                        >
+                            {{ MarketMaker?.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex='49'>
+                <mat-form-field appearance='outline' fxFlex>
+                    <mat-label>درصد</mat-label>
+                    <input formControlName='percent' matInput required type='number' />
+                </mat-form-field>
+            </div>
+
+            <div fxFlex='100' fxLayout='row wrap' fxLayoutAlign='center center'>
+                <button (click)='add()' *ngIf='selectedMarketMaker == null' [disabled]='marketMakerForm.invalid'
+                        color='primary' mat-button>
+                    <mat-icon class='mat-18'>add_circle</mat-icon>
+                    افزودن
+                </button>
+
+                <button (click)='edit()' *ngIf='selectedMarketMaker != null' [disabled]='marketMakerForm.invalid'
+                        color='primary' mat-button>
+                    <mat-icon class='mat-18'>create</mat-icon>
+                    اصلاح
+                </button>
+
+                <button (click)='clear()' *ngIf='selectedMarketMaker != null' color='warn' mat-button>
+                    <mat-icon class='mat-18'>clear</mat-icon>
+                    برگشت
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

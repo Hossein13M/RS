@@ -11,19 +11,26 @@ import { UserInfoWithTokenDto } from '../models/user-info-with-token-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation authControllerLogin
      */
     static readonly AuthControllerLoginPath = '/api/v1/auth/login';
+    /**
+     * Path part for operation authControllerVerify
+     */
+    static readonly AuthControllerVerifyPath = '/api/v1/auth/verify';
+    /**
+     * Path part for operation authControllerGetToken
+     */
+    static readonly AuthControllerGetTokenPath = '/api/v1/auth/access-token';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -58,15 +65,8 @@ export class AuthService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     authControllerLogin(params: { body: LoginDto }): Observable<UserInfoWithTokenDto> {
-        return this.authControllerLogin$Response(params).pipe(
-            map((r: StrictHttpResponse<UserInfoWithTokenDto>) => r.body as UserInfoWithTokenDto)
-        );
+        return this.authControllerLogin$Response(params).pipe(map((r: StrictHttpResponse<UserInfoWithTokenDto>) => r.body as UserInfoWithTokenDto));
     }
-
-    /**
-     * Path part for operation authControllerVerify
-     */
-    static readonly AuthControllerVerifyPath = '/api/v1/auth/verify';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -104,11 +104,6 @@ export class AuthService extends BaseService {
     }
 
     /**
-     * Path part for operation authControllerGetToken
-     */
-    static readonly AuthControllerGetTokenPath = '/api/v1/auth/access-token';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `authControllerGetToken()` instead.
      *
@@ -140,8 +135,6 @@ export class AuthService extends BaseService {
      * This method doesn't expect any request body.
      */
     authControllerGetToken(params?: {}): Observable<UserInfoWithTokenDto> {
-        return this.authControllerGetToken$Response(params).pipe(
-            map((r: StrictHttpResponse<UserInfoWithTokenDto>) => r.body as UserInfoWithTokenDto)
-        );
+        return this.authControllerGetToken$Response(params).pipe(map((r: StrictHttpResponse<UserInfoWithTokenDto>) => r.body as UserInfoWithTokenDto));
     }
 }

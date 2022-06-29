@@ -1,17 +1,4 @@
-import {
-    sequence,
-    trigger,
-    animate,
-    style,
-    group,
-    query,
-    transition,
-    animateChild,
-    state,
-    animation,
-    useAnimation,
-    stagger,
-} from '@angular/animations';
+import { animate, animateChild, animation, group, query, sequence, stagger, state, style, transition, trigger, useAnimation } from '@angular/animations';
 
 const customAnimation = animation(
     [

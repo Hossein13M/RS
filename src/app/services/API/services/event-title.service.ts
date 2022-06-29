@@ -10,19 +10,30 @@ import { GetEventTitleDto } from '../models/get-event-title-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class EventTitleService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventTitleControllerGetEventTitles
      */
     static readonly EventTitleControllerGetEventTitlesPath = '/api/v1/event-title';
+    /**
+     * Path part for operation eventTitleControllerCreateEventTitle
+     */
+    static readonly EventTitleControllerCreateEventTitlePath = '/api/v1/event-title';
+    /**
+     * Path part for operation eventTitleControllerUpdateEventTitle
+     */
+    static readonly EventTitleControllerUpdateEventTitlePath = '/api/v1/event-title/{id}';
+    /**
+     * Path part for operation eventTitleControllerDeleteEventTitle
+     */
+    static readonly EventTitleControllerDeleteEventTitlePath = '/api/v1/event-title/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -30,10 +41,7 @@ export class EventTitleService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    eventTitleControllerGetEventTitles$Response(params?: {
-        eventLevelId?: number;
-        id?: number;
-    }): Observable<StrictHttpResponse<Array<GetEventTitleDto>>> {
+    eventTitleControllerGetEventTitles$Response(params?: { eventLevelId?: number; id?: number }): Observable<StrictHttpResponse<Array<GetEventTitleDto>>> {
         const rb = new RequestBuilder(this.rootUrl, EventTitleService.EventTitleControllerGetEventTitlesPath, 'get');
         if (params) {
             rb.query('eventLevelId', params.eventLevelId, {});
@@ -65,11 +73,6 @@ export class EventTitleService extends BaseService {
             map((r: StrictHttpResponse<Array<GetEventTitleDto>>) => r.body as Array<GetEventTitleDto>)
         );
     }
-
-    /**
-     * Path part for operation eventTitleControllerCreateEventTitle
-     */
-    static readonly EventTitleControllerCreateEventTitlePath = '/api/v1/event-title';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -104,15 +107,8 @@ export class EventTitleService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventTitleControllerCreateEventTitle(params: { body: CreateEventTitleDto }): Observable<GetEventTitleDto> {
-        return this.eventTitleControllerCreateEventTitle$Response(params).pipe(
-            map((r: StrictHttpResponse<GetEventTitleDto>) => r.body as GetEventTitleDto)
-        );
+        return this.eventTitleControllerCreateEventTitle$Response(params).pipe(map((r: StrictHttpResponse<GetEventTitleDto>) => r.body as GetEventTitleDto));
     }
-
-    /**
-     * Path part for operation eventTitleControllerUpdateEventTitle
-     */
-    static readonly EventTitleControllerUpdateEventTitlePath = '/api/v1/event-title/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -120,10 +116,7 @@ export class EventTitleService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventTitleControllerUpdateEventTitle$Response(params: {
-        id: number;
-        body: CreateEventTitleDto;
-    }): Observable<StrictHttpResponse<GetEventTitleDto>> {
+    eventTitleControllerUpdateEventTitle$Response(params: { id: number; body: CreateEventTitleDto }): Observable<StrictHttpResponse<GetEventTitleDto>> {
         const rb = new RequestBuilder(this.rootUrl, EventTitleService.EventTitleControllerUpdateEventTitlePath, 'put');
         if (params) {
             rb.path('id', params.id, {});
@@ -152,15 +145,8 @@ export class EventTitleService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     eventTitleControllerUpdateEventTitle(params: { id: number; body: CreateEventTitleDto }): Observable<GetEventTitleDto> {
-        return this.eventTitleControllerUpdateEventTitle$Response(params).pipe(
-            map((r: StrictHttpResponse<GetEventTitleDto>) => r.body as GetEventTitleDto)
-        );
+        return this.eventTitleControllerUpdateEventTitle$Response(params).pipe(map((r: StrictHttpResponse<GetEventTitleDto>) => r.body as GetEventTitleDto));
     }
-
-    /**
-     * Path part for operation eventTitleControllerDeleteEventTitle
-     */
-    static readonly EventTitleControllerDeleteEventTitlePath = '/api/v1/event-title/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

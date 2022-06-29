@@ -1,0 +1,247 @@
+.risk-chart {
+    margin-top: 1.2rem;
+
+    * {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.fuse-card {
+    height: auto !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start !important;
+    align-items: flex-start;
+}
+
+.page-content {
+    overflow: auto !important;
+}
+
+.tree-header-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.tree {
+    margin: 20px 10px;
+}
+
+.first-node-actions {
+    display: flex;
+    margin: 0 auto 0 5px;
+}
+
+mat-chip > p {
+    position: relative;
+    bottom: -2px;
+    padding: 5px;
+}
+
+// ***
+.first-node-actions {
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.loader {
+    margin: 10px 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.go-back-fab {
+    width: 20px;
+    height: 20px;
+    line-height: 14px;
+    font-size: 14px;
+    margin-right: auto;
+
+    &::ng-deep .mat-button-wrapper {
+        line-height: 14px;
+        padding: 0;
+
+        .mat-icon {
+            font-size: 14px;
+            padding-left: 4px;
+            padding-top: 3px;
+            margin-left: 0;
+        }
+    }
+}
+
+.form-full-width {
+    width: 100%;
+    margin: 2rem 0 0 0;
+    font-size: 1rem;
+}
+
+.add-child-btn {
+    font-size: 1rem;
+    width: 100%;
+}
+
+.active {
+    z-index: 3;
+}
+
+.example-tree-invisible {
+    display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.min-height {
+    min-height: 90px;
+}
+
+.loader {
+    height: 100%;
+    min-height: 90px;
+    width: 100%;
+    padding: 10px;
+}
+
+::ng-deep .operation-menu {
+    width: 240px !important;
+    max-width: unset;
+    min-width: unset;
+
+    .mat-menu-item {
+        text-align: right !important;
+    }
+
+    mat-icon {
+        margin-right: 0 !important;
+        margin-left: 10px;
+    }
+}
+
+::ng-deep .tree {
+    mat-tree-node {
+        font-size: 1.5rem;
+        border: 1px solid transparent;
+        position: relative;
+        transition: border 200ms ease-in-out;
+
+        .plus {
+            margin: 0 10px;
+            width: 20px;
+            height: 20px;
+            line-height: 14px;
+            font-size: 14px;
+
+            &::ng-deep .mat-button-wrapper {
+                line-height: 14px;
+                padding: 0;
+
+                .mat-icon {
+                    font-size: 14px;
+                    padding-left: 4px;
+                    padding-top: 3px;
+                }
+            }
+        }
+
+        mat-chip-list {
+            height: 25px;
+            flex-direction: row;
+            width: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 102px;
+
+            .mat-chip-list-wrapper {
+                height: 100%;
+                min-height: unset;
+                max-height: unset;
+            }
+
+            mat-chip {
+                font-size: 1.3rem;
+                //dastan
+                margin: 0 1rem !important;
+                font-weight: 500;
+                height: 100%;
+                max-height: unset;
+                min-height: unset;
+
+                mat-icon {
+                    margin-right: 0 !important;
+                    margin-left: 5px !important;
+                }
+            }
+        }
+    }
+}
+
+.alert-name-change {
+    font-size: 1rem;
+    color: red;
+    padding-bottom: 5px;
+}
+
+.menu-modal {
+    width: 95% !important;
+    margin: auto !important;
+}
+
+.risk-chart {
+    margin-top: 1.2rem;
+
+    * {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.fuse-card {
+    height: auto !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start !important;
+    align-items: flex-start;
+}
+
+.page-content {
+    overflow: auto !important;
+}
+
+.tree-header-wrapper {
+    position: relative;
+    display: flex;
+}
+
+.tree {
+    margin: 20px 10px;
+}
+
+.first-node-actions {
+    display: flex;
+    margin: 0 auto 0 5px;
+}
+
+mat-chip > p {
+    position: relative;
+    bottom: -2px;
+    padding: 5px;
+}

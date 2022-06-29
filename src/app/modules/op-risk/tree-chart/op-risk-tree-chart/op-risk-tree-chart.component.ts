@@ -5,15 +5,15 @@ import { FormArray, FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { Observable, of } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
+import { AlertService } from '#shared/services/alert.service';
+import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
+import { FormContainer } from 'app/shared/models/FromContainer';
+import { Observable, of } from 'rxjs';
 import { OpRiskMappingDialogComponent } from '../op-risk-mapping-dialog/op-risk-mapping-dialog.component';
 import { OpRiskTreeChartService } from '../op-risk-tree-chart.service';
 import { TreeMappingService } from '../tree-mapping.service';
-import { stateType, TreeChartFlatNode, TreeChartMapping, TreeChartNode } from './op-risk-tree-chart.types.js';
-import { ConfirmDialogComponent } from 'app/shared/components/confirm-dialog/confirm-dialog.component';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { AlertService } from 'app/services/alert.service';
+import { stateType, TreeChartFlatNode, TreeChartMapping, TreeChartNode } from './op-risk-tree-chart.types';
 
 @Component({
     selector: 'app-op-risk-tree-chart',
@@ -109,7 +109,7 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
 
     get(): void {
         this.state = stateType.LOADING;
-        this.ortcs.getTree(this.selected, this).subscribe(
+        this.ortcs.getTree(this.selected).subscribe(
             (tree) => {
                 this.state = stateType.PRESENT;
 
@@ -160,8 +160,7 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
     // ---------------------------------------- Tree
 
     transformer = (node: TreeChartNode, level: number) => {
-        const flatNode =
-            this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
+        const flatNode = this.nestedNodeMap.has(node) && this.nestedNodeMap.get(node)!.id === node.id ? this.nestedNodeMap.get(node)! : new TreeChartFlatNode();
 
         flatNode.id = node.id;
         flatNode.level = level;
@@ -204,9 +203,7 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
         } else {
             this.checklistSelection.toggle(node);
             const descendants = this.treeControl.getDescendants(node);
-            this.checklistSelection.isSelected(node)
-                ? this.checklistSelection.select(...descendants)
-                : this.checklistSelection.deselect(...descendants);
+            this.checklistSelection.isSelected(node) ? this.checklistSelection.select(...descendants) : this.checklistSelection.deselect(...descendants);
         }
         if (this.checklistSelection.isEmpty()) {
             this.deleteMode = false;
@@ -344,7 +341,10 @@ export class OpRiskTreeChartComponent implements OnChanges, FormContainer {
 
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
             panelClass: 'dialog-w40',
-            data: { title: 'حذف نگاشت', description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟` },
+            data: {
+                title: 'حذف نگاشت',
+                description: `آیا از حذف نگاشت «${node.titleFA}» به «${relation.childTitleFa}» اطمینان دارید؟`,
+            },
         });
         dialogRef.afterClosed().subscribe((res) => {
             if (res) {

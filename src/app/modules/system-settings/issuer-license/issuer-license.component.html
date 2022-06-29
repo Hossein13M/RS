@@ -1,0 +1,41 @@
+<div class='fuse-card'>
+    <div dir='rtl'>
+        <app-table
+            (paginationEvent)='paginationControl($event)'
+            (searchEvent)='search($event)'
+            [columns]='column'
+            [data]='data'
+            [paginationObject]='pagination'
+            [paginationSettings]="{ mode: 'scroll' }"
+            height='55vh'
+        ></app-table>
+    </div>
+
+    <div class='container' dir='rtl'>
+        <div class='issuer'>
+            <mat-form-field appearance='outline' style='flex-grow: 1'>
+                <input [formControl]='issuerName' class='form-field' matInput placeholder='مجوز سازمان' required />
+            </mat-form-field>
+
+            <div class='setting-btn-container' fxLayout='column wrap' fxLayoutAlign='center center' fxLayoutGap='5px'>
+                <button (click)='addIssuer()' *ngIf='!selectedIssuer' [disabled]='issuerName.invalid' color='accent'
+                        mat-raised-button>
+                    <mat-icon>done</mat-icon>
+                    ثبت
+                </button>
+
+                <button (click)='edit()' *ngIf='selectedIssuer' [disabled]='issuerName.invalid' color='accent'
+                        mat-raised-button>
+                    <mat-icon>edit</mat-icon>
+                    ویرایش
+                </button>
+
+                <button (click)='clear()' *ngIf='selectedIssuer' color='warn' mat-raised-button
+                        style='margin-left: 10px'>
+                    <mat-icon>close</mat-icon>
+                    برگشت
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

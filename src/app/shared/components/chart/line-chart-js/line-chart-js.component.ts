@@ -14,21 +14,7 @@ export class LineChartJsComponent implements OnInit, OnChanges {
     @Input() chartName: string;
 
     keys = [];
-    colors = [
-        '#0d47a1',
-        '#006064',
-        '#004d40',
-        '#afb42b',
-        '#f57f17',
-        '#ff6f00',
-        '#e65100',
-        '#d84315',
-        '#4e342e',
-        '#7e57c2',
-        '#d500f9',
-        '#c2185b',
-        '#9c27b0',
-    ];
+    colors = ['#0d47a1', '#006064', '#004d40', '#afb42b', '#f57f17', '#ff6f00', '#e65100', '#d84315', '#4e342e', '#7e57c2', '#d500f9', '#c2185b', '#9c27b0'];
 
     public chartType = 'line';
     public chartDatasets: Array<any> = [];
@@ -61,11 +47,11 @@ export class LineChartJsComponent implements OnInit, OnChanges {
         },
     };
 
+    constructor() {}
+
     public chartClicked(e: any): void {}
 
     public chartHovered(e: any): void {}
-
-    constructor() {}
 
     ngOnInit(): void {}
 

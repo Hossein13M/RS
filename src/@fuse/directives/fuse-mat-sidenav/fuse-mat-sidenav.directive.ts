@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, HostListener, OnDestroy, HostBinding } from '@angular/core';
+import { Directive, HostBinding, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MediaObserver } from '@angular/flex-layout';
 import { Subject } from 'rxjs';

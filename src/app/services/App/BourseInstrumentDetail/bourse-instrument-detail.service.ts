@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BondsListDto, BourseInstrumentDetailsDto, UpdateBourseInstrumentDetailsDto } from 'app/services/API/models';
 import { BourseInstrumentDetailService } from 'app/services/API/services';
-import { SnotifyService } from 'ng-snotify';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -12,7 +11,7 @@ import { catchError, map } from 'rxjs/operators';
 export class BoursesInstrumentDetailService {
     public bonds: BehaviorSubject<BondsListDto[]> = new BehaviorSubject([]);
 
-    constructor(private BIDService: BourseInstrumentDetailService, private snotifyService: SnotifyService, private snackBar: MatSnackBar) {}
+    constructor(private BIDService: BourseInstrumentDetailService, private snackBar: MatSnackBar) {}
 
     public getBonds(searchKeyword: string): Observable<void> {
         return this.BIDService.bourseInstrumentDetailControllerGetBondsList({
@@ -43,7 +42,6 @@ export class BoursesInstrumentDetailService {
         return this.BIDService.bourseInstrumentDetailControllerUpdateBourseInstrumentDetails(param).pipe(
             map(
                 (i) => {
-                    // this.snotifyService.success("باموفقیت تغییرات ثبت شد");
                     this.snackBar.open('باموفقیت تغییرات ثبت شد', '', {
                         panelClass: 'snack-success',
                         direction: 'rtl',
@@ -51,7 +49,6 @@ export class BoursesInstrumentDetailService {
                     });
                 },
                 catchError((err) => {
-                    // this.snotifyService.success("متاسفانه ثبت نشد");
                     this.snackBar.open('متاسفانه ثبت نشد', '', {
                         panelClass: 'snack-success',
                         direction: 'rtl',

@@ -1,14 +1,12 @@
 <div class="item">
     <div class="right-align">
         <div class="logo">
-            <img width="30px" height="30px" style="border-radius: 50%" src="./assets/images/user.svg">
+            <img height="30px" src="./assets/images/user.svg" style="border-radius: 50%" width="30px" alt="" />
         </div>
-        <div class="header text-truncate">{{mail?.title}}</div>
+        <div class="header text-truncate">{{ mail?.title }}</div>
 
-        <div class="label" *ngIf="mail.status === 'Read'">
-            خوانده شده
-        </div>
-        <div class="label" *ngIf="mail.status !== 'Read'">خوانده نشده</div>
+        <div *ngIf="mail.status === 'Read'" class="label">خوانده شده</div>
+        <div *ngIf="mail.status !== 'Read'" class="label">خوانده نشده</div>
     </div>
-    <div class="date">{{mail?.submitDate | convertDate}}</div>
+    <div class="date">{{ mail?.submitDate | convertDate }}</div>
 </div>

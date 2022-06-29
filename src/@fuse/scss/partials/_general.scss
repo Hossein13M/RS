@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 // -----------------------------------------------------------------------------------------------------
 // @ Body scroll lock
 // -----------------------------------------------------------------------------------------------------
@@ -18,13 +19,12 @@ body {
 // @ Boxed body
 // -----------------------------------------------------------------------------------------------------
 body {
-
     // Boxed
     &.boxed {
         max-width: 1200px;
         margin: 0 auto;
 
-        @include mat-elevation(8);
+        @include mat.elevation(8);
     }
 }
 
@@ -40,7 +40,8 @@ body {
     -webkit-tap-highlight-color: transparent;
     box-sizing: border-box;
 
-    &:before, &:after {
+    &:before,
+    &:after {
         box-sizing: border-box;
     }
 

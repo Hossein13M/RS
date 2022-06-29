@@ -11,6 +11,7 @@ export class CompliancesCalculatedService {
     public pieChart: BehaviorSubject<ComplianceCalculatedPiechartDto> = new BehaviorSubject({} as ComplianceCalculatedPiechartDto);
     public table: BehaviorSubject<Array<RsponceComplianceCalculatedDto>> = new BehaviorSubject([]);
     public fundList: BehaviorSubject<Array<FundListDto>> = new BehaviorSubject([]);
+
     constructor(private complianceCalculatedService: ComplianceCalculatedService) {}
 
     getPieChart(fundNationalCode: string, date: string): Observable<void> {

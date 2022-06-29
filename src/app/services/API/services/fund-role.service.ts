@@ -12,19 +12,34 @@ import { UpdateFundRoleDto } from '../models/update-fund-role-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class FundRoleService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation fundRoleControllerGetFundRole
      */
     static readonly FundRoleControllerGetFundRolePath = '/api/v1/fund-role/{id}';
+    /**
+     * Path part for operation fundRoleControllerDeleteFundRole
+     */
+    static readonly FundRoleControllerDeleteFundRolePath = '/api/v1/fund-role/{id}';
+    /**
+     * Path part for operation fundRoleControllerGetFundRoles
+     */
+    static readonly FundRoleControllerGetFundRolesPath = '/api/v1/fund-role';
+    /**
+     * Path part for operation fundRoleControllerUpdateFundRole
+     */
+    static readonly FundRoleControllerUpdateFundRolePath = '/api/v1/fund-role';
+    /**
+     * Path part for operation fundRoleControllerCreateFundRole
+     */
+    static readonly FundRoleControllerCreateFundRolePath = '/api/v1/fund-role';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -59,15 +74,8 @@ export class FundRoleService extends BaseService {
      * This method doesn't expect any request body.
      */
     fundRoleControllerGetFundRole(params: { id: number }): Observable<FundRoleWithIdDto> {
-        return this.fundRoleControllerGetFundRole$Response(params).pipe(
-            map((r: StrictHttpResponse<FundRoleWithIdDto>) => r.body as FundRoleWithIdDto)
-        );
+        return this.fundRoleControllerGetFundRole$Response(params).pipe(map((r: StrictHttpResponse<FundRoleWithIdDto>) => r.body as FundRoleWithIdDto));
     }
-
-    /**
-     * Path part for operation fundRoleControllerDeleteFundRole
-     */
-    static readonly FundRoleControllerDeleteFundRolePath = '/api/v1/fund-role/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -104,11 +112,6 @@ export class FundRoleService extends BaseService {
     fundRoleControllerDeleteFundRole(params: { id: number }): Observable<void> {
         return this.fundRoleControllerDeleteFundRole$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation fundRoleControllerGetFundRoles
-     */
-    static readonly FundRoleControllerGetFundRolesPath = '/api/v1/fund-role';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -191,15 +194,8 @@ export class FundRoleService extends BaseService {
         limit?: number;
         skip?: number;
     }): Observable<FundRoleResponseDto> {
-        return this.fundRoleControllerGetFundRoles$Response(params).pipe(
-            map((r: StrictHttpResponse<FundRoleResponseDto>) => r.body as FundRoleResponseDto)
-        );
+        return this.fundRoleControllerGetFundRoles$Response(params).pipe(map((r: StrictHttpResponse<FundRoleResponseDto>) => r.body as FundRoleResponseDto));
     }
-
-    /**
-     * Path part for operation fundRoleControllerUpdateFundRole
-     */
-    static readonly FundRoleControllerUpdateFundRolePath = '/api/v1/fund-role';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -234,15 +230,8 @@ export class FundRoleService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundRoleControllerUpdateFundRole(params: { body: UpdateFundRoleDto }): Observable<FundRoleWithIdDto> {
-        return this.fundRoleControllerUpdateFundRole$Response(params).pipe(
-            map((r: StrictHttpResponse<FundRoleWithIdDto>) => r.body as FundRoleWithIdDto)
-        );
+        return this.fundRoleControllerUpdateFundRole$Response(params).pipe(map((r: StrictHttpResponse<FundRoleWithIdDto>) => r.body as FundRoleWithIdDto));
     }
-
-    /**
-     * Path part for operation fundRoleControllerCreateFundRole
-     */
-    static readonly FundRoleControllerCreateFundRolePath = '/api/v1/fund-role';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -277,8 +266,6 @@ export class FundRoleService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundRoleControllerCreateFundRole(params: { body: CreateFundRoleDto }): Observable<FundRoleWithIdDto> {
-        return this.fundRoleControllerCreateFundRole$Response(params).pipe(
-            map((r: StrictHttpResponse<FundRoleWithIdDto>) => r.body as FundRoleWithIdDto)
-        );
+        return this.fundRoleControllerCreateFundRole$Response(params).pipe(map((r: StrictHttpResponse<FundRoleWithIdDto>) => r.body as FundRoleWithIdDto));
     }
 }

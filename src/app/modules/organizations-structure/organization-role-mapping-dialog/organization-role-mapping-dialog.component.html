@@ -1,0 +1,60 @@
+<div class="dialog-container">
+    <app-header dir="rtl" class="wp-100" [pageTitle]="'افزودن نگاشت' + data.mappedNode?.name">
+        <button (click)="this.dialogRef.close()" mat-icon-button>
+            <mat-icon class="mat-18">close</mat-icon>
+        </button>
+    </app-header>
+
+    <div class="main-content">
+        <div *ngIf="state === stateType.PRESENT" class="min-height">
+            <mat-divider style="margin-bottom: 15px"></mat-divider>
+
+            <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree" dir="rtl">
+                <mat-tree-node *matTreeNodeDef="let node" [ngClass]="{ active: node.id === 'selectedChildId' }" matTreeNodePadding>
+                    <button *ngIf="node.expandable" mat-icon-button matTreeNodeToggle>
+                        <mat-icon class="mat-icon-rtl-mirror">
+                            {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                        </mat-icon>
+                    </button>
+
+                    <div *ngIf="!node.expandable">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+
+                    <div class="pointer" matTreeNodeToggle>
+                        {{ node.name }}
+                    </div>
+
+                    <mat-chip-list>
+                        <ng-container *ngFor="let relation of node.mappings">
+                            <mat-chip>
+                                {{ relation.childTitleFa }}
+                            </mat-chip>
+                        </ng-container>
+                    </mat-chip-list>
+
+                    <mat-chip-list>
+                        <ng-container *ngFor="let relation of data.mappedNode.mappings">
+                            <mat-chip *ngIf="relation.mapChildId === node.id" [selected]="relation.mapChildId === node.id" color="accent">
+                                <mat-icon (click)="deleteMap(relation, node)" matChipRemove> cancel</mat-icon>
+
+                                {{ data.mappedNode.name }}
+                            </mat-chip>
+                        </ng-container>
+                    </mat-chip-list>
+
+                    <button (click)="addMap(node)" *ngIf="!node.mapped && node.level !== 0" mat-icon-button matTooltip="اضافه کردن نگاشت">
+                        <mat-icon class="mat-icon-rtl-mirror"> add</mat-icon>
+                    </button>
+                </mat-tree-node>
+            </mat-tree>
+        </div>
+
+        <div *ngIf="state === stateType.LOADING" class="loader flex justify-center items-center">
+            <mat-spinner diameter="70"></mat-spinner>
+        </div>
+
+        <div *ngIf="state === stateType.FAILED" class="loader flex justify-center items-center">
+            دریافت داده ناموفق بود
+            <button (click)="get()" class="againBtn" mat-button>دریافت دوباره</button>
+        </div>
+    </div>
+</div>

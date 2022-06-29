@@ -1,26 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiClientService } from 'app/services/Base/api-client.service';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { Specification } from 'app/shared/models/Specification';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class TradeDashboardPieChartService extends Specification {
-    private static TradeAPI = '/api/v1/portfolio-management-service';
-    searchForm: FormGroup;
+export class TradeDashboardPieChartService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private acs: ApiClientService, private fb: FormBuilder) {
-        super();
-
-        // Init Search Form
-        const lastDay = new Date();
-        lastDay.setDate(lastDay.getDate() - 1);
-        this.searchForm = this.fb.group({ date: [lastDay, [Validators.required]] });
-    }
-
-    getPieChart(fc?: FormContainer): Observable<any> {
-        let url = TradeDashboardPieChartService.TradeAPI + '/tamadon-market-pie-chart?date=' + this.convertDate(this.searchForm.value.date);
-        return this.acs.get(url, fc);
+    public getTradeDashboardPieChart(date: string): Observable<any> {
+        return this.http.get(`/api/v1/portfolio-management-service/tamadon-market-pie-chart`, { params: { date } });
     }
 }

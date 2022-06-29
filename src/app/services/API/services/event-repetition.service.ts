@@ -10,19 +10,22 @@ import { UpdateEventRepetitionDto } from '../models/update-event-repetition-dto'
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class EventRepetitionService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation eventRepetitionControllerGetEventRepetitions
      */
     static readonly EventRepetitionControllerGetEventRepetitionsPath = '/api/v1/event-repetition';
+    /**
+     * Path part for operation eventRepetitionControllerUpdateEventRepetition
+     */
+    static readonly EventRepetitionControllerUpdateEventRepetitionPath = '/api/v1/event-repetition/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -85,11 +88,6 @@ export class EventRepetitionService extends BaseService {
     }
 
     /**
-     * Path part for operation eventRepetitionControllerUpdateEventRepetition
-     */
-    static readonly EventRepetitionControllerUpdateEventRepetitionPath = '/api/v1/event-repetition/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `eventRepetitionControllerUpdateEventRepetition()` instead.
      *
@@ -126,10 +124,7 @@ export class EventRepetitionService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    eventRepetitionControllerUpdateEventRepetition(params: {
-        id: number;
-        body: UpdateEventRepetitionDto;
-    }): Observable<CreateEventRepetitionResponseDto> {
+    eventRepetitionControllerUpdateEventRepetition(params: { id: number; body: UpdateEventRepetitionDto }): Observable<CreateEventRepetitionResponseDto> {
         return this.eventRepetitionControllerUpdateEventRepetition$Response(params).pipe(
             map((r: StrictHttpResponse<CreateEventRepetitionResponseDto>) => r.body as CreateEventRepetitionResponseDto)
         );

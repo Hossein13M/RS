@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserInfoService } from 'app/services/App/userInfo/user-info.service';
 import { MessageApiService } from 'app/services/feature-services/message-api.service';
@@ -60,7 +60,11 @@ export class SendMailComponent implements OnInit, OnDestroy {
     onSubmit(): void {
         this.messageService.createMessage(this.form.value).subscribe(() => {
             this.dialog.close(true);
-            this.snackBar.open('ایمیل ها با موفقیت ارسال شدند', '', { panelClass: 'snack-success', direction: 'rtl', duration: 3000 });
+            this.snackBar.open('ایمیل ها با موفقیت ارسال شدند', '', {
+                panelClass: 'snack-success',
+                direction: 'rtl',
+                duration: 3000,
+            });
         });
     }
 

@@ -10,19 +10,30 @@ import { UpdateAuthItemDto } from '../models/update-auth-item-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class AuthItemService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation authItemControllerCreateAuthItem
      */
     static readonly AuthItemControllerCreateAuthItemPath = '/api/v1/rbac/auth-item';
+    /**
+     * Path part for operation authItemControllerGetAuthItems
+     */
+    static readonly AuthItemControllerGetAuthItemsPath = '/api/v1/rbac/auth-items';
+    /**
+     * Path part for operation authItemControllerUpdateAuthItem
+     */
+    static readonly AuthItemControllerUpdateAuthItemPath = '/api/v1/rbac/auth-item/{name}';
+    /**
+     * Path part for operation authItemControllerDeleteAuthItem
+     */
+    static readonly AuthItemControllerDeleteAuthItemPath = '/api/v1/rbac/auth-item/{name}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -57,15 +68,8 @@ export class AuthItemService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     authItemControllerCreateAuthItem(params: { body: CreateAuthItemDto }): Observable<CreateAuthItemDto> {
-        return this.authItemControllerCreateAuthItem$Response(params).pipe(
-            map((r: StrictHttpResponse<CreateAuthItemDto>) => r.body as CreateAuthItemDto)
-        );
+        return this.authItemControllerCreateAuthItem$Response(params).pipe(map((r: StrictHttpResponse<CreateAuthItemDto>) => r.body as CreateAuthItemDto));
     }
-
-    /**
-     * Path part for operation authItemControllerGetAuthItems
-     */
-    static readonly AuthItemControllerGetAuthItemsPath = '/api/v1/rbac/auth-items';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -73,10 +77,7 @@ export class AuthItemService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    authItemControllerGetAuthItems$Response(params?: {
-        name?: string;
-        type?: '1' | '2';
-    }): Observable<StrictHttpResponse<Array<CreateAuthItemDto>>> {
+    authItemControllerGetAuthItems$Response(params?: { name?: string; type?: '1' | '2' }): Observable<StrictHttpResponse<Array<CreateAuthItemDto>>> {
         const rb = new RequestBuilder(this.rootUrl, AuthItemService.AuthItemControllerGetAuthItemsPath, 'get');
         if (params) {
             rb.query('name', params.name, {});
@@ -110,20 +111,12 @@ export class AuthItemService extends BaseService {
     }
 
     /**
-     * Path part for operation authItemControllerUpdateAuthItem
-     */
-    static readonly AuthItemControllerUpdateAuthItemPath = '/api/v1/rbac/auth-item/{name}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `authItemControllerUpdateAuthItem()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    authItemControllerUpdateAuthItem$Response(params: {
-        name: string;
-        body: UpdateAuthItemDto;
-    }): Observable<StrictHttpResponse<CreateAuthItemDto>> {
+    authItemControllerUpdateAuthItem$Response(params: { name: string; body: UpdateAuthItemDto }): Observable<StrictHttpResponse<CreateAuthItemDto>> {
         const rb = new RequestBuilder(this.rootUrl, AuthItemService.AuthItemControllerUpdateAuthItemPath, 'put');
         if (params) {
             rb.path('name', params.name, {});
@@ -152,15 +145,8 @@ export class AuthItemService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     authItemControllerUpdateAuthItem(params: { name: string; body: UpdateAuthItemDto }): Observable<CreateAuthItemDto> {
-        return this.authItemControllerUpdateAuthItem$Response(params).pipe(
-            map((r: StrictHttpResponse<CreateAuthItemDto>) => r.body as CreateAuthItemDto)
-        );
+        return this.authItemControllerUpdateAuthItem$Response(params).pipe(map((r: StrictHttpResponse<CreateAuthItemDto>) => r.body as CreateAuthItemDto));
     }
-
-    /**
-     * Path part for operation authItemControllerDeleteAuthItem
-     */
-    static readonly AuthItemControllerDeleteAuthItemPath = '/api/v1/rbac/auth-item/{name}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

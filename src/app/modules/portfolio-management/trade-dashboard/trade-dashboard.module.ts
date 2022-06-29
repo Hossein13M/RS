@@ -12,7 +12,7 @@ import { TradeDashboardRoutingModule } from './trade-dashboard-routing.module';
 import { TradeDashboardTableComponent } from './trade-dashboard-table/trade-dashboard-table.component';
 import { TradeDashboardTrendChartComponent } from './trade-dashboard-trend-chart/trade-dashboard-trend-chart.component';
 import { TradeDashboardComponent } from './trade-dashboard.component';
-import { TradeDashboardService } from './trade-dashboard.service';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [
@@ -31,7 +31,7 @@ import { TradeDashboardService } from './trade-dashboard.service';
         ShareModule,
         MatProgressSpinnerModule,
         ChartModule,
+        HeaderModule,
     ],
-    providers: [TradeDashboardService],
 })
 export class TradeDashboardModule {}

@@ -1,0 +1,114 @@
+<app-header [pageTitle]="isUpdate() ? 'ویرایش کاربر' : 'افزودن کاربر'" dir="rtl">
+    <button (click)="dialogRef.close()" mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</app-header>
+
+<mat-horizontal-stepper *ngIf="isUpdate() ? userData : true" class="p-12" dir="rtl" linear>
+    <mat-step>
+        <ng-template matStepLabel>داده‌های پایه</ng-template>
+        <form [formGroup]="form" class="grid grid-cols-3 gap-7 flex-wrap pt-12" dir="rtl">
+            <mat-form-field appearance="outline">
+                <mat-label>نام</mat-label>
+                <input formControlName="firstname" matInput required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>نام خانوادگی</mat-label>
+                <input formControlName="lastname" matInput required />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>زادروز</mat-label>
+                <input [matDatepicker]="picker" formControlName="birthDate" matInput required />
+                <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>کد ملی</mat-label>
+                <input formControlName="nationalCode" matInput required />
+                <mat-hint>ورود به سامانه، با کد ملی است.</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>شماره همراه</mat-label>
+                <input formControlName="phoneNumber" matInput required />
+                <mat-error>شماره‌ی همراه باید با 09 آغاز شود و 11 رقم باشد.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>ایمیل</mat-label>
+                <input formControlName="email" matInput required />
+                <mat-hint>نمونه: example@gmail.com</mat-hint>
+                <mat-error>ایمیل نادرست است.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>کد پرسنلی</mat-label>
+                <input formControlName="personnelCode" matInput required />
+                <mat-hint>کد پرسنلی باید یکتا باشد.</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>نقش دسترسی کاربر</mat-label>
+                <mat-select formControlName="userRole" required>
+                    <mat-option *ngFor="let userAccessRole of userAccessRoles" [value]="userAccessRole.id">
+                        {{ userAccessRole.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="col-span-3">
+                <button color="primary" mat-raised-button matStepperNext>گام بعدی</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <mat-step [stepControl]="form">
+        <ng-template matStepLabel>چینش سازمانی</ng-template>
+        <form [formGroup]="form" class="mt-12" dir="rtl">
+            <div class="form flex flex-col gap-7 overflow-auto pl-5" formArrayName="rolesForm">
+                <div *ngFor="let groupForm of rolesBasedOnUnits().controls; let index = index" class="w-full">
+                    <div [formGroupName]="index" class="grid grid-cols-2 gap-7">
+                        <div class="col-span-2 flex justify-between align-center">
+                            <h2 class="m-0">چینش سازمانی: {{ index + 1 }}</h2>
+                            <button (click)="removeFormGroupFromFormArray(index)" *ngIf="this.rolesForm.length > 1" color="warn" mat-flat-button type="button">
+                                پاک کردن چینش سازمانی
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+
+                        <div>
+                            <app-tree-select
+                                (event)="detectChanges($event, index)"
+                                [data]="organizationUnits"
+                                [maxSelect]="1"
+                                formControlName="units"
+                                selectedValueFieldName="name"
+                            ></app-tree-select>
+                        </div>
+
+                        <mat-form-field *ngIf="rolesOnUnit[index]" appearance="outline" class="role-form-field pt-5">
+                            <mat-label>نقش</mat-label>
+                            <mat-select formControlName="roles" multiple required>
+                                <mat-option *ngFor="let role of rolesOnUnit[index]" [value]="role.childId" class="text-right">
+                                    {{ role.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <button (click)="addFormGroupToRoleFormArray()" class="w-full" color="primary" mat-flat-button type="button">
+                    افزودن چینش سازمانی
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
+
+            <div class="mt-10">
+                <button class="ml-5" color="primary" mat-raised-button matStepperPrevious>گام قبلی</button>
+                <button (click)="onSubmit()" color="warn" mat-raised-button>افزودن کاربر</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>
