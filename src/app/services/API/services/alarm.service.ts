@@ -12,19 +12,30 @@ import { UpdateAlarmDto } from '../models/update-alarm-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class AlarmService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation alarmControllerGetAlarms
      */
     static readonly AlarmControllerGetAlarmsPath = '/api/v1/alarm';
+    /**
+     * Path part for operation alarmControllerUpdateAlarm
+     */
+    static readonly AlarmControllerUpdateAlarmPath = '/api/v1/alarm';
+    /**
+     * Path part for operation alarmControllerCreateAlarm
+     */
+    static readonly AlarmControllerCreateAlarmPath = '/api/v1/alarm';
+    /**
+     * Path part for operation alarmControllerGetAlarm
+     */
+    static readonly AlarmControllerGetAlarmPath = '/api/v1/alarm/{alarmId}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -66,21 +77,9 @@ export class AlarmService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    alarmControllerGetAlarms(params?: {
-        limit?: number;
-        skip?: number;
-        moduleId?: any;
-        searchKeyword?: any;
-    }): Observable<AlarmListResponseDto> {
-        return this.alarmControllerGetAlarms$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmListResponseDto>) => r.body as AlarmListResponseDto)
-        );
+    alarmControllerGetAlarms(params?: { limit?: number; skip?: number; moduleId?: any; searchKeyword?: any }): Observable<AlarmListResponseDto> {
+        return this.alarmControllerGetAlarms$Response(params).pipe(map((r: StrictHttpResponse<AlarmListResponseDto>) => r.body as AlarmListResponseDto));
     }
-
-    /**
-     * Path part for operation alarmControllerUpdateAlarm
-     */
-    static readonly AlarmControllerUpdateAlarmPath = '/api/v1/alarm';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -115,15 +114,8 @@ export class AlarmService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     alarmControllerUpdateAlarm(params: { body: UpdateAlarmDto }): Observable<AlarmResponseDto> {
-        return this.alarmControllerUpdateAlarm$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto)
-        );
+        return this.alarmControllerUpdateAlarm$Response(params).pipe(map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto));
     }
-
-    /**
-     * Path part for operation alarmControllerCreateAlarm
-     */
-    static readonly AlarmControllerCreateAlarmPath = '/api/v1/alarm';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -158,15 +150,8 @@ export class AlarmService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     alarmControllerCreateAlarm(params: { body: CreateAlarmDto }): Observable<AlarmResponseDto> {
-        return this.alarmControllerCreateAlarm$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto)
-        );
+        return this.alarmControllerCreateAlarm$Response(params).pipe(map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto));
     }
-
-    /**
-     * Path part for operation alarmControllerGetAlarm
-     */
-    static readonly AlarmControllerGetAlarmPath = '/api/v1/alarm/{alarmId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -201,8 +186,6 @@ export class AlarmService extends BaseService {
      * This method doesn't expect any request body.
      */
     alarmControllerGetAlarm(params: { alarmId: number }): Observable<AlarmResponseDto> {
-        return this.alarmControllerGetAlarm$Response(params).pipe(
-            map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto)
-        );
+        return this.alarmControllerGetAlarm$Response(params).pipe(map((r: StrictHttpResponse<AlarmResponseDto>) => r.body as AlarmResponseDto));
     }
 }

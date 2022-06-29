@@ -12,19 +12,34 @@ import { UpdateBankBranchDto } from '../models/update-bank-branch-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class BankBranchService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bankBranchControllerGetBankBranch
      */
     static readonly BankBranchControllerGetBankBranchPath = '/api/v1/bank-branch/{bankBranchId}';
+    /**
+     * Path part for operation bankBranchControllerDeleteBankBranch
+     */
+    static readonly BankBranchControllerDeleteBankBranchPath = '/api/v1/bank-branch/{bankBranchId}';
+    /**
+     * Path part for operation bankBranchControllerGetBankBranches
+     */
+    static readonly BankBranchControllerGetBankBranchesPath = '/api/v1/bank-branch';
+    /**
+     * Path part for operation bankBranchControllerUpdateBankBranch
+     */
+    static readonly BankBranchControllerUpdateBankBranchPath = '/api/v1/bank-branch';
+    /**
+     * Path part for operation bankBranchControllerCreateBankBranch
+     */
+    static readonly BankBranchControllerCreateBankBranchPath = '/api/v1/bank-branch';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -59,15 +74,8 @@ export class BankBranchService extends BaseService {
      * This method doesn't expect any request body.
      */
     bankBranchControllerGetBankBranch(params: { bankBranchId: number }): Observable<BankBranchDto> {
-        return this.bankBranchControllerGetBankBranch$Response(params).pipe(
-            map((r: StrictHttpResponse<BankBranchDto>) => r.body as BankBranchDto)
-        );
+        return this.bankBranchControllerGetBankBranch$Response(params).pipe(map((r: StrictHttpResponse<BankBranchDto>) => r.body as BankBranchDto));
     }
-
-    /**
-     * Path part for operation bankBranchControllerDeleteBankBranch
-     */
-    static readonly BankBranchControllerDeleteBankBranchPath = '/api/v1/bank-branch/{bankBranchId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -104,11 +112,6 @@ export class BankBranchService extends BaseService {
     bankBranchControllerDeleteBankBranch(params: { bankBranchId: number }): Observable<void> {
         return this.bankBranchControllerDeleteBankBranch$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation bankBranchControllerGetBankBranches
-     */
-    static readonly BankBranchControllerGetBankBranchesPath = '/api/v1/bank-branch';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -170,19 +173,12 @@ export class BankBranchService extends BaseService {
     }
 
     /**
-     * Path part for operation bankBranchControllerUpdateBankBranch
-     */
-    static readonly BankBranchControllerUpdateBankBranchPath = '/api/v1/bank-branch';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankBranchControllerUpdateBankBranch()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bankBranchControllerUpdateBankBranch$Response(params: {
-        body: UpdateBankBranchDto;
-    }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
+    bankBranchControllerUpdateBankBranch$Response(params: { body: UpdateBankBranchDto }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankBranchService.BankBranchControllerUpdateBankBranchPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -215,19 +211,12 @@ export class BankBranchService extends BaseService {
     }
 
     /**
-     * Path part for operation bankBranchControllerCreateBankBranch
-     */
-    static readonly BankBranchControllerCreateBankBranchPath = '/api/v1/bank-branch';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bankBranchControllerCreateBankBranch()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bankBranchControllerCreateBankBranch$Response(params: {
-        body: CreateBankBranchDto;
-    }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
+    bankBranchControllerCreateBankBranch$Response(params: { body: CreateBankBranchDto }): Observable<StrictHttpResponse<UpdateBankBranchDto>> {
         const rb = new RequestBuilder(this.rootUrl, BankBranchService.BankBranchControllerCreateBankBranchPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

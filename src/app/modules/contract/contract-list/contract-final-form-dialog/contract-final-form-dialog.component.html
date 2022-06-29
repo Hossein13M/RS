@@ -1,0 +1,23 @@
+<div class='page-layout'>
+    <app-header class='wp-100 h-1/4' pageTitle='فرم پایانی قرارداد'>
+        <button (click)='dialog.close()' mat-icon-button>
+            <mat-icon class='mat-18'>close</mat-icon>
+        </button>
+    </app-header>
+
+    <div class='fuse-card m-40 p-40 h-3/4'>
+        <div *ngIf='!finalFormData' class='flex flex-col justify-center items-center'>
+            <h1>فرم پایانی پیدا نشد</h1>
+            <span>شاید این قرارداد به گام پایانی نرسیده است و یا هنوز فرم پایانی آن دارای داده‌ای نیست!</span>
+        </div>
+
+        <div *ngIf='finalFormData' class='flex' dir='ltr'>
+            <mat-chip-list>
+                <mat-chip *ngFor='let formItem of formInfoArray' color='primary' selected>
+                    <span class='mx-2'>{{ formItem.key }}</span> : <span class='mx-2'
+                                                                         dir='rtl'>{{ formItem.value }}</span>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+    </div>
+</div>

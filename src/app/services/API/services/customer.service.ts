@@ -12,19 +12,34 @@ import { UpdateCustomerDto } from '../models/update-customer-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class CustomerService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation customerControllerGetCustomers
      */
     static readonly CustomerControllerGetCustomersPath = '/api/v1/customer';
+    /**
+     * Path part for operation customerControllerUpdateCustomer
+     */
+    static readonly CustomerControllerUpdateCustomerPath = '/api/v1/customer';
+    /**
+     * Path part for operation customerControllerCreateCustomer
+     */
+    static readonly CustomerControllerCreateCustomerPath = '/api/v1/customer';
+    /**
+     * Path part for operation customerControllerGetCustomer
+     */
+    static readonly CustomerControllerGetCustomerPath = '/api/v1/customer/{id}';
+    /**
+     * Path part for operation customerControllerDeleteCustomer
+     */
+    static readonly CustomerControllerDeleteCustomerPath = '/api/v1/customer/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -75,15 +90,8 @@ export class CustomerService extends BaseService {
         name?: string;
         nationalId?: string;
     }): Observable<ResponseCustomerDto> {
-        return this.customerControllerGetCustomers$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseCustomerDto>) => r.body as ResponseCustomerDto)
-        );
+        return this.customerControllerGetCustomers$Response(params).pipe(map((r: StrictHttpResponse<ResponseCustomerDto>) => r.body as ResponseCustomerDto));
     }
-
-    /**
-     * Path part for operation customerControllerUpdateCustomer
-     */
-    static readonly CustomerControllerUpdateCustomerPath = '/api/v1/customer';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -118,15 +126,8 @@ export class CustomerService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     customerControllerUpdateCustomer(params: { body: UpdateCustomerDto }): Observable<CustomerInfoDto> {
-        return this.customerControllerUpdateCustomer$Response(params).pipe(
-            map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto)
-        );
+        return this.customerControllerUpdateCustomer$Response(params).pipe(map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto));
     }
-
-    /**
-     * Path part for operation customerControllerCreateCustomer
-     */
-    static readonly CustomerControllerCreateCustomerPath = '/api/v1/customer';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -161,15 +162,8 @@ export class CustomerService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     customerControllerCreateCustomer(params: { body: CustomerDto }): Observable<CustomerInfoDto> {
-        return this.customerControllerCreateCustomer$Response(params).pipe(
-            map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto)
-        );
+        return this.customerControllerCreateCustomer$Response(params).pipe(map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto));
     }
-
-    /**
-     * Path part for operation customerControllerGetCustomer
-     */
-    static readonly CustomerControllerGetCustomerPath = '/api/v1/customer/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -204,15 +198,8 @@ export class CustomerService extends BaseService {
      * This method doesn't expect any request body.
      */
     customerControllerGetCustomer(params: { id: number }): Observable<CustomerInfoDto> {
-        return this.customerControllerGetCustomer$Response(params).pipe(
-            map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto)
-        );
+        return this.customerControllerGetCustomer$Response(params).pipe(map((r: StrictHttpResponse<CustomerInfoDto>) => r.body as CustomerInfoDto));
     }
-
-    /**
-     * Path part for operation customerControllerDeleteCustomer
-     */
-    static readonly CustomerControllerDeleteCustomerPath = '/api/v1/customer/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

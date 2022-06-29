@@ -1,185 +1,50 @@
-<div class="page-layout">
-
-    <!-- HEADER -->
-    <app-header pageTitle="دفتر معاملات">
-
-        <div subtitleNormal *ngIf="selectedOrg && selectedOrg.totalAssets">
-
+<div class='page-layout'>
+    <app-header pageTitle='دفتر معاملات'>
+        <div *ngIf='selectedTradingBook && selectedTradingBook.totalAssets' subtitleNormal>
             ارزش بازار کل :
-            {{selectedOrg.totalAssets |price}}
+            {{ selectedTradingBook.totalAssets | price }}
         </div>
 
-        <div dir="rtl" fxLayout="row wrap" fxLayoutAlign="center center">
-
-            <!--      Open History Dialog      -->
-            <button mat-raised-button
-                    (click)="showHistory()"
-                    color="primary"
-                    class="history-btn"
-                    matTooltip="تاریخچه بروزرسانی IPSها">
-                <mat-icon class="mat-18">history</mat-icon>
+        <div dir='rtl' fxLayout='row wrap' fxLayoutAlign='center center'>
+            <button (click)='showHistory()' class='history-btn' color='primary' mat-raised-button matTooltip='تاریخچه بروزرسانی IPS ها'
+                    type='button'>
+                <mat-icon class='mat-18'>history</mat-icon>
             </button>
 
-            <!--    Select Section    -->
-            <mat-form-field appearance="outline" class="section">
+            <form [formGroup]='form' dir='rtl'>
+                <mat-form-field appearance='outline' class='section'>
+                    <mat-label>شرکت</mat-label>
+                    <mat-select (selectionChange)='onTradeBookChange($event.value)' [disabled]="stateType === 'LOADING'"
+                                formControlName='tradingBook'>
+                        <mat-option *ngFor='let tradeBook of tradeBooksList'
+                                    [value]='tradeBook.id'> {{ tradeBook.name }} </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-                <mat-label>شرکت</mat-label>
-
-                <mat-select [disabled]="!organizations || organizations.length == 0"
-                            [(ngModel)]="tbs.selectedOrgName"
-                            (selectionChange)="changeForm($event)">
-                    <mat-option *ngFor="let org of organizations"
-                                [value]="org.id">
-                        {{org.name}}
-                    </mat-option>
-                </mat-select>
-
-            </mat-form-field>
-
-
-            <!--    Select Date    -->
-            <form [formGroup]="tbs.searchForm" dir="rtl">
-                <mat-form-field appearance="outline">
-
+                <mat-form-field appearance='outline'>
                     <mat-label>تاریخ</mat-label>
-
-                    <input matInput
-                           class="full-wid"
-                           (click)="date.open()"
-                           formControlName="date"
-                           [matDatepicker]="date">
-                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                    <input (click)='date.open()' (dateInput)='OnDateChange()' [matDatepicker]='date' formControlName='date'
+                           matInput />
+                    <mat-datepicker-toggle [for]='date' matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #date></mat-datepicker>
-
-                    <mat-error>
-                        وارد کردن این فیلد الزامی است.
-                    </mat-error>
-
+                    <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                 </mat-form-field>
             </form>
-
         </div>
     </app-header>
+    <mat-progress-bar *ngIf="stateType === 'LOADING'" color='warn' mode='indeterminate'></mat-progress-bar>
 
-    <div class="page-content">
-
-        <!--   Table  -->
-        <div *ngIf="!failed"
-             class="fuse-card">
-            <mat-table #table
-                       [@animateStagger]="{value:'50'}"
-                       [dataSource]="dataSource"
-                       class="mat-elevation-z8">
-
-                <!-- Position Column -->
-                <ng-container matColumnDef="position">
-                    <mat-header-cell *matHeaderCellDef> #</mat-header-cell>
-                    <mat-cell *matCellDef="let element; let i = index">{{i + 1}}</mat-cell>
-                </ng-container>
-
-                <!-- bourseAccount Column -->
-                <ng-container matColumnDef="bourseAccount">
-                    <mat-header-cell *matHeaderCellDef>نماد</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.bourseAccount}}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Volume Column -->
-                <ng-container matColumnDef="volume">
-                    <mat-header-cell *matHeaderCellDef>حجم</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.volume | number}}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- VWap Column -->
-                <ng-container matColumnDef="vwap">
-                    <mat-header-cell *matHeaderCellDef>قیمت روز</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.vwap | price}}
-                    </mat-cell>
-                </ng-container>
-
-
-                <!-- Asset Column -->
-                <ng-container matColumnDef="asset">
-                    <mat-header-cell *matHeaderCellDef>ارزش بازار</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.asset | price}}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- brokerName Column -->
-                <ng-container matColumnDef="brokerName">
-                    <mat-header-cell *matHeaderCellDef>کارگزار</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.brokerName}}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- brokerName Column -->
-                <ng-container matColumnDef="btt">
-                    <mat-header-cell *matHeaderCellDef>بهای تمام شده‌ی کل</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{element.btt|price}}
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Date Column -->
-                <ng-container matColumnDef="vwapUpdateDate">
-                    <mat-header-cell *matHeaderCellDef>آخرین تاریخ بروزرسانی قیمت</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                        {{(element.dateFa) ? element.dateFa : '-'}}
-                    </mat-cell>
-                </ng-container>
-
-
-                <!-- Operations Column -->
-                <ng-container matColumnDef="operations">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let el">
-
-                        <!--   see   -->
-                        <button mat-icon-button
-                                matTooltip="مشاهده"
-                                (click)="showBook(el.organizationType,el.ticker,el.pamCode)">
-                            <mat-icon class="mat-18">
-                                visibility
-                            </mat-icon>
-                        </button>
-                    </mat-cell>
-                </ng-container>
-
-                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-
-                <mat-row *matRowDef="let row; columns: displayedColumns;"
-                         [@animate]="{value:'*',params:{y:'100%'}}">
-                </mat-row>
-            </mat-table>
+    <div class='page-content'>
+        <div *ngIf="stateType === 'PRESENT' && !!selectedTradingBook" class='fuse-card'>
+            <div style='width: 100%'>
+                <app-table [columns]='column' [data]='dataSource' [paginationSettings]="{ mode: 'local' }"></app-table>
+            </div>
         </div>
 
-
-        <!--   Getting Data Failed  -->
-        <div *ngIf="failed" fxLayout="row wrap" fxLayoutAlign="center center">
-            دریافت داده ناموفق بود
-
-            <button mat-button
-                    class="againBtn"
-                    (click)="get()">
-                دریافت دوباره
-            </button>
+        <div fxLayout='row wrap' fxLayoutAlign='center center'>
+            <p *ngIf="stateType === 'FAIL'">دریافت داده ناموفق بود</p>
+            <p *ngIf="stateType === 'PRESENT' && !!!selectedTradingBook">برای مشاهده‌ی دفترها، شرکت را انتخاب کنید</p>
+            <p *ngIf="stateType === 'LOADING'">در حال دریافت اطلاعات</p>
         </div>
-
-        <!--   Help Quotes  -->
-        <p *ngIf="!dataToShow && !isWorking && !failed" class="text-center">
-            برای مشاهده‌ی دفاتر لطفا شرکت را انتخاب کنید.
-        </p>
-
-        <p *ngIf="!dataToShow && isWorking && !failed" class="text-center">
-            در حال دریافت اطلاعات
-        </p>
-
-
     </div>
 </div>

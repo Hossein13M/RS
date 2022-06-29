@@ -1,5 +1,4 @@
 @mixin fuse-sidebar-theme($theme) {
-
     $background: map-get($theme, background);
 
     fuse-sidebar {

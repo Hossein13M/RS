@@ -8,9 +8,14 @@ import { ApiClientService } from '../Base/api-client.service';
 export class BourseInstrumentDetailService {
     private static bourseInstruApi = '/api/v1/bourse-instrument-detail';
 
-    getBonds(fc?: FormContainer) {
-        return this.apiClientService.get(BourseInstrumentDetailService.bourseInstruApi + '/bonds?limit=5000&skip=0&status=true', fc);
-    }
-
     constructor(private apiClientService: ApiClientService) {}
+
+    getBonds(searchKeyword: string, fc?: FormContainer) {
+        return this.apiClientService.get(
+            BourseInstrumentDetailService.bourseInstruApi +
+                '/bonds?limit=5000&skip=0&status=true' +
+                (searchKeyword !== undefined ? `&searchKeyword=${searchKeyword}` : ''),
+            fc
+        );
+    }
 }

@@ -8,6 +8,7 @@ import { ShareModule } from 'app/shared/share.module';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TradeSearchRoutingModule } from './trade-search-routing.module';
 import { TradeSearchComponent } from './trade-search.component';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [TradeSearchComponent],
@@ -20,6 +21,7 @@ import { TradeSearchComponent } from './trade-search.component';
         NgxMatSelectSearchModule,
         MatTooltipModule,
         NoDataModule,
+        HeaderModule,
     ],
 })
 export class TradeSearchModule {}

@@ -1,18 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ApiClientService } from 'app/services/Base/api-client.service';
-import { FormContainer } from 'app/shared/models/FromContainer';
-import { Specification } from 'app/shared/models/Specification';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
-export class OpRiskChartSelectService extends Specification {
-    private static OpRiskChartSelectServiceAPI = '/api/v1/operation-risk/tree/categories';
+export class OpRiskChartSelectService {
+    constructor(private http: HttpClient) {}
 
-    constructor(private acs: ApiClientService) {
-        super();
-    }
-
-    categories(fc?: FormContainer): Observable<any> {
-        return this.acs.get(OpRiskChartSelectService.OpRiskChartSelectServiceAPI, fc);
+    categories(): Observable<any> {
+        return this.http.get('/api/v1/operation-risk/tree/categories');
     }
 }

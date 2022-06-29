@@ -13,19 +13,38 @@ import { StandardGlWithParentDto } from '../models/standard-gl-with-parent-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class StandardGlService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation standardGlControllerGetStandardGlTree
      */
     static readonly StandardGlControllerGetStandardGlTreePath = '/api/v1/standard-gl/tree';
+    /**
+     * Path part for operation standardGlControllerGetStandardGl
+     */
+    static readonly StandardGlControllerGetStandardGlPath = '/api/v1/standard-gl/{id}';
+    /**
+     * Path part for operation standardGlControllerDeleteStandardGl
+     */
+    static readonly StandardGlControllerDeleteStandardGlPath = '/api/v1/standard-gl/{id}';
+    /**
+     * Path part for operation standardGlControllerGetStandardsGl
+     */
+    static readonly StandardGlControllerGetStandardsGlPath = '/api/v1/standard-gl';
+    /**
+     * Path part for operation standardGlControllerUpdateStandardGl
+     */
+    static readonly StandardGlControllerUpdateStandardGlPath = '/api/v1/standard-gl';
+    /**
+     * Path part for operation standardGlControllerCreateStandardGl
+     */
+    static readonly StandardGlControllerCreateStandardGlPath = '/api/v1/standard-gl';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,11 +82,6 @@ export class StandardGlService extends BaseService {
             map((r: StrictHttpResponse<Array<StandardGlWithChildDto>>) => r.body as Array<StandardGlWithChildDto>)
         );
     }
-
-    /**
-     * Path part for operation standardGlControllerGetStandardGl
-     */
-    static readonly StandardGlControllerGetStandardGlPath = '/api/v1/standard-gl/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -108,11 +122,6 @@ export class StandardGlService extends BaseService {
     }
 
     /**
-     * Path part for operation standardGlControllerDeleteStandardGl
-     */
-    static readonly StandardGlControllerDeleteStandardGlPath = '/api/v1/standard-gl/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `standardGlControllerDeleteStandardGl()` instead.
      *
@@ -147,11 +156,6 @@ export class StandardGlService extends BaseService {
     standardGlControllerDeleteStandardGl(params: { id: number }): Observable<void> {
         return this.standardGlControllerDeleteStandardGl$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation standardGlControllerGetStandardsGl
-     */
-    static readonly StandardGlControllerGetStandardsGlPath = '/api/v1/standard-gl';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -198,19 +202,12 @@ export class StandardGlService extends BaseService {
     }
 
     /**
-     * Path part for operation standardGlControllerUpdateStandardGl
-     */
-    static readonly StandardGlControllerUpdateStandardGlPath = '/api/v1/standard-gl';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `standardGlControllerUpdateStandardGl()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    standardGlControllerUpdateStandardGl$Response(params: {
-        body: StandardGlWithIdDto;
-    }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
+    standardGlControllerUpdateStandardGl$Response(params: { body: StandardGlWithIdDto }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, StandardGlService.StandardGlControllerUpdateStandardGlPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -243,19 +240,12 @@ export class StandardGlService extends BaseService {
     }
 
     /**
-     * Path part for operation standardGlControllerCreateStandardGl
-     */
-    static readonly StandardGlControllerCreateStandardGlPath = '/api/v1/standard-gl';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `standardGlControllerCreateStandardGl()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    standardGlControllerCreateStandardGl$Response(params: {
-        body: CreateStandardGlDto;
-    }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
+    standardGlControllerCreateStandardGl$Response(params: { body: CreateStandardGlDto }): Observable<StrictHttpResponse<StandardGlWithParentDto>> {
         const rb = new RequestBuilder(this.rootUrl, StandardGlService.StandardGlControllerCreateStandardGlPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

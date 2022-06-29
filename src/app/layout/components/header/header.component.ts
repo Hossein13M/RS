@@ -9,6 +9,7 @@ import { fuseAnimations } from '@fuse/animations';
 })
 export class HeaderComponent implements OnInit {
     @Input() pageTitle: string;
+    @Input() headerColor: string = 'primary-400';
 
     constructor() {}
 

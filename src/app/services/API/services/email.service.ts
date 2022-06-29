@@ -10,19 +10,18 @@ import { ResponseEmailDto } from '../models/response-email-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class EmailService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation emailControllerSendEmail
      */
     static readonly EmailControllerSendEmailPath = '/api/v1/email';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -57,8 +56,6 @@ export class EmailService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     emailControllerSendEmail(params: { body: CreateEmailDto }): Observable<ResponseEmailDto> {
-        return this.emailControllerSendEmail$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseEmailDto>) => r.body as ResponseEmailDto)
-        );
+        return this.emailControllerSendEmail$Response(params).pipe(map((r: StrictHttpResponse<ResponseEmailDto>) => r.body as ResponseEmailDto));
     }
 }

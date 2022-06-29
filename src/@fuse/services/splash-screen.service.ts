@@ -19,11 +19,7 @@ export class FuseSplashScreenService {
      * @param _document
      * @param {Router} _router
      */
-    constructor(
-        private _animationBuilder: AnimationBuilder,
-        @Inject(DOCUMENT) private _document: any,
-        private _router: Router
-    ) {
+    constructor(private _animationBuilder: AnimationBuilder, @Inject(DOCUMENT) private _document: any, private _router: Router) {
         // Initialize
         this._init();
     }
@@ -31,6 +27,51 @@ export class FuseSplashScreenService {
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods
     // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Show the splash screen
+     */
+    show(): void {
+        this.player = this._animationBuilder
+            .build([
+                style({
+                    opacity: '0',
+                    zIndex: '99999',
+                }),
+                animate('400ms ease', style({ opacity: '1' })),
+            ])
+            .create(this.splashScreenEl);
+
+        setTimeout(() => {
+            this.player.play();
+        }, 0);
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Hide the splash screen
+     */
+    hide(): void {
+        this.player = this._animationBuilder
+            .build([
+                style({ opacity: '1' }),
+                animate(
+                    '400ms ease',
+                    style({
+                        opacity: '0',
+                        zIndex: '-10',
+                    })
+                ),
+            ])
+            .create(this.splashScreenEl);
+
+        setTimeout(() => {
+            this.player.play();
+        }, 0);
+    }
 
     /**
      * Initialize
@@ -55,50 +96,5 @@ export class FuseSplashScreenService {
                     });
                 });
         }
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Show the splash screen
-     */
-    show(): void {
-        this.player = this._animationBuilder
-            .build([
-                style({
-                    opacity: '0',
-                    zIndex: '99999',
-                }),
-                animate('400ms ease', style({ opacity: '1' })),
-            ])
-            .create(this.splashScreenEl);
-
-        setTimeout(() => {
-            this.player.play();
-        }, 0);
-    }
-
-    /**
-     * Hide the splash screen
-     */
-    hide(): void {
-        this.player = this._animationBuilder
-            .build([
-                style({ opacity: '1' }),
-                animate(
-                    '400ms ease',
-                    style({
-                        opacity: '0',
-                        zIndex: '-10',
-                    })
-                ),
-            ])
-            .create(this.splashScreenEl);
-
-        setTimeout(() => {
-            this.player.play();
-        }, 0);
     }
 }

@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { StockDetail } from './stock-detail';
+
 export interface StockTableItem {
     /**
      * قیمت روز

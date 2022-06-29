@@ -16,3 +16,13 @@
     align-items: center;
     justify-content: space-around;
 }
+
+.content {
+    position: relative;
+    max-height: 98vh;
+}
+
+.loader {
+    width: 100%;
+    margin-bottom: 15px;
+}

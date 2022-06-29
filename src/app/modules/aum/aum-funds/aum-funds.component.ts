@@ -3,6 +3,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TableDialogComponent } from 'app/shared/components/table-dialog/table-dialog.component';
+import { Column } from '#shared/components/table/table.model';
 
 am4core.useTheme(am4themes_animated);
 
@@ -13,7 +14,7 @@ am4core.useTheme(am4themes_animated);
 })
 export class AumFundsComponent {
     @Input() aumFunds: any;
-    columns: any;
+    columns: Array<Column>;
 
     constructor(public dialog: MatDialog) {
         this.createColumns();
@@ -22,8 +23,9 @@ export class AumFundsComponent {
     private createColumns(): void {
         this.columns = [
             { name: 'نام', id: 'name', type: 'string' },
-            { name: 'ارزش روز', id: 'dayValue', type: 'number' },
+            { name: 'ارزش روز', id: 'dayValue', type: 'price' },
             { name: 'قیمت روز', id: 'dayPrice', type: 'price' },
+            { name: 'حجم کل', id: 'volume', type: 'number' },
             { name: 'درصد کل دارایی', id: 'percentageOfAssets', type: 'number' },
             { name: 'درصد کل سبد صندوق', id: 'percentageOfFunds', type: 'number' },
             {
@@ -37,8 +39,20 @@ export class AumFundsComponent {
                         data: {
                             title: `${row.name}`,
                             columns: [
-                                { name: 'حجم', id: 'volume', type: 'number', headerAlign: 'center', dataAlign: 'center' },
-                                { name: 'ارزش', id: 'value', type: 'price', headerAlign: 'center', dataAlign: 'center' },
+                                {
+                                    name: 'حجم',
+                                    id: 'volume',
+                                    type: 'number',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
+                                {
+                                    name: 'ارزش',
+                                    id: 'value',
+                                    type: 'price',
+                                    headerAlign: 'center',
+                                    dataAlign: 'center',
+                                },
                                 { name: 'نام', id: 'name', type: 'string', headerAlign: 'center', dataAlign: 'center' },
                             ],
                             data: row.details,

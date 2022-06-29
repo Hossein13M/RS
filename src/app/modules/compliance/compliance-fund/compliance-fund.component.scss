@@ -36,9 +36,11 @@
     .mat-header-cell {
         justify-content: center;
     }
+
     .mat-column-fund {
         flex-grow: 2;
     }
+
     .mat-dialog-container {
         padding: 0 !important;
     }
@@ -93,16 +95,6 @@
 
     .mat-column-buttons {
         flex: 0 1 100px;
-    }
-
-    .mat-row:nth-child(even) {
-        // background-color: #d1ebff;
-        // background: linear-gradient(90deg, rgba(255, 255, 255, 0.6) 10%, rgba(0, 212, 255, 0.2) 100%);
-    }
-
-    .mat-row:nth-child(odd) {
-        // background-color: black;
-        // background: linear-gradient(90deg, rgba(0, 212, 255, 0.28755252100840334) 15%, rgba(255, 255, 255, 0.7133228291316527) 100%);
     }
 
     .mat-row {

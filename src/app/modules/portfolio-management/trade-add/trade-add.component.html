@@ -1,202 +1,102 @@
-<div class="page-layout">
+<div class='page-layout'>
+    <app-header pageTitle='افزودن دستی معاملات'></app-header>
 
-    <!--  Header -->
-    <app-header pageTitle="ثبت دستی معاملات">
-    </app-header>
-
-
-    <!--  Add Form   -->
-    <div class="fuse-card" fxLayout="row wrap" fxLayoutAlign="start center" dir="rtl">
-
-        <form [formGroup]="addForm" fxLayout="row wrap" fxLayoutAlign="start center" fxFlex="100" dir="rtl">
-            <!--   organisationType     -->
-            <mat-form-field appearance="outline" fxFlex="25">
-
-                <mat-label>
-                    میز / سبد
-                </mat-label>
-
-                <mat-select formControlName="organizationType"
-                            [compareWith]="organizationTypeCompareFn"
-                            [disabled]="!organizationTypes || getOrganizationsFail">
-
-                    <mat-option *ngFor="let type of organizationTypes"
-                                [value]="type.organizationType">
-
-                        {{type.organizationName}}
-
+    <div class='fuse-card pb-40' dir='rtl' fxLayout='row wrap' fxLayoutAlign='space-evenly center'>
+        <form [formGroup]='form' dir='rtl' fxFlex='100' fxLayout='row wrap' fxLayoutAlign='start center'>
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> میز / سبد</mat-label>
+                <mat-select [disabled]='!organizations' formControlName='organizationType'>
+                    <mat-option *ngFor='let organization of organizations' [value]='organization.organizationType'>
+                        {{ organization.organizationName }}
                     </mat-option>
-
                 </mat-select>
-
             </mat-form-field>
 
-            <!--   transactionDate     -->
-            <mat-form-field appearance="outline" fxFlex="25">
-                <mat-label>
-                    تاریخ معامله
-                </mat-label>
-
-                <input matInput
-                       [matDatepicker]="transactionDatePicker"
-                       [max]="today"
-                       placeholder="انتخاب تاریخ"
-                       formControlName="transactionDate">
-
-                <mat-datepicker-toggle matSuffix [for]="transactionDatePicker"></mat-datepicker-toggle>
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> تاریخ معامله</mat-label>
+                <input [matDatepicker]='transactionDatePicker' [max]='today' formControlName='transactionDate' matInput
+                       placeholder='انتخاب تاریخ' />
+                <mat-datepicker-toggle [for]='transactionDatePicker' matSuffix></mat-datepicker-toggle>
                 <mat-datepicker #transactionDatePicker></mat-datepicker>
             </mat-form-field>
 
-            <!--   ticker     -->
-            <mat-form-field class="full-wid" appearance="outline" fxFlex="25">
-
-                <mat-label>
-                    نماد
-                </mat-label>
-
-                <mat-select formControlName="ticker" multiple="false" style="text-align: right">
-                    <ngx-mat-select-search style="text-align: right"
-                                           [noEntriesFoundLabel]=" 'یافت نشد'"
-                                           [placeholderLabel]="'جستجو'"
-                                           [formControl]="tickersCtrl">
+            <mat-form-field appearance='outline' class='full-wid' fxFlex='25'>
+                <mat-label> نماد</mat-label>
+                <mat-select formControlName='ticker' multiple='false' style='text-align: right'>
+                    <ngx-mat-select-search
+                        [formControl]='tickerFormControl'
+                        [noEntriesFoundLabel]="'یافت نشد'"
+                        [placeholderLabel]="'جستجو'"
+                        style='text-align: right'
+                    >
                     </ngx-mat-select-search>
-                    <mat-option style="text-align: right;"
-                                *ngFor="let ticker of tickers"
-                                (click)="selectedTicker = ticker"
-                                [value]="ticker.ticker">
-                        {{ticker?.name}}
+                    <mat-option (click)='selectedTicker = ticker' *ngFor='let ticker of tickers'
+                                [value]='ticker.ticker' style='text-align: right'>
+                        {{ ticker?.name }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <!--   tradeType     -->
-            <mat-form-field appearance="outline" fxFlex="25">
-
-                <mat-label>
-                    نوع معامله
-                </mat-label>
-
-                <mat-select formControlName="tradeType"
-                            [compareWith]="tradeTypeCompareFn">
-                    <mat-option *ngFor="let tradeType of tradeTypes"
-                                [value]="tradeType.value">
-                        {{tradeType.name}}
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> نوع معامله</mat-label>
+                <mat-select formControlName='tradeType'>
+                    <mat-option *ngFor='let tradeType of tradeTypes' [value]='tradeType.value'>
+                        {{ tradeType.name }}
                     </mat-option>
-
                 </mat-select>
-
             </mat-form-field>
 
-            <!--   value     -->
-            <mat-form-field appearance="outline" fxFlex="25">
-
-                <mat-label>
-                    ارزش معامله
-                </mat-label>
-
-                <input matInput type="number" formControlName="value">
-
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> ارزش معامله</mat-label>
+                <input formControlName='value' matInput type='number' />
             </mat-form-field>
 
-            <!--   volume     -->
-            <mat-form-field appearance="outline" fxFlex="25">
-
-                <mat-label>
-                    حجم معامله
-                </mat-label>
-
-                <input matInput type="number" formControlName="volume">
-
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> حجم معامله</mat-label>
+                <input formControlName='volume' matInput type='number' />
             </mat-form-field>
 
-            <!--   price     -->
-            <mat-form-field appearance="outline" fxFlex="25">
-
-                <mat-label>
-                    قیمت معامله
-                </mat-label>
-
-                <input matInput type="number" formControlName="price">
-
+            <mat-form-field appearance='outline' fxFlex='25'>
+                <mat-label> قیمت معامله</mat-label>
+                <input formControlName='price' matInput type='number' />
             </mat-form-field>
 
-            <!--   pamCode     -->
-            <mat-form-field *ngIf="addForm.value.organizationType === 'T' || addForm.value.organizationType === 'تمدن'"
-                            appearance="outline" fxFlex="25">
-
-                <mat-label>
-                    کد پم
-                </mat-label>
-
-                <input matInput type="text" formControlName="pamCode">
-
+            <mat-form-field *ngIf="form.value.organizationType === 'T' || form.value.organizationType === 'تمدن'"
+                            appearance='outline' fxFlex='25'>
+                <mat-label> کد پم</mat-label>
+                <input formControlName='pamCode' matInput type='text' />
             </mat-form-field>
 
-            <!--   comments     -->
-            <mat-form-field appearance="outline" fxFlex="100">
-
-                <mat-label>
-                    توضیحات
-                </mat-label>
-                <textarea matInput formControlName="comments"></textarea>
-
-
+            <mat-form-field appearance='outline' fxFlex='100'>
+                <mat-label> توضیحات</mat-label>
+                <textarea formControlName='comments' matInput></textarea>
             </mat-form-field>
         </form>
 
-        <div class="actions" fxFlex="100">
-
-            <div class="actions-box">
-
-                <button mat-raised-button *ngIf="!editTradeId"
-                        color="primary" (click)="add()" [disabled]="addForm.invalid" class="add-btn">
-                    ثبت
-                </button>
-
-
-                <button mat-raised-button *ngIf="editTradeId"
-                        color="warn" (click)="cancelEdit()" class="add-btn">
-                    انصراف
-                </button>
-                <button mat-raised-button *ngIf="editTradeId"
-                        color="accent" (click)="update()" class="add-btn">
-                    بروزرسانی
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!--  Table  -->
-    <div class="fuse-card">
-        <app-table [data]="data"
-                   [columns]="columns"
-                   (searchCall)="search($event)">
-        </app-table>
-    </div>
-
-
-    <!--    Paginator    -->
-    <app-paginator *ngIf="data && data.length!=0"
-                   [data]="tas.pageEvent"
-                   (page)="pageHandler($event)"
-                   [pageSizeOptions]="[5, 10,20, 50]"></app-paginator>
-
-    <!--   Getting Data Failed  -->
-    <div *ngIf="failed" fxLayout="row wrap" fxLayoutAlign="center center">
-        دریافت داده ناموفق بود
-
-        <button mat-button
-                class="againBtn"
-                (click)="get()">
-            دریافت دوباره
+        <button (click)='addTradeRegistration()' *ngIf='!editTradeId' [disabled]='form.invalid' color='primary'
+                mat-stroked-button>افزودن
+        </button>
+        <button (click)='cancelEdit()' *ngIf='editTradeId' class='add-btn' color='warn' mat-stroked-button>برگشت
+        </button>
+        <button (click)='updateTradeRegistration()' *ngIf='editTradeId' class='add-btn' color='accent'
+                mat-stroked-button>بروزرسانی
         </button>
     </div>
 
-    <!--   Help Quotes  -->
-    <p *ngIf="data && data.length==0 && !isWorking && !failed" class="text-center">
-        داده‌ای برای نمایش وجود ندارد
-    </p>
+    <div class='fuse-card'>
+        <app-table
+            (paginationEvent)='paginationControl($event)'
+            [columns]='columns'
+            [data]='tradeRegistrations'
+            [paginationObject]='pagination'
+            [paginationSettings]="{ mode: 'backend' }"
+        >
+        </app-table>
+    </div>
+
+    <div class='text-center' fxLayout='row wrap' fxLayoutAlign='center center'>
+        <p *ngIf="stateType === 'FAIL'">دریافت داده ناموفق بود</p>
+        <p *ngIf="tradeRegistrations && tradeRegistrations.length == 0 && stateType === 'PRESENT'">داده‌ای برای نمایش
+            وجود ندارد</p>
+    </div>
 </div>

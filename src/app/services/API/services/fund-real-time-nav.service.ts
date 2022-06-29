@@ -9,19 +9,18 @@ import { CalculateFundRealTimeNavResponseDto } from '../models/calculate-fund-re
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class FundRealTimeNavService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation fundRealTimeNavControllerCalculateFundRealTimeNav
      */
     static readonly FundRealTimeNavControllerCalculateFundRealTimeNavPath = '/api/v1/fund-real-time-nav';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

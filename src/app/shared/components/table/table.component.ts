@@ -1,77 +1,14 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { fuseAnimations } from '@fuse/animations';
 import { debounceTime } from 'rxjs/operators';
-import { PaginationChangeType, PaginationSetting, TableSearchMode } from './table-consts';
+import { fuseAnimations } from '@fuse/animations';
+import { Color, Column, DetailColumn, OperationColumn, PaginationChangeType, PaginationSetting, TableSearchMode } from './table.model';
+import { PaginationModel } from '#shared/models/pagination.model';
+import { StateType } from '#shared/state-type.enum';
+import { FuseConfigService } from '../../../../@fuse/services/config.service';
 
-/**
- * Hoshman Risk's General Table Generator Document
- *
- * This table should use to create all tables of this project.
- *
- * @remarks
- *
- * @param data -table data from back
- * @param columns - array of columns of table.
- *
- * example :
- * ```ts
- * {
- *  name: COLUMN_NAME,
- *  id: DATA_ID,
- *  type: DATA_TYPE -> 'string' | 'date' | 'price' | 'number' | 'operation',
- *
- *  width?: COLUMN_WIDTH -> exp: '300px' | '50%' | '50vw',
- *  minWidth?: COLUMN_MIN_WIDTH -> exp: '300px' | '50%' | '50vw',
- *
- *  search?: {
- *
- *   type: SEARCH_TYPE -> exp: 'select' | 'text' | 'date',
- *   mode: SEARCH_MODE -> exp: TableSearchMode.LOCAL | TableSearchMode.SERVER
- *
- *   // ----------------.
- *   //  "select" only  |
- *   // ----------------'
- *   // if you don't provide options, will find all options from data
- *   options?: [
- *    {
- *     name: 'فعال',
- *     value: 'active',
- *     headerAlign: 'center',
- *     dataAlign: 'center',
- *    },
- *   ],
- *
- *  },
- *
- *  convert?: SOME_FUNCTION -> the function use to convert this col's data to another form like :
- *            (value:any)=>{return 'something'}
- *
- *  // ----------------.
- *  //  "operation" only |
- *  // ----------------'
- *  // you must provide "operations" if you select type -> operation
- *  operations:[
- *   {
- *      showExportButtons: boolean,
- *      showSearchButtons: boolean,
- *     {
- *       name: OPERATION_NAME/TOOLTIP,
- *       icon: OPERATION_ICON,
- *       color: OPERATION_COLOR,
- *       operation: OPERATION_STRING | OPERATION_FUNCTION -> exp: (row:any) -> {some function}
- *     },
- *   }
- *  ]
- * }
- * ```
- *
- * @param searchCall - emit search value that use TableSearchMode.SERVER mode.
- * @param operationCall - emit operation string value if you don't provide function.
- * @returns
- */
 @Component({
     selector: 'app-table',
     templateUrl: './table.component.html',
@@ -79,68 +16,61 @@ import { PaginationChangeType, PaginationSetting, TableSearchMode } from './tabl
     animations: [fuseAnimations],
 })
 export class TableComponent implements OnChanges, AfterViewInit {
-    @ViewChild('localPaginator', { static: false }) paginator: MatPaginator;
-
+    @ViewChild('localPaginator', { static: false }) localPaginator: MatPaginator;
+    @ViewChild('container', { static: false }) tableContainer;
     @Input() data: Array<any>;
-    @Input() columns: Array<any>;
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Pagination Input
-    // -----------------------------------------------------------------------------------------------------
+    @Input() columns: Array<Column>;
+    @Input() height: string = '100%';
+    @Input() status: StateType;
     @Input() paginationSettings: PaginationSetting;
-    @Input() paginationObj: PaginationChangeType;
-    private _paginationObj: PaginationChangeType = { skip: 0, limit: 5, total: 100 };
-    @Output() paginationChange: EventEmitter<PaginationChangeType>;
-    // -----------------------------------------------------------------------------------------------------
-
-    @Output() searchCall: EventEmitter<any>;
-    @Output() operationCall: EventEmitter<any>;
-
+    @Input() paginationObject: PaginationChangeType;
+    @Output() paginationEvent: EventEmitter<PaginationChangeType>;
+    @Output() searchEvent: EventEmitter<any>;
+    @Output() operationEvent: EventEmitter<any>;
     hasSearch = false;
-
-    // Show Data Table
     displayedColumns: Array<string>;
     searchColumns: Array<string>;
     dataSource: MatTableDataSource<any>;
-    dataToShow: Array<any>;
     lastServerSearch: string;
-
     showSearchBar = false;
-
     searchForm: FormGroup;
-    filter: any;
-
-    rowDetail: any;
+    rowDetail: DetailColumn;
     clickCoolDown = false;
     clickCount = 0;
     doubleClickAble = true;
+    public isDarkMode: boolean = false;
 
-    constructor(private fb: FormBuilder) {
-        this.searchCall = new EventEmitter<any>();
-        this.operationCall = new EventEmitter<any>();
-        this.paginationChange = new EventEmitter<PaginationChangeType>();
+    constructor(private formBuilder: FormBuilder, private fuseConfigService: FuseConfigService) {
+        this.searchEvent = new EventEmitter<any>();
+        this.operationEvent = new EventEmitter<any>();
+        this.paginationEvent = new EventEmitter<PaginationChangeType>();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!this.data || !this.columns) {
+        this.fuseConfigService.getConfig().subscribe((res) => (this.isDarkMode = res.colorTheme === 'theme-blue-gray-dark'));
+
+        let data = this.data;
+        if (changes.hasOwnProperty('data')) {
+            data = changes.data.currentValue;
+        }
+
+        if (!data || !this.columns || data.length === 0 || !Array.isArray(data)) {
             return;
         }
 
-        // Check For Row Detail
-        const rowDetailIndex = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
+        const rowDetailIndex: number = this.columns.findIndex((col) => col.type === 'rowDetail' || col.id === 'rowDetail');
         if (rowDetailIndex !== -1) {
-            this.rowDetail = this.columns[rowDetailIndex];
-            this.doubleClickAble = !!this.columns[rowDetailIndex].doubleClickable;
+            this.rowDetail = this.columns[rowDetailIndex] as DetailColumn;
+            this.doubleClickAble = !!this.rowDetail.doubleClickable;
             this.columns.splice(rowDetailIndex, 1);
         }
 
-        // Create Search FormGroup
         const formItems = {};
-        this.columns.forEach((col, i) => {
+        this.columns.forEach((col) => {
             if (col.search) {
                 this.hasSearch = true;
                 if (col.search.type === 'date_range') {
-                    formItems[col.id] = this.fb.group({
+                    formItems[col.id] = this.formBuilder.group({
                         fromDate: [],
                         toDate: [],
                     });
@@ -149,7 +79,7 @@ export class TableComponent implements OnChanges, AfterViewInit {
                 formItems[col.id] = [''];
             }
         });
-        this.searchForm = this.fb.group(formItems);
+        this.searchForm = this.formBuilder.group(formItems);
 
         this.displayedColumns = [];
         this.displayedColumns = this.displayedColumns.concat(this.columns.map((r) => r.id));
@@ -158,23 +88,141 @@ export class TableComponent implements OnChanges, AfterViewInit {
             this.searchColumns = this.displayedColumns.map((el) => el + '_search');
         }
 
-        // add operation to each row
-        const tableOperation = this.columns.find((element) => element.type === 'operation');
+        const tableOperation = this.columns.find((element) => element.type === 'operation') as OperationColumn;
         if (tableOperation && tableOperation?.operations) {
-            this.data.forEach((element) => (element.tableOperation = [...tableOperation.operations.map((el: any) => ({ ...el }))]));
+            data?.forEach((element) => (element.tableOperation = [...tableOperation.operations.map((el: any) => ({ ...el }))]));
         }
 
-        this.data.forEach((el) => (el.tableSelect = false));
+        data?.forEach((el) => (el.tableSelect = false));
         this.patchData(this.data);
+
+        this.handleSetLastSearch();
     }
 
     ngAfterViewInit(): void {
         if (this.paginationSettings?.mode === 'local' && this.data && this.columns && this.dataSource) {
-            this.dataSource.paginator = this.paginator;
+            this.dataSource.paginator = this.localPaginator;
         }
     }
 
-    patchData(data: Array<any>): void {
+    public scroll(): void {
+        if (this.paginationSettings.mode !== 'scroll') return;
+        if (this.status === StateType.LOADING) return;
+        const scrollPosition =
+            this.tableContainer?.nativeElement.scrollHeight - (this.tableContainer?.nativeElement.scrollTop + this.tableContainer?.nativeElement.clientHeight);
+        if (scrollPosition < 90) {
+            this.paginationControl({
+                length: 0,
+                pageSize: this.paginationObject.limit,
+                pageIndex: this.paginationObject.skip + this.paginationObject.limit,
+            });
+        }
+    }
+
+    public paginationControl(pageEvent?: PageEvent): void {
+        const _paginationObject: PaginationModel = { skip: 0, limit: 5, total: 100 };
+        _paginationObject.limit = pageEvent.pageSize;
+        _paginationObject.skip = pageEvent.pageIndex;
+        this.paginationEvent.emit(_paginationObject);
+    }
+
+    public isTemplateRef(obj: any): any {
+        return obj instanceof TemplateRef;
+    }
+
+    public doOperation(row: any, operationItem: any): void {
+        if (!operationItem.operation) {
+            return;
+        }
+
+        if (typeof operationItem.operation === 'string') {
+            this.operationEvent.emit({ row, operation: operationItem.operation });
+        }
+
+        if (typeof operationItem.operation === 'function') {
+            operationItem.operation({ row, operationItem });
+        }
+    }
+
+    public doOperationHeader(operationItem: any): void {
+        if (!operationItem.operation) {
+            return;
+        }
+
+        if (typeof operationItem.operation === 'string') {
+            this.operationEvent.emit({ operationHeader: operationItem.operation });
+        }
+
+        if (typeof operationItem.operation === 'function') {
+            operationItem.operation({ operationItem });
+        }
+    }
+
+    public openSearchBar(): void {
+        this.showSearchBar = !this.showSearchBar;
+    }
+
+    public selectRow(index: number): void {
+        if (index < 0 || !this.data || index > this.data.length) {
+            return;
+        }
+        if (!this.data[index]) return;
+        this.data[index].tableSelect = !this.data[index].tableSelect;
+    }
+
+    public onClick(row: any): void {
+        if (!this.rowDetail || !this.rowDetail.click) {
+            return;
+        }
+
+        if (this.clickCoolDown) {
+            this.clickCount++;
+            return;
+        }
+
+        this.clickCoolDown = true;
+        this.clickCount = 1;
+        setTimeout(() => {
+            this.clickCoolDown = false;
+
+            if (this.clickCount === 1) {
+                this.rowDetail.click(row);
+            } else {
+                this.onDoubleClick(row);
+            }
+
+            this.clickCount = 0;
+        }, 200);
+    }
+
+    public checkColorsType(input: Color | ((row: any) => Color), row: any): Color {
+        if (typeof input === 'string') {
+            return input;
+        } else {
+            return input(row);
+        }
+    }
+
+    public setIndexAccordingToPagination(index: number): number | null {
+        if (!this.localPaginator) return null;
+        if (this.paginationSettings.mode === 'local') {
+            return index + 1 + this.localPaginator.pageIndex * this.localPaginator.pageSize;
+        }
+        if (this.paginationSettings.mode === 'backend') {
+            return index + 1 + this.paginationObject.limit * this.paginationObject.skip;
+        }
+        return null;
+    }
+
+    private handleSetLastSearch(): void {
+        try {
+            this.searchForm.patchValue(JSON.parse(this.lastServerSearch));
+        } catch (e) {
+            return;
+        }
+    }
+
+    private patchData(data: Array<any>): void {
         this.dataSource = new MatTableDataSource<any>(data);
         this.columns.forEach((col) => {
             if (col.search && col.search.type === 'select' && !col.search.options) {
@@ -191,7 +239,6 @@ export class TableComponent implements OnChanges, AfterViewInit {
         if (this.hasSearch) {
             this.dataSource.filterPredicate = this.createSearchFilter();
 
-            // Value Changes
             this.searchForm.valueChanges.pipe(debounceTime(500)).subscribe((r) => {
                 const localSearchFilter = {};
                 const serverSearch = {};
@@ -214,27 +261,17 @@ export class TableComponent implements OnChanges, AfterViewInit {
 
                 if (Object.keys(serverSearch).length !== 0 && JSON.stringify(serverSearch) !== this.lastServerSearch) {
                     this.lastServerSearch = JSON.stringify(serverSearch);
-                    this.searchCall.emit(serverSearch);
+                    this.searchEvent.emit(serverSearch);
                 }
             });
         }
 
         if (this.paginationSettings?.mode === 'local') {
-            this.dataSource.paginator = this.paginator;
+            this.dataSource.paginator = this.localPaginator;
         }
     }
 
-    paginationControl(pageEvent?: any): void {
-        this._paginationObj.limit = pageEvent.pageSize;
-        this._paginationObj.skip = pageEvent.pageIndex;
-        this.paginationChange.emit(this._paginationObj);
-    }
-
-    isTemplateRef(obj: any): any {
-        return obj instanceof TemplateRef;
-    }
-
-    createSearchFilter(): any {
+    private createSearchFilter(): any {
         return (data: any, filter: string): boolean => {
             let result = true;
             const filterParsed = JSON.parse(filter);
@@ -269,78 +306,11 @@ export class TableComponent implements OnChanges, AfterViewInit {
         };
     }
 
-    numberToEn(inputStr: string): string {
+    private numberToEn(inputStr: string): string {
         return inputStr.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
     }
 
-    doOperation(row: any, operationItem: any): void {
-        if (!operationItem.operation) {
-            return;
-        }
-
-        if (typeof operationItem.operation === 'string') {
-            this.operationCall.emit({ row, operation: operationItem.operation });
-        }
-
-        if (typeof operationItem.operation === 'function') {
-            operationItem.operation({ row, operationItem });
-        }
-    }
-
-    doOperationHeader(operationItem: any): void {
-        if (!operationItem.operation) {
-            return;
-        }
-
-        if (typeof operationItem.operation === 'string') {
-            this.operationCall.emit({ operationHeader: operationItem.operation });
-        }
-
-        if (typeof operationItem.operation === 'function') {
-            operationItem.operation({ operationItem });
-        }
-    }
-
-    openSaveMenu(): void {}
-
-    openSearchBar(): void {
-        this.showSearchBar = !this.showSearchBar;
-    }
-
-    selectRow(index: number): void {
-        if (index < 0 || !this.data || index > this.data.length) {
-            return;
-        }
-
-        this.data[index].tableSelect = !this.data[index].tableSelect;
-    }
-
-    onClick(row: any): void {
-        if (!this.rowDetail || !this.rowDetail.click) {
-            return;
-        }
-
-        if (this.clickCoolDown) {
-            this.clickCount++;
-            return;
-        }
-
-        this.clickCoolDown = true;
-        this.clickCount = 1;
-        setTimeout(() => {
-            this.clickCoolDown = false;
-
-            if (this.clickCount === 1) {
-                this.rowDetail.click(row);
-            } else {
-                this.onDoubleClick(row);
-            }
-
-            this.clickCount = 0;
-        }, 200);
-    }
-
-    onDoubleClick(row: any): void {
+    private onDoubleClick(row: any): void {
         if (!this.rowDetail || !this.rowDetail.doubleClick) {
             return;
         }

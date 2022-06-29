@@ -1,0 +1,140 @@
+<div class='dialog-container'>
+    <div appDialogHeader
+         title='{{title}}'>
+        <mat-icon (click)='this.dialogRef.close()' class='icon-header'>close</mat-icon>
+    </div>
+    <form [formGroup]='form' class='setting-form-container' dir='rtl'>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    شناسه نماد
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <input formControlName='ticker' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نماد فارسی
+                </mat-label>
+                <input formControlName='symbol' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نماد انگلیسی
+                </mat-label>
+                <input formControlName='symbolEn' matInput>
+            </mat-form-field>
+        </div>
+
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نام فارسی
+                </mat-label>
+                <input formControlName='name' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    نام انگلیسی
+                </mat-label>
+                <input formControlName='nameEn' matInput>
+            </mat-form-field>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    کد نوع
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <input formControlName='type' matInput>
+            </mat-form-field>
+        </div>
+
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    بازار
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='marketId'>
+                    <mat-option *ngFor='let c of markets' [value]='c?.code'
+                                style='text-align: right'>
+                        {{c?.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    تابلو
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='boardId'>
+                    <mat-option *ngFor='let c of boards' [value]='c?.code'
+                                style='text-align: right'>
+                        {{c?.name}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    محل معامله
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='isInBourse'>
+                    <mat-option [value]="'true'"
+                                style='text-align: right'>
+                        بورس
+                    </mat-option>
+                    <mat-option [value]="'false'"
+                                style='text-align: right'>
+                        خارج بورس
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class='setting-form-row'>
+            <mat-form-field appearance='outline'>
+                <mat-label>
+                    وضعیت
+                    <span style='color: red'>*</span>
+                </mat-label>
+                <mat-select formControlName='isActive'>
+                    <mat-option [value]="'true'"
+                                style='text-align: right'>
+                        فعال
+                    </mat-option>
+                    <mat-option [value]="'false'"
+                                style='text-align: right'>
+                        غیرفعال
+                    </mat-option>
+                </mat-select>
+                <mat-error>
+                    وارد کردن این فیلد الزامی است.
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class='setting-btn-container'>
+            <button (click)='close()' color='warn' mat-raised-button style='margin-left: 10px'>
+                <mat-icon>close</mat-icon>
+                برگشت
+            </button>
+            <button (click)='onCreateBranch()' *ngIf='!data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>done</mat-icon>
+                ثبت
+            </button>
+            <button (click)='onEditBranch()' *ngIf='data' [disabled]='form.invalid' color='accent' mat-raised-button>
+                <mat-icon>edit</mat-icon>
+                ویرایش
+            </button>
+        </div>
+    </form>
+</div>

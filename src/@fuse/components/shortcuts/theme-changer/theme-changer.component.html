@@ -1,0 +1,3 @@
+<button mat-icon-button (click)="onThemeChangeClick()" [matTooltip]="currentTheme === 'theme-default' ? 'تم روشن' : 'تم تاریک'">
+    <mat-icon>{{ currentTheme === 'theme-default' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+</button>

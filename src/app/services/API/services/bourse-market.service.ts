@@ -11,19 +11,34 @@ import { UpdateBourseMarketDto } from '../models/update-bourse-market-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class BourseMarketService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation bourseMarketControllerGetBourseMarket
      */
     static readonly BourseMarketControllerGetBourseMarketPath = '/api/v1/bourse-market/{bourseMarketId}';
+    /**
+     * Path part for operation bourseMarketControllerDeleteBourseMarket
+     */
+    static readonly BourseMarketControllerDeleteBourseMarketPath = '/api/v1/bourse-market/{bourseMarketId}';
+    /**
+     * Path part for operation bourseMarketControllerGetBourseMarkets
+     */
+    static readonly BourseMarketControllerGetBourseMarketsPath = '/api/v1/bourse-market';
+    /**
+     * Path part for operation bourseMarketControllerUpdateBourseMarket
+     */
+    static readonly BourseMarketControllerUpdateBourseMarketPath = '/api/v1/bourse-market';
+    /**
+     * Path part for operation bourseMarketControllerCreateBourseMarket
+     */
+    static readonly BourseMarketControllerCreateBourseMarketPath = '/api/v1/bourse-market';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -58,15 +73,8 @@ export class BourseMarketService extends BaseService {
      * This method doesn't expect any request body.
      */
     bourseMarketControllerGetBourseMarket(params: { bourseMarketId: number }): Observable<BourseMarketDto> {
-        return this.bourseMarketControllerGetBourseMarket$Response(params).pipe(
-            map((r: StrictHttpResponse<BourseMarketDto>) => r.body as BourseMarketDto)
-        );
+        return this.bourseMarketControllerGetBourseMarket$Response(params).pipe(map((r: StrictHttpResponse<BourseMarketDto>) => r.body as BourseMarketDto));
     }
-
-    /**
-     * Path part for operation bourseMarketControllerDeleteBourseMarket
-     */
-    static readonly BourseMarketControllerDeleteBourseMarketPath = '/api/v1/bourse-market/{bourseMarketId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -105,20 +113,12 @@ export class BourseMarketService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseMarketControllerGetBourseMarkets
-     */
-    static readonly BourseMarketControllerGetBourseMarketsPath = '/api/v1/bourse-market';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseMarketControllerGetBourseMarkets()` instead.
      *
      * This method doesn't expect any request body.
      */
-    bourseMarketControllerGetBourseMarkets$Response(params?: {
-        name?: string;
-        code?: number;
-    }): Observable<StrictHttpResponse<Array<BourseMarketDto>>> {
+    bourseMarketControllerGetBourseMarkets$Response(params?: { name?: string; code?: number }): Observable<StrictHttpResponse<Array<BourseMarketDto>>> {
         const rb = new RequestBuilder(this.rootUrl, BourseMarketService.BourseMarketControllerGetBourseMarketsPath, 'get');
         if (params) {
             rb.query('name', params.name, {});
@@ -152,19 +152,12 @@ export class BourseMarketService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseMarketControllerUpdateBourseMarket
-     */
-    static readonly BourseMarketControllerUpdateBourseMarketPath = '/api/v1/bourse-market';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseMarketControllerUpdateBourseMarket()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bourseMarketControllerUpdateBourseMarket$Response(params: {
-        body: UpdateBourseMarketDto;
-    }): Observable<StrictHttpResponse<UpdateBourseMarketDto>> {
+    bourseMarketControllerUpdateBourseMarket$Response(params: { body: UpdateBourseMarketDto }): Observable<StrictHttpResponse<UpdateBourseMarketDto>> {
         const rb = new RequestBuilder(this.rootUrl, BourseMarketService.BourseMarketControllerUpdateBourseMarketPath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -197,19 +190,12 @@ export class BourseMarketService extends BaseService {
     }
 
     /**
-     * Path part for operation bourseMarketControllerCreateBourseMarket
-     */
-    static readonly BourseMarketControllerCreateBourseMarketPath = '/api/v1/bourse-market';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `bourseMarketControllerCreateBourseMarket()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    bourseMarketControllerCreateBourseMarket$Response(params: {
-        body: CreateBourseMarketDto;
-    }): Observable<StrictHttpResponse<UpdateBourseMarketDto>> {
+    bourseMarketControllerCreateBourseMarket$Response(params: { body: CreateBourseMarketDto }): Observable<StrictHttpResponse<UpdateBourseMarketDto>> {
         const rb = new RequestBuilder(this.rootUrl, BourseMarketService.BourseMarketControllerCreateBourseMarketPath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');

@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Operators } from '../op-risk-models';
 
 @Component({
     selector: 'app-op-risk-view',
@@ -8,22 +9,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class OpRiskViewComponent implements OnInit {
     title: string = '';
-    selectedOperatorList1: Array<any> = [];
-    selectedOperatorList2: Array<any> = [];
-    selectedOperatorList3: Array<any> = [];
+    operators: Array<Operators>;
 
     constructor(public dialogRef: MatDialogRef<OpRiskViewComponent>, @Inject(MAT_DIALOG_DATA) public data) {}
 
     ngOnInit() {
-        this.creatForm();
+        this.fetchData();
     }
 
-    creatForm() {
+    private fetchData() {
         this.title = this.data.name;
-        this.selectedOperatorList1 = this.data.flowSteps[0].flowUsers;
-        this.selectedOperatorList2 = this.data.flowSteps[1].flowUsers;
-        this.selectedOperatorList3 = this.data.flowSteps[2].flowUsers;
+        this.operators = this.data.flowSteps;
     }
-
-    isWorking: any;
 }

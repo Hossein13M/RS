@@ -23,25 +23,20 @@ export class OpRiskChartSelectComponent implements OnInit {
     state = stateType.PRESENT;
     treeCharts: Array<any>;
 
-    constructor(private orss: OpRiskChartSelectService) {}
+    constructor(private opRiskChartSelectService: OpRiskChartSelectService) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.get();
     }
 
-    get() {
+    get(): void {
         this.state = stateType.LOADING;
-        this.orss.categories(this).subscribe(
+        this.opRiskChartSelectService.categories().subscribe(
             (categories) => {
                 this.state = stateType.PRESENT;
                 this.treeCharts = categories;
             },
             () => (this.state = stateType.FAILED)
         );
-    }
-
-    handleError(): boolean {
-        this.failed = true;
-        return false;
     }
 }

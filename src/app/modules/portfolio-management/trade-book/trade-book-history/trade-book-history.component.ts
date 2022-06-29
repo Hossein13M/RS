@@ -1,9 +1,10 @@
-import { formatDate } from '@angular/common';
+import { PaginationChangeType } from '#shared/components/table/table.model';
+import { StateManager } from '#shared/pipes/stateManager.pipe';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PagingEvent } from 'app/shared/components/paginator/paginator.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TradeBookHistoryService } from './trade-book-history.service';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Component({
     selector: 'app-trade-book-history',
@@ -12,37 +13,53 @@ import { TradeBookHistoryService } from './trade-book-history.service';
     providers: [TradeBookHistoryService],
 })
 export class TradeBookHistoryComponent implements OnInit {
-    data: Array<any>;
+    form: FormGroup = this.fb.group({ date: [this.dialogData.date] });
+    tradeBook = { data: [], state: '' };
     columns: Array<any>;
-    searchFormGroup: FormGroup;
-
-    isWorking: any = false;
     failed = false;
     today = new Date();
+    pagination = { skip: 0, limit: 5, total: 100 };
+    searchParams: any = {};
 
     constructor(
         private fb: FormBuilder,
         public dialogRef: MatDialogRef<TradeBookHistoryComponent>,
         @Inject(MAT_DIALOG_DATA) public dialogData,
-        public tbhs: TradeBookHistoryService
+        public tradeBookHistoryService: TradeBookHistoryService
     ) {}
 
     ngOnInit(): void {
-        // Search Group Init
-        this.searchFormGroup = this.fb.group({
-            date: [this.dialogData.date],
-        });
-        this.searchFormGroup.valueChanges.subscribe((newFormValue) => {
-            const searchFilter = newFormValue;
-
-            if (searchFilter.date) {
-                searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-            }
-            this.tbhs.specificationModel.searchKeyword = searchFilter;
-            this.tbhs.specificationModel.skip = 0;
-            this.get();
+        this.initializeTableColumns();
+        this.form.valueChanges.subscribe((newFormValue) => {
+            if (newFormValue.date) newFormValue.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(newFormValue.date));
+            this.searchParams = newFormValue;
+            this.pagination.skip = 0;
+            this.getTradeBookHistory();
         });
 
+        this.searchParams = this.form.value;
+        if (this.searchParams.date) this.searchParams.date = UtilityFunctions.convertDateToGregorianFormatForServer(new Date(this.searchParams.date));
+
+        this.getTradeBookHistory();
+    }
+
+    public getTradeBookHistory(): void {
+        this.tradeBookHistoryService
+            .getIpsUpdateHistory({ ...this.searchParams, ...this.pagination })
+            .pipe(StateManager(this.tradeBook))
+            .subscribe((data: any) => {
+                this.tradeBook.data = data.items;
+                this.pagination.total = data.total;
+            });
+    }
+
+    public pageHandler(pageEvent: PaginationChangeType): void {
+        this.pagination.limit = pageEvent.limit;
+        this.pagination.skip = pageEvent.skip;
+        this.getTradeBookHistory();
+    }
+
+    private initializeTableColumns(): void {
         this.columns = [
             { name: 'سبد', id: 'organizationType', type: 'string' },
             { name: 'نماد', id: 'bourseAccount', type: 'string' },
@@ -51,56 +68,13 @@ export class TradeBookHistoryComponent implements OnInit {
                 name: 'تاریخ بروزرسانی',
                 id: 'date',
                 type: 'date',
-                convert: (value: any) => {
-                    return new Date(value).toLocaleDateString('fa-Ir', { year: 'numeric', month: 'long', day: 'numeric' });
-                },
+                convert: (value: any) =>
+                    new Date(value).toLocaleDateString('fa-Ir', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    }),
             },
         ];
-
-        const searchFilter = this.searchFormGroup.value;
-        if (searchFilter.date) {
-            searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-        }
-        this.tbhs.specificationModel.searchKeyword = searchFilter;
-        this.get();
-    }
-
-    get(): void {
-        this.tbhs.show(this).subscribe(
-            (data) => {
-                this.data = data.items;
-                this.tbhs.setPageDetailData(data);
-            },
-            () => (this.failed = true)
-        );
-    }
-
-    search(searchFilter: any): void {
-        if (!searchFilter) {
-            return;
-        }
-
-        if (searchFilter.date) {
-            searchFilter.date = formatDate(new Date(searchFilter.date), 'yyyy-MM-dd', 'en_US');
-        }
-
-        Object.keys(searchFilter).forEach((key) => {
-            this.searchFormGroup.controls[key].setValue(searchFilter[key]);
-        });
-
-        this.tbhs.specificationModel.searchKeyword = searchFilter;
-        this.tbhs.specificationModel.skip = 0;
-        this.get();
-    }
-
-    pageHandler(e: PagingEvent): void {
-        this.tbhs.specificationModel.limit = e.pageSize;
-        this.tbhs.specificationModel.skip = e.currentIndex * e.pageSize;
-        this.get();
-    }
-
-    handleError(): boolean {
-        this.failed = true;
-        return false;
     }
 }

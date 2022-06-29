@@ -13,19 +13,38 @@ import { MessageResponseWithDetailsDto } from '../models/message-response-with-d
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class MessageService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation fromUserControllerGetOutboxMessages
      */
     static readonly FromUserControllerGetOutboxMessagesPath = '/api/v1/message/outbox';
+    /**
+     * Path part for operation fromUserControllerDeleteOutboxMessage
+     */
+    static readonly FromUserControllerDeleteOutboxMessagePath = '/api/v1/message/outbox/{msgId}';
+    /**
+     * Path part for operation toUserControllerGetInboxMessages
+     */
+    static readonly ToUserControllerGetInboxMessagesPath = '/api/v1/message/inbox';
+    /**
+     * Path part for operation toUserControllerDeleteInboxMessage
+     */
+    static readonly ToUserControllerDeleteInboxMessagePath = '/api/v1/message/inbox/{msgId}';
+    /**
+     * Path part for operation messageControllerCreateMessage
+     */
+    static readonly MessageControllerCreateMessagePath = '/api/v1/message';
+    /**
+     * Path part for operation messageControllerGetMessage
+     */
+    static readonly MessageControllerGetMessagePath = '/api/v1/message/{msgId}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -33,10 +52,7 @@ export class MessageService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    fromUserControllerGetOutboxMessages$Response(params?: {
-        limit?: number;
-        skip?: number;
-    }): Observable<StrictHttpResponse<MessageListResponseDto>> {
+    fromUserControllerGetOutboxMessages$Response(params?: { limit?: number; skip?: number }): Observable<StrictHttpResponse<MessageListResponseDto>> {
         const rb = new RequestBuilder(this.rootUrl, MessageService.FromUserControllerGetOutboxMessagesPath, 'get');
         if (params) {
             rb.query('limit', params.limit, {});
@@ -68,11 +84,6 @@ export class MessageService extends BaseService {
             map((r: StrictHttpResponse<MessageListResponseDto>) => r.body as MessageListResponseDto)
         );
     }
-
-    /**
-     * Path part for operation fromUserControllerDeleteOutboxMessage
-     */
-    static readonly FromUserControllerDeleteOutboxMessagePath = '/api/v1/message/outbox/{msgId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -109,11 +120,6 @@ export class MessageService extends BaseService {
     fromUserControllerDeleteOutboxMessage(params: { msgId: number }): Observable<void> {
         return this.fromUserControllerDeleteOutboxMessage$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation toUserControllerGetInboxMessages
-     */
-    static readonly ToUserControllerGetInboxMessagesPath = '/api/v1/message/inbox';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -172,11 +178,6 @@ export class MessageService extends BaseService {
     }
 
     /**
-     * Path part for operation toUserControllerDeleteInboxMessage
-     */
-    static readonly ToUserControllerDeleteInboxMessagePath = '/api/v1/message/inbox/{msgId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `toUserControllerDeleteInboxMessage()` instead.
      *
@@ -213,11 +214,6 @@ export class MessageService extends BaseService {
     }
 
     /**
-     * Path part for operation messageControllerCreateMessage
-     */
-    static readonly MessageControllerCreateMessagePath = '/api/v1/message';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `messageControllerCreateMessage()` instead.
      *
@@ -250,15 +246,8 @@ export class MessageService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     messageControllerCreateMessage(params: { body: CreateMessageDto }): Observable<MessageResponseDto> {
-        return this.messageControllerCreateMessage$Response(params).pipe(
-            map((r: StrictHttpResponse<MessageResponseDto>) => r.body as MessageResponseDto)
-        );
+        return this.messageControllerCreateMessage$Response(params).pipe(map((r: StrictHttpResponse<MessageResponseDto>) => r.body as MessageResponseDto));
     }
-
-    /**
-     * Path part for operation messageControllerGetMessage
-     */
-    static readonly MessageControllerGetMessagePath = '/api/v1/message/{msgId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

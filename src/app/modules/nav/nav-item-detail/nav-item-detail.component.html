@@ -1,17 +1,13 @@
-<ng-container [ngSwitch]="state">
-    <ng-container *ngSwitchCase="stateType.SELECT">
-        <div class="table-container" [@fadeInOut]="{duration:'400ms'}">
-            <div class="header1 accent">
-                <span>
-                    لیست تغییرات اعمال شده
-                </span>
-                <div class="table-btn-container" dir="rtl">
-
+<ng-container [ngSwitch]='state'>
+    <ng-container *ngSwitchCase='stateType.SELECT'>
+        <div [@fadeInOut]="{ duration: '400ms' }" class='table-container'>
+            <div class='header1 accent'>
+                <span> لیست تغییرات اعمال شده </span>
+                <div class='table-btn-container' dir='rtl'>
                     <!--            <mat-form-field appearance="outline">-->
                     <!--                <mat-label>-->
                     <!--                    <mat-icon class="mat-18">filter_list</mat-icon>-->
                     <!--                </mat-label>-->
-
 
                     <!--                <mat-select multiple="true" [formControl]="filterCtl">-->
                     <!--                    <mat-select-trigger>-->
@@ -23,192 +19,141 @@
                     <!--                </mat-select>-->
                     <!--            </mat-form-field>-->
 
-                    <button mat-raised-button
-                            style="margin:0 10px"
-                            color="primary"
-                            (click)="openAddChangeDialog()">
-                        <mat-icon class="mat-18">add</mat-icon>
+                    <button (click)='openAddChangeDialog()' color='primary' mat-raised-button style='margin: 0 10px'>
+                        <mat-icon class='mat-18'>add</mat-icon>
                         تغییر جدید
                     </button>
-
                 </div>
-
             </div>
 
-            <app-table *ngIf="data.length > 0"
-                       [columns]="columns"
-                       [data]="data">
-            </app-table>
+            <app-table *ngIf='data.length > 0' [columns]='columns' [data]='data'></app-table>
 
-            <div class="no-data" *ngIf="data.length <= 0">
-                <h3>
-                    تغییری برای نمایش وجود ندارد.
-                </h3>
+            <div *ngIf='data.length <= 0' class='no-data'>
+                <h3>تغییری برای نمایش وجود ندارد.</h3>
             </div>
         </div>
 
-
-        <div class="btn-container primary" [@fadeInOut]="{duration:'400ms'}">
-            <div class="edit-inputs">
-                <input autocomplete="off"
-                       [(ngModel)]="navPlannedRate"
-                       [disabled]="this.data.length === 0"
-                       style=" border: 1px solid rgba(0,0,0,0.2);
-                       border-radius: 4px;
-                       height: 30px;"
-                       type="number" placeholder="نرخ NAV برنامه ای(پیش فرض ۲۲ درصد)">
+        <div [@fadeInOut]="{ duration: '400ms' }" class='btn-container primary'>
+            <div class='edit-inputs'>
+                <input
+                    [(ngModel)]='navPlannedRate'
+                    [disabled]='this.data.length === 0'
+                    autocomplete='off'
+                    placeholder='نرخ NAV برنامه ای(پیش فرض ۲۲ درصد)'
+                    style='border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 4px; height: 30px'
+                    type='number'
+                />
             </div>
 
-            <button (click)="processNAV()"
-                    color="warn"
-                    [disabled]="this.data.length === 0"
-                    style="margin-right: 10px"
-                    mat-raised-button>
+            <button (click)='processNAV()' [disabled]='this.data.length === 0' color='warn' mat-raised-button
+                    style='margin-right: 10px'>
                 <mat-icon>developer_board</mat-icon>
-                پردازش
-                NAV
+                پردازش NAV
             </button>
         </div>
-
     </ng-container>
 
     <!--  LOADING  -->
-    <ng-container *ngSwitchCase="stateType.LOADING">
-        <div class="full-card-container" [@fadeInOut]="{duration:'400ms'}">
-            <mat-spinner diameter="80"></mat-spinner>
-            <h3>
-                در حال محاسبه
-            </h3>
+    <ng-container *ngSwitchCase='stateType.LOADING'>
+        <div [@fadeInOut]="{ duration: '400ms' }" class='full-card-container'>
+            <mat-spinner diameter='80'></mat-spinner>
+            <h3>در حال محاسبه</h3>
         </div>
     </ng-container>
 
     <!--  Show RESULT  -->
-    <ng-container *ngSwitchCase="stateType.RESULT">
-        <div class="table-container" [@fadeInOut]="{duration:'400ms'}">
-            <div class="header1 accent">
-                <span>
-                    نتیجه‌ی محاسبه
-                </span>
+    <ng-container *ngSwitchCase='stateType.RESULT'>
+        <div [@fadeInOut]="{ duration: '400ms' }" class='table-container'>
+            <div class='header1 accent'>
+                <span> نتیجه‌ی محاسبه </span>
             </div>
 
-            <div class="result-container" fxLayout="row wrap">
-                <div fxFlex="20" class="result-box-container">
-                    <div class="fuse-card result-box">
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('currentFundUnits')">
-                            <span class="title">
-                                تعداد واحد‌های صندوق
-                            </span>
-                            <span class="value">
-                                {{result.currentFundUnits|number}}
+            <div class='result-container' fxLayout='row wrap'>
+                <div class='result-box-container' fxFlex='20'>
+                    <div class='fuse-card result-box'>
+                        <div *ngIf="result && result.hasOwnProperty('currentFundUnits')" class='result-item'>
+                            <span class='title'> تعداد واحد‌های صندوق </span>
+                            <span class='value'>
+                                {{ result.currentFundUnits | number: '.0-4' }}
                             </span>
                             <mat-divider></mat-divider>
                         </div>
 
-
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('fundRealTimeNav')">
-                            <span class="title">
-                                خالص ارزش دارایی‌های لحظه‌ای
-                            </span>
-                            <span class="value">
-                                {{result.fundRealTimeNav|price}}
+                        <div *ngIf="result && result.hasOwnProperty('fundRealTimeNav')" class='result-item'>
+                            <span class='title'> خالص ارزش دارایی‌های لحظه‌ای </span>
+                            <span class='value'>
+                                {{ result.fundRealTimeNav | price }}
                             </span>
                         </div>
 
-
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('fundRealTimeNavPerunit')">
-                            <span class="title">
-                                ارزش خالص دارایی‌های لحظه‌ای/تعداد
-                            </span>
-                            <span class="value">
-                                {{result.fundRealTimeNavPerunit|price}}
+                        <div *ngIf="result && result.hasOwnProperty('fundRealTimeNavPerunit')" class='result-item'>
+                            <span class='title'> ارزش خالص دارایی‌های لحظه‌ای/تعداد </span>
+                            <span class='value'>
+                                {{ result.fundRealTimeNavPerunit | price }}
                             </span>
                         </div>
 
-
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('fundRealTimeTotalUnits')">
-                            <span class="title">
-                                تعداد واحد‌های کلی صندوق بر اساس ورودی‌های کاربر
-                            </span>
-                            <span class="value">
-                                {{result.fundRealTimeTotalUnits|number}}
+                        <div *ngIf="result && result.hasOwnProperty('fundRealTimeTotalUnits')" class='result-item'>
+                            <span class='title'> تعداد واحد‌های کلی صندوق بر اساس ورودی‌های کاربر </span>
+                            <span class='value'>
+                                {{ result.fundRealTimeTotalUnits | number:'.0-4' }}
                             </span>
                         </div>
 
-
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('fundRealTimeTotalUnits')">
-                            <span class="title">
-                                انحراف ارزش خالص دارایی‌ها/تعداد
-                            </span>
-                            <span class="value">
-                                {{result.fundVarianceNavPerunit|number}}
+                        <div *ngIf="result && result.hasOwnProperty('fundRealTimeTotalUnits')" class='result-item'>
+                            <span class='title'> انحراف ارزش خالص دارایی‌ها/تعداد </span>
+                            <span class='value'>
+                                {{ result.fundVarianceNavPerunit | number: '.0-4' }}
                             </span>
                         </div>
 
-
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('netTodayFundTransactions')">
-                            <span class="title">
-                                خالص معاملات خرید و فروش واحد‌های صندوق
-                            </span>
-                            <span class="value">
-                                {{result.netTodayFundTransactions|number}}
+                        <div *ngIf="result && result.hasOwnProperty('netTodayFundTransactions')" class='result-item'>
+                            <span class='title'> خالص معاملات خرید و فروش واحد‌های صندوق </span>
+                            <span class='value'>
+                                {{ result.netTodayFundTransactions | number: '.0-4' }}
                             </span>
                         </div>
 
-
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('plannedNav')">
-                            <span class="title">
-                                نرخ برنامه‌ای
-                            </span>
-                            <span class="value">
-                                {{result.plannedNav|price}}
+                        <div *ngIf="result && result.hasOwnProperty('plannedNav')" class='result-item'>
+                            <span class='title'> نرخ برنامه‌ای </span>
+                            <span class='value'>
+                                {{ result.plannedNav | price }}
                             </span>
                         </div>
 
-                        <div class="result-item" *ngIf="result && result.hasOwnProperty('variance')">
-                            <span class="title">
-                                انحراف
-                            </span>
-                            <span class="value">
-                                {{result.variance|number}}
+                        <div *ngIf="result && result.hasOwnProperty('variance')" class='result-item'>
+                            <span class='title'> انحراف </span>
+                            <span class='value'>
+                                {{ result.variance | number:'.0-4' }}
                             </span>
                         </div>
-
-
                     </div>
                 </div>
-                <div fxFlex="80" *ngIf="result &&
-                                        result.hasOwnProperty('fundRealTimeNavPerunit') &&
-                                        result.hasOwnProperty('plannedNav')">
-                    <app-gauge-chart style="width: calc(100% - 40px);"
-                                     [labels]="[
-                                        {text:  'اختلاف' + '\n' + (result.plannedNav - result.fundRealTimeNavPerunit) },
-                                        {text:  ' خالص ارزش دارایی‌های محاسبه شده' + '\n' + result.fundRealTimeNavPerunit  },
-                                        {text:  'خالص ارزش دارایی‌های برنامه ریزی شده' + '\n' + result.plannedNav }
-                                     ]"
-                                     [maxRange]="30000"
-                                     [minRange]="-30000"
-                                     [handValue]="result.plannedNav - result.fundRealTimeNavPerunit">
+                <div *ngIf="result && result.hasOwnProperty('fundRealTimeNavPerunit') && result.hasOwnProperty('plannedNav')"
+                     fxFlex='80'>
+                    <app-gauge-chart
+                        [handValue]='result.plannedNav - result.fundRealTimeNavPerunit'
+                        [labels]="[
+                            { text: 'اختلاف' + '\n' + (result.plannedNav - result.fundRealTimeNavPerunit) },
+                            { text: ' خالص ارزش دارایی‌های محاسبه شده' + '\n' + result.fundRealTimeNavPerunit },
+                            { text: 'خالص ارزش دارایی‌های برنامه ریزی شده' + '\n' + result.plannedNav }
+                        ]"
+                        [maxRange]='30000'
+                        [minRange]='-30000'
+                        style='width: calc(100% - 40px)'
+                    >
                     </app-gauge-chart>
-                    <h3 style="text-align: center;margin: 0">
-                        نمودار اختلاف ارزش خالص دارایی‌های برنامه‌ریزی شده و محاسبه‌شده
-                    </h3>
+                    <h3 style='text-align: center; margin: 0'>نمودار اختلاف ارزش خالص دارایی‌های برنامه‌ریزی شده و
+                        محاسبه‌شده</h3>
                 </div>
             </div>
         </div>
 
-
-        <div class="btn-container primary" [@fadeInOut]="{duration:'400ms'}">
-
-            <button (click)="state = stateType.SELECT"
-                    color="warn"
-                    style="margin-right: auto"
-                    mat-raised-button>
+        <div [@fadeInOut]="{ duration: '400ms' }" class='btn-container primary'>
+            <button (click)='state = stateType.SELECT' color='warn' mat-raised-button style='margin-right: auto'>
                 بازگشت
                 <mat-icon>keyboard_backspace</mat-icon>
-
             </button>
         </div>
-
-
     </ng-container>
 </ng-container>

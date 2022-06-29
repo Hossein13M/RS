@@ -13,19 +13,34 @@ import { UpdateFundDto } from '../models/update-fund-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class FundService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation fundControllerGetObjectName
      */
     static readonly FundControllerGetObjectNamePath = '/api/v1/fund/image-name';
+    /**
+     * Path part for operation fundControllerGetFund
+     */
+    static readonly FundControllerGetFundPath = '/api/v1/fund/{id}';
+    /**
+     * Path part for operation fundControllerGetFunds
+     */
+    static readonly FundControllerGetFundsPath = '/api/v1/fund';
+    /**
+     * Path part for operation fundControllerUpdateFund
+     */
+    static readonly FundControllerUpdateFundPath = '/api/v1/fund';
+    /**
+     * Path part for operation fundControllerCreateFund
+     */
+    static readonly FundControllerCreateFundPath = '/api/v1/fund';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -66,11 +81,6 @@ export class FundService extends BaseService {
     }
 
     /**
-     * Path part for operation fundControllerGetFund
-     */
-    static readonly FundControllerGetFundPath = '/api/v1/fund/{id}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `fundControllerGetFund()` instead.
      *
@@ -105,11 +115,6 @@ export class FundService extends BaseService {
     fundControllerGetFund(params: { id: number }): Observable<ResponseFundDto> {
         return this.fundControllerGetFund$Response(params).pipe(map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto));
     }
-
-    /**
-     * Path part for operation fundControllerGetFunds
-     */
-    static readonly FundControllerGetFundsPath = '/api/v1/fund';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -163,15 +168,8 @@ export class FundService extends BaseService {
         fundType?: number;
         searchKeyword?: any;
     }): Observable<FundListResponseDto> {
-        return this.fundControllerGetFunds$Response(params).pipe(
-            map((r: StrictHttpResponse<FundListResponseDto>) => r.body as FundListResponseDto)
-        );
+        return this.fundControllerGetFunds$Response(params).pipe(map((r: StrictHttpResponse<FundListResponseDto>) => r.body as FundListResponseDto));
     }
-
-    /**
-     * Path part for operation fundControllerUpdateFund
-     */
-    static readonly FundControllerUpdateFundPath = '/api/v1/fund';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -206,15 +204,8 @@ export class FundService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundControllerUpdateFund(params: { body: UpdateFundDto }): Observable<ResponseFundDto> {
-        return this.fundControllerUpdateFund$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto)
-        );
+        return this.fundControllerUpdateFund$Response(params).pipe(map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto));
     }
-
-    /**
-     * Path part for operation fundControllerCreateFund
-     */
-    static readonly FundControllerCreateFundPath = '/api/v1/fund';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -249,8 +240,6 @@ export class FundService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     fundControllerCreateFund(params: { body: CreateFundDto }): Observable<ResponseFundDto> {
-        return this.fundControllerCreateFund$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto)
-        );
+        return this.fundControllerCreateFund$Response(params).pipe(map((r: StrictHttpResponse<ResponseFundDto>) => r.body as ResponseFundDto));
     }
 }

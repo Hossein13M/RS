@@ -11,11 +11,13 @@ import { OpRiskTreeChartComponent } from './op-risk-tree-chart/op-risk-tree-char
 import { TreeChartPageComponent } from './tree-chart-page/tree-chart-page.component';
 import { TreeChartRoutingModule } from './tree-chart-routing.module';
 import { TreeMappingService } from './tree-mapping.service';
+import { HeaderModule } from '../../../layout/components/header/header.module';
 
 @NgModule({
     declarations: [TreeChartPageComponent, OpRiskTreeChartComponent, OpRiskChartSelectComponent, OpRiskMappingDialogComponent],
-    imports: [CommonModule, TreeChartRoutingModule, LayoutModule, ShareModule, MatProgressSpinnerModule, MatTooltipModule],
+    imports: [CommonModule, TreeChartRoutingModule, LayoutModule, ShareModule, MatProgressSpinnerModule, MatTooltipModule, HeaderModule],
     providers: [OpRiskTreeChartService, TreeMappingService],
     entryComponents: [OpRiskMappingDialogComponent],
+    // exports: [OpRiskTreeChartComponent],
 })
 export class TreeChartModule {}

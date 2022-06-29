@@ -1,33 +1,28 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class DepositSettingService extends Specification {
-    private static depositService = '/api/v1/deposit';
+export class DepositSettingService {
+    constructor(private http: HttpClient) {}
 
-    getDepositSettings(fc?: FormContainer) {
-        const api = DepositSettingService.depositService + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
+    getDepositSettings(paginationParams?, searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get('/api/v1/deposit', { params });
     }
 
-    createDepositSetting(model, fc?: FormContainer) {
-        return this.apiClientService.post(DepositSettingService.depositService, model, fc);
+    createDepositSetting(model): Observable<any> {
+        return this.http.post('/api/v1/deposit', model);
     }
 
-    updateDepositSetting(model, fc?: FormContainer) {
-        return this.apiClientService.put(DepositSettingService.depositService, fc, model);
+    updateDepositSetting(model): Observable<any> {
+        return this.http.put('/api/v1/deposit', model);
     }
 
-    deleteDepositSetting(id, fc?: FormContainer) {
-        const api = DepositSettingService.depositService + '/' + id;
-        return this.apiClientService.delete(api, fc);
-    }
-
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    deleteDepositSetting(id): Observable<any> {
+        return this.http.delete('/api/v1/deposit/' + id);
     }
 }

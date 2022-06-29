@@ -10,7 +10,6 @@ import { SearchSelectMockData } from './search-select-mock-data';
 })
 export class Page4Component implements OnInit {
     fg: FormGroup;
-    // Controls Form
     cf: FormGroup;
 
     // ------- backend mock data
@@ -18,7 +17,13 @@ export class Page4Component implements OnInit {
 
     constructor(private fb: FormBuilder) {
         this.fg = this.fb.group({
-            testSearchSelect: [{ ticker: 'IRO9PASN4191', symbol: 'ضسان3026' }, [Validators.required]],
+            testSearchSelect: [
+                {
+                    ticker: 'IRO9PASN4191',
+                    symbol: 'ضسان3026',
+                },
+                [Validators.required],
+            ],
         });
 
         this.cf = this.fb.group({
@@ -34,10 +39,7 @@ export class Page4Component implements OnInit {
     ngOnInit(): void {}
 
     searchFn = (searchKey: string, data: SearchSelectDataType): void => {
-        console.log('From Search Component : ', searchKey, data);
         data.state = searchSelectStateType.LOADING;
-
-        // ------ Show Loading
         setTimeout(() => {
             data.list = this.backendData.filter((el) => el.symbol.includes(searchKey));
             data.state = searchSelectStateType.PRESENT;

@@ -16,16 +16,10 @@ export class PieChartJsComponent implements OnInit, OnChanges {
     public chartType = 'pie';
     public chartDatasets: Array<any> = [{ data: [], label: '' }];
     public chartLabels: Array<any> = [];
-    public chartColors: Array<any> = [
-        {
-            backgroundColor: [],
-            borderColor: [],
-            borderWidth: 2,
-        },
-    ];
-    public chartOptions: any = {
-        responsive: true,
-    };
+    public chartColors: Array<any> = [{ backgroundColor: [], borderColor: [], borderWidth: 2 }];
+    public chartOptions: any = { responsive: true };
+
+    constructor() {}
 
     public chartClicked(e: any): void {
         const chart = e.active[0]._chart;
@@ -36,22 +30,17 @@ export class PieChartJsComponent implements OnInit, OnChanges {
 
     public chartHovered(e: any): void {}
 
-    constructor() {}
-
     ngOnInit(): void {}
 
     ngOnChanges(): void {
-        if (this.data) {
-            this.createChart();
-        }
+        if (this.data) this.createChart();
     }
 
     randomColor(): any {
         const x = Math.floor(Math.random() * 256);
         const y = Math.floor(Math.random() * 256);
         const z = Math.floor(Math.random() * 256);
-        const bgColor = 'rgb(' + x + ',' + y + ',' + z + ')';
-        return bgColor;
+        return 'rgb(' + x + ',' + y + ',' + z + ')';
     }
 
     createChart(): void {

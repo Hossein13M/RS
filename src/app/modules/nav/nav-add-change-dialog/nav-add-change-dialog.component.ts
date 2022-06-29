@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SearchSelectDataType, searchSelectStateType } from 'app/shared/components/search-select/search-select.component';
 import { NavService } from '../nav.service';
 
@@ -523,8 +523,7 @@ export class NavAddChangeDialogComponent implements OnInit {
     searchNonBourseInstrumentFn = (searchKey: string, data: SearchSelectDataType): void => {
         data.state = searchSelectStateType.LOADING;
 
-        const trans =
-            this.form && this.form.get('transactionType') && this.form.get('transactionType').value ? this.form.get('transactionType').value : null;
+        const trans = this.form && this.form.get('transactionType') && this.form.get('transactionType').value ? this.form.get('transactionType').value : null;
 
         let transactionType = 3;
 
@@ -569,8 +568,7 @@ export class NavAddChangeDialogComponent implements OnInit {
     selectAllPrice = (event): void => {
         if (event.checked && this.form.get('accountNumber')) {
             if (this.form.get('accountNumber').value) {
-                const amount = this.bankAccountList.filter((x) => x.accountNumber === this.form.get('accountNumber').value)[0]
-                    .aggregatedRemainedAmount;
+                const amount = this.bankAccountList.filter((x) => x.accountNumber === this.form.get('accountNumber').value)[0].aggregatedRemainedAmount;
                 this.form.get('amount').setValue(amount);
             }
         } else {

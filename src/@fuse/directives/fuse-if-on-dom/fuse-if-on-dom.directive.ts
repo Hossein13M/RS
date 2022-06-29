@@ -13,11 +13,7 @@ export class FuseIfOnDomDirective implements AfterContentChecked {
      * @param {TemplateRef<any>} _templateRef
      * @param {ViewContainerRef} _viewContainerRef
      */
-    constructor(
-        private _elementRef: ElementRef,
-        private _templateRef: TemplateRef<any>,
-        private _viewContainerRef: ViewContainerRef
-    ) {
+    constructor(private _elementRef: ElementRef, private _templateRef: TemplateRef<any>, private _viewContainerRef: ViewContainerRef) {
         // Set the defaults
         this.isCreated = false;
     }

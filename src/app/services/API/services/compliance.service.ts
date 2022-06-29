@@ -5,25 +5,40 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ApiConfiguration } from '../api-configuration';
 import { BaseService } from '../base-service';
-import { ComplianceDto } from '../models/compliance-dto';
+import { Compliance } from '../../../modules/compliance/compliance.model';
 import { ComplianceResponseDto } from '../models/compliance-response-dto';
 import { CreateComplianceDto } from '../models/create-compliance-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class ComplianceService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation complianceControllerGetCompliance
      */
     static readonly ComplianceControllerGetCompliancePath = '/api/v1/compliance/{id}';
+    /**
+     * Path part for operation complianceControllerDeleteCompliance
+     */
+    static readonly ComplianceControllerDeleteCompliancePath = '/api/v1/compliance/{id}';
+    /**
+     * Path part for operation complianceControllerGetCompliances
+     */
+    static readonly ComplianceControllerGetCompliancesPath = '/api/v1/compliance';
+    /**
+     * Path part for operation complianceControllerUpdateCompliance
+     */
+    static readonly ComplianceControllerUpdateCompliancePath = '/api/v1/compliance';
+    /**
+     * Path part for operation complianceControllerCreateCompliance
+     */
+    static readonly ComplianceControllerCreateCompliancePath = '/api/v1/compliance';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -31,7 +46,7 @@ export class ComplianceService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    complianceControllerGetCompliance$Response(params: { id: number }): Observable<StrictHttpResponse<ComplianceDto>> {
+    complianceControllerGetCompliance$Response(params: { id: number }): Observable<StrictHttpResponse<Compliance>> {
         const rb = new RequestBuilder(this.rootUrl, ComplianceService.ComplianceControllerGetCompliancePath, 'get');
         if (params) {
             rb.path('id', params.id, {});
@@ -46,7 +61,7 @@ export class ComplianceService extends BaseService {
             .pipe(
                 filter((r: any) => r instanceof HttpResponse),
                 map((r: HttpResponse<any>) => {
-                    return r as StrictHttpResponse<ComplianceDto>;
+                    return r as StrictHttpResponse<Compliance>;
                 })
             );
     }
@@ -57,16 +72,9 @@ export class ComplianceService extends BaseService {
      *
      * This method doesn't expect any request body.
      */
-    complianceControllerGetCompliance(params: { id: number }): Observable<ComplianceDto> {
-        return this.complianceControllerGetCompliance$Response(params).pipe(
-            map((r: StrictHttpResponse<ComplianceDto>) => r.body as ComplianceDto)
-        );
+    complianceControllerGetCompliance(params: { id: number }): Observable<Compliance> {
+        return this.complianceControllerGetCompliance$Response(params).pipe(map((r: StrictHttpResponse<Compliance>) => r.body as Compliance));
     }
-
-    /**
-     * Path part for operation complianceControllerDeleteCompliance
-     */
-    static readonly ComplianceControllerDeleteCompliancePath = '/api/v1/compliance/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -103,11 +111,6 @@ export class ComplianceService extends BaseService {
     complianceControllerDeleteCompliance(params: { id: number }): Observable<void> {
         return this.complianceControllerDeleteCompliance$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation complianceControllerGetCompliances
-     */
-    static readonly ComplianceControllerGetCompliancesPath = '/api/v1/compliance';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -154,17 +157,12 @@ export class ComplianceService extends BaseService {
     }
 
     /**
-     * Path part for operation complianceControllerUpdateCompliance
-     */
-    static readonly ComplianceControllerUpdateCompliancePath = '/api/v1/compliance';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `complianceControllerUpdateCompliance()` instead.
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerUpdateCompliance$Response(params: { body: ComplianceDto }): Observable<StrictHttpResponse<ComplianceDto>> {
+    complianceControllerUpdateCompliance$Response(params: { body: Compliance }): Observable<StrictHttpResponse<Compliance>> {
         const rb = new RequestBuilder(this.rootUrl, ComplianceService.ComplianceControllerUpdateCompliancePath, 'put');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -179,7 +177,7 @@ export class ComplianceService extends BaseService {
             .pipe(
                 filter((r: any) => r instanceof HttpResponse),
                 map((r: HttpResponse<any>) => {
-                    return r as StrictHttpResponse<ComplianceDto>;
+                    return r as StrictHttpResponse<Compliance>;
                 })
             );
     }
@@ -190,16 +188,9 @@ export class ComplianceService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerUpdateCompliance(params: { body: ComplianceDto }): Observable<ComplianceDto> {
-        return this.complianceControllerUpdateCompliance$Response(params).pipe(
-            map((r: StrictHttpResponse<ComplianceDto>) => r.body as ComplianceDto)
-        );
+    complianceControllerUpdateCompliance(params: { body: Compliance }): Observable<Compliance> {
+        return this.complianceControllerUpdateCompliance$Response(params).pipe(map((r: StrictHttpResponse<Compliance>) => r.body as Compliance));
     }
-
-    /**
-     * Path part for operation complianceControllerCreateCompliance
-     */
-    static readonly ComplianceControllerCreateCompliancePath = '/api/v1/compliance';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -207,7 +198,7 @@ export class ComplianceService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerCreateCompliance$Response(params: { body: CreateComplianceDto }): Observable<StrictHttpResponse<ComplianceDto>> {
+    complianceControllerCreateCompliance$Response(params: { body: CreateComplianceDto }): Observable<StrictHttpResponse<Compliance>> {
         const rb = new RequestBuilder(this.rootUrl, ComplianceService.ComplianceControllerCreateCompliancePath, 'post');
         if (params) {
             rb.body(params.body, 'application/json');
@@ -222,7 +213,7 @@ export class ComplianceService extends BaseService {
             .pipe(
                 filter((r: any) => r instanceof HttpResponse),
                 map((r: HttpResponse<any>) => {
-                    return r as StrictHttpResponse<ComplianceDto>;
+                    return r as StrictHttpResponse<Compliance>;
                 })
             );
     }
@@ -233,9 +224,7 @@ export class ComplianceService extends BaseService {
      *
      * This method sends `application/json` and handles request body of type `application/json`.
      */
-    complianceControllerCreateCompliance(params: { body: CreateComplianceDto }): Observable<ComplianceDto> {
-        return this.complianceControllerCreateCompliance$Response(params).pipe(
-            map((r: StrictHttpResponse<ComplianceDto>) => r.body as ComplianceDto)
-        );
+    complianceControllerCreateCompliance(params: { body: CreateComplianceDto }): Observable<Compliance> {
+        return this.complianceControllerCreateCompliance$Response(params).pipe(map((r: StrictHttpResponse<Compliance>) => r.body as Compliance));
     }
 }

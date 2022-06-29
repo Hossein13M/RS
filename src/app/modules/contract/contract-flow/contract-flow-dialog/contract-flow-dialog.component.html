@@ -1,0 +1,50 @@
+<div class='dialog-content-wrapper flex flex-col h-full' dir='rtl'>
+    <mat-toolbar class='mat-accent m-0 text-black' matDialogTitle>
+        <mat-toolbar-row fxLayout='row' fxLayoutAlign='space-between center'>
+            <span class='title dialog-title'>{{ title }}</span>
+            <button (click)='this.dialogRef.close()' mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class='p-24 pb-0 m-0 h-full'>
+        <form (submit)='submitForm()' [formGroup]='form' class='flex flex-col justify-between h-full'>
+            <div class='flex flex-col'>
+                <mat-form-field appearance='outline'>
+                    <mat-label>نام جریان</mat-label>
+                    <mat-icon class='secondary-text' matSuffix>timeline</mat-icon>
+                    <input [readonly]='data.isManualDialog' formControlName='name' matInput name='name' required />
+                    <mat-error *ngIf="form.get('name').hasError('required')"> نام جریان را بنویسید.</mat-error>
+                    <mat-hint *ngIf='data.isManualDialog'>شما امکان ویرایش نام جریان دستی را ندارید</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance='outline'>
+                    <mat-label>نوع قرارداد</mat-label>
+                    <mat-select formControlName='contractTypes' multiple required>
+                        <mat-option
+                            *ngFor='let contractType of contractTypes'
+                            [disabled]='isEditMode && data?.flowData.activeContractTypes.includes(contractType._id)'
+                            [value]='contractType._id'
+                            class='text=right'
+                        >
+                            {{ contractType.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-hint *ngIf='!contractTypes.length'> موردی برای نمایش وجود ندارد</mat-hint>
+                </mat-form-field>
+            </div>
+
+            <div class='m-0 p-16 flex justify-around items-center mt-auto' mat-dialog-actions>
+                <button [disabled]='form.invalid' color='primary' mat-flat-button type='submit'>
+                    <mat-icon class='icon-header'>{{ this.isEditMode ? 'edit' : 'add' }}</mat-icon>
+                    {{ this.isEditMode || this.data.isManualDialog ? 'ویرایش جریان قرارداد' : 'افزودن جریان قرارداد' }}
+                </button>
+                <button (click)='dialogRef.close(false)' color='warn' mat-flat-button type='button'>
+                    <mat-icon class='icon-header'>close</mat-icon>
+                    بازگشت
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

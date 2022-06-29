@@ -1,96 +1,96 @@
-<div class="page-layout">
-    <app-header pageTitle="صفحه‌ی ۴ تست">
+<div class='page-layout'>
+    <app-header pageTitle='صفحه‌ی ۴ تست'>
         <div subtitle>
             در این صفحه کامپوننت سرچ سلکت تست می‌شود.
         </div>
         <div>
-            <button mat-raised-button color="primary" routerLink="/test/list">
+            <button color='primary' mat-raised-button routerLink='/test/list'>
                 بازگشت
             </button>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div fxLayout="row wrap" fxLayoutAlign="center" class="show-case-container">
-            <div [formGroup]="fg" fxFlex="40" class="fuse-card select-card">
+    <div class='page-content'>
+        <div class='show-case-container' fxLayout='row wrap' fxLayoutAlign='center'>
+            <div [formGroup]='fg' class='fuse-card select-card' fxFlex='40'>
 
                 <!--      COMPONENT      -->
 
-                <app-search-select formControlName="testSearchSelect"
-                                   [label]="cf.value.label"
-                                   [placeholder]="cf.value.placeholder"
+                <app-search-select [appearance]='cf.value.appearance'
                                    [disabled]="cf.value.disabled === 'true'"
-                                   [appearance]="cf.value.appearance"
-                                   [searchFn]="searchFn"
-                                   [outputValueForm]="cf.value.dataType"
-                                   [multi]="cf.value.multi"
-                                   valuePropertyName="ticker"
-                                   uiPropertyName="symbol">
+                                   [label]='cf.value.label'
+                                   [multi]='cf.value.multi'
+                                   [outputValueForm]='cf.value.dataType'
+                                   [placeholder]='cf.value.placeholder'
+                                   [searchFn]='searchFn'
+                                   formControlName='testSearchSelect'
+                                   uiPropertyName='symbol'
+                                   valuePropertyName='ticker'>
                 </app-search-select>
 
             </div>
 
 
             <!--      CONTROLLERS      -->
-            <div fxFlex="40" class="fuse-card">
+            <div class='fuse-card' fxFlex='40'>
                 <h2>
                     متغیرها
                 </h2>
 
-                <div fxLayout="row wrap" fxLayoutAlign="start start" dir="rtl" fxLayoutGap="20px" [formGroup]="cf">
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                <div [formGroup]='cf' dir='rtl' fxLayout='row wrap' fxLayoutAlign='start start' fxLayoutGap='20px'>
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             لیبل
                         </mat-label>
-                        <input formControlName="label"
-                               placeholder="مقدار لیبل"
-                               value="لیبل"
-                               matInput>
+                        <input formControlName='label'
+                               matInput
+                               placeholder='مقدار لیبل'
+                               value='لیبل'>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             متن جاگذاری
                         </mat-label>
-                        <input formControlName="placeholder"
-                               placeholder="مقدار متن جاگذاری"
-                               value="متن جاگذاری"
-                               matInput>
+                        <input formControlName='placeholder'
+                               matInput
+                               placeholder='مقدار متن جاگذاری'
+                               value='متن جاگذاری'>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             شکل
                         </mat-label>
-                        <mat-select formControlName="appearance" placeholder="شکل">
-                            <mat-option value="outline" aria-selected="true">
+                        <mat-select formControlName='appearance' placeholder='شکل'>
+                            <mat-option aria-selected='true' value='outline'>
                                 outline
                             </mat-option>
 
-                            <mat-option value="legacy">
+                            <mat-option value='legacy'>
                                 legacy
                             </mat-option>
 
-                            <mat-option value="fill">
+                            <mat-option value='fill'>
                                 fill
                             </mat-option>
 
-                            <mat-option value="standard">
+                            <mat-option value='standard'>
                                 standard
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             فعال/غیرفعال
                         </mat-label>
-                        <mat-select formControlName="disabled" placeholder="فعال/غیرفعال">
-                            <mat-option [value]="false" aria-selected="true">
+                        <mat-select formControlName='disabled' placeholder='فعال/غیرفعال'>
+                            <mat-option [value]='false' aria-selected='true'>
                                 فعال
                             </mat-option>
 
-                            <mat-option [value]="true">
+                            <mat-option [value]='true'>
                                 غیرفعال
                             </mat-option>
 
@@ -98,32 +98,32 @@
                     </mat-form-field>
 
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             نوع دیتای خروجی
                         </mat-label>
-                        <mat-select formControlName="dataType" placeholder="نوع">
-                            <mat-option value="all" aria-selected="true">
+                        <mat-select formControlName='dataType' placeholder='نوع'>
+                            <mat-option aria-selected='true' value='all'>
                                 همه
                             </mat-option>
 
-                            <mat-option value="only-value">
+                            <mat-option value='only-value'>
                                 تنها یک فیلد
                             </mat-option>
 
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             تعداد انتخاب
                         </mat-label>
-                        <mat-select formControlName="multi" placeholder="نوع">
-                            <mat-option [value]="false">
+                        <mat-select formControlName='multi' placeholder='نوع'>
+                            <mat-option [value]='false'>
                                 تکی
                             </mat-option>
 
-                            <mat-option [value]="true">
+                            <mat-option [value]='true'>
                                 چندتایی
                             </mat-option>
 
@@ -148,7 +148,7 @@
                 <h2>
                     خروجی
                 </h2>
-                <div class="code">
+                <div class='code'>
                     {{this.fg.value|json}}
                 </div>
             </div>

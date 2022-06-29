@@ -1,56 +1,43 @@
-<div class="nav-container page-layout">
+<div class='nav-container page-layout'>
+    <app-header pageTitle='خالص ارزش دارایی‌ها'></app-header>
 
-    <!-- HEADER -->
-    <app-header pageTitle="خالص ارزش دارایی‌ها">
-    </app-header>
-
-    <div class="page-content">
-
-        <div class="fuse-card select-container" dir="rtl">
-            <div class="fund-row">
-                <mat-form-field style="flex-basis: 30%;margin-left: 10px" appearance="outline">
+    <div class='page-content'>
+        <div class='fuse-card select-container' dir='rtl'>
+            <div class='fund-row'>
+                <mat-form-field appearance='outline' style='flex-basis: 30%; margin-left: 10px'>
                     <mat-label>
                         تاریخ
-                        <span style="color: red">*</span>
+                        <span style='color: red'>*</span>
                     </mat-label>
-                    <input matInput autocomplete="off" [max]="today" (click)="start1.open()" [formControl]="navDate"
-                           [matDatepicker]="start1">
-                    <mat-datepicker-toggle matSuffix [for]="start1"></mat-datepicker-toggle>
+                    <input (click)='start1.open()' [formControl]='navDate' [matDatepicker]='start1' [max]='today' autocomplete='off'
+                           matInput />
+                    <mat-datepicker-toggle [for]='start1' matSuffix></mat-datepicker-toggle>
                     <mat-datepicker #start1></mat-datepicker>
-                    <mat-error>
-                        وارد کردن این فیلد الزامی است.
-                    </mat-error>
+                    <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
                 </mat-form-field>
-                <mat-form-field style="flex-basis: 65%" appearance="outline">
+                <mat-form-field appearance='outline' style='flex-basis: 65%'>
                     <mat-label>
                         انتخاب صندوق
-                        <span style="color: red">*</span>
+                        <span style='color: red'>*</span>
                     </mat-label>
-                    <mat-select [formControl]="navFundType">
-                        <mat-option [value]="m?.nationalId" *ngFor="let m of fundList">
-                            {{(m?.name) ? m?.name : 'بدون نام - کد :' + m?.code}}
+                    <mat-select [formControl]='navFundType'>
+                        <mat-option *ngFor='let m of fundList' [value]='m?.nationalId'>
+                            {{ m?.name ? m?.name : 'بدون نام - کد :' + m?.code }}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <div class="btn-of-asset-debit">
-                    <button [disabled]="!navFundType.value"
-                            mat-raised-button
-                            (click)="openAssetAndDebitPopUp()"
-                            color="primary">
-                        <mat-icon style="margin-left: 10px">polymer</mat-icon>
+                <div class='btn-of-asset-debit'>
+                    <button (click)='openAssetAndDebitPopUp()' [disabled]='!navFundType.value' color='primary'
+                            mat-raised-button>
+                        <mat-icon style='margin-left: 10px'>polymer</mat-icon>
                         تنظیمات دارایی و بدهی
                     </button>
                 </div>
             </div>
         </div>
 
-        <div *ngIf="navFundType.value"
-             [@slideInOut]
-             class="fuse-card page-card"
-             dir="rtl">
-
-            <app-nav-item-detail [fundId]="this.navFundType.value" [date]="navDate.value"></app-nav-item-detail>
-
+        <div *ngIf='navFundType.value' [@slideInOut] class='fuse-card page-card' dir='rtl'>
+            <app-nav-item-detail [date]='navDate.value' [fundId]='this.navFundType.value'></app-nav-item-detail>
         </div>
     </div>
 </div>

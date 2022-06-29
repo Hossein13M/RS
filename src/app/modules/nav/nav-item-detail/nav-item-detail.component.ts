@@ -1,10 +1,10 @@
+import { TableSearchMode } from '#shared/components/table/table.model';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { fuseAnimations } from '@fuse/animations';
-import { AlertService } from 'app/services/alert.service';
+import { AlertService } from '#shared/services/alert.service';
 import { LocalStorageService } from 'app/services/Base/local-storage.service';
-import { TableSearchMode } from '../../../shared/components/table/table-consts';
 import { NavAddChangeDialogComponent } from '../nav-add-change-dialog/nav-add-change-dialog.component';
 import { NavTransactionModel } from '../nav-main/nav-main.component';
 import { NavService } from '../nav.service';
@@ -66,8 +66,20 @@ export class NavItemDetailComponent implements OnInit {
                 return ticker.symbol ? ticker.symbol : ticker.name ? ticker.name : '-';
             },
         },
-        volume: { name: 'حجم', id: 'volume', type: 'string', minWidth: '200px', search: { type: 'text', mode: TableSearchMode.LOCAL } },
-        rate: { name: 'نرخ', id: 'rate', type: 'string', minWidth: '200px', search: { type: 'text', mode: TableSearchMode.LOCAL } },
+        volume: {
+            name: 'حجم',
+            id: 'volume',
+            type: 'string',
+            minWidth: '200px',
+            search: { type: 'text', mode: TableSearchMode.LOCAL },
+        },
+        rate: {
+            name: 'نرخ',
+            id: 'rate',
+            type: 'string',
+            minWidth: '200px',
+            search: { type: 'text', mode: TableSearchMode.LOCAL },
+        },
         accountNumber: {
             name: 'شماره حساب',
             id: 'accountNumber',
@@ -75,8 +87,20 @@ export class NavItemDetailComponent implements OnInit {
             minWidth: '200px',
             search: { type: 'text', mode: TableSearchMode.LOCAL },
         },
-        amount: { name: 'قیمت', id: 'amount', type: 'string', minWidth: '200px', search: { type: 'text', mode: TableSearchMode.LOCAL } },
-        description: { name: 'توضیحات', id: 'description', type: 'string', minWidth: '200px', search: { type: 'text', mode: TableSearchMode.LOCAL } },
+        amount: {
+            name: 'قیمت',
+            id: 'amount',
+            type: 'string',
+            minWidth: '200px',
+            search: { type: 'text', mode: TableSearchMode.LOCAL },
+        },
+        description: {
+            name: 'توضیحات',
+            id: 'description',
+            type: 'string',
+            minWidth: '200px',
+            search: { type: 'text', mode: TableSearchMode.LOCAL },
+        },
         paymentDay: {
             name: 'روز پرداخت',
             id: 'paymentDay',
@@ -91,7 +115,13 @@ export class NavItemDetailComponent implements OnInit {
             minWidth: '200px',
             search: { type: 'text', mode: TableSearchMode.LOCAL },
         },
-        DPS: { name: 'سود هر سهم', id: 'DPS', type: 'string', minWidth: '200px', search: { type: 'text', mode: TableSearchMode.LOCAL } },
+        DPS: {
+            name: 'سود هر سهم',
+            id: 'DPS',
+            type: 'string',
+            minWidth: '200px',
+            search: { type: 'text', mode: TableSearchMode.LOCAL },
+        },
         DPSDate: {
             name: 'تاریخ پرداخت سود',
             id: 'DPSDate',
@@ -114,7 +144,12 @@ export class NavItemDetailComponent implements OnInit {
             minWidth: '130px',
             sticky: true,
             operations: [
-                { name: 'حذف', icon: 'delete', color: 'warn', operation: ({ row }: any) => (this.data = this.data.filter((el) => el !== row)) },
+                {
+                    name: 'حذف',
+                    icon: 'delete',
+                    color: 'warn',
+                    operation: ({ row }: any) => (this.data = this.data.filter((el) => el !== row)),
+                },
             ],
         },
     };
@@ -232,21 +267,19 @@ export class NavItemDetailComponent implements OnInit {
         this.state = stateType.LOADING;
         this.navService.processNav(obj).subscribe(
             (_) => {
-                this.navService
-                    .processNAVRuntime(this.fundId, this.navPlannedRate ? this.navPlannedRate : 20, this.date ? this.date : new Date())
-                    .subscribe(
-                        (processedNAV) => {
-                            this.result = processedNAV;
-                            Object.keys(processedNAV).forEach((name) => {
-                                processedNAV[name] = Math.round(processedNAV[name]);
-                            });
-                            this.state = stateType.RESULT;
-                        },
-                        () => {
-                            this.state = stateType.SELECT;
-                            this.alertService.onError('محاسبه‌ی NAV موفق نبود');
-                        }
-                    );
+                this.navService.processNAVRuntime(this.fundId, this.navPlannedRate ? this.navPlannedRate : 20, this.date ? this.date : new Date()).subscribe(
+                    (processedNAV) => {
+                        this.result = processedNAV;
+                        Object.keys(processedNAV).forEach((name) => {
+                            processedNAV[name] = Math.round(processedNAV[name]);
+                        });
+                        this.state = stateType.RESULT;
+                    },
+                    () => {
+                        this.state = stateType.SELECT;
+                        this.alertService.onError('محاسبه‌ی NAV موفق نبود');
+                    }
+                );
             },
             () => {
                 this.state = stateType.SELECT;

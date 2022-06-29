@@ -1,57 +1,58 @@
-<div class="page-layout">
-    <app-header pageTitle="صفحه‌ی ۲ تست">
+<div class='page-layout'>
+    <app-header pageTitle='صفحه‌ی ۲ تست'>
         <div subtitle>
             در این صفحه ویژگی‌های جدید تست می‌شود.
         </div>
         <div>
-            <button mat-raised-button color="primary" routerLink="/test/list">
+            <button color='primary' mat-raised-button routerLink='/test/list'>
                 بازگشت
             </button>
         </div>
     </app-header>
 
-    <div class="page-content">
-        <div fxLayout="row wrap" fxLayoutAlign="center" class="show-case-container">
-            <div fxFlex="40" class="fuse-card select-card">
+    <div class='page-content'>
+        <div class='show-case-container' fxLayout='row wrap' fxLayoutAlign='center'>
+            <div class='fuse-card select-card' fxFlex='40'>
 
                 <!--      COMPONENT      -->
 
-                <app-pie-chart [data]="data"
-                               [height]="cf.value.height"
-                               [cardLayout]="cf.value.cardLayout"
-                               [chartName]="cf.value.chartName"
-                               [showLabel]="cf.value.showLabel">
+                <app-pie-chart [cardLayout]='cf.value.cardLayout'
+                               [chartName]='cf.value.chartName'
+                               [data]='data'
+                               [height]='cf.value.height'
+                               [showLabel]='cf.value.showLabel'>
                 </app-pie-chart>
 
             </div>
 
             <!--      CONTROLLERS      -->
-            <div fxFlex="40" class="fuse-card">
+            <div class='fuse-card' fxFlex='40'>
                 <h2>
                     متغیرها
                 </h2>
 
-                <div fxLayout="row wrap" fxLayoutAlign="start start" dir="rtl" fxLayoutGap="20px" [formGroup]="cf" style="margin-bottom: 30px">
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                <div [formGroup]='cf' dir='rtl' fxLayout='row wrap' fxLayoutAlign='start start' fxLayoutGap='20px'
+                     style='margin-bottom: 30px'>
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             نام چارت
                         </mat-label>
-                        <input formControlName="chartName"
-                               [disabled]="!cf.value.cardLayout"
-                               placeholder="نام چارت"
-                               matInput>
+                        <input [disabled]='!cf.value.cardLayout'
+                               formControlName='chartName'
+                               matInput
+                               placeholder='نام چارت'>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="200px">
+                    <mat-form-field appearance='outline' fxFlex='200px'>
                         <mat-label>
                             ارتفاع
                         </mat-label>
-                        <input formControlName="height"
-                               placeholder="ارتفاع"
-                               matInput>
+                        <input formControlName='height'
+                               matInput
+                               placeholder='ارتفاع'>
                     </mat-form-field>
 
-                    <mat-checkbox fxFlex="200px" (change)="cf.controls.cardLayout.setValue(!cf.value.cardLayout)">
+                    <mat-checkbox (change)='cf.controls.cardLayout.setValue(!cf.value.cardLayout)' fxFlex='200px'>
                         کارت
                     </mat-checkbox>
 
@@ -59,8 +60,9 @@
 
                 <mat-divider></mat-divider>
 
-                <div fxLayout="row wrap" fxLayoutAlign="start start" dir="rtl" fxLayoutGap="20px" style="margin-top: 30px">
-                    <button mat-raised-button color="primary" (click)="changeDate()">
+                <div dir='rtl' fxLayout='row wrap' fxLayoutAlign='start start' fxLayoutGap='20px'
+                     style='margin-top: 30px'>
+                    <button (click)='changeDate()' color='primary' mat-raised-button>
                         تغییر داده
                     </button>
                 </div>

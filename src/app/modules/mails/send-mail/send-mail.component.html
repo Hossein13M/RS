@@ -1,59 +1,60 @@
 <!--                <app-operator-lists (operatorsID)="getIDs($event)"></app-operator-lists>-->
-<div class="wrapper dialog-container">
+<div class='wrapper dialog-container'>
     <div [title]="'یادآوری'" appDialogHeader>
-        <mat-icon (click)="this.dialog.close()" class="icon-header">close</mat-icon>
+        <mat-icon (click)='this.dialog.close()' class='icon-header'>close</mat-icon>
     </div>
-    <form dir="rtl" autocomplete="off" [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline">
+    <form (ngSubmit)='onSubmit()' [formGroup]='form' autocomplete='off' dir='rtl'>
+        <mat-form-field appearance='outline'>
             <mat-label
-                >از
-                <span style="color: red">*</span>
+            >از
+                <span style='color: red'>*</span>
             </mat-label>
-            <input [disabled]="true" matInput placeholder="از" [formControl]="me" />
+            <input [disabled]='true' [formControl]='me' matInput placeholder='از' />
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance='outline'>
             <mat-label
-                >عنوان
-                <span style="color: red">*</span>
+            >عنوان
+                <span style='color: red'>*</span>
             </mat-label>
-            <input matInput placeholder="عنوان پیام" formControlName="title" />
+            <input formControlName='title' matInput placeholder='عنوان پیام' />
         </mat-form-field>
 
         <!--        <mat-form-field *ngIf="data && data?.toUsers?.length>0">-->
         <!--            <mat-label>به</mat-label>-->
         <!--            <input disabled="true" matInput placeholder="به" formControlName="title">-->
         <!--        </mat-form-field>-->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance='outline'>
             <mat-label>
                 به
-                <span style="color: red">*</span></mat-label
+                <span style='color: red'>*</span></mat-label
             >
-            <mat-select formControlName="toUsers" placeholder="به" [multiple]="true">
+            <mat-select [multiple]='true' formControlName='toUsers' placeholder='به'>
                 <ngx-mat-select-search
-                    style="text-align: right"
+                    [formControl]='operatorMultiFilterCtrl'
                     [noEntriesFoundLabel]="'یافت نشد'"
                     [placeholderLabel]="'جستجو'"
-                    [formControl]="operatorMultiFilterCtrl"
+                    style='text-align: right'
                 ></ngx-mat-select-search>
-                <mat-option style="text-align: right" *ngFor="let op of filteredOperatorsMulti | async" [value]="op?.id">
-                    <span class="email-info">({{ op?.email }})</span>
+                <mat-option *ngFor='let op of filteredOperatorsMulti | async' [value]='op?.id'
+                            style='text-align: right'>
+                    <span class='email-info'>({{ op?.email }})</span>
                     {{ op?.fullName }}
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance='outline'>
             <mat-label
-                >متن پیام
-                <span style="color: red">*</span>
+            >متن پیام
+                <span style='color: red'>*</span>
             </mat-label>
-            <textarea matInput formControlName="body" rows="10"></textarea>
+            <textarea formControlName='body' matInput rows='10'></textarea>
         </mat-form-field>
-        <div class="button-footer">
-            <button [mat-dialog-close]="false" mat-raised-button color="warn">
+        <div class='button-footer'>
+            <button [mat-dialog-close]='false' color='warn' mat-raised-button>
                 <mat-icon>close</mat-icon>
-                انصراف
+                برگشت
             </button>
-            <button [disabled]="form.invalid" style="margin-right: 10px" mat-raised-button color="accent">
+            <button [disabled]='form.invalid' color='accent' mat-raised-button style='margin-right: 10px'>
                 <mat-icon>send</mat-icon>
                 ارسال
             </button>

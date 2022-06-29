@@ -86,7 +86,7 @@ export class ComplianceFundsService {
 
         return this.complianceFundService.complianceFundControllerDeleteComplianceFund(param).pipe(
             map((res) => {
-                // update the compliances list
+                // update the compliances-list list
                 let complianceFunds = this.complianceFunds.getValue();
                 let editedcompliance = complianceFunds.find((complianceFund) => complianceFund.id == fundId);
                 editedcompliance.up = up;

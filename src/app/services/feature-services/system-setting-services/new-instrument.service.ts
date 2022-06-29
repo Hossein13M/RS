@@ -1,33 +1,29 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { UtilityFunctions } from '#shared/utilityFunctions';
 
 @Injectable({
     providedIn: 'root',
 })
-export class NewInstrumentService extends Specification {
-    private static newInstrumentApi = '/api/v1/new-instrument';
+export class NewInstrumentService {
+    constructor(private http: HttpClient) {}
 
-    createInstrument(model, fc?: FormContainer) {
-        return this.apiClientService.post(NewInstrumentService.newInstrumentApi, model, fc);
+    getInstruments(paginationParams?, searchParams?): Observable<any> {
+        const params: HttpParams = UtilityFunctions.prepareParamsFromObjectsForAPICalls({ ...paginationParams, ...searchParams });
+        return this.http.get('/api/v1/new-instrument', { params });
     }
 
-    deleteInstrument(id, isInBourse, fc?: FormContainer) {
-        const api = NewInstrumentService.newInstrumentApi + '/' + id + '?isInBourse=' + isInBourse;
-        return this.apiClientService.delete(api, fc);
+    createInstrument(model): Observable<any> {
+        return this.http.post('/api/v1/new-instrument', model);
     }
 
-    updateInstrument(model, fc?: FormContainer) {
-        return this.apiClientService.put(NewInstrumentService.newInstrumentApi, fc, model);
+    deleteInstrument(id, isInBourse): Observable<any> {
+        const api = '/api/v1/new-instrument' + '/' + id + '?isInBourse=' + isInBourse;
+        return this.http.delete(api);
     }
 
-    getInstruments(fc: FormContainer) {
-        const api = NewInstrumentService.newInstrumentApi + this.generateSpecificationString();
-        return this.apiClientService.get(api, fc);
-    }
-
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    updateInstrument(model): Observable<any> {
+        return this.http.put('/api/v1/new-instrument', model);
     }
 }

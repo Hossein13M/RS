@@ -1,15 +1,33 @@
 button,
-input[type=email],
-input[type=tel],
-input[type=text],
-input[type=password],
-input[type=image],
-input[type=submit],
-input[type=button],
-input[type=search],
+input[type='email'],
+input[type='tel'],
+input[type='text'],
+input[type='password'],
+input[type='image'],
+input[type='submit'],
+input[type='button'],
+input[type='search'],
 textarea {
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
     outline: none;
+}
+
+mat-checkbox.mat-all-option {
+    padding: 0;
+    border-bottom: 1px solid #dfdfdf;
+
+    & > label.mat-checkbox-layout {
+        margin: 0 16px;
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+
+        & > span.mat-checkbox-inner-container {
+            margin-left: 8px !important;
+            margin-right: 0 !important;
+        }
+    }
 }

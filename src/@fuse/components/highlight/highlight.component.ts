@@ -127,7 +127,6 @@ export class FuseHighlightComponent implements OnInit, OnDestroy {
         const highlightedCode = Prism.highlight(source, Prism.languages[this.lang]);
 
         // Replace the innerHTML of the component with the highlighted code
-        this._elementRef.nativeElement.innerHTML =
-            '<pre><code class="highlight language-' + this.lang + '">' + highlightedCode + '</code></pre>';
+        this._elementRef.nativeElement.innerHTML = '<pre><code class="highlight language-' + this.lang + '">' + highlightedCode + '</code></pre>';
     }
 }

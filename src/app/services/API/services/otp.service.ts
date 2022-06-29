@@ -10,19 +10,26 @@ import { OtpUserIdDto } from '../models/otp-user-id-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class OtpService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation otpControllerSetOtpForUser
      */
     static readonly OtpControllerSetOtpForUserPath = '/api/v1/rbac/set-otp-secret-for-user';
+    /**
+     * Path part for operation otpControllerCheckOtp
+     */
+    static readonly OtpControllerCheckOtpPath = '/api/v1/rbac/check-otp';
+    /**
+     * Path part for operation otpControllerGenerateQrCode
+     */
+    static readonly OtpControllerGenerateQrCodePath = '/api/v1/rbac/generate-qr-code/{userId}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -61,11 +68,6 @@ export class OtpService extends BaseService {
     }
 
     /**
-     * Path part for operation otpControllerCheckOtp
-     */
-    static readonly OtpControllerCheckOtpPath = '/api/v1/rbac/check-otp';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `otpControllerCheckOtp()` instead.
      *
@@ -102,11 +104,6 @@ export class OtpService extends BaseService {
     otpControllerCheckOtp(params: { body: CheckOtpDto }): Observable<boolean> {
         return this.otpControllerCheckOtp$Response(params).pipe(map((r: StrictHttpResponse<boolean>) => r.body as boolean));
     }
-
-    /**
-     * Path part for operation otpControllerGenerateQrCode
-     */
-    static readonly OtpControllerGenerateQrCodePath = '/api/v1/rbac/generate-qr-code/{userId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.

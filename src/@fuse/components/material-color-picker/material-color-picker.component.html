@@ -1,16 +1,10 @@
-<button
-    mat-icon-button
-    class="mat-elevation-z1"
-    [matMenuTriggerFor]="colorMenu"
-    (menuOpened)="onMenuOpen()"
-    [ngClass]="selectedPalette + '-' + selectedHue"
->
+<button (menuOpened)="onMenuOpen()" [matMenuTriggerFor]="colorMenu" [ngClass]="selectedPalette + '-' + selectedHue" class="mat-elevation-z1" mat-icon-button>
     <mat-icon>palette</mat-icon>
 </button>
 
 <mat-menu #colorMenu="matMenu" class="fuse-material-color-picker-menu mat-elevation-z8">
     <header [ngClass]="selectedColor?.class || 'accent'" class="mat-elevation-z4" fxLayout="row" fxLayoutAlign="space-between center">
-        <button mat-icon-button class="secondary-text" [style.visibility]="view === 'hues' ? 'visible' : 'hidden'" (click)="goToPalettesView($event)">
+        <button (click)="goToPalettesView($event)" [style.visibility]="view === 'hues' ? 'visible' : 'hidden'" class="secondary-text" mat-icon-button>
             <mat-icon class="s-20">arrow_back</mat-icon>
         </button>
 
@@ -18,37 +12,37 @@
 
         <span *ngIf="!selectedColor?.palette"> Select a Color </span>
 
-        <button mat-icon-button class="remove-color-button secondary-text" (click)="removeColor($event)" matTooltip="Remove color">
+        <button (click)="removeColor($event)" class="remove-color-button secondary-text" mat-icon-button matTooltip="Remove color">
             <mat-icon class="s-20">delete</mat-icon>
         </button>
     </header>
 
     <div [ngSwitch]="view" class="views">
-        <div class="view" *ngSwitchCase="'palettes'">
-            <div fxLayout="row wrap" fxLayoutAlign="start start" class="colors" fusePerfectScrollbar>
+        <div *ngSwitchCase="'palettes'" class="view">
+            <div class="colors" fxLayout="row wrap" fxLayoutAlign="start start">
                 <div
+                    (click)="selectPalette($event, color.key)"
+                    *ngFor="let color of colors | keys"
+                    [class.selected]="selectedPalette === color.key"
+                    [ngClass]="color.key"
                     class="color"
                     fxLayout="row"
                     fxLayoutAlign="center center"
-                    *ngFor="let color of colors | keys"
-                    [ngClass]="color.key"
-                    [class.selected]="selectedPalette === color.key"
-                    (click)="selectPalette($event, color.key)"
                 ></div>
             </div>
         </div>
 
-        <div class="view" *ngSwitchCase="'hues'">
-            <div fxLayout="row wrap" fxLayoutAlign="start start" class="colors" fusePerfectScrollbar>
+        <div *ngSwitchCase="'hues'" class="view">
+            <div class="colors" fxLayout="row wrap" fxLayoutAlign="start start">
                 <div
+                    (click)="selectHue($event, hue)"
+                    *ngFor="let hue of hues"
+                    [class.selected]="selectedHue === hue"
+                    [fxHide]="(selectedPalette === 'fuse-white' && hue !== '500') || (selectedPalette === 'fuse-black' && hue !== '500')"
+                    [ngClass]="selectedPalette + '-' + hue"
                     class="color"
                     fxLayout="row"
                     fxLayoutAlign="center center"
-                    *ngFor="let hue of hues"
-                    [fxHide]="(selectedPalette === 'fuse-white' && hue !== '500') || (selectedPalette === 'fuse-black' && hue !== '500')"
-                    [ngClass]="selectedPalette + '-' + hue"
-                    [class.selected]="selectedHue === hue"
-                    (click)="selectHue($event, hue)"
                 ></div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 /* tslint:disable */
 import { ComplianceCalculatedValuesDto } from './compliance-calculated-values-dto';
+
 export interface RsponceComplianceCalculatedDto {
     code: number;
     currentAmount: number;

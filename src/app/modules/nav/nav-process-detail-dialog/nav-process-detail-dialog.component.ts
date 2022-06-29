@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NavService } from 'app/modules/nav/nav.service';
 import { LocalStorageService } from 'app/services/Base/local-storage.service';
 
@@ -12,11 +12,7 @@ import { LocalStorageService } from 'app/services/Base/local-storage.service';
 export class NavProcessDetailDialogComponent implements OnInit {
     isWorking: any;
 
-    constructor(
-        @Inject(MAT_DIALOG_DATA) public data,
-        private navService: NavService,
-        public dialogRef: MatDialogRef<NavProcessDetailDialogComponent>
-    ) {}
+    constructor(@Inject(MAT_DIALOG_DATA) public data, private navService: NavService, public dialogRef: MatDialogRef<NavProcessDetailDialogComponent>) {}
 
     processRunTime(): void {
         this.navService.processNAVRuntime(this.data.fundId, this.data.plannedRate, null).subscribe(() => {});

@@ -1,4 +1,4 @@
-@import "src/@fuse/scss/fuse";
+@import 'src/@fuse/scss/fuse';
 
 fuse-progress-bar {
     position: absolute;
@@ -9,9 +9,8 @@ fuse-progress-bar {
     z-index: 99998;
 
     mat-progress-bar {
-
         .mat-progress-bar-buffer {
-            background-color: #C5C6CB !important;
+            background-color: #c5c6cb !important;
         }
     }
 }

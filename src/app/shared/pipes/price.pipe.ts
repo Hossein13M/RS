@@ -9,9 +9,8 @@ export class PricePipe implements PipeTransform {
     constructor(private pricePipeService: PricePipeService) {}
 
     public static convertPrice(value: any): string {
-        if (!value) {
-            return '-';
-        }
+        if (!value) return '-';
+
         return (
             '﷼' +
             value
@@ -21,14 +20,20 @@ export class PricePipe implements PipeTransform {
         );
     }
 
-    transform(price: any): string {
-        if (!price) {
-            return '-';
+    transform(price: string | number): string {
+        if (!price) return '-';
+
+        let priceNumber;
+
+        if (this.pricePipeService.downScaleOrder === 0) {
+            // we needed to remove all the decimals once user select Rial with the scale of unit
+            typeof price === 'string' ? (priceNumber = Number(price).toFixed()) : (priceNumber = price.toFixed());
+        } else {
+            typeof price === 'string' ? (priceNumber = Number(price)) : (priceNumber = price);
         }
-        let priceNumber = parseFloat(price);
-        if (!priceNumber) {
-            return price;
-        }
+
+        if (!priceNumber) return `${price}`;
+
         priceNumber = priceNumber / Math.pow(10, this.pricePipeService.downScaleOrder);
         return new DecimalPipe('en-US').transform(priceNumber, this.pricePipeService.decimalInfo);
     }

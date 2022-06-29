@@ -2,6 +2,7 @@
 import { FundFrequenceDto } from './fund-frequence-dto';
 import { FundRoleDto } from './fund-role-dto';
 import { FundTypeDto } from './fund-type-dto';
+
 export interface ResponseFundDto {
     /**
      * Company Registeration Organization Register code

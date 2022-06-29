@@ -5,9 +5,7 @@ import { FuseNavigationService } from '@fuse/components/navigation/navigation.se
 import { LayoutModule } from 'app/layout/layout.module';
 import { take } from 'rxjs/operators';
 
-// Edit This Section To Change Route Prefix
 export const ORRoutePrefix = 'op-risk';
-// ----------------------------------------
 
 const routes: Routes = [
     {
@@ -25,7 +23,7 @@ const routes: Routes = [
     },
     {
         path: `${ORRoutePrefix}/management`,
-        loadChildren: () => import('./op-risk-managment/op-risk-managment.module').then((m) => m.OpRiskManagmentModule),
+        loadChildren: () => import('./op-risk-management/op-risk-management.module').then((m) => m.OpRiskManagementModule),
     },
     {
         path: `${ORRoutePrefix}/reporting`,
@@ -34,14 +32,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-
-        // ADD Routes to Root Of Router
-        // ADD Routes to Root Of Router
-        RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
-        LayoutModule,
-    ],
+    imports: [CommonModule, LayoutModule, RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
 })
 export class OpRiskModule {
     constructor(private fns: FuseNavigationService) {
@@ -77,7 +68,7 @@ export class OpRiskModule {
                     },
                     {
                         id: 'OpRiskReporting',
-                        title: 'گزارشات ریسک عملیاتی',
+                        title: 'گزارش‌های ریسک عملیاتی',
                         icon: 'clear_all',
                         type: 'item',
                         url: `/${ORRoutePrefix}/reporting`,

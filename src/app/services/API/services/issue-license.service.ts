@@ -11,19 +11,34 @@ import { IssuerResponseDto } from '../models/issuer-response-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class IssueLicenseService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation issueLicenseControllerGetIssueLicense
      */
     static readonly IssueLicenseControllerGetIssueLicensePath = '/api/v1/issue-license/{issueLicenseId}';
+    /**
+     * Path part for operation issueLicenseControllerDeleteIssueLicense
+     */
+    static readonly IssueLicenseControllerDeleteIssueLicensePath = '/api/v1/issue-license/{issueLicenseId}';
+    /**
+     * Path part for operation issueLicenseControllerGetIssueLicenses
+     */
+    static readonly IssueLicenseControllerGetIssueLicensesPath = '/api/v1/issue-license';
+    /**
+     * Path part for operation issueLicenseControllerUpdateIssueLicense
+     */
+    static readonly IssueLicenseControllerUpdateIssueLicensePath = '/api/v1/issue-license';
+    /**
+     * Path part for operation issueLicenseControllerCreateIssueLicense
+     */
+    static readonly IssueLicenseControllerCreateIssueLicensePath = '/api/v1/issue-license';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -58,15 +73,8 @@ export class IssueLicenseService extends BaseService {
      * This method doesn't expect any request body.
      */
     issueLicenseControllerGetIssueLicense(params: { issueLicenseId: number }): Observable<IssuerDto> {
-        return this.issueLicenseControllerGetIssueLicense$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issueLicenseControllerGetIssueLicense$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
-
-    /**
-     * Path part for operation issueLicenseControllerDeleteIssueLicense
-     */
-    static readonly IssueLicenseControllerDeleteIssueLicensePath = '/api/v1/issue-license/{issueLicenseId}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -103,11 +111,6 @@ export class IssueLicenseService extends BaseService {
     issueLicenseControllerDeleteIssueLicense(params: { issueLicenseId: number }): Observable<void> {
         return this.issueLicenseControllerDeleteIssueLicense$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation issueLicenseControllerGetIssueLicenses
-     */
-    static readonly IssueLicenseControllerGetIssueLicensesPath = '/api/v1/issue-license';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -166,11 +169,6 @@ export class IssueLicenseService extends BaseService {
     }
 
     /**
-     * Path part for operation issueLicenseControllerUpdateIssueLicense
-     */
-    static readonly IssueLicenseControllerUpdateIssueLicensePath = '/api/v1/issue-license';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `issueLicenseControllerUpdateIssueLicense()` instead.
      *
@@ -203,15 +201,8 @@ export class IssueLicenseService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     issueLicenseControllerUpdateIssueLicense(params: { body: IssuerDto }): Observable<IssuerDto> {
-        return this.issueLicenseControllerUpdateIssueLicense$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issueLicenseControllerUpdateIssueLicense$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
-
-    /**
-     * Path part for operation issueLicenseControllerCreateIssueLicense
-     */
-    static readonly IssueLicenseControllerCreateIssueLicensePath = '/api/v1/issue-license';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -246,8 +237,6 @@ export class IssueLicenseService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     issueLicenseControllerCreateIssueLicense(params: { body: CreateIssuerDto }): Observable<IssuerDto> {
-        return this.issueLicenseControllerCreateIssueLicense$Response(params).pipe(
-            map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto)
-        );
+        return this.issueLicenseControllerCreateIssueLicense$Response(params).pipe(map((r: StrictHttpResponse<IssuerDto>) => r.body as IssuerDto));
     }
 }

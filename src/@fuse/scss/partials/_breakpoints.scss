@@ -12,7 +12,7 @@ $breakpoints: (
     gt-xs: 'screen and (min-width: 600px)',
     gt-sm: 'screen and (min-width: 960px)',
     gt-md: 'screen and (min-width: 1280px)',
-    gt-lg: 'screen and (min-width: 1920px)'
+    gt-lg: 'screen and (min-width: 1920px)',
 ) !default;
 
 // Re-map the breakpoints for the helper classes
@@ -21,18 +21,17 @@ $helper-breakpoints: (
     sm: 'gt-xs',
     md: 'gt-sm',
     lg: 'gt-md',
-    xl: 'gt-lg'
+    xl: 'gt-lg',
 );
 
 @mixin media-breakpoint($breakpointName) {
-
     $mediaQuery: map-get($breakpoints, $breakpointName);
 
     @if ($mediaQuery == null) {
-        @content
+        @content;
     } @else {
         @media #{$mediaQuery} {
-            @content
+            @content;
         }
     }
 }

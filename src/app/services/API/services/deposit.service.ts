@@ -12,19 +12,34 @@ import { UpdateDepositDto } from '../models/update-deposit-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class DepositService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation depositControllerGetDeposit
      */
     static readonly DepositControllerGetDepositPath = '/api/v1/deposit/{depositId}';
+    /**
+     * Path part for operation depositControllerDeleteDeposit
+     */
+    static readonly DepositControllerDeleteDepositPath = '/api/v1/deposit/{depositId}';
+    /**
+     * Path part for operation depositControllerGetDeposits
+     */
+    static readonly DepositControllerGetDepositsPath = '/api/v1/deposit';
+    /**
+     * Path part for operation depositControllerUpdateDeposit
+     */
+    static readonly DepositControllerUpdateDepositPath = '/api/v1/deposit';
+    /**
+     * Path part for operation depositControllerCreateDeposit
+     */
+    static readonly DepositControllerCreateDepositPath = '/api/v1/deposit';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -63,11 +78,6 @@ export class DepositService extends BaseService {
     }
 
     /**
-     * Path part for operation depositControllerDeleteDeposit
-     */
-    static readonly DepositControllerDeleteDepositPath = '/api/v1/deposit/{depositId}';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `depositControllerDeleteDeposit()` instead.
      *
@@ -102,11 +112,6 @@ export class DepositService extends BaseService {
     depositControllerDeleteDeposit(params: { depositId: number }): Observable<void> {
         return this.depositControllerDeleteDeposit$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation depositControllerGetDeposits
-     */
-    static readonly DepositControllerGetDepositsPath = '/api/v1/deposit';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -183,15 +188,8 @@ export class DepositService extends BaseService {
          */
         openingDate?: Date;
     }): Observable<DepositResponseDto> {
-        return this.depositControllerGetDeposits$Response(params).pipe(
-            map((r: StrictHttpResponse<DepositResponseDto>) => r.body as DepositResponseDto)
-        );
+        return this.depositControllerGetDeposits$Response(params).pipe(map((r: StrictHttpResponse<DepositResponseDto>) => r.body as DepositResponseDto));
     }
-
-    /**
-     * Path part for operation depositControllerUpdateDeposit
-     */
-    static readonly DepositControllerUpdateDepositPath = '/api/v1/deposit';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -226,15 +224,8 @@ export class DepositService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     depositControllerUpdateDeposit(params: { body: UpdateDepositDto }): Observable<UpdateDepositDto> {
-        return this.depositControllerUpdateDeposit$Response(params).pipe(
-            map((r: StrictHttpResponse<UpdateDepositDto>) => r.body as UpdateDepositDto)
-        );
+        return this.depositControllerUpdateDeposit$Response(params).pipe(map((r: StrictHttpResponse<UpdateDepositDto>) => r.body as UpdateDepositDto));
     }
-
-    /**
-     * Path part for operation depositControllerCreateDeposit
-     */
-    static readonly DepositControllerCreateDepositPath = '/api/v1/deposit';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -269,8 +260,6 @@ export class DepositService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     depositControllerCreateDeposit(params: { body: CreateDepositDto }): Observable<UpdateDepositDto> {
-        return this.depositControllerCreateDeposit$Response(params).pipe(
-            map((r: StrictHttpResponse<UpdateDepositDto>) => r.body as UpdateDepositDto)
-        );
+        return this.depositControllerCreateDeposit$Response(params).pipe(map((r: StrictHttpResponse<UpdateDepositDto>) => r.body as UpdateDepositDto));
     }
 }

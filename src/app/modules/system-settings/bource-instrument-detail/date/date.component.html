@@ -1,0 +1,67 @@
+<div class="dialog-content-wrapper" dir="rtl">
+    <mat-toolbar class="mat-accent m-0" matDialogTitle>
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">ثبت تاریخ شروع و پایان</span>
+            <button (click)="matDialogRef.close()" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div class="p-24 m-0" fusePerfectScrollbar mat-dialog-content>
+        <div style="width: 100%">
+            <app-table
+                (searchEvent)="search($event)"
+                [columns]="column"
+                [data]="data"
+                [paginationObject]="pagination"
+                [paginationSettings]="{ mode: 'backend' }"
+            ></app-table>
+            <ng-container *ngIf="data?.length === 0">
+                <div style="display: flex; align-items: center; justify-content: center; padding: 30px; flex-direction: column">
+                    <img height="140px" src="../../../../../assets/images/no-data.svg" width="140px" alt="" />
+                    <div style="font-size: 13px; color: #449fdb; margin-top: 7px">موردی وجود ندارد</div>
+                </div>
+            </ng-container>
+        </div>
+
+        <form [formGroup]="dateForm" class="form" fxLayout="row wrap" fxLayoutAlign="space-between center">
+            <div fxFlex="49">
+                <mat-form-field appearance="outline" class="full-wid">
+                    <mat-label>تاریخ شروع پذیره نویسی</mat-label>
+                    <input (click)="start1.open()" [matDatepicker]="start1" formControlName="startDate" matInput />
+                    <mat-datepicker-toggle [for]="start1" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #start1></mat-datepicker>
+                    <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="49">
+                <mat-form-field appearance="outline" class="full-wid">
+                    <mat-label>تاریخ پایان پذیره نویسی</mat-label>
+                    <input (click)="start2.open()" [matDatepicker]="start2" [min]="dateForm.get('startDate').value" formControlName="endDate" matInput />
+                    <mat-datepicker-toggle [for]="start2" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #start2></mat-datepicker>
+                    <mat-error> وارد کردن این فیلد الزامی است.</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center">
+                <button (click)="add()" *ngIf="selectedDate == null" [disabled]="dateForm.invalid" mat-button>
+                    <mat-icon class="mat-18">add_circle</mat-icon>
+                    افزودن
+                </button>
+
+                <button (click)="edit()" *ngIf="selectedDate != null" [disabled]="dateForm.invalid" mat-button>
+                    <mat-icon class="mat-18">create</mat-icon>
+                    اصلاح
+                </button>
+
+                <button (click)="clear()" *ngIf="selectedDate != null" mat-button>
+                    <mat-icon class="mat-18">clear</mat-icon>
+                    برگشت
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

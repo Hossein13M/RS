@@ -1,7 +1,7 @@
 /* tslint:disable */
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'environments/environment';
+import { environment } from '#env/environment';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ApiConfiguration } from '../api-configuration';
@@ -13,19 +13,30 @@ import { UpdateOperatorDto } from '../models/update-operator-dto';
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class OperatorService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation operatorControllerGetOperators
      */
     static readonly OperatorControllerGetOperatorsPath = '/api/v1/operator';
+    /**
+     * Path part for operation operatorControllerUpdateOperator
+     */
+    static readonly OperatorControllerUpdateOperatorPath = '/api/v1/operator';
+    /**
+     * Path part for operation operatorControllerCreateOperator
+     */
+    static readonly OperatorControllerCreateOperatorPath = '/api/v1/operator';
+    /**
+     * Path part for operation operatorControllerGetOperator
+     */
+    static readonly OperatorControllerGetOperatorPath = '/api/v1/operator/{id}';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -78,15 +89,8 @@ export class OperatorService extends BaseService {
          */
         searchKeyword?: any;
     }): Observable<ResponseOperatorDto> {
-        return this.operatorControllerGetOperators$Response(params).pipe(
-            map((r: StrictHttpResponse<ResponseOperatorDto>) => r.body as ResponseOperatorDto)
-        );
+        return this.operatorControllerGetOperators$Response(params).pipe(map((r: StrictHttpResponse<ResponseOperatorDto>) => r.body as ResponseOperatorDto));
     }
-
-    /**
-     * Path part for operation operatorControllerUpdateOperator
-     */
-    static readonly OperatorControllerUpdateOperatorPath = '/api/v1/operator';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -121,15 +125,8 @@ export class OperatorService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     operatorControllerUpdateOperator(params: { body: UpdateOperatorDto }): Observable<OperatorInfoDto> {
-        return this.operatorControllerUpdateOperator$Response(params).pipe(
-            map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto)
-        );
+        return this.operatorControllerUpdateOperator$Response(params).pipe(map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto));
     }
-
-    /**
-     * Path part for operation operatorControllerCreateOperator
-     */
-    static readonly OperatorControllerCreateOperatorPath = '/api/v1/operator';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -164,15 +161,8 @@ export class OperatorService extends BaseService {
      * This method sends `application/json` and handles request body of type `application/json`.
      */
     operatorControllerCreateOperator(params: { body: OperatorDto }): Observable<OperatorInfoDto> {
-        return this.operatorControllerCreateOperator$Response(params).pipe(
-            map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto)
-        );
+        return this.operatorControllerCreateOperator$Response(params).pipe(map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto));
     }
-
-    /**
-     * Path part for operation operatorControllerGetOperator
-     */
-    static readonly OperatorControllerGetOperatorPath = '/api/v1/operator/{id}';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -207,9 +197,7 @@ export class OperatorService extends BaseService {
      * This method doesn't expect any request body.
      */
     operatorControllerGetOperator(params: { id: number }): Observable<OperatorInfoDto> {
-        return this.operatorControllerGetOperator$Response(params).pipe(
-            map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto)
-        );
+        return this.operatorControllerGetOperator$Response(params).pipe(map((r: StrictHttpResponse<OperatorInfoDto>) => r.body as OperatorInfoDto));
     }
 
     // hossein: from here we are going to use the new approach for getting data

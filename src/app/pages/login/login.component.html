@@ -1,0 +1,64 @@
+<div class="inner-scroll" fxLayout="row" fxLayoutAlign="start" id="login">
+    <div fxFlex fxHide fxShow.gt-xs id="login-intro">
+        <div [@animate]="{ value: '*', params: { scale: '0.2' } }" class="logo">
+            <img alt="logo" src="../../../assets/images/logo.png" style="padding: 10px" />
+        </div>
+
+        <div [@animate]="{ value: '*', params: { delay: '100ms', y: '25px' } }" class="description">
+            شرکت مدیریت ریسک هوشمند ایرانیان از اسفند ماه 1397 فعالیت خود را در حوزه مدیریت ریسک آغاز کرد. مدیریت ریسک در حوزه­های مختلفی همچون سرمایه­ گذاری،
+            حسابداری تطبیق، حاکمیت شرکتی مدیریت عملکرد، مدیریت و ارزیابی پروژه، هوشمندی کسب و کار و سایر حوزه­­ های مالی و غیر مالی و برای کلیه اشخاص حقوقی و
+            غیرحقوقی اعم از داخلی و خارجی کاربرد دارد و عامل تولید و فروش سیستم ­های نرم ­افزاری مربوط به این حوزه ­ها است.
+        </div>
+
+        <div class="copy-right">
+            <h5>
+                © 1399 تمامی حقوق متعلق به
+                <a href="https://www.hooshmandrisk.ir" target="__blank__">شرکت مدیریت ریسک هوشمند ایرانیان</a>
+                می باشد.
+            </h5>
+        </div>
+    </div>
+
+    <div [@animate]="{ value: '*', params: { delay: '300ms', x: '100%' } }" dir="rtl" fusePerfectScrollbar id="login-form-wrapper" class="h-screen">
+        <div id="login-form">
+            <div class="logo" fxHide.gt-xs>
+                <img alt="white logo image" src="../../../assets/images/white-logo.png" />
+            </div>
+
+            <div class="title">ورود به حساب کاربری</div>
+
+            <form (submit)="login()" [formGroup]="loginForm">
+                <mat-form-field appearance="outline" class="mb-2">
+                    <mat-label>کد ملی</mat-label>
+                    <input formControlName="username" matInput />
+                    <mat-icon class="secondary-text" matSuffix>person</mat-icon>
+                    <mat-error> کد ملی الزامی می‌باشد.</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>گذرواژه</mat-label>
+                    <input formControlName="password" matInput type="password" />
+                    <mat-icon class="secondary-text" matSuffix>vpn_key</mat-icon>
+                    <mat-hint>گذرواژه‌ی پیشفرض برابر با کد ملی کاربر می باشد.</mat-hint>
+                    <mat-error> گذرواژه الزامی می باشد.</mat-error>
+                </mat-form-field>
+
+                <button
+                    [disabled]="loading"
+                    class="submit-button flex justify-center items-center py-3 text-white"
+                    color="primary"
+                    mat-raised-button
+                    type="submit"
+                >
+                    <span *ngIf="!loading" class="flex items-center justify-center">
+                        <span>ورود</span>
+                        <mat-icon matSuffix class="flip-img px-3">login</mat-icon>
+                    </span>
+                    <img *ngIf="loading" alt="loading" src="../../../assets/images/loading.svg" width="30px" />
+                </button>
+
+                <a routerLink="/forget-password" class='text-red-600'>رمز عبور خود را فراموش کرده اید؟</a>
+            </form>
+        </div>
+    </div>
+</div>

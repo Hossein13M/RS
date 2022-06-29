@@ -11,7 +11,6 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CookieService } from 'ngx-cookie-service';
-
 import { FuseShortcutsComponent } from './shortcuts.component';
 import { AlarmingMenuComponent } from './alarming-menu/alarming-menu.component';
 import { ChangePriceComponent } from './change-price/change-price.component';
@@ -19,9 +18,12 @@ import { ChangePriceDialogComponent } from './change-price/change-price-dialog/c
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HeaderModule } from '../../../app/layout/components/header/header.module';
+import { MatRadioModule } from '@angular/material/radio';
+import { ThemeChangerComponent } from './theme-changer/theme-changer.component';
 
 @NgModule({
-    declarations: [FuseShortcutsComponent, AlarmingMenuComponent, ChangePriceComponent, ChangePriceDialogComponent],
+    declarations: [FuseShortcutsComponent, AlarmingMenuComponent, ChangePriceComponent, ChangePriceDialogComponent, ThemeChangerComponent],
     imports: [
         CommonModule,
         RouterModule,
@@ -37,6 +39,8 @@ import { ReactiveFormsModule } from '@angular/forms';
         MatDialogModule,
         MatSelectModule,
         ReactiveFormsModule,
+        HeaderModule,
+        MatRadioModule,
     ],
     exports: [FuseShortcutsComponent],
     providers: [CookieService],

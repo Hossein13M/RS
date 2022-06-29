@@ -1,0 +1,14 @@
+<div class='fuse-card container'>
+    <div *ngFor='let headerItem of headerList' class='chartItem'>
+        <div
+            #rla='routerLinkActive'
+            (click)='changeSection(headerItem.englishTitle)'
+            [routerLink]="['/organizations-structure/roles-list/' + organizationId + '/' + headerItem.englishTitle]"
+            class='fuse-card'
+            routerLinkActive='active'
+        >
+            <mat-icon [color]="rla.isActive && 'accent'"> {{ headerItem.icon }} </mat-icon>
+        </div>
+        <span> {{ headerItem.title }} </span>
+    </div>
+</div>

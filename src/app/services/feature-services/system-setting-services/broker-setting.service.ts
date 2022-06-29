@@ -1,33 +1,26 @@
 import { Injectable } from '@angular/core';
-import { FormContainer } from '../../../shared/models/FromContainer';
-import { Specification } from '../../../shared/models/Specification';
-import { ApiClientService } from '../../Base/api-client.service';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root',
 })
-export class BrokerSettingService extends Specification {
-    private static brokerSettingApi = '/api/v1/broker';
+export class BrokerSettingService {
+    constructor(private http: HttpClient) {}
 
-    getBrokerSettings(fc?: FormContainer) {
-        const api = BrokerSettingService.brokerSettingApi + '?limit=1000&skip=0';
-        return this.apiClientService.get(api, fc);
+    getBrokerSettings(): Observable<any> {
+        return this.http.get('/api/v1/broker?limit=1000&skip=0');
     }
 
-    createBrokerSetting(model, fc?: FormContainer) {
-        return this.apiClientService.post(BrokerSettingService.brokerSettingApi, model, fc);
+    post(model): Observable<any> {
+        return this.http.post('/api/v1/broker', model);
     }
 
-    updateBrokerSetting(model, fc?: FormContainer) {
-        return this.apiClientService.put(BrokerSettingService.brokerSettingApi, fc, model);
+    put(model): Observable<any> {
+        return this.http.put('/api/v1/broker', model);
     }
 
-    deleteBrokerSetting(id, fc?: FormContainer) {
-        const api = BrokerSettingService.brokerSettingApi + '/' + id;
-        return this.apiClientService.delete(api, fc);
-    }
-
-    constructor(private apiClientService: ApiClientService) {
-        super();
+    delete(id): Observable<any> {
+        return this.http.delete('/api/v1/broker/' + id);
     }
 }

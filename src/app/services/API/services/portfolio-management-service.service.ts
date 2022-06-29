@@ -13,19 +13,38 @@ import { UpdateIpsHistoryResponseDto } from '../models/update-ips-history-respon
 import { RequestBuilder } from '../request-builder';
 import { StrictHttpResponse } from '../strict-http-response';
 
-
 @Injectable({
     providedIn: 'root',
 })
 export class PortfolioManagementServiceService extends BaseService {
-    constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http);
-    }
-
     /**
      * Path part for operation portfolioManagementControllerGetOrganizations
      */
     static readonly PortfolioManagementControllerGetOrganizationsPath = '/api/v1/portfolio-management-service/organizations';
+    /**
+     * Path part for operation portfolioManagementControllerGetTradingBook
+     */
+    static readonly PortfolioManagementControllerGetTradingBookPath = '/api/v1/portfolio-management-service/trading-book';
+    /**
+     * Path part for operation portfolioManagementControllerGetTradeData
+     */
+    static readonly PortfolioManagementControllerGetTradeDataPath = '/api/v1/portfolio-management-service/trade-data';
+    /**
+     * Path part for operation portfolioManagementControllerSearchTradeData
+     */
+    static readonly PortfolioManagementControllerSearchTradeDataPath = '/api/v1/portfolio-management-service/search-trade-data';
+    /**
+     * Path part for operation portfolioManagementControllerDailyInvestmentReport
+     */
+    static readonly PortfolioManagementControllerDailyInvestmentReportPath = '/api/v1/portfolio-management-service/daily-investment-report';
+    /**
+     * Path part for operation portfolioManagementControllerUpdateIpsHistory
+     */
+    static readonly PortfolioManagementControllerUpdateIpsHistoryPath = '/api/v1/portfolio-management-service/update-ips-history';
+
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http);
+    }
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -34,11 +53,7 @@ export class PortfolioManagementServiceService extends BaseService {
      * This method doesn't expect any request body.
      */
     portfolioManagementControllerGetOrganizations$Response(params?: {}): Observable<StrictHttpResponse<Array<GetOrganizationsDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerGetOrganizationsPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerGetOrganizationsPath, 'get');
         if (params) {
         }
         return this.http
@@ -69,11 +84,6 @@ export class PortfolioManagementServiceService extends BaseService {
     }
 
     /**
-     * Path part for operation portfolioManagementControllerGetTradingBook
-     */
-    static readonly PortfolioManagementControllerGetTradingBookPath = '/api/v1/portfolio-management-service/trading-book';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `portfolioManagementControllerGetTradingBook()` instead.
      *
@@ -85,11 +95,7 @@ export class PortfolioManagementServiceService extends BaseService {
          */
         date?: Date;
     }): Observable<StrictHttpResponse<Array<GetTradingBookResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerGetTradingBookPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerGetTradingBookPath, 'get');
         if (params) {
             rb.query('date', params.date, {});
         }
@@ -124,11 +130,6 @@ export class PortfolioManagementServiceService extends BaseService {
             map((r: StrictHttpResponse<Array<GetTradingBookResponseDto>>) => r.body as Array<GetTradingBookResponseDto>)
         );
     }
-
-    /**
-     * Path part for operation portfolioManagementControllerGetTradeData
-     */
-    static readonly PortfolioManagementControllerGetTradeDataPath = '/api/v1/portfolio-management-service/trade-data';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -196,11 +197,6 @@ export class PortfolioManagementServiceService extends BaseService {
     }
 
     /**
-     * Path part for operation portfolioManagementControllerSearchTradeData
-     */
-    static readonly PortfolioManagementControllerSearchTradeDataPath = '/api/v1/portfolio-management-service/search-trade-data';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `portfolioManagementControllerSearchTradeData()` instead.
      *
@@ -234,11 +230,7 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<StrictHttpResponse<void>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerSearchTradeDataPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerSearchTradeDataPath, 'get');
         if (params) {
             rb.query('organization', params.organization, {});
             rb.query('tradeType', params.tradeType, {});
@@ -304,15 +296,8 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<void> {
-        return this.portfolioManagementControllerSearchTradeData$Response(params).pipe(
-            map((r: StrictHttpResponse<void>) => r.body as void)
-        );
+        return this.portfolioManagementControllerSearchTradeData$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
     }
-
-    /**
-     * Path part for operation portfolioManagementControllerDailyInvestmentReport
-     */
-    static readonly PortfolioManagementControllerDailyInvestmentReportPath = '/api/v1/portfolio-management-service/daily-investment-report';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -328,11 +313,7 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<StrictHttpResponse<Array<GetDailyInvestmentReportResponseDto>>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerDailyInvestmentReportPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerDailyInvestmentReportPath, 'get');
         if (params) {
             rb.query('date', params.date, {});
             rb.query('limit', params.limit, {});
@@ -373,11 +354,6 @@ export class PortfolioManagementServiceService extends BaseService {
     }
 
     /**
-     * Path part for operation portfolioManagementControllerUpdateIpsHistory
-     */
-    static readonly PortfolioManagementControllerUpdateIpsHistoryPath = '/api/v1/portfolio-management-service/update-ips-history';
-
-    /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
      * To access only the response body, use `portfolioManagementControllerUpdateIpsHistory()` instead.
      *
@@ -391,11 +367,7 @@ export class PortfolioManagementServiceService extends BaseService {
         limit: number;
         skip: number;
     }): Observable<StrictHttpResponse<UpdateIpsHistoryResponseDto>> {
-        const rb = new RequestBuilder(
-            this.rootUrl,
-            PortfolioManagementServiceService.PortfolioManagementControllerUpdateIpsHistoryPath,
-            'get'
-        );
+        const rb = new RequestBuilder(this.rootUrl, PortfolioManagementServiceService.PortfolioManagementControllerUpdateIpsHistoryPath, 'get');
         if (params) {
             rb.query('date', params.date, {});
             rb.query('limit', params.limit, {});
